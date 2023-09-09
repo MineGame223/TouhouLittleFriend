@@ -1,0 +1,134 @@
+Mods: {
+	TouhouPets: {
+		Items: {
+			CirnoIceShard: {
+				DisplayName: Ice Shard that full of wisdom
+				Tooltip: "'Looks like filled with wisdom!'"
+			}
+
+			UtsuhoEye: {
+				DisplayName: Crimson Eye
+				Tooltip: "'Hot to touch'"
+			}
+
+			HinaDoll: {
+				DisplayName: Hina Doll
+				Tooltip: "'They say it can take the doom away...or bring it instead?'"
+			}
+
+			DaiyouseiBomb: {
+				DisplayName: BOMB
+				Tooltip: "'Its a BOMB'"
+			}
+
+			PatchouliMoon: {
+				DisplayName: Gold Moon Grimoire
+				Tooltip: "'Emitting the shine of knowledge'"
+			}
+
+			SekibankiBow: {
+				DisplayName: Blue Bow
+				Tooltip: "'This is the ninth'"
+			}
+
+			MarisaHakkero: {
+				DisplayName: Mini-Hakkero
+				Tooltip: "'Burning gently'"
+			}
+
+			ReimuYinyangOrb: {
+				DisplayName: Yin-yang Orb
+				Tooltip: "'Full of aura...and pretty heavy'"
+			}
+
+			RemiliaRedTea: {
+				DisplayName: A cup of Red Tea
+				Tooltip: "'A good enjoy in afternoon'"
+			}
+
+			FlandrePudding: {
+				DisplayName: Cherry Pudding
+				Tooltip: "'Looks delicious!'"
+			}
+
+			CakeOfScarlet: {
+				DisplayName: Cake of Scarlet
+				Tooltip: "'The afternoon teatime that only belongs to the Scarlet Family'"
+			}
+
+			JunkoMooncake: {
+				DisplayName: Pure Mooncake
+				Tooltip: "'Pure olive nut'"
+			}
+
+			HecatiaPlanet: {
+				DisplayName: Strange Red Planet
+				Tooltip: "'Otherworldly thing'"
+			}
+
+			IkuOarfish: {
+				DisplayName: The Legendary fish
+				Tooltip: "'Rare and beautiful'"
+			}
+
+			TenshiKeyStone: {
+				DisplayName: Key Stone
+				Tooltip: "'Protect the ground from earthquake'"
+			}
+
+			SatoriSlippers: {
+				DisplayName: A pair of Pink Slippers
+				Tooltip: "'Must be very warm'"
+			}
+
+			KoishiTelephone: {
+				DisplayName: Purple telephone
+				Tooltip:
+					'''
+					'Moshi moshi?'
+					[c/ff0000:MAY CAUSE FATAL DAMAGE TO HER MASTER WHO IN RISK!]
+					'''
+			}
+
+			TheThirdEye: {
+				DisplayName: The 3rd Eye
+				Tooltip: "'Spying your inner...'"
+			}
+
+			SanaeCoin: {
+				DisplayName: Silver Coin of Frog
+				Tooltip: "'Maybe cause something interesting when saved an enough amount?'"
+			}
+
+			KogasaUmbrella: {
+				DisplayName: Odd Umbrella
+				Tooltip: "'Is there an EYE on it ?!'"
+			}
+
+			NitoriCucumber: {
+				DisplayName: Cucumber
+				Tooltip: "'Very fresh'"
+			}
+
+			UselessBook: {
+				DisplayName: A Magic Book without any functions
+				Tooltip:
+					'''
+					A very worn book that has been waterproof treated
+					It's full of obscurities that can't even be a weapon
+					Maybe throw it into a sparkling pool will refresh it?
+					'''
+			}
+
+			GoldenNameplate: {
+				DisplayName: Golden Nameplate
+				Tooltip: "'Only for the most royal pet'"
+			}
+
+			RinSkull: {
+				DisplayName: Possessed Skull
+				Tooltip: "'May not a fit toy for a cat...?'"
+			}
+		}
+	}
+}

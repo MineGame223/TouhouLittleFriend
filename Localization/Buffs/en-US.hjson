@@ -1,0 +1,120 @@
+Mods: {
+	TouhouPets: {
+		Buffs: {
+			CirnoBuff: {
+				DisplayName: Baka
+				Description: ⑨
+			}
+
+			UtsuhoBuff: {
+				DisplayName: Hellcrow
+				Description: "'I'm the sun of the hell!'"
+			}
+
+			HinaBuff: {
+				DisplayName: Godness of Doom
+				Description: "'Turn and turn...'"
+			}
+
+			DaiyouseiBuff: {
+				DisplayName: Daiyousei
+				Description: "'Who is Dai yousei?'"
+			}
+
+			PatchouliBuff: {
+				DisplayName: The Mage
+				Description: "'The little unmovable library...?'"
+			}
+
+			SekibankiBuff: {
+				DisplayName: Dullahan
+				Description: "'Please don't play my head'"
+			}
+
+			MarisaBuff: {
+				DisplayName: Human Mage
+				Description: "'She can no longer steal stuffs'"
+			}
+
+			ReimuBuff: {
+				DisplayName: Hakurei's Sorceress
+				Description: "'...'"
+			}
+
+			RemiliaBuff: {
+				DisplayName: Elder Vampire Sister
+				Description: "'Present your blood, human!'"
+			}
+
+			FlandreBuff: {
+				DisplayName: Younger Vampire Sister
+				Description: "'Please play with me!'"
+			}
+
+			ScarletBuff: {
+				DisplayName: The Scarlet Sister
+				Description: "'Wanna join our afternoon teatime?'"
+			}
+
+			JunkoBuff: {
+				DisplayName: The pure god
+				Description: "'Whereabouts of the heart'"
+			}
+
+			HecatiaBuff: {
+				DisplayName: Goddess of the hell
+				Description: "'Welcome ♥ Hell'"
+			}
+
+			IkuBuff: {
+				DisplayName: Dragon Palace's Messenger
+				Description: "'Arowana Drill !!!'"
+			}
+
+			TenshiBuff: {
+				DisplayName: The Celestial
+				Description: "'A bad girl from the sky'"
+			}
+
+			SatoriBuff: {
+				DisplayName: Youkai of Consciousness
+				Description: "'I know what you are thinking...'"
+			}
+
+			KoishiBuff: {
+				DisplayName: Unconscious girl
+				Description: "'Where is she?'"
+			}
+
+			KomeijiBuff: {
+				DisplayName: The Komeiji Sister
+				Description: O v U
+			}
+
+			SanaeBuff: {
+				DisplayName: Wind Sorceress
+				Description: "'Watching for the miracle!'"
+			}
+
+			KogasaBuff: {
+				DisplayName: Youkai of Umbrella
+				Description: "'BOO!'"
+			}
+
+			NitoriBuff: {
+				DisplayName: Kappa Engineer
+				Description: "'Kappa technology NO.1!'"
+			}
+
+			HellPetsBuff: {
+				DisplayName: Pets from the Hell
+				Description: "'Very good pets, love from hell'"
+			}
+
+			RinBuff: {
+				DisplayName: Kasha
+				Description: "'Leave the body and I'll take it!'"
+			}
+		}
+	}
+}

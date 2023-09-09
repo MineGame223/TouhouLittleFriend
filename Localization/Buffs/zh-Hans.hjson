@@ -1,0 +1,120 @@
+Mods: {
+	TouhouPets: {
+		Buffs: {
+			CirnoBuff: {
+				DisplayName: 小笨蛋
+				Description: ⑨
+			}
+
+			UtsuhoBuff: {
+				DisplayName: 地狱鸦
+				Description: "'我就是地狱的太阳！'"
+			}
+
+			HinaBuff: {
+				DisplayName: 厄运神
+				Description: "'转啊转...'"
+			}
+
+			DaiyouseiBuff: {
+				DisplayName: 大妖精
+				Description: "'是谁大妖精？'"
+			}
+
+			PatchouliBuff: {
+				DisplayName: 魔法使
+				Description: "'不动的小图书馆...?'"
+			}
+
+			SekibankiBuff: {
+				DisplayName: 辘轱首
+				Description: "'请不要玩我的头'"
+			}
+
+			MarisaBuff: {
+				DisplayName: 人类魔法使
+				Description: "'不能再小偷小摸了'"
+			}
+
+			ReimuBuff: {
+				DisplayName: 博丽的巫女
+				Description: "'...'"
+			}
+
+			RemiliaBuff: {
+				DisplayName: 吸血鬼姐姐
+				Description: "'献上你的鲜血吧，人类！'"
+			}
+
+			FlandreBuff: {
+				DisplayName: 吸血鬼妹妹
+				Description: "'请和我一起玩！'"
+			}
+
+			ScarletBuff: {
+				DisplayName: 斯卡雷特姐妹
+				Description: "'想要与我们共进下午茶吗？'"
+			}
+
+			JunkoBuff: {
+				DisplayName: 纯粹之神
+				Description: "'心之所在'"
+			}
+
+			HecatiaBuff: {
+				DisplayName: 地狱女神
+				Description: "'Welcome ♥ Hell'"
+			}
+
+			IkuBuff: {
+				DisplayName: 龙宫使者
+				Description: "'龙鱼电钻！！！'"
+			}
+
+			TenshiBuff: {
+				DisplayName: 天人
+				Description: "'来自天界的坏女孩'"
+			}
+
+			SatoriBuff: {
+				DisplayName: 觉妖怪
+				Description: "'我对你的内心一清二楚...'"
+			}
+
+			KoishiBuff: {
+				DisplayName: 无意识少女
+				Description: "'她在哪儿？'"
+			}
+
+			KomeijiBuff: {
+				DisplayName: 古明地姐妹
+				Description: O v U
+			}
+
+			SanaeBuff: {
+				DisplayName: 风祝
+				Description: "'见证奇迹吧！'"
+			}
+
+			KogasaBuff: {
+				DisplayName: 伞妖怪
+				Description: "'吓你一跳！'"
+			}
+
+			NitoriBuff: {
+				DisplayName: 河童工程师
+				Description: "'河童科技天下第一！'"
+			}
+
+			HellPetsBuff: {
+				DisplayName: 来自地狱的宠物们
+				Description: "'非常好宠物，爱来自地狱'"
+			}
+
+			RinBuff: {
+				DisplayName: 火车
+				Description: "'尸体什么的就交给咱处理吧！'"
+			}
+		}
+	}
+}

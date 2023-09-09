@@ -1,0 +1,134 @@
+Mods: {
+	TouhouPets: {
+		Items: {
+			CirnoIceShard: {
+				DisplayName: 充满智慧的冰晶
+				Tooltip: "'看起来充满了智慧！'"
+			}
+
+			UtsuhoEye: {
+				DisplayName: 赤红之瞳
+				Tooltip: "'烫手'"
+			}
+
+			HinaDoll: {
+				DisplayName: 雏人偶
+				Tooltip: "'他们说这会带走厄运...还是恰好相反呢？'"
+			}
+
+			DaiyouseiBomb: {
+				DisplayName: BOMB
+				Tooltip: "'一个BOMB'"
+			}
+
+			PatchouliMoon: {
+				DisplayName: 金月魔典
+				Tooltip: "'散发着知识的光芒'"
+			}
+
+			SekibankiBow: {
+				DisplayName: 蓝色蝴蝶结
+				Tooltip: "'这是第九个'"
+			}
+
+			MarisaHakkero: {
+				DisplayName: 迷你八卦炉
+				Tooltip: "'温和的燃烧着'"
+			}
+
+			ReimuYinyangOrb: {
+				DisplayName: 阴阳玉
+				Tooltip: "'富有灵气...还挺沉'"
+			}
+
+			RemiliaRedTea: {
+				DisplayName: 一杯红茶
+				Tooltip: "'下午时刻的享受'"
+			}
+
+			FlandrePudding: {
+				DisplayName: 樱桃布丁
+				Tooltip: "'看起来很美味的样子！'"
+			}
+
+			CakeOfScarlet: {
+				DisplayName: 斯卡雷特之蛋糕
+				Tooltip: "'只属于斯卡雷特家族的下午茶时间'"
+			}
+
+			JunkoMooncake: {
+				DisplayName: 纯粹的月饼
+				Tooltip: "'纯粹的五仁馅'"
+			}
+
+			HecatiaPlanet: {
+				DisplayName: 奇怪的红色星球
+				Tooltip: "'异界之物'"
+			}
+
+			IkuOarfish: {
+				DisplayName: 传奇带鱼
+				Tooltip: "'罕见且艳丽'"
+			}
+
+			TenshiKeyStone: {
+				DisplayName: 要石
+				Tooltip: "'镇压地动，守护疆土'"
+			}
+
+			SatoriSlippers: {
+				DisplayName: 一双粉色拖鞋
+				Tooltip: "'一定很暖和'"
+			}
+
+			KoishiTelephone: {
+				DisplayName: 紫色电话筒
+				Tooltip:
+					'''
+					'喂喂？'
+					[c/ff0000:可能会在危急时刻对主人造成致命伤害！]
+					'''
+			}
+
+			TheThirdEye: {
+				DisplayName: 觉之瞳
+				Tooltip: "'窥探你的内心...'"
+			}
+
+			SanaeCoin: {
+				DisplayName: 银色的青蛙硬币
+				Tooltip: "'攒够一定数量说不定会出现有意思的事？'"
+			}
+
+			KogasaUmbrella: {
+				DisplayName: 古怪的伞
+				Tooltip: "'这上面是长了只眼睛吗？！'"
+			}
+
+			NitoriCucumber: {
+				DisplayName: 黄瓜
+				Tooltip: "'非常滴新鲜'"
+			}
+
+			UselessBook: {
+				DisplayName: 毫无卵用的魔法书
+				Tooltip:
+					'''
+					一本非常破旧的书，被做了防水处理
+					上面写满了晦涩的文字，以至于都不能拿来当武器用
+					也许扔进一个闪闪发光的池子里能让它恢复往日的风采？
+					'''
+			}
+
+			GoldenNameplate: {
+				DisplayName: 镀金铭牌
+				Tooltip: "'仅为最忠心的宠物献上'"
+			}
+
+			RinSkull: {
+				DisplayName: 着魔颅骨
+				Tooltip: "'应该不是给猫玩的...吧？'"
+			}
+		}
+	}
+}

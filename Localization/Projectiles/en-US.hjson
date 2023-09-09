@@ -1,0 +1,27 @@
+Mods: {
+	TouhouPets: {
+		Projectiles: {
+			Cirno.DisplayName: Cirno
+			Daiyousei.DisplayName: Daiyousei
+			Flandre.DisplayName: Flandre Scarlet
+			Hecatia.DisplayName: Hecatia Lapislazuli
+			Hina.DisplayName: Hina Kagiyama
+			Iku.DisplayName: Iku Nagae
+			Junko.DisplayName: Junko
+			Marisa.DisplayName: Marisa Kirisame
+			Patchouli.DisplayName: Patchouli Knowledge
+			Piece.DisplayName: Crownpiece
+			Reimu.DisplayName: Reimu Hakurei
+			Remilia.DisplayName: Remilia Scarlet
+			Sekibanki.DisplayName: Sekibanki
+			Tenshi.DisplayName: Tenshi Hinanawi
+			Utsuho.DisplayName: Utsuho Reiuji
+			Koishi.DisplayName: Koishi Komeiji
+			Satori.DisplayName: Satori Komeiji
+			Sanae.DisplayName: Sanae Kochiya
+			Kogasa.DisplayName: Kogasa Tatara
+			Nitori.DisplayName: Nitori Kawashiro
+			Rin.DisplayName: Rin Kaenbyou
+		}
+	}
+}

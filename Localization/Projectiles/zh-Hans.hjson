@@ -1,0 +1,27 @@
+Mods: {
+	TouhouPets: {
+		Projectiles: {
+			Cirno.DisplayName: 琪露诺
+			Daiyousei.DisplayName: 大妖精
+			Flandre.DisplayName: 芙兰朵露·斯卡雷特
+			Hecatia.DisplayName: 赫卡提亚·拉碧斯拉祖利
+			Hina.DisplayName: 键山 雏
+			Iku.DisplayName: 永江 衣玖
+			Junko.DisplayName: 纯狐
+			Marisa.DisplayName: 雾雨 魔理沙
+			Patchouli.DisplayName: 帕秋莉·诺蕾姬
+			Piece.DisplayName: 克劳恩皮斯
+			Reimu.DisplayName: 博丽 灵梦
+			Remilia.DisplayName: 蕾米莉亚·斯卡雷特
+			Sekibanki.DisplayName: 赤蛮奇
+			Tenshi.DisplayName: 比那名居 天子
+			Utsuho.DisplayName: 灵乌路 空
+			Koishi.DisplayName: 古明地 恋
+			Satori.DisplayName: 古明地 觉
+			Sanae.DisplayName: 东风谷 早苗
+			Kogasa.DisplayName: 多多良 小伞
+			Nitori.DisplayName: 河城 荷取
+			Rin.DisplayName: 火焰猫 燐
+		}
+	}
+}
