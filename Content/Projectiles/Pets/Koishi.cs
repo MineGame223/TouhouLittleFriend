@@ -224,11 +224,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (extraAI[0] == 2)
             {
                 Projectile.frameCounter += 2;
-                if (Projectile.frame >= 13)
+                if (Projectile.frame > 13)
                 {
                     Projectile.frame = 13;
                     player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
-                    if (!player.dead)
+                    if (!player.dead || player.respawnTimer <= 60)
                     {
                         extraAI[0] = 0;
                         PetState = 0;
@@ -267,13 +267,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             Player player = Main.player[Projectile.owner];
             if (player.statLife < player.statLifeMax / 10 && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
             {
-                if (mainTimer % 120 == 0 && Main.rand.NextBool(7) && PetState == 0 && ChatCD <= 0)
+                if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(1) && PetState == 0 && ChatCD <= 0)
                 {
                     PetState = State_Kill;
                     extraAI[0] = 0;
                 }
             }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && PetState <= 1)
+            else if (mainTimer % 720 == 0 && mainTimer > 0 && Main.rand.NextBool(7) && PetState <= 1)
             {
                 SetChat(myColor);
             }

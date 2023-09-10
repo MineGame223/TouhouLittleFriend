@@ -1,7 +1,8 @@
-东方小伙伴模组 v{ModVersion} 已更新至 {tMLBuildPurpose} tML v{tMLVersion}.
+东方小伙伴 - Adventure with cute partners v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
 注意：
 从v1.0.6版本起本模组将不再支持英文版更新日志
+
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
@@ -12,6 +13,8 @@ This mod no longer supports English change log from v1.0.6
 神秘隙间现在在Don't dig up世界和Get fixed boi世界中会在地狱中生成
 史莱姆皇后将不再直接掉落帕秋莉的召唤物
 优化了芙兰朵露的照明
+优化了部分对话文本
 
 修复：
 修复了皮丝的位置鬼畜问题
+修复了古明地恋的特殊能力可能会与重生效果或快速复活冲突的问题
