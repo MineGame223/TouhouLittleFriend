@@ -174,12 +174,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chatFuncIsOccupied = false;
                     if (extraAI[1] == 0 && ChatTimeLeft <= 0)
                     {
-                        SetChatWithOtherOne(null, "喂喂？", myColor, -1, cd: 60, -1, 60);
+                        SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-1"), myColor, -1, cd: 60, -1, 60);
                         extraAI[1] = 1;
                     }
                     if (extraAI[1] == 1 && ChatTimeLeft <= 0)
                     {
-                        SetChatWithOtherOne(null, "是我，恋啊......", myColor, -2, cd: 60, -1);
+                        SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-2"), myColor, -2, cd: 60, -1);
                         extraAI[1] = 2;
                     }
                 }
@@ -208,7 +208,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (extraAI[1] == 0 && Projectile.frame == 8)
                 {
                     textShaking = true;
-                    SetChatWithOtherOne(null, "我现在就在你背后哦...", Color.Red, -3, cd: 4, -1, 45);
+                    SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-3"), Color.Red, -3, cd: 4, -1, 45);
                     extraAI[1]++;
                 }
                 if (Projectile.frame > 10)
@@ -244,11 +244,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override string GetChatText(out string[] text)
         {
             text = new string[21];
-            text[1] = "恋恋可以和你一起玩吗？";
-            text[2] = "我要把你挂到地灵殿门口去当——当什么好呢...";
-            text[3] = "想要玩心跳大冒险吗？";
-            text[4] = "你有在注意恋恋吗？";
-            text[5] = "就算是姐姐，也不知道恋恋在想什么哦。";
+            text[1] = ModUtils.GetChatText("Koishi", "1");
+            text[2] = ModUtils.GetChatText("Koishi", "2");
+            text[3] = ModUtils.GetChatText("Koishi", "3");
+            text[4] = ModUtils.GetChatText("Koishi", "4");
+            text[5] = ModUtils.GetChatText("Koishi", "5");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -278,14 +278,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 SetChat(myColor);
             }
         }
-        const int State_Kill = 4;
-        public override void VisualEffectForPreview()
+        private void SetKoishiActive(Player player)
         {
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
             if (!player.HasBuff(BuffType<KoishiBuff>()) && !player.HasBuff(BuffType<KomeijiBuff>())
                 && PetState != State_Kill || player.dead)
             {
@@ -302,6 +296,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.Opacity += 0.009f;
             }
+        }
+        const int State_Kill = 4;
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+        }
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
             Projectile.timeLeft = 2;
 
             UpdateTalking();
@@ -314,6 +317,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             if (!player.dead)
                 MoveToPoint(point, 13f);
+            SetKoishiActive(player);
+
             if (mainTimer % 270 == 0 && PetState < 2)
             {
                 PetState = 1;

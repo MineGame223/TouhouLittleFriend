@@ -99,10 +99,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(255, 119, 187);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[11];
-            text[1] = "啦啦啦~啦~ 今天要在哪儿恶作剧呢...";
-            text[2] = "那儿看起来像是个点火的好地方。";
+            text[1] = ModUtils.GetChatText("Piece", "1");
+            text[2] = ModUtils.GetChatText("Piece", "2");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -125,7 +124,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (FindChatIndex(out Projectile p, type1, 2))
             {
-                SetChatWithOtherOne(p, "主人大人的着装当然是最时尚的啦！", myColor, 0, 360);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Piece", "3"), myColor, 0, 360);
                 p.ai[0] = 0;
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(6) && mainTimer > 0)

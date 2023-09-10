@@ -200,10 +200,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(172, 69, 191);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "略略略略~";
-            text[2] = "吓你一跳！";
+            text[1] = ModUtils.GetChatText("Kogasa", "1");
+            text[2] = ModUtils.GetChatText("Kogasa", "2");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)

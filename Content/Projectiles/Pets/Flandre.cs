@@ -176,15 +176,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(255, 10, 10);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "你能陪芙兰一起玩嘛？";
-            text[2] = "芙兰想要和你一起玩！";
-            text[3] = "芙兰喜欢姐姐，但姐姐总是不理会芙兰...";
+            text[1] = ModUtils.GetChatText("Flandre", "1");
+            text[2] = ModUtils.GetChatText("Flandre", "2");
+            text[3] = ModUtils.GetChatText("Flandre", "3");
             if (PetState == 2)
             {
-                text[4] = "好吃的！";
-                text[5] = "芙兰喜欢的东西...";
+                text[4] = ModUtils.GetChatText("Flandre", "4");
+                text[5] = ModUtils.GetChatText("Flandre", "5");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
@@ -193,9 +192,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
-                        if (i >= 4 && i <= 5)
+                        if (PetState == 2 && i < 4)
                         {
-                            weight = 5;
+                            weight = 0;
                         }
                         chat.Add(text[i], weight);
                     }
@@ -210,24 +209,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ChatCD = 1;
             }
-            if (FindChatIndex(out Projectile p1, type2, 11, default, 1, true))
+            if (FindChatIndex(out Projectile p1, type2, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p1, "姐姐？叫芙兰有什么事嘛？", myColor, 5, 600, -1);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Flandre", "6"), myColor, 6, 600, -1);
             }
-            else if (FindChatIndex(out Projectile p2, type2, 12, default, 1, true))
+            else if (FindChatIndex(out Projectile p2, type2, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "...姐姐什么时候能和芙兰一起玩...", myColor, 6, 600, -1);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Flandre", "7"), myColor, 7, 600, -1);
             }
-            else if (FindChatIndex(out Projectile p3, type2, 13, default, 1, true))
+            else if (FindChatIndex(out Projectile p3, type2, 8, default, 1, true))
             {
-                SetChatWithOtherOne(p3, "姐姐老是这么说...", myColor, 0, 360, -1);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Flandre", "8"), myColor, 0, 360, -1);
                 p3.ai[0] = 0;
                 talkInterval = 3600;
+            }
+            else if (PetState == 2 && mainTimer % 120 == 0 && Main.rand.NextBool(5) && mainTimer > 0)
+            {
+                SetChat(myColor);
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && mainTimer > 0)
             {
                 SetChat(myColor);
-            }
+            }           
         }
         public override void VisualEffectForPreview()
         {

@@ -163,70 +163,74 @@ namespace TouhouPets.Content.Projectiles.Pets
             Player player = Main.player[Projectile.owner];
             text = new string[11];
             WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                if (Sandstorm.Happening && player.ZoneDesert && player.ZoneOverworldHeight)
+            {               
+                if (Main.bloodMoon)
                 {
-                    chat.Add("风沙肆虐...");
+                    chat.Add(ModUtils.GetChatText("Iku", "1"));
                 }
-                else if (Main.slimeRain)
+                if (Main.eclipse)
                 {
-                    chat.Add("粘稠生物从天而降");
+                    chat.Add(ModUtils.GetChatText("Iku", "2"));
                 }
-                else if (Main.bloodMoon)
+                if (!Main.eclipse && !Main.bloodMoon)
                 {
-                    chat.Add("月亮被诅咒侵蚀，鲜血染红大地...");
-                }
-                else if (Main.eclipse)
-                {
-                    chat.Add("太阳被月亮遮蔽，妖魔四处横行...");
-                }
-                else if (!Main.eclipse && !Main.bloodMoon)
-                {
+                    if (Sandstorm.Happening && player.ZoneDesert && player.ZoneOverworldHeight)
+                    {
+                        chat.Add(ModUtils.GetChatText("Iku", "3"));
+                    }
+                    else if (Main.slimeRain)
+                    {
+                        chat.Add(ModUtils.GetChatText("Iku", "4"));
+                    }
+                    else if (!player.AnyBosses())
+                    {
+                        chat.Add(ModUtils.GetChatText("Iku", "5"));
+                        if (BirthdayParty.PartyIsUp)
+                        {
+                            chat.Add(ModUtils.GetChatText("Iku", "6"));
+                        }
+                        if (LanternNight.LanternsUp)
+                        {
+                            chat.Add(ModUtils.GetChatText("Iku", "7"));
+                        }
+                    }
                     if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) <= 0.1f)
                     {
-                        chat.Add("气候并没有什么特别的变化");
+                        chat.Add(ModUtils.GetChatText("Iku", "8"));
                     }
-                    else if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) > 0.1f
+                    if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) > 0.1f
                        && Math.Abs(Main.windSpeedTarget) < 0.25f)
                     {
-                        chat.Add("和煦的微风吹拂着大地");
+                        chat.Add(ModUtils.GetChatText("Iku", "9"));
                     }
-                    else if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) > .25f
+                    if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) > .25f
                        && Math.Abs(Main.windSpeedTarget) < 0.4f)
                     {
-                        chat.Add("今天的风甚是清爽");
+                        chat.Add(ModUtils.GetChatText("Iku", "10"));
                     }
-                    else if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) >= .4f)
+                    if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) >= .4f)
                     {
-                        chat.Add("风在奔涌");
+                        chat.Add(ModUtils.GetChatText("Iku", "11"));
+                    }
+                    if (Main.cloudAlpha > 0f && Main.cloudAlpha < 0.3f)
+                    {
+                        chat.Add(ModUtils.GetChatText("Iku", "12"));
                     }
                     if (Main.cloudAlpha >= 0.4f && Math.Abs(Main.windSpeedTarget) >= 0.3f
                         && Main.cloudAlpha < 0.5f && Math.Abs(Main.windSpeedTarget) < 0.4f)
                     {
-                        chat.Add("风暴将至...");
+                        chat.Add(ModUtils.GetChatText("Iku", "13"));
                     }
-                    else if (Main.cloudAlpha >= 0.5f && Math.Abs(Main.windSpeedTarget) >= 0.4f
+                    if (Main.cloudAlpha >= 0.5f && Math.Abs(Main.windSpeedTarget) >= 0.4f
                         && Main.cloudAlpha < 0.8f && Math.Abs(Main.windSpeedTarget) < 0.65f)
                     {
-                        chat.Add("猛烈的风雨正在席卷大地");
+                        chat.Add(ModUtils.GetChatText("Iku", "14"));
                     }
-                    else if (Main.cloudAlpha >= 0.8f && Math.Abs(Main.windSpeedTarget) >= 0.65f)
+                    if (Main.cloudAlpha >= 0.8f && Math.Abs(Main.windSpeedTarget) >= 0.65f)
                     {
-                        chat.Add("一定是龙神在发怒了...");
+                        chat.Add(ModUtils.GetChatText("Iku", "15"));
                     }
-                    else if (!player.AnyBosses())
-                    {
-                        chat.Add("希望今天也是相安无事的一天");
-                        if (BirthdayParty.PartyIsUp)
-                        {
-                            chat.Add("世界充满着欢快的气氛");
-                        }
-                        if (LanternNight.LanternsUp)
-                        {
-                            chat.Add("和平的气息从四周升起");
-                        }
-                    }
-                }
+                }               
             }
             return chat;
         }
@@ -239,10 +243,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (FindChatIndex(out Projectile p, type1, 2))
             {
-                SetChatWithOtherOne(p, "天女大人您还是安分点吧...", myColor, 0, 360);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Iku", "16"), myColor, 0, 360);
                 p.ai[0] = 0;
             }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && PetState != 2)
+            else if (mainTimer % 720 == 0 && Main.rand.NextBool(3) && PetState != 2)
             {
                 SetChat(myColor);
             }

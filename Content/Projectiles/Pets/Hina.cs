@@ -103,8 +103,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override string GetChatText(out string[] text)
         {
             text = new string[21];
-            text[1] = "今天你过得怎样？";
-            text[2] = "愿灾厄不再扩散...";
+            text[1] = ModUtils.GetChatText("Hina", "1");
+            text[2] = ModUtils.GetChatText("Hina", "2");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -120,27 +120,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            /*int type1 = ProjectileType<Patchouli>();
-            if (FindChatIndex(out Projectile _, type1, 13, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, type1, 13))
-            {
-                SetChatWithOtherOne(p, "嗯？怎么啦", myColor, 11, 600);
-            }
-            else if (FindChatIndex(out Projectile p1, type1, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, "啊！真的吗？", myColor, 12, 600);
-            }
-            else if (FindChatIndex(out Projectile p2, type1, 15, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, "谢谢你！", myColor, 0, 360);
-                p2.ai[0] = 0;
-            }*/
             if (PetState == 2 && extraAI[1] <= 3 && mainTimer % 60 == 0 && Main.rand.NextBool(9) && extraAI[2] == 0)
             {
-                SetChat(myColor, "转啊转啊转...", 3, default, 30);
+                SetChat(myColor, ModUtils.GetChatText("Hina", "3"), 3, default, 30);
                 extraAI[2] = 1;
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(9))

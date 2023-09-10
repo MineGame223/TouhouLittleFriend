@@ -209,10 +209,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor;
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "司掌三界之地狱，有时候还真是个苦差事呢...";
-            text[2] = "我的穿搭是无可挑剔的...真的会有人不喜欢么？";
+            text[1] = ModUtils.GetChatText("Hecatia", "1");
+            text[2] = ModUtils.GetChatText("Hecatia", "2");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -220,10 +219,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
-                        if (i == 4)
-                        {
-                            weight = 2;
-                        }
                         chat.Add(text[i], weight);
                     }
                 }
@@ -232,7 +227,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 777 == 0 && Main.rand.NextBool(7))
+            if (mainTimer % 666 == 0 && Main.rand.NextBool(6))
             {
                 SetChat(myColor);
             }

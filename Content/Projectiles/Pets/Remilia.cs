@@ -164,20 +164,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[3] = "人类，臣服于我！";
-            text[4] = "终有一日世界将化为红魔之乡！";
+            text[1] = ModUtils.GetChatText("Remilia", "1");
+            text[2] = ModUtils.GetChatText("Remilia", "2");
             if (PetState == 2)
             {
-                text[8] = "嗯...温度还差点...";
-                text[9] = "感觉味道可以再浓一些...";
+                text[3] = ModUtils.GetChatText("Remilia", "3");
+                text[4] = ModUtils.GetChatText("Remilia", "4");
             }
             if (Main.bloodMoon)
             {
-                text[10] = "多么美妙的夜晚！";
+                text[5] = ModUtils.GetChatText("Remilia", "5");
             }
             if (talkInterval <= 0 && FindPetState(out Projectile _, ProjectileType<Flandre>(), 0))
             {
-                text[11] = "我亲爱的芙兰哟...";
+                text[6] = ModUtils.GetChatText("Remilia", "6");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
@@ -186,9 +186,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
-                        if (i >= 8 && i <= 10)
+                        if (PetState == 2 && (i > 4 || i < 3))
                         {
-                            weight = 5;
+                            weight = 0;
                         }
                         chat.Add(text[i], weight);
                     }
@@ -205,33 +205,37 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ChatCD = 1;
             }
-            if (FindChatIndex(out Projectile p4, type2, 5, default, 1, true))
+            if (FindChatIndex(out Projectile p4, type2, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p4, "没什么...只是想叫你一下", myColor, 12, 600, -1);
+                SetChatWithOtherOne(p4, ModUtils.GetChatText("Remilia", "7"), myColor, 7, 600, -1);
             }
-            else if (FindChatIndex(out Projectile p5, type2, 6, default, 1, true))
+            else if (FindChatIndex(out Projectile p5, type2, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p5, "有空会陪你的啦", myColor, 13, 360, -1);
+                SetChatWithOtherOne(p5, ModUtils.GetChatText("Remilia", "8"), myColor, 8, 360, -1);
             }
             else if (FindChatIndex(out Projectile p6, type2, 3, default, 1, true))
             {
-                SetChatWithOtherOne(p6, "芙兰不能总是依赖姐姐哦", myColor, 14, 360, -1, 10);
+                SetChatWithOtherOne(p6, ModUtils.GetChatText("Remilia", "9"), myColor, 0, 360, -1, 10);
                 p6.ai[0] = 0;
                 talkInterval = 600;
             }
-            else if (FindChatIndex(out Projectile p1, type3, 16, default, 1, true))
+            else if (FindChatIndex(out Projectile p1, type3, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p1, "嗯？帕琪？有啥事么？", myColor, 5, 600, -1, 11);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Remilia", "10"), myColor, 10, 600, -1, 11);
             }
-            else if (FindChatIndex(out Projectile p2, type3, 17, default, 1, true))
+            else if (FindChatIndex(out Projectile p2, type3, 9, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰", myColor, 6, 600, -1, 6);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Remilia", "11"), myColor, 11, 600, -1, 6);
             }
-            else if (FindChatIndex(out Projectile p3, type3, 18, default, 1, true))
+            else if (FindChatIndex(out Projectile p3, type3, 10, default, 1, true))
             {
-                SetChatWithOtherOne(p3, "当然了，帕琪你也要多出来走走嘛", myColor, 7, 360, -1, 10);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Remilia", "12"), myColor, 12, 360, -1, 10);
             }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9))
+            else if (PetState == 2 && mainTimer % 120 == 0 && Main.rand.NextBool(5) && mainTimer > 0)
+            {
+                SetChat(myColor);
+            }
+            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && mainTimer > 0)
             {
                 SetChat(myColor);
             }

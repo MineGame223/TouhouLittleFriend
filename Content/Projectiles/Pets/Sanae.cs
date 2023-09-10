@@ -206,15 +206,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(83, 241, 146);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "我将永远追随两位大人...";
-            text[2] = "在这里，可不能被常识束缚啊！";
-            text[3] = "偶尔也会怀念过去的日子...啊啊，当下才最重要啊！";
-            text[4] = "加入守矢神社，信仰伟大的乾神和坤神吧！";
+            text[1] = ModUtils.GetChatText("Sanae", "1");
+            text[2] = ModUtils.GetChatText("Sanae", "2");
+            text[3] = ModUtils.GetChatText("Sanae", "3");
+            text[4] = ModUtils.GetChatText("Sanae", "4");
             if (Main.IsItAHappyWindyDay)
             {
-                text[5] = "感受风的气息！";
+                text[5] = ModUtils.GetChatText("Sanae", "5");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

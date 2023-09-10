@@ -113,21 +113,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Player player = Main.player[Projectile.owner];
             text = new string[11];
-            text[1] = "今天也有新的尸体呢...";
-            text[2] = "咱最擅长和鬼魂打交道了！";
-            text[3] = "喵？";
+            text[1] = ModUtils.GetChatText("Rin", "1");
+            text[2] = ModUtils.GetChatText("Rin", "2");
+            text[3] = ModUtils.GetChatText("Rin", "3");
             if (player.ZoneUnderworldHeight)
             {
-                text[4] = "地狱，怨灵狂欢！";
+                text[4] = ModUtils.GetChatText("Rin", "4");
             }
             if (player.ownedProjectileCounts[ProjectileType<Satori>()] > 0)
             {
-                text[5] = "觉大人最好了！";
-                text[6] = "今天觉大人有好好吃饭吗？";
+                text[5] = ModUtils.GetChatText("Rin", "5");
+                text[6] = ModUtils.GetChatText("Rin", "6");
             }
             if (player.ownedProjectileCounts[ProjectileType<Utsuho>()] > 0)
             {
-                text[7] = "阿空，今天也要好好干活啊！";
+                text[7] = ModUtils.GetChatText("Rin", "7");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

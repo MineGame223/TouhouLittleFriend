@@ -22,7 +22,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawSekibanki(headFrame, lightColor, 1, headPosAdj);
             DrawSekibanki(headFrame, lightColor, 1, headPosAdj, AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth"), true);
             Projectile.DrawStateNormalizeForPet();
-            if (PetState == 1)
+            if (PetState == 1 || extraAI[2] > 0)
                 DrawSekibanki(blinkFrame, lightColor, 1, headPosAdj);
             DrawSekibanki(Projectile.frame, lightColor, 0);
             DrawSekibanki(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth"), true);
@@ -120,6 +120,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
+                extraAI[2] = 560;
                 if (Projectile.frame == 10)
                     Projectile.frame = 15;
                 if (Projectile.frame > 16)
@@ -190,12 +191,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(255, 105, 105);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "独来独往...";
-            text[2] = "请不要随便和我说话...";
+            text[1] = ModUtils.GetChatText("Sekibanki", "1");
+            text[2] = ModUtils.GetChatText("Sekibanki", "2");
             if (talkInterval <= 0)
-                text[3] = "一直以来我都穿着斗篷，";
+                text[3] = ModUtils.GetChatText("Sekibanki", "3");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -213,39 +213,39 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (FindChainedChat(1) && PetState <= 1)
             {
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(4) && extraAI[0] <= 0)
                 {
                     extraAI[0] = 0;
-                    SetChatWithOtherOne(null, "...我将超越一切！", myColor, 6, 600);
+                    SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "7"), myColor, 7, 600);
                 }
                 else
                     ChatIndex = 0;
             }
-            else if (FindChainedChat(6))
-            {
-                PetState = 3;
-                SetChatWithOtherOne(null, "超——变——身——！！！", myColor, 7, 600, -1, 30, true);
-            }
             else if (FindChainedChat(7))
             {
-                SetChatWithOtherOne(null, "......", myColor, 8, 600, -1, 40);
+                PetState = 3;
+                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "8"), myColor, 8, 600, -1, 30, true);
             }
             else if (FindChainedChat(8))
             {
+                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "9"), myColor, 9, 600, -1, 40);
+            }
+            else if (FindChainedChat(9))
+            {
                 extraAI[0] = 10800;
-                SetChatWithOtherOne(null, "...呃，你什么都没听见", myColor, 0, 600);
+                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "10"), myColor, 0, 600);
             }
             if (FindChainedChat(3))
             {
-                SetChatWithOtherOne(null, "因为我不喜欢被人类认出是妖怪，", myColor, 4, 600, -1, 9);
+                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "4"), myColor, 4, 600, -1, 9);
             }
             else if (FindChainedChat(4))
             {
-                SetChatWithOtherOne(null, "人类不喜欢妖怪，我也不怎么想亲近人类...", myColor, 5, 600, -1, 9);
+                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "5"), myColor, 5, 600, -1, 9);
             }
             else if (FindChainedChat(5))
             {
-                SetChatWithOtherOne(null, "...好吧，除了你", myColor, 0, 360);
+                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "6"), myColor, 0, 360);
                 talkInterval = 3600;
             }
             else if (mainTimer % 960 == 0 && Main.rand.NextBool(7))
@@ -286,11 +286,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (PetState <= 1)
             {
+                if (extraAI[2] > 0)
+                {
+                    PetState = 0;
+                    extraAI[2]--;
+                }
                 if (PetState == 1)
                 {
                     Blink();
                 }
-                if (extraAI[0] >= 1)
+                if (extraAI[0] > 0)
                 {
                     extraAI[0]--;
                 }
@@ -302,6 +307,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (PetState == 3)
             {
                 Henshin();
+            }
+            if (extraAI[2] > 0)
+            {
+                blinkFrame = 12;
             }
             UpdateHeadPosition();
         }

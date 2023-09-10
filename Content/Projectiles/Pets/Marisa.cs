@@ -138,20 +138,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "今天要试试哪种魔法呢...";
-            text[2] = "嘿，那个东西好像很值得收藏...";
-            text[3] = "你喜欢星星吗？";
+            text[1] = ModUtils.GetChatText("Marisa", "1");
+            text[2] = ModUtils.GetChatText("Marisa", "2");
+            text[3] = ModUtils.GetChatText("Marisa", "3");
             if (player.ZoneForest && Main.dayTime && Main.cloudAlpha == 0)
-                text[4] = "今天天气不错啊Da⭐ze！";
+                text[4] = ModUtils.GetChatText("Marisa", "4");
             if (player.ZoneForest && !Main.dayTime && Main.cloudAlpha == 0)
-                text[5] = "天上好多星星啊！";
+                text[5] = ModUtils.GetChatText("Marisa", "5");
             if (talkInterval <= 0 && (FindPetState(out Projectile _, ProjectileType<Reimu>(), 0, 1)
                 || FindPetState(out Projectile _, ProjectileType<Reimu>(), 3, 4)))
             {
-                text[6] = "嘿，嘿，灵梦。";
+                text[6] = ModUtils.GetChatText("Marisa", "6");
             }
             if (Main.bloodMoon || Main.eclipse)
-                text[10] = "今天的天象不太正常...";
+                text[7] = ModUtils.GetChatText("Marisa", "7");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -172,21 +172,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateTalking()
         {
             int type2 = ProjectileType<Reimu>();
-            if (FindChatIndex(out Projectile p1, type2, 4, default, 1, true))
+            if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
             {
-                SetChatWithOtherOne(p1, "我今天找到了一个很有意思的东西！", myColor, 7, 600, -1, 9);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Marisa", "8"), myColor, 8, 600, -1, 9);
             }
-            else if (FindChatIndex(out Projectile p2, type2, 5, default, 1, true))
+            else if (FindChatIndex(out Projectile p2, type2, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "不是啦...是一颗落星！货真价实的星星欸！", myColor, 8, 600, -1, 9);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Marisa", "9"), myColor, 9, 600, -1, 9);
             }
-            else if (FindChatIndex(out Projectile p3, type2, 6, default, 1, true))
+            else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p3, "但这颗星星要更闪亮一些啊，你不觉得吗？", myColor, 9, 360, -1, 9);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Marisa", "10"), myColor, 10, 360, -1, 9);
             }
-            else if (FindChatIndex(out Projectile p4, type2, 7, default, 1, true))
+            else if (FindChatIndex(out Projectile p4, type2, 8, default, 1, true))
             {
-                SetChatWithOtherOne(p4, "欸嘿嘿嘿...", myColor, 0, 360, -1);
+                SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
                 p4.ai[0] = 0;
                 talkInterval = 3600;
             }

@@ -68,16 +68,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Player player = Main.player[Projectile.owner];
             text = new string[11];
-            text[1] = "你..你好！";
-            text[2] = "今天去哪里玩？";
+            text[1] = ModUtils.GetChatText("Daiyousei", "1");
+            text[2] = ModUtils.GetChatText("Daiyousei", "2");
             if (player.ownedProjectileCounts[ProjectileType<Cirno>()] > 0)
             {
-                text[3] = "...最喜欢琪露诺酱了！";
-                text[4] = "琪露诺酱，今天去哪里玩？";
+                text[3] = ModUtils.GetChatText("Daiyousei", "3");
+                text[4] = ModUtils.GetChatText("Daiyousei", "4");
             }
             if (player.ZoneGraveyard)
             {
-                text[5] = "好...好可怕的地方！";
+                text[5] = ModUtils.GetChatText("Daiyousei", "5");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
@@ -111,16 +111,16 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (FindChatIndex(out Projectile p, type1, 4))
             {
-                SetChatWithOtherOne(p, "我也最喜欢琪露诺酱！", myColor, 0, 360);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Daiyousei", "7"), myColor, 0, 360);
                 p.ai[0] = 0;
             }
             else if (FindChatIndex(out Projectile p1, type1, 7))
             {
-                SetChatWithOtherOne(p1, "琪露诺酱你没事吧...", myColor, 6, 600);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Daiyousei", "6"), myColor, 6, 600);
             }
             else if (FindChatIndex(out Projectile p2, type1, 9, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "嗯...我，我不怕！", myColor, 0, 360);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Daiyousei", "8"), myColor, 0, 360);
                 p2.ai[0] = 0;
             }
             if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0)

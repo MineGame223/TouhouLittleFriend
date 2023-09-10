@@ -141,9 +141,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override string GetChatText(out string[] text)
         {
             text = new string[21];
-            text[1] = "让我看看你在想什么...";
-            text[2] = "想起了有意思的事情...";
-            text[3] = "你的内心好单纯啊，除了打架就是搜刮...";
+            text[1] = ModUtils.GetChatText("Satori", "1");
+            text[2] = ModUtils.GetChatText("Satori", "2");
+            text[3] = ModUtils.GetChatText("Satori", "3");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -170,25 +170,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
             {
-                SetChatWithOtherOne(p1, "姐姐现在就在看着你呢...", myColor, 4, 600);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Satori", "4"), myColor, 0, 600);
                 p1.ai[0] = 0;
                 talkInterval = 1200;
             }
             else if (FindChatIndex(out Projectile p2, type4, 5, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "阿燐也是我最喜欢的猫咪哦。", myColor, 5, 600);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Satori", "5"), myColor, 0, 600);
                 p2.ai[0] = 0;
                 talkInterval = 2400;
             }
             else if (FindChatIndex(out Projectile p3, type3, 5, default, 1, true))
             {
-                SetChatWithOtherOne(p3, "阿空也是我最喜欢的乌鸦哦。", myColor, 5, 600);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Satori", "6"), myColor, 0, 600);
                 p3.ai[0] = 0;
                 talkInterval = 2400;
             }
             else if (FindChatIndex(out Projectile p4, type4, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p4, "别担心啦。", myColor, 5, 600);
+                SetChatWithOtherOne(p4, ModUtils.GetChatText("Satori", "7"), myColor, 0, 600);
                 p4.ai[0] = 0;
                 talkInterval = 2400;
             }

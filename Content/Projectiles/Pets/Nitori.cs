@@ -213,9 +213,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override string GetChatText(out string[] text)
         {
             text = new string[21];
-            text[1] = "河童科技天下第一！";
-            text[2] = "想啃根黄瓜...";
-            text[3] = "要参加河童市场吗？";
+            text[1] = ModUtils.GetChatText("Nitori", "1");
+            text[2] = ModUtils.GetChatText("Nitori", "2");
+            text[3] = ModUtils.GetChatText("Nitori", "3");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)

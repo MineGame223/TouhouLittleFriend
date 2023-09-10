@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -150,11 +151,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(254, 159, 75);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[11];
-            if (!Main.dayTime && Main.cloudAlpha <= 0)
-                text[1] = "嫦娥啊，你看到了吗...";
-            text[2] = "";
+            if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
+                text[1] = ModUtils.GetChatText("Junko", "1");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)

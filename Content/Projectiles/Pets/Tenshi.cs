@@ -161,11 +161,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(69, 170, 234);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
-            text[1] = "我要向你们证明，我是很强的！";
-            text[2] = "今天也要大干一场！";
-            text[3] = "天界太无聊了...所以本天人特别下凡来照顾一下你们这些地上人！";
+            text[1] = ModUtils.GetChatText("Tenshin", "1");
+            text[2] = ModUtils.GetChatText("Tenshin", "2");
+            text[3] = ModUtils.GetChatText("Tenshin", "3");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)

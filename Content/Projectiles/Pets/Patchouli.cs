@@ -179,32 +179,27 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(252, 197, 238);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
             text = new string[21];
             if (Projectile.velocity.Length() >= 4f)
             {
-                text[1] = "不想动...";
+                text[1] = ModUtils.GetChatText("Patchouli", "1");
             }
             if (PetState > 1)
             {
-                text[2] = "是没读到过的内容呢...";
-                text[3] = "这里...似乎和我之前了解的不太一样？";
-                text[4] = "有意思的东西...";
-                text[5] = "...真的是这样吗？";
+                text[2] = ModUtils.GetChatText("Patchouli", "2");
+                text[3] = ModUtils.GetChatText("Patchouli", "3");
+                text[4] = ModUtils.GetChatText("Patchouli", "4");
+                text[5] = ModUtils.GetChatText("Patchouli", "5");
                 if (talkInterval <= 0 && FindPetState(out Projectile _, ProjectileType<Remilia>(), 0) && !Main.dayTime)
                 {
-                    text[16] = "唔...蕾米？";
+                    text[6] = ModUtils.GetChatText("Patchouli", "6");
                 }
-                /*if (talkInterval <= 0 && FindPetState(out Projectile _, ProjectileType<Hina>(), 0))
-                {
-                    text[13] = "呐，雏？";
-                }*/
             }
             else
             {
-                text[7] = "上次看到哪儿了来着...?";
+                text[7] = ModUtils.GetChatText("Patchouli", "7");
             }
-            text[6] = "咳...咳咳...";
+            text[8] = ModUtils.GetChatText("Patchouli", "8");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -225,30 +220,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateTalking()
         {
             int type2 = ProjectileType<Remilia>();
-            //int type3 = ProjectileType<Hina>();
-            if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
+            if (FindChatIndex(out Projectile p1, type2, 10, default, 1, true))
             {
-                SetChatWithOtherOne(p1, "你身为吸血鬼，为什么不像书里说的一样怕十字架？", myColor, 17, 600, -1, 7);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Patchouli", "9"), myColor, 9, 600, -1, 7);
             }
-            else if (FindChatIndex(out Projectile p2, type2, 6, default, 1, true))
+            else if (FindChatIndex(out Projectile p2, type2, 11, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "好吧...看来书里说的不全是正确的。", myColor, 18, 600, -1, 7);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Patchouli", "10"), myColor, 10, 600, -1, 7);
             }
-            else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
+            else if (FindChatIndex(out Projectile p3, type2, 12, default, 1, true))
             {
-                SetChatWithOtherOne(p3, "不要...", myColor, 19, 360, -1);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Patchouli", "11"), myColor, 0, 360, -1);
                 p3.ai[0] = 0;
                 talkInterval = 3600;
             }
-            /*else if (FindChatIndex(out Projectile p4, type3, 11, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, "唔...我似乎找到了一个可以削弱你的厄运光环的办法", myColor, 14, 600, -1, 7);
-            }
-            else if (FindChatIndex(out Projectile p5, type3, 12, default, 1, true))
-            {
-                SetChatWithOtherOne(p5, "嗯，有空和你说说吧", myColor, 15, 360, -1, 12);
-                talkInterval = 3600;
-            }*/
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(12))
             {
                 SetChat(myColor);

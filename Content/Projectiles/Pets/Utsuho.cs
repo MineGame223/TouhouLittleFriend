@@ -155,16 +155,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Player player = Main.player[Projectile.owner];
             text = new string[11];
-            text[1] = "我就是太阳！";
-            text[2] = "发光发热！";
-            text[3] = "...我刚刚要说啥来着？";
+            text[1] = ModUtils.GetChatText("Utsuho", "1");
+            text[2] = ModUtils.GetChatText("Utsuho", "2");
+            text[3] = ModUtils.GetChatText("Utsuho", "3");
             if (player.ZoneUnderworldHeight)
             {
-                text[4] = "简直就像回家了一样！";
+                text[4] = ModUtils.GetChatText("Utsuho", "4");
             }
             if (player.ownedProjectileCounts[ProjectileType<Satori>()] > 0)
             {
-                text[5] = "觉大人最好了！";
+                text[5] = ModUtils.GetChatText("Utsuho", "5");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
@@ -192,7 +192,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (FindChatIndex(out Projectile p1, type3, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p1, "放心交给我吧！", myColor, 6, 600);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Utsuho", "6"), myColor, 6, 600);
                 p1.ai[0] = 0;
                 talkInterval = 1200;
             }

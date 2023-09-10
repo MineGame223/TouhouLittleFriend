@@ -126,24 +126,24 @@ namespace TouhouPets.Content.Projectiles.Pets
             text = new string[11];
             if (!player.ZoneUnderworldHeight)
             {
-                text[1] = "今天该冻点什么呢...";
-                text[2] = "琪露诺天下无敌！";
-                text[3] = "我是最强的！";
+                text[1] = ModUtils.GetChatText("Cirno", "1");
+                text[2] = ModUtils.GetChatText("Cirno", "2");
+                text[3] = ModUtils.GetChatText("Cirno", "3");
                 if (player.HasBuff<DaiyouseiBuff>())
                 {
-                    text[4] = "最喜欢大酱了！";//会被大妖精检测到的对话
+                    text[4] = ModUtils.GetChatText("Cirno", "4");//会被大妖精检测到的对话
                 }
-                text[6] = "1+1=...多少来着，⑨？";
+                text[6] = ModUtils.GetChatText("Cirno", "6");
             }
             if ((player.ZoneDesert && Main.dayTime) || player.ZoneUnderworldHeight || player.ZoneJungle)
             {
                 if (player.ZoneJungle && player.ZoneOverworldHeight)
                 {
-                    text[8] = "好多青蛙啊！";
+                    text[8] = ModUtils.GetChatText("Cirno", "8");
                 }
                 else
                 {
-                    text[7] = "热死了...要化了...";//会被大妖精检测到的对话
+                    text[7] = ModUtils.GetChatText("Cirno", "7");//会被大妖精检测到的对话
                 }
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
@@ -183,17 +183,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindChatIndex(out Projectile p, type1, 4))
             {
                 //同时给对方与自己设置ChatCD以确保对话不会“走神”
-                SetChatWithOtherOne(p, "大酱去哪儿我就去哪儿！", myColor, 0, 360);//作为收尾的对话，ChatIndex通常为0
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0, 360);//作为收尾的对话，ChatIndex通常为0
                 p.ai[0] = 0;//将对方的ChatIndex设为0，防止重复检测并接话
             }
             else if (FindChatIndex(out Projectile p1, type1, 5))
             {
-                SetChatWithOtherOne(p1, "大酱别怕，有我在！", myColor, 9, 600);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Cirno", "9"), myColor, 9, 600);
             }
             //无视对方的ChatCD，避免对话被无视，常用于交互中的第三句话及以后
             else if (FindChatIndex(out Projectile p2, type1, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p2, "我没事...大概...", myColor, 0, 360);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Cirno", "11"), myColor, 0, 360);
                 p2.ai[0] = 0;
             }
             else if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState != 2)
