@@ -17,20 +17,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawMarisa(swingFrame + 8, lightColor, 1);
-            DrawMarisa(swingFrame + 4, lightColor, 1);
-            DrawMarisa(Projectile.frame, lightColor);
+            DrawRin(swingFrame + 8, lightColor, 1);
+            DrawRin(swingFrame + 4, lightColor, 1);
+            DrawRin(Projectile.frame, lightColor);
             if (PetState == 1)
-                DrawMarisa(blinkFrame, lightColor);
-            DrawMarisa(swingFrame, lightColor, 1);
-            DrawMarisa(swingFrame + 4, lightColor, 1, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
-            DrawMarisa(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
-            DrawMarisa(swingFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
+                DrawRin(blinkFrame, lightColor);
+            DrawRin(swingFrame, lightColor, 1);
+            DrawRin(swingFrame + 4, lightColor, 1, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
+            DrawRin(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
+            DrawRin(swingFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
             Projectile.DrawStateNormalizeForPet();
-            DrawMarisa(Projectile.frame, Color.White * 0.8f, 2);
+            DrawRin(Projectile.frame, Color.White * 0.8f, 2);
             return false;
         }
-        private void DrawMarisa(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
+        private void DrawRin(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
         {
             Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
             int height = t.Height / Main.projFrames[Type];

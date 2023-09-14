@@ -25,7 +25,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (eyeAdj.Y <= 0)
                 DrawEye(eyePos - Main.screenPosition);
 
-            Projectile.DrawStateNormalizeForPet();
             DrawSatori(Projectile.frame, lightColor);
             if (PetState == 1)
                 DrawSatori(blinkFrame, lightColor);

@@ -27,7 +27,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (eyeAdj.Y <= 0)
                 DrawEye(eyePos, lightColor);
 
-            Projectile.DrawStateNormalizeForPet();
             DrawKoishi(Projectile.frame, lightColor);
             if (PetState == 1)
                 DrawKoishi(blinkFrame, lightColor, 1);

@@ -62,7 +62,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect5, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
                 Main.EntitySpriteDraw(t, pos + new Vector2(0, extraAdjY), rect3, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
             }
-            Projectile.DrawStateNormalizeForPet();
             return false;
         }
         private void DrawSanaeAura(Color lightColor, Vector2 pos, Vector2 orig, SpriteEffects effect, Rectangle rect1, Rectangle rect2, Rectangle rect3)

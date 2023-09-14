@@ -14,7 +14,7 @@ namespace TouhouPets
     {
         /// <summary>
         /// 将宠物的绘制状态重置，防止被染料的Shader影响
-        /// <br>插在不需要着色的语句前面</br>
+        /// <br>仅需要插在不需要着色的语句之后和执行着色的语句之前</br>
         /// </summary>
         public static void DrawStateNormalizeForPet(this Projectile projectile)
         {

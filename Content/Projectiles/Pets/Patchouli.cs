@@ -18,22 +18,22 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override bool PreDraw(ref Color lightColor)
         {
             DrawAura();
+            DrawPatchouli(clothFrame, lightColor, 0, null, true);            
             Projectile.DrawStateNormalizeForPet();
-            DrawPatchouli(clothFrame, lightColor, null, true);
-            Projectile.DrawStateNormalizeForPet();
-            DrawPatchouli(clothFrame, lightColor, AltVanillaFunction.GetExtraTexture("Patchouli_Cloth"));
+            DrawPatchouli(clothFrame, lightColor, 1, null);
+            DrawPatchouli(clothFrame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Patchouli_Cloth"));
             DrawPatchouli(Projectile.frame, lightColor);
             if (PetState == 1 || PetState == 3)
                 DrawPatchouli(blinkFrame, lightColor);
-            DrawPatchouli(Projectile.frame, lightColor, AltVanillaFunction.GetExtraTexture("Patchouli_Cloth"), true);
+            DrawPatchouli(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Patchouli_Cloth"), true);
             return false;
         }
-        private void DrawPatchouli(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
+        private void DrawPatchouli(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
         {
             Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
             int height = t.Height / Main.projFrames[Type];
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, frame * height, t.Width / 2, height);
+            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             if (entitySpriteDraw)

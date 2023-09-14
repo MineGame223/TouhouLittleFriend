@@ -23,7 +23,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawStateNormalizeForPet();
             DrawUtsuho(Projectile.frame, Projectile.GetAlpha(lightColor));
             DrawUtsuho(Projectile.frame, Projectile.GetAlpha(lightColor), AltVanillaFunction.GetExtraTexture("Utsuho_Cloth"), true);
-            Projectile.DrawStateNormalizeForPet();
+            //Projectile.DrawStateNormalizeForPet();
             DrawEye();
             return false;
         }
