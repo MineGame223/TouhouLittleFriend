@@ -115,6 +115,11 @@ Mods: {
 				DisplayName: Kasha
 				Description: "'Leave the body and I'll take it!'"
 			}
+
+			LilyBuff: {
+				DisplayName: Yousei of the Spring
+				Description: "'The spring is coming!'"
+			}
 		}
 	}
 }

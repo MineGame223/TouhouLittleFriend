@@ -115,6 +115,11 @@ Mods: {
 				DisplayName: 火车
 				Description: "'尸体什么的就交给咱处理吧！'"
 			}
+
+			LilyBuff: {
+				DisplayName: 春之妖精
+				Description: "'春天来啦！'"
+			}
 		}
 	}
 }

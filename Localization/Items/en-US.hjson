@@ -129,6 +129,11 @@ Mods: {
 				DisplayName: Possessed Skull
 				Tooltip: "'May not a fit toy for a cat...?'"
 			}
+
+			LilyOneUp: {
+				DisplayName: 1 UP
+				Tooltip: "'Extend!'"
+			}
 		}
 	}
 }

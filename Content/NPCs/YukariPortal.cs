@@ -126,6 +126,7 @@ namespace TouhouPets.Content.NPCs
         {
             NPCShop shop = new NPCShop(Type);
             shop.Add(ItemType<DaiyouseiBomb>());
+            shop.Add(ItemType<LilyOneUp>());
             shop.Add(ItemType<KogasaUmbrella>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);

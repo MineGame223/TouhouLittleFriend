@@ -21,7 +21,8 @@ namespace TouhouPets
             switch (npc.type)
             {
                 case NPCID.KingSlime:
-                    npcLoot.Add(new NotDownedKingSlime(), new DownedKingSlime(), ItemType<DaiyouseiBomb>(), commonDropRate);
+                    npcLoot.Add(new NotDownedKingSlime(), new DownedKingSlime(), commonDropRate
+                        , ItemType<DaiyouseiBomb>(), ItemType<LilyOneUp>());
                     break;
 
                 case NPCID.EyeofCthulhu:
@@ -29,7 +30,7 @@ namespace TouhouPets
                     break;
 
                 case NPCID.EaterofWorldsHead:
-                    Add_ScarletSister(npcLoot,commonDropRate);
+                    Add_ScarletSister(npcLoot, commonDropRate);
                     break;
 
                 case NPCID.BrainofCthulhu:

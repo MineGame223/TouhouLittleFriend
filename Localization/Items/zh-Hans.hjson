@@ -129,6 +129,11 @@ Mods: {
 				DisplayName: 着魔颅骨
 				Tooltip: "'应该不是给猫玩的...吧？'"
 			}
+
+			LilyOneUp: {
+				DisplayName: 1 UP
+				Tooltip: "'残机数量+1！'"
+			}
 		}
 	}
 }
