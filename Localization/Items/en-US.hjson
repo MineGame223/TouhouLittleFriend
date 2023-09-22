@@ -139,6 +139,11 @@ Mods: {
 				DisplayName: Nightbird's Feather
 				Tooltip: "'Smells like a chicken nugget...?'"
 			}
+
+			WriggleInAJar: {
+				DisplayName: Nightbug in a Jar
+				Tooltip: "'A light from long-long ago memory'"
+			}
 		}
 	}
 }

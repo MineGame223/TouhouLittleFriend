@@ -125,6 +125,11 @@ Mods: {
 				DisplayName: 夜雀
 				Description: "'迷失在夜雀的歌声中吧！'"
 			}
+
+			WriggleBuff: {
+				DisplayName: 萤火虫妖怪
+				Description: "'一闪一闪亮晶晶'"
+			}
 		}
 	}
 }

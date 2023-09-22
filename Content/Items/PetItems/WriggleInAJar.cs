@@ -6,7 +6,7 @@ using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class LilyOneUp : ModItem
+    public class WriggleInAJar : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -14,8 +14,8 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void SetDefaults()
         {
-            Item.DefaultToVanitypet(ProjectileType<Lily>(), BuffType<LilyBuff>());
-            Item.DefaultToVanitypetExtra(26, 26);
+            Item.DefaultToVanitypet(ProjectileType<Wriggle>(), BuffType<WriggleBuff>());
+            Item.DefaultToVanitypetExtra(20, 24);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

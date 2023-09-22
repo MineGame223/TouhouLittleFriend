@@ -23,7 +23,9 @@ Mods: {
 			Nitori.DisplayName: 河城 荷取
 			Rin.DisplayName: 火焰猫 燐
 			Lily.DisplayName: 莉莉霍瓦特
-			Mystia.DisplayName: 米斯蒂娅·罗蕾拉
+			Mystia.DisplayName: 米斯蒂娅·萝蕾拉
+			Wriggle.DisplayName: 莉格露·奈特巴格
+			// WriggleFirefly.DisplayName: Wriggle Firefly
 		}
 	}
 }

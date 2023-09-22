@@ -125,6 +125,11 @@ Mods: {
 				DisplayName: Nightbird
 				Description: "'Lost in the song of nightbird!'"
 			}
+
+			WriggleBuff: {
+				DisplayName: Youkai of Firefly
+				Description: "'Twinkle twinkle little bug'"
+			}
 		}
 	}
 }

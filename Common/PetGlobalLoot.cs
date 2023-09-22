@@ -39,6 +39,7 @@ namespace TouhouPets
                     break;
 
                 case NPCID.QueenBee:
+                    npcLoot.Add(new NotDownedQueenBee(), new DownedQueenBee(), ItemType<WriggleInAJar>(), commonDropRate);
                     break;
 
                 case NPCID.SkeletronHead:

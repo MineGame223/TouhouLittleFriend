@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -147,9 +148,22 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 840 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState != 2)
+            int type1 = ProjectileType<Wriggle>();
+            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
             {
-                SetChat(myColor);
+                ChatCD = 1;
+            }
+            if (PetState != 2)
+            {
+                if (FindChatIndex(out Projectile p, type1, 1))
+                {
+                    SetChatWithOtherOne(p, ModUtils.GetChatText("Mystia", "9"), myColor, 0, 360);
+                    p.ai[0] = 0;
+                }
+                else if (mainTimer % 840 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
+                {
+                    SetChat(myColor);
+                }
             }
         }
         public override void VisualEffectForPreview()
@@ -175,9 +189,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 PetState = 1;
             }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
             {
-                if (mainTimer % 1200 == 0 && Main.rand.NextBool(1) && PetState != 2)
+                if (mainTimer % 1200 == 0 && Main.rand.NextBool(3) && PetState != 2)
                 {
                     PetState = 2;
                     extraAI[2] = Main.rand.Next(60, 180);

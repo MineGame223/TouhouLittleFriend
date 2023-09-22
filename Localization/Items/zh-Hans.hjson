@@ -139,6 +139,11 @@ Mods: {
 				DisplayName: 夜雀的羽毛
 				Tooltip: "'闻起来像炸鸡块...？'"
 			}
+
+			WriggleInAJar: {
+				DisplayName: 瓶中夜光虫
+				Tooltip: "'往昔记忆中的光点'"
+			}
 		}
 	}
 }
