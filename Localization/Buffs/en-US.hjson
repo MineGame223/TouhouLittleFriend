@@ -120,6 +120,11 @@ Mods: {
 				DisplayName: Yousei of the Spring
 				Description: "'The spring is coming!'"
 			}
+
+			MystiaBuff: {
+				DisplayName: Nightbird
+				Description: "'Lost in the song of nightbird!'"
+			}
 		}
 	}
 }

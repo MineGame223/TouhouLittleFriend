@@ -134,6 +134,11 @@ Mods: {
 				DisplayName: 1 UP
 				Tooltip: "'残机数量+1！'"
 			}
+
+			MystiaFeather: {
+				DisplayName: 夜雀的羽毛
+				Tooltip: "'闻起来像炸鸡块...？'"
+			}
 		}
 	}
 }

@@ -134,6 +134,11 @@ Mods: {
 				DisplayName: 1 UP
 				Tooltip: "'Extend!'"
 			}
+
+			MystiaFeather: {
+				DisplayName: Nightbird's Feather
+				Tooltip: "'Smells like a chicken nugget...?'"
+			}
 		}
 	}
 }

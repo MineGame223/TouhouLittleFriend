@@ -120,6 +120,11 @@ Mods: {
 				DisplayName: 春之妖精
 				Description: "'春天来啦！'"
 			}
+
+			MystiaBuff: {
+				DisplayName: 夜雀
+				Description: "'迷失在夜雀的歌声中吧！'"
+			}
 		}
 	}
 }
