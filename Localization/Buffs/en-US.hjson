@@ -130,6 +130,11 @@ Mods: {
 				DisplayName: Youkai of Firefly
 				Description: "'Twinkle twinkle little bug'"
 			}
+
+			AyaBuff: {
+				DisplayName: Gril of Wind
+				Description: "'LORD OF SPEED!'"
+			}
 		}
 	}
 }

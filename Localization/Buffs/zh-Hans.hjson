@@ -130,6 +130,11 @@ Mods: {
 				DisplayName: 萤火虫妖怪
 				Description: "'一闪一闪亮晶晶'"
 			}
+
+			AyaBuff: {
+				DisplayName: 风神少女
+				Description: "'LORD OF SPEED!'"
+			}
 		}
 	}
 }

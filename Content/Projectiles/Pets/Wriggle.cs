@@ -138,7 +138,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame > 3)
                 {
                     Projectile.frame = 0;
-                    extraAI[0] = 3600;
+                    extraAI[0] = 2400;
                     extraAI[2] = 0;
                     PetState = 0;
                 }

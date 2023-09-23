@@ -56,7 +56,7 @@ namespace TouhouPets
                     break;
 
                 case NPCID.QueenSlimeBoss:
-                    npcLoot.Add(new NotDownedQueenSlime(), new DownedQueenSlime(), ItemType<UselessBook>(), commonDropRate);
+                    npcLoot.Add(new NotDownedQueenSlime(), new DownedQueenSlime(), ItemType<PatchouliMoon>(), commonDropRate);
                     break;
 
                 case NPCID.TheDestroyer:

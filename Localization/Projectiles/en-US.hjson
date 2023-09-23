@@ -25,7 +25,8 @@ Mods: {
 			Lily.DisplayName: Lilywhite
 			Mystia.DisplayName: Mystia Lorelei
 			Wriggle.DisplayName: Wriggle Nightbug
-			WriggleFirefly.DisplayName: Wriggle Firefly
+			WriggleFirefly.DisplayName: Firefly
+			Aya.DisplayName: Aya Shameimaru
 		}
 	}
 }

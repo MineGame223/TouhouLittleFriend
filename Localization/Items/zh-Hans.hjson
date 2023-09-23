@@ -144,6 +144,11 @@ Mods: {
 				DisplayName: 瓶中夜光虫
 				Tooltip: "'往昔记忆中的光点'"
 			}
+
+			AyaCamera: {
+				DisplayName: 老式照相机
+				Tooltip: "'背面印着一片枫叶图案'"
+			}
 		}
 	}
 }

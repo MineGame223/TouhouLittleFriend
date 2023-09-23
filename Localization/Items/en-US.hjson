@@ -144,6 +144,11 @@ Mods: {
 				DisplayName: Nightbug in a Jar
 				Tooltip: "'A light from long-long ago memory'"
 			}
+
+			AyaCamera: {
+				DisplayName: Old style Camera
+				Tooltip: "'There is a maple leaf on behind'"
+			}
 		}
 	}
 }
