@@ -149,6 +149,15 @@ Mods: {
 				DisplayName: Old style Camera
 				Tooltip: "'There is a maple leaf on behind'"
 			}
+
+			YuyukoFan: {
+				DisplayName: Cherry Fan
+				Tooltip:
+					'''
+					"Still has a scent of spring on it"
+					Please take care of any FOOD in your inventory!
+					'''
+			}
 		}
 	}
 }

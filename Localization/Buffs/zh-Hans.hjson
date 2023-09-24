@@ -131,6 +131,11 @@ Mods: {
 				Description: "'一闪一闪亮晶晶'"
 			}
 
+			YuyukoBuff: {
+				DisplayName: 樱之亡灵
+				Description: "'幽雅地绽放吧，墨染的樱花'"
+			}
+
 			AyaBuff: {
 				DisplayName: 风神少女
 				Description: "'LORD OF SPEED!'"

@@ -27,6 +27,8 @@ Mods: {
 			Wriggle.DisplayName: 莉格露·奈特巴格
 			WriggleFirefly.DisplayName: 萤火虫
 			Aya.DisplayName: 射命丸 文
+			Yuyuko.DisplayName: 西行寺 幽幽子
+			// YuyukoButterfly.DisplayName: Yuyuko Butterfly
 		}
 	}
 }

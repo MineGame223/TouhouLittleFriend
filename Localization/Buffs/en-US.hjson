@@ -131,9 +131,14 @@ Mods: {
 				Description: "'Twinkle twinkle little bug'"
 			}
 
+			YuyukoBuff: {
+				DisplayName: Ghost of Cherry
+				Description: "'Border of Life'"
+			}
+
 			AyaBuff: {
-				DisplayName: Gril of Wind
-				Description: "'LORD OF SPEED!'"
+				DisplayName: Aya Buff
+				Description: Mods.TouhouPets.Buffs.AyaBuff.Description
 			}
 		}
 	}

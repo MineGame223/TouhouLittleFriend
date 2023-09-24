@@ -116,7 +116,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame > 2)
                     Projectile.frame = 2;
                 extraAI[1]++;
-                if (extraAI[1] % 3 == 0 &&
+                if (extraAI[1] % 2 == 0 &&
                    player.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
                 {
                     Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));

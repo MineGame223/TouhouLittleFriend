@@ -149,6 +149,15 @@ Mods: {
 				DisplayName: 老式照相机
 				Tooltip: "'背面印着一片枫叶图案'"
 			}
+
+			YuyukoFan: {
+				DisplayName: 樱花折扇
+				Tooltip:
+					'''
+					"仍旧沾染着一丝春的气息"
+					请看管好背包里的任何食物！
+					'''
+			}
 		}
 	}
 }

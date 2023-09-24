@@ -7,32 +7,30 @@ using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class MystiaFeather : ModItem
+    public class YuyukoFan : ModItem
     {
         public override void SetStaticDefaults()
         {
             Item.SacrificeCountNeeded(1);
         }
         public override void SetDefaults()
-        {
-            Item.DefaultToVanitypet(ProjectileType<Mystia>(), BuffType<MystiaBuff>());
-            Item.DefaultToVanitypetExtra(28, 30);
+        {            
+            Item.DefaultToVanitypet(ProjectileType<Yuyuko>(), BuffType<YuyukoBuff>());
+            Item.DefaultToVanitypetExtra(26, 26);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             player.AddBuff(Item.buffType, 2);
             return false;
         }
-        public override void Update(ref float gravity, ref float maxFallSpeed)
-        {
-            Item.shimmerTime = 0;
-        }
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ItemID.ChickenNugget, 1)
-            .AddIngredient(ItemID.Feather, 5)
-            .AddTile(TileID.WorkBenches)
+            .AddIngredient(ItemID.Silk, 10)
+            .AddRecipeGroup(RecipeGroupID.Wood, 5)
+            .AddIngredient(ItemID.Ectoplasm, 3)
+            .AddIngredient(ItemID.ButterflyDust, 1)
+            .AddTile(TileID.Loom)
             .Register();
         }
     }

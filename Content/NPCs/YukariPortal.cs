@@ -141,6 +141,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
             shop.Add(ItemType<KoishiTelephone>(), Condition.DownedTwins);
             shop.Add(ItemType<NitoriCucumber>(), Condition.DownedSkeletronPrime);
+            shop.Add(ItemType<YuyukoFan>(), Condition.DownedPlantera);
             shop.Add(ItemType<SekibankiBow>(), Condition.DownedGolem);
             shop.Add(ItemType<IkuOarfish>(), Condition.DownedDukeFishron);
             shop.Add(ItemType<TenshiKeyStone>(), Condition.DownedEmpressOfLight);
