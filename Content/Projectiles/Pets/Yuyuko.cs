@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -51,10 +53,9 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Main.instance.LoadItem(food.type);
             Texture2D t = AltVanillaFunction.ItemTexture(food.type);
-            int dist = Projectile.spriteDirection == -1 ? -10 : 10;
-            Vector2 pos = Projectile.Center + new Vector2(dist, -3) + new Vector2(extraAdjX, extraAdjY) - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
+            Vector2 pos = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3) + new Vector2(extraAdjX, extraAdjY) - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             int height = t.Height / 3;
-            Rectangle rect = new Rectangle(0, height, t.Width, height);
+            Rectangle rect = new Rectangle(0, height * (food.type == ItemID.Ale ? 2 : 1), t.Width, height);
             Vector2 orig = rect.Size() / 2;
             Color clr = Projectile.GetAlpha(lightColor);
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
@@ -147,6 +148,34 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
+        private void EmitFoodParticles(Item sItem)
+        {
+            Color[] array = ItemID.Sets.FoodParticleColors[sItem.type];
+            if (array != null && array.Length != 0 && Main.rand.NextBool(2))
+            {
+                Vector2? mouthPosition = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3)
+                    + new Vector2(extraAdjX, extraAdjY) + new Vector2(0, 7f * Main.essScale);
+                if (mouthPosition.HasValue)
+                {
+                    Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
+                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection, 0);
+                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                }
+            }
+
+            Color[] array2 = ItemID.Sets.DrinkParticleColors[sItem.type];
+            if (array2 != null && array2.Length != 0)
+            {
+                Vector2? mouthPosition = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3)
+                    + new Vector2(extraAdjX, extraAdjY) + new Vector2(0, 7f * Main.essScale);
+                if (mouthPosition.HasValue)
+                {
+                    Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
+                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection * 0.1f, 0);
+                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                }
+            }
+        }
         private void Eat()
         {
             if (food == null || food.type == ItemID.None)
@@ -176,6 +205,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
+                if (Projectile.frame == 5)
+                {
+                    EmitFoodParticles(food);
+                    if (Projectile.frameCounter == 1 && food.UseSound != null)
+                        AltVanillaFunction.PlaySound((SoundStyle)food.UseSound, Projectile.Center);
+                }
                 if (Projectile.frame > 6)
                 {
                     Projectile.frame = 0;
@@ -241,7 +276,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 840 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState < 2)
+            if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0 && PetState < 2)
             {
                 SetChat(myColor);
             }

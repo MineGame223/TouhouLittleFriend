@@ -126,6 +126,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         flash = 1;
                         flashChance -= 2;
+                        AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
                     }
                 }
             }

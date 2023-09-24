@@ -152,7 +152,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                         Gore.NewGoreDirect(Projectile.GetSource_FromAI()
                             , Projectile.Center + new Vector2(Main.rand.Next(-8, 8), Main.rand.Next(-8, 8))
                             , new Vector2(Main.rand.Next(-3, 3) * 0.15f, Main.rand.Next(-3, 3) * 0.15f)
-                            , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.75f, 1.25f)); ;
+                            , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.75f, 1.25f));
+                    AltVanillaFunction.PlaySound(SoundID.Item14, Projectile.position);
                 }
                 else if (Main.rand.NextBool(2))
                 {

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -115,6 +114,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Projectile.frame > 2)
                     Projectile.frame = 2;
+
+                if (extraAI[1] == 0)
+                    AltVanillaFunction.PlaySound(SoundID.Pixie, Projectile.Center);
                 extraAI[1]++;
                 if (extraAI[1] % 2 == 0 &&
                    player.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
@@ -126,7 +128,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
                             , FireflyType(player), Main.rand.Next(0, 2));
                     }
-                }
+                }                
                 if (extraAI[1] > extraAI[2])
                 {
                     extraAI[1] = 0;
@@ -195,6 +197,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 NPCID.OrangeDragonfly,
                 NPCID.RedDragonfly,
                 NPCID.YellowDragonfly,
+                NPCID.Stinkbug
             };
         }
         private void AttractInsect()
@@ -267,7 +270,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(player, true);
             MoveToPoint(point, 14f);
-            if (mainTimer % 30 == 0 && CanGenFireFly(player))
+            if (mainTimer % (PetState == 2 ? 15 : 30) == 0 && CanGenFireFly(player))
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-40, 40))
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
