@@ -28,7 +28,8 @@ Mods: {
 			WriggleFirefly.DisplayName: 萤火虫
 			Aya.DisplayName: 射命丸 文
 			Yuyuko.DisplayName: 西行寺 幽幽子
-			// YuyukoButterfly.DisplayName: Yuyuko Butterfly
+			YuyukoButterfly.DisplayName: 蝴蝶
+			Youmu.DisplayName: 魂魄 妖梦
 		}
 	}
 }

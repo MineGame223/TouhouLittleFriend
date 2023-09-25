@@ -158,6 +158,11 @@ Mods: {
 					Please take care of any FOOD in your inventory!
 					'''
 			}
+
+			YoumuKatana: {
+				DisplayName: Toy Katana
+				Tooltip: "'Can cleave your soul...maybe?'"
+			}
 		}
 	}
 }

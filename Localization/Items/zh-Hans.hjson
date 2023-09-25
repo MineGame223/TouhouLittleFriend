@@ -158,6 +158,11 @@ Mods: {
 					请看管好背包里的任何食物！
 					'''
 			}
+
+			YoumuKatana: {
+				DisplayName: 玩具武士刀
+				Tooltip: "'也许能斩断魂魄...?'"
+			}
 		}
 	}
 }

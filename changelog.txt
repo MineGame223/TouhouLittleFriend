@@ -6,12 +6,10 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入了一台老旧的相机
-加入了一把樱花折扇
+加入一把玩具武士刀
 
 修改：
-令史莱姆皇后再次直接掉落帕秋莉的召唤物
-无用魔法书现在可以作为钓鱼垃圾获取
-为米斯蒂娅的召唤物添加了合成站
+无
 
 修复：
+无

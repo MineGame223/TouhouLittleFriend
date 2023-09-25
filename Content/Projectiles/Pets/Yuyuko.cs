@@ -131,20 +131,23 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         player.inventory[itemIndex] = new Item();
                     }
-                    int chance = Main.rand.Next(4);
-                    switch (chance)
+                    if (ChatIndex < 9)
                     {
-                        case 1:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6"), 6, 60, 30, true);
-                            break;
-                        case 2:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7"), 7, 60, 30, true);
-                            break;
-                        default:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5"), 5, 60, 30, true);
-                            break;
+                        int chance = Main.rand.Next(4);
+                        switch (chance)
+                        {
+                            case 1:
+                                SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6"), 6, 60, 30, true);
+                                break;
+                            case 2:
+                                SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7"), 7, 60, 30, true);
+                                break;
+                            default:
+                                SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5"), 5, 60, 30, true);
+                                break;
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
@@ -256,11 +259,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(255, 112, 214);
         public override string GetChatText(out string[] text)
         {
+            Player player = Main.player[Projectile.owner];
             text = new string[21];
             text[1] = ModUtils.GetChatText("Yuyuko", "1");
             text[2] = ModUtils.GetChatText("Yuyuko", "2");
             text[3] = ModUtils.GetChatText("Yuyuko", "3");
             text[4] = ModUtils.GetChatText("Yuyuko", "4");
+            if (player.HasBuff(BuffType<YoumuBuff>())
+                && FindPetState(out Projectile _, ProjectileType<Youmu>(), 0, 1))
+            {
+                text[8] = ModUtils.GetChatText("Yuyuko", "8");
+                text[9] = ModUtils.GetChatText("Yuyuko", "9");
+            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -268,6 +278,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
+                        if (i == 9)
+                            weight = 10;
                         chat.Add(text[i], weight);
                     }
                 }
@@ -276,7 +288,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0 && PetState < 2)
+            int type1 = ProjectileType<Youmu>();
+            if (FindChatIndex(out Projectile p, type1, 6, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Yuyuko", "10"), myColor, 10, 600);
+            }
+            else if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0 && PetState < 2)
             {
                 SetChat(myColor);
             }
@@ -292,10 +309,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<YuyukoBuff>());
             UpdateTalking();
             Vector2 point = new Vector2(-70 * player.direction, -60 + player.gfxOffY);
+            if (player.ownedProjectileCounts[ProjectileType<Youmu>()] > 0)
+            {
+                point = new Vector2(60 * player.direction, -50 + player.gfxOffY);
+            }
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;
 
-            ChangeDir(player, true);
+            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Youmu>()] <= 0);
             MoveToPoint(point, 16f);
             if (mainTimer % 20 == 0)
             {

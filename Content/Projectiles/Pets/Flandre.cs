@@ -205,21 +205,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateTalking()
         {
             int type2 = ProjectileType<Remilia>();
-            if (FindChatIndex(out Projectile _, type2, 11, default, 0))
+            if (FindChatIndex(out Projectile _, type2, 6, default, 0))
             {
                 ChatCD = 1;
             }
             if (FindChatIndex(out Projectile p1, type2, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Flandre", "6"), myColor, 6, 600, -1);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Flandre", "6"), myColor, 6, 600);
             }
             else if (FindChatIndex(out Projectile p2, type2, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Flandre", "7"), myColor, 7, 600, -1);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Flandre", "7"), myColor, 7, 600);
             }
             else if (FindChatIndex(out Projectile p3, type2, 8, default, 1, true))
             {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Flandre", "8"), myColor, 0, 360, -1);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Flandre", "8"), myColor, 0, 360);
                 p3.ai[0] = 0;
                 talkInterval = 3600;
             }

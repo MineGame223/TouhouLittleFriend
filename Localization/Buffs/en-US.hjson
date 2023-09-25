@@ -138,7 +138,12 @@ Mods: {
 
 			AyaBuff: {
 				DisplayName: Aya Buff
-				Description: Mods.TouhouPets.Buffs.AyaBuff.Description
+				Description: "'LORD OF SPEED!'"
+			}
+
+			YoumuBuff: {
+				DisplayName: Little plantsman
+				Description: "'WHO'S THERE ?!'"
 			}
 		}
 	}

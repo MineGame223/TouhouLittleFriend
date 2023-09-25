@@ -140,6 +140,11 @@ Mods: {
 				DisplayName: 风神少女
 				Description: "'LORD OF SPEED!'"
 			}
+
+			YoumuBuff: {
+				DisplayName: 小小庭师
+				Description: "'何人来犯？！'"
+			}
 		}
 	}
 }

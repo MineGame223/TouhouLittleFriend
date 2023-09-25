@@ -28,7 +28,8 @@ Mods: {
 			WriggleFirefly.DisplayName: Firefly
 			Aya.DisplayName: Aya Shameimaru
 			Yuyuko.DisplayName: Yuyuko Saigyougi
-			YuyukoButterfly.DisplayName: Yuyuko Butterfly
+			YuyukoButterfly.DisplayName: Butterfly
+			Youmu.DisplayName: Youmu Konpaku
 		}
 	}
 }
