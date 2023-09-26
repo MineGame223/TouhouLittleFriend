@@ -12,4 +12,4 @@ This mod no longer supports English change log from v1.0.6
 无
 
 修复：
-无
+*修复了进入角色选取界面时可能发生崩溃的问题

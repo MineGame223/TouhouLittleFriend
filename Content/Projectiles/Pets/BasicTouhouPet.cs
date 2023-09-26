@@ -29,7 +29,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 额外的本地AI（等同于localAI），长度为3
         /// </summary>
-        internal int[] extraAI;
+        internal int[] extraAI = new int[3];
         /// <summary>
         /// 完成一次交互后的间隔，在大于0且 <see cref="ChatTimeLeft"/> 小于等于0时会一直减少至0
         /// <br/>用途：两个宠物完成一次长交互后一段时间内不会再进行交互，主要为交互发起者设置
@@ -542,7 +542,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 mainTimer = 1;
             }
-            UpdateChat();            
+            UpdateChat();
             return base.PreAI();
         }
         public override void PostAI()
@@ -561,7 +561,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.DrawStateNormalizeForPet();
             if (chatAlpha > 0 && Projectile.owner == Main.myPlayer)
-            {                
+            {
                 DrawChatPanel(Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20), chatText, chatColor, chatAlpha * Projectile.Opacity);
             }
             if (Projectile.isAPreviewDummy)

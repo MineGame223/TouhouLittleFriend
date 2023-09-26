@@ -264,7 +264,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateTalking()
         {
             Player player = Main.player[Projectile.owner];
-            if (player.statLife < player.statLifeMax / 10 && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
+            if (player.statLife < player.statLifeMax2 / 10 && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
             {
                 if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(1) && PetState == 0 && ChatCD <= 0)
                 {

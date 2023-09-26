@@ -19,7 +19,9 @@ namespace TouhouPets
         public static void DrawStateNormalizeForPet(this Projectile projectile)
         {
             Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, projectile.isAPreviewDummy ? Main.UIScaleMatrix : Main.Transform);
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState
+                , DepthStencilState.None, Main.Rasterizer, null
+                , projectile.isAPreviewDummy ? Main.UIScaleMatrix : Main.Transform);
         }
         /// <summary>
         /// 获取对话文本

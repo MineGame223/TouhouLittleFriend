@@ -16,7 +16,7 @@ namespace TouhouPets.Content.Items.PetItems
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ProjectileType<Youmu>(), BuffType<YoumuBuff>());
-            Item.DefaultToVanitypetExtra(42, 16);
+            Item.DefaultToVanitypetExtra(42, 26);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
