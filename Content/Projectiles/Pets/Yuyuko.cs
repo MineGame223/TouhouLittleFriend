@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -79,6 +80,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         int clothFrame, clothFrameCounter;
         int extraAdjX, extraAdjY;
         Item food;
+        List<Item> foodList = new List<Item>();
         private void Fan()
         {
             if (Projectile.frame < 7)
@@ -116,37 +118,72 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void FoodSelect(Player player)
         {
+            foodList.Clear();
+
             for (int j = 0; j < player.inventory.Length; j++)
             {
-                int itemIndex = Main.rand.Next(0, player.inventory.Length);
-                Item fd = player.inventory[itemIndex];
-
+                Item fd = player.inventory[j];
                 if (fd != null && !fd.IsAir && ItemID.Sets.IsFood[fd.type]
-                    && fd != player.inventory[player.selectedItem])
+                    && fd != player.inventory[player.selectedItem]
+                    && !fd.favorited)
                 {
-                    PetState = 3;
-                    food = fd;
-                    fd.stack--;
-                    if (fd.stack <= 0)
+                    foodList.Add(fd);
+                }
+                if (j < player.bank4.item.Length)
+                {
+                    Item fd2 = player.bank4.item[j];
+                    if (fd2 != null && !fd2.IsAir && ItemID.Sets.IsFood[fd2.type]
+                        && !fd2.favorited)
                     {
-                        player.inventory[itemIndex] = new Item();
+                        foodList.Add(fd2);
                     }
-                    if (ChatIndex < 9)
+                }
+            }
+
+            if (foodList.Count > 0)
+            {
+                Item fd = foodList[Main.rand.Next(foodList.Count)];
+                food = new Item(fd.type);
+                fd.stack--;
+                if (fd.stack <= 0)
+                {
+                    fd.TurnToAir(true);
+                }
+
+                PetState = 3;
+                if (ChatIndex < 9 || ChatIndex > 10)
+                {
+                    int chance = Main.rand.Next(3);
+                    switch (chance)
                     {
-                        int chance = Main.rand.Next(4);
-                        switch (chance)
-                        {
-                            case 1:
-                                SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6"), 6, 60, 30, true);
-                                break;
-                            case 2:
-                                SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7"), 7, 60, 30, true);
-                                break;
-                            default:
-                                SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5"), 5, 60, 30, true);
-                                break;
-                        }
-                        break;
+                        case 1:
+                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6"), 6, 60, 30, true);
+                            break;
+                        case 2:
+                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7"), 7, 60, 30, true);
+                            break;
+                        default:
+                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5"), 5, 60, 30, true);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                if (ChatIndex < 9 || ChatIndex > 10)
+                {
+                    int chance = Main.rand.Next(3);
+                    switch (chance)
+                    {
+                        case 1:
+                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6-1"), 13, 60, 30, true);
+                            break;
+                        case 2:
+                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7-1"), 12, 60, 30, true);
+                            break;
+                        default:
+                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5-1"), 11, 60, 30, true);
+                            break;
                     }
                 }
             }
@@ -328,16 +365,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 PetState = 1;
             }
-            if (mainTimer >= 600 && mainTimer < 4200 && extraAI[0] == 0)
+            if (mainTimer >= 600 && extraAI[0] == 0)
             {
-                if (mainTimer % 600 == 0 && PetState < 2)
+                if (mainTimer % 120 == 0 && PetState < 2)
                 {
-                    if (Main.rand.NextBool(6))
+                    if (Main.rand.NextBool(60))
                     {
                         PetState = 2;
                         extraAI[2] = Main.rand.Next(10, 30);
                     }
-                    else if (Main.rand.NextBool(3))
+                    else if (Main.rand.NextBool(1))
                     {
                         FoodSelect(player);
                     }

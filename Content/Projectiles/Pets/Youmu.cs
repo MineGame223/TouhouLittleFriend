@@ -148,7 +148,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             int type1 = ProjectileType<Yuyuko>();
             if (FindChatIndex(out Projectile _, type1, 1, default, 0)
                 || FindChatIndex(out Projectile _, type1, 2, default, 0)
-                 || FindChatIndex(out Projectile _, type1, 3, default, 0)
                   || FindChatIndex(out Projectile _, type1, 4, default, 0)
                   || FindChatIndex(out Projectile _, type1, 8, default, 0)
                   || FindChatIndex(out Projectile _, type1, 9, default, 0))
@@ -168,7 +167,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 p1.ai[0] = 0;
                 talkInterval = 3600;
             }
-            else if (FindChatIndex(out Projectile p2, type1, 3) || FindChatIndex(out p2, type1, 4)
+            else if (FindChatIndex(out Projectile p2, type1, 4)
                 || FindChatIndex(out p2, type1, 8))
             {
                 if (PetState < 2)

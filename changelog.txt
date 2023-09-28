@@ -6,10 +6,10 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入一把玩具武士刀
-
-修改：
 无
 
+修改：
+幽幽子现在可以吃掉虚空袋里的食物，但不会再选择被收藏的食物
+
 修复：
-*修复了进入角色选取界面时可能发生崩溃的问题
+无
