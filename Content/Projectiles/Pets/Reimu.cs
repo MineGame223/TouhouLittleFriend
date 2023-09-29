@@ -235,7 +235,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             int type2 = ProjectileType<Marisa>();
             int type3 = ProjectileType<Sanae>();
             if (FindChatIndex(out Projectile _, type2, 6, default, 0)
-                || FindChatIndex(out Projectile _, type2, 10, default, 0)
                 || FindChatIndex(out Projectile _, type3, 4, default, 0))
             {
                 ChatCD = 1;

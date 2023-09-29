@@ -163,6 +163,11 @@ Mods: {
 				DisplayName: 玩具武士刀
 				Tooltip: "'上面附着着一只幽灵'"
 			}
+
+			AliceDoll: {
+				DisplayName: 精致的人偶
+				Tooltip: "'栩栩如生、活灵活现'"
+			}
 		}
 	}
 }

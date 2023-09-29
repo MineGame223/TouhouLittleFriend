@@ -145,6 +145,11 @@ Mods: {
 				DisplayName: 小小庭师
 				Description: "'何人来犯？！'"
 			}
+
+			AliceBuff: {
+				DisplayName: 人偶师
+				Description: "'玩弄人偶的少女'"
+			}
 		}
 	}
 }

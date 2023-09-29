@@ -30,6 +30,8 @@ Mods: {
 			Yuyuko.DisplayName: Yuyuko Saigyougi
 			YuyukoButterfly.DisplayName: Butterfly
 			Youmu.DisplayName: Youmu Konpaku
+			Alice.DisplayName: Alice Margatroid
+			AliceDoll_Proj.DisplayName: Shanghai Doll
 		}
 	}
 }

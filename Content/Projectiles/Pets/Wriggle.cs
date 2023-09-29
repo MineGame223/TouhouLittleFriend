@@ -268,7 +268,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player, true);
+            ChangeDir(player);
             MoveToPoint(point, 14f);
             if (mainTimer % (PetState == 2 ? 15 : 30) == 0 && CanGenFireFly(player))
             {

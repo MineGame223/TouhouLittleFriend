@@ -367,14 +367,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (mainTimer >= 600 && extraAI[0] == 0)
             {
-                if (mainTimer % 120 == 0 && PetState < 2)
+                if (mainTimer % 600 == 0 && PetState < 2)
                 {
-                    if (Main.rand.NextBool(60))
+                    if (Main.rand.NextBool(6))
                     {
                         PetState = 2;
                         extraAI[2] = Main.rand.Next(10, 30);
                     }
-                    else if (Main.rand.NextBool(1))
+                    else if (Main.rand.NextBool(3))
                     {
                         FoodSelect(player);
                     }

@@ -145,6 +145,11 @@ Mods: {
 				DisplayName: Little plantsman
 				Description: "'WHO'S THERE ?!'"
 			}
+
+			AliceBuff: {
+				DisplayName: Puppeteer
+				Description: "'Master of puppets'"
+			}
 		}
 	}
 }

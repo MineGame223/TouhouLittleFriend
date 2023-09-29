@@ -171,7 +171,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            int type = ProjectileType<Alice>();
             int type2 = ProjectileType<Reimu>();
+            if (FindChatIndex(out Projectile _, type, 4, default, 0))
+            {
+                ChatCD = 1;
+            }
             if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
             {
                 SetChatWithOtherOne(p1, ModUtils.GetChatText("Marisa", "8"), myColor, 8, 600, -1, 9);
@@ -189,6 +194,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                 SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
                 p4.ai[0] = 0;
                 talkInterval = 3600;
+            }
+            else if (FindChatIndex(out Projectile p5, type, 4, default, 1, true))
+            {
+                SetChatWithOtherOne(p5, ModUtils.GetChatText("Marisa", "12"), myColor, 12, 600, -1);
+            }
+            else if (FindChatIndex(out Projectile p6, type, 5, default, 1, true))
+            {
+                SetChatWithOtherOne(p6, ModUtils.GetChatText("Marisa", "13"), myColor, 13, 600, -1);
+            }
+            else if (FindChatIndex(out Projectile p7, type, 6, default, 1, true))
+            {
+                SetChatWithOtherOne(p7, ModUtils.GetChatText("Marisa", "14"), myColor, 14, 600, -1);
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(5) && PetState != 2)
             {

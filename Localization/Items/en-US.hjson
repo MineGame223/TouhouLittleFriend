@@ -163,6 +163,11 @@ Mods: {
 				DisplayName: Toy Katana
 				Tooltip: "'There is a ghost on it'"
 			}
+
+			AliceDoll: {
+				DisplayName: Exquisite Puppet
+				Tooltip: "'Vivied and lively'"
+			}
 		}
 	}
 }
