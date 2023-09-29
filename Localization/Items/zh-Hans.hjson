@@ -168,6 +168,11 @@ Mods: {
 				DisplayName: 精致的人偶
 				Tooltip: "'栩栩如生、活灵活现'"
 			}
+
+			RumiaRibbon: {
+				DisplayName: 红丝带
+				Tooltip: "'你没法解开它'"
+			}
 		}
 	}
 }

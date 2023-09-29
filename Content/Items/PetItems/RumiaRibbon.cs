@@ -7,7 +7,7 @@ using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class YuyukoFan : ModItem
+    public class RumiaRibbon : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -15,8 +15,8 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void SetDefaults()
         {            
-            Item.DefaultToVanitypet(ProjectileType<Yuyuko>(), BuffType<YuyukoBuff>());
-            Item.DefaultToVanitypetExtra(26, 26);
+            Item.DefaultToVanitypet(ProjectileType<Rumia>(), BuffType<RumiaBuff>());
+            Item.DefaultToVanitypetExtra(22, 22);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -31,10 +31,8 @@ namespace TouhouPets.Content.Items.PetItems
         {
             CreateRecipe()
             .AddIngredient(ItemID.Silk, 10)
-            .AddRecipeGroup(RecipeGroupID.Wood, 5)
-            .AddIngredient(ItemID.Ectoplasm, 3)
-            .AddIngredient(ItemID.ButterflyDust, 1)
-            .AddTile(TileID.Loom)
+            .AddIngredient(ItemID.SoulofNight, 2)
+            .AddTile(TileID.WorkBenches)
             .Register();
         }
     }

@@ -28,7 +28,7 @@ namespace TouhouPets.Content.Projectiles
         {
             Texture2D tex = AltVanillaFunction.ProjectileTexture(Type);
             Vector2 pos = Projectile.Center - Main.screenPosition;
-            int height = tex.Height / 2;
+            int height = tex.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
             Color clr = Projectile.GetAlpha(Color.White);
             Vector2 orig = rect.Size() / 2;

@@ -66,8 +66,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         private bool HateSunlight()
         {
             Player player = Main.player[Projectile.owner];
-            if (Main.dayTime && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && !player.behindBackWall || Main.raining)
-                return true;
+            bool sunlight = Main.dayTime && !player.behindBackWall;
+            bool rain = Main.raining;
+            if (player.ZoneOverworldHeight || player.ZoneSkyHeight)
+            {
+                if (sunlight || rain)
+                    return true;
+            }
             return false;
         }
         private void Blink()
@@ -230,7 +235,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && mainTimer > 0)
             {
                 SetChat(myColor);
-            }           
+            }
         }
         public override void VisualEffectForPreview()
         {

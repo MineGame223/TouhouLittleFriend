@@ -150,6 +150,11 @@ Mods: {
 				DisplayName: Puppeteer
 				Description: "'Master of puppets'"
 			}
+
+			RumiaBuff: {
+				DisplayName: Youkai of Darkness
+				Description: "'So~na no ka?'"
+			}
 		}
 	}
 }

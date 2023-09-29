@@ -168,6 +168,11 @@ Mods: {
 				DisplayName: Exquisite Puppet
 				Tooltip: "'Vivied and lively'"
 			}
+
+			RumiaRibbon: {
+				DisplayName: Red Ribbon
+				Tooltip: "'You can't unite it'"
+			}
 		}
 	}
 }

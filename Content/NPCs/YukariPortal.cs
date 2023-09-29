@@ -128,11 +128,13 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<DaiyouseiBomb>());
             shop.Add(ItemType<LilyOneUp>());
             shop.Add(ItemType<KogasaUmbrella>(), Condition.DownedEyeOfCthulhu);
+            shop.Add(ItemType<RumiaRibbon>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
             shop.Add(ItemType<HinaDoll>(), Condition.DownedSkeletron);
+            shop.Add(ItemType<AliceDoll>(), Condition.DownedSkeletron);
             shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);
             shop.Add(ItemType<RinSkull>(), Condition.Hardmode);
             shop.Add(ItemType<UtsuhoEye>(), Condition.Hardmode);

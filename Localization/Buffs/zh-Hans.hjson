@@ -150,6 +150,11 @@ Mods: {
 				DisplayName: 人偶师
 				Description: "'玩弄人偶的少女'"
 			}
+
+			RumiaBuff: {
+				DisplayName: 宵暗妖怪
+				Description: "'是~这样吗？'"
+			}
 		}
 	}
 }

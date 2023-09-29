@@ -85,8 +85,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[1];
             set => Projectile.localAI[1] = value;
         }
-        private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha)
+        private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default)
         {
+            if (boardColor == default)
+            {
+                boardColor = Color.Black;
+            }
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
                 return;
@@ -113,7 +117,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             ModUtils.MyDrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
                                 , chara, pos.X + orig.X / 8 + xOffset + Main.rand.Next(-2, 2)
                                 , pos.Y + orig.Y + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale + Main.rand.Next(-2, 2)
-                                , color * alpha, Color.Black * alpha, orig, chatScale * totalScale);
+                                , color * alpha, boardColor * alpha, orig, chatScale * totalScale);
                         }
                     }
                     else
@@ -121,7 +125,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
                             , array[i], pos.X + orig.X / 8
                             , pos.Y + orig.Y + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale - chatBaseY
-                            , color * alpha, Color.Black * alpha
+                            , color * alpha, boardColor * alpha
                             , orig, chatScale * totalScale);
                     }
                 }
@@ -507,6 +511,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.spriteDirection = player.direction;
             }
         }
+        public virtual Color ChatTextBoardColor
+        {
+            get
+            {
+                return Color.Black;
+            }
+        }
         /// <summary>
         /// 常规对话
         /// </summary>
@@ -563,7 +574,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawStateNormalizeForPet();
             if (chatAlpha > 0 && Projectile.owner == Main.myPlayer)
             {
-                DrawChatPanel(Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20), chatText, chatColor, chatAlpha * Projectile.Opacity);
+                DrawChatPanel(Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20), chatText, chatColor, chatAlpha * Projectile.Opacity, ChatTextBoardColor);
             }
             if (Projectile.isAPreviewDummy)
             {

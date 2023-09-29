@@ -16,12 +16,25 @@ namespace TouhouPets.Content.Items.PetItems
         public override void SetDefaults()
         {            
             Item.DefaultToVanitypet(ProjectileType<Alice>(), BuffType<AliceBuff>());
-            Item.DefaultToVanitypetExtra(26, 26);
+            Item.DefaultToVanitypetExtra(28, 40);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             player.AddBuff(Item.buffType, 2);
             return false;
+        }
+        public override void Update(ref float gravity, ref float maxFallSpeed)
+        {
+            Item.shimmerTime = 0;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+            .AddRecipeGroup(RecipeGroupID.Wood, 12)
+            .AddIngredient(ItemID.Silk, 7)
+            .AddIngredient(ItemID.Sapphire, 2)
+            .AddTile(TileID.WorkBenches)
+            .Register();
         }
     }
 }

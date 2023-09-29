@@ -23,6 +23,10 @@ namespace TouhouPets.Content.Items.PetItems
             player.AddBuff(Item.buffType, 2);
             return false;
         }
+        public override void Update(ref float gravity, ref float maxFallSpeed)
+        {
+            Item.shimmerTime = 0;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()

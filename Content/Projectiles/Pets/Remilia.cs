@@ -44,7 +44,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         private bool HateSunlight()
         {
             Player player = Main.player[Projectile.owner];
-            if (Main.dayTime && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && !player.behindBackWall || Main.raining)
+            bool sunlight = Main.dayTime && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && !player.behindBackWall;
+            bool rain = Main.raining && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
+            if (sunlight || rain)
                 return true;
             return false;
         }
