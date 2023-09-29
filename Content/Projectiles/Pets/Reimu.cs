@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Globalization;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -15,15 +16,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            Texture2D cloth = AltVanillaFunction.GetExtraTexture("Reimu_Cloth");
+            Texture2D cloth_NewYear = AltVanillaFunction.GetExtraTexture("Reimu_Cloth_NewYear");
+            if (TimeTable.DuringNewYear)
+            {
+                cloth = cloth_NewYear;
+            }
             DrawReimu(Projectile.frame, lightColor);
             if (PetState == 1 || PetState == 4)
                 DrawReimu(blinkFrame, lightColor);
-            DrawReimu(Projectile.frame, lightColor, AltVanillaFunction.GetExtraTexture("Reimu_Cloth"), true);
+            DrawReimu(Projectile.frame, lightColor, cloth, true);
             Projectile.DrawStateNormalizeForPet();
             if (PetState < 3)
             {
                 DrawReimu(clothFrame, lightColor);
-                DrawReimu(clothFrame, lightColor, AltVanillaFunction.GetExtraTexture("Reimu_Cloth"), true);
+                DrawReimu(clothFrame, lightColor, cloth, true);
             }
             return false;
         }
