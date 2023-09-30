@@ -579,6 +579,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.isAPreviewDummy)
             {
                 VisualEffectForPreview();
+                Projectile.velocity.X = 5f;
             }
             else
             {

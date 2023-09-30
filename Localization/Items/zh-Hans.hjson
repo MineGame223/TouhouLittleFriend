@@ -173,6 +173,11 @@ Mods: {
 				DisplayName: 红丝带
 				Tooltip: "'你没法解开它'"
 			}
+
+			KoakumaPower: {
+				DisplayName: POWER
+				Tooltip: "'其实是一个染色的BOMB...？'"
+			}
 		}
 	}
 }

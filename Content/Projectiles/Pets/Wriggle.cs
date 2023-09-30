@@ -128,7 +128,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
                             , FireflyType(player), Main.rand.Next(0, 2));
                     }
-                }                
+                }
                 if (extraAI[1] > extraAI[2])
                 {
                     extraAI[1] = 0;
@@ -166,7 +166,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateAntennaeFrame()
         {
             int count = 5;
-            if (++antennaeFrameCounter > count)
+            if (++antennaeFrameCounter > count && antennaeActive)
             {
                 antennaeFrameCounter = 0;
                 antennaeFrame++;
@@ -251,8 +251,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateWingFrame();
-            if (antennaeActive)
-                UpdateAntennaeFrame();
+            UpdateAntennaeFrame();
         }
         public override void AI()
         {

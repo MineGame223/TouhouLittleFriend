@@ -22,7 +22,7 @@ namespace TouhouPets
             {
                 case NPCID.KingSlime:
                     npcLoot.Add(new NotDownedKingSlime(), new DownedKingSlime(), commonDropRate
-                        , ItemType<DaiyouseiBomb>(), ItemType<LilyOneUp>());
+                        , ItemType<DaiyouseiBomb>(), ItemType<LilyOneUp>(), ItemType<KoakumaPower>());
                     break;
 
                 case NPCID.EyeofCthulhu:

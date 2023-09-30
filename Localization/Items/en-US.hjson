@@ -173,6 +173,11 @@ Mods: {
 				DisplayName: Red Ribbon
 				Tooltip: "'You can't unite it'"
 			}
+
+			KoakumaPower: {
+				DisplayName: POWER
+				Tooltip: "'Actually a dyed BOMB...?'"
+			}
 		}
 	}
 }

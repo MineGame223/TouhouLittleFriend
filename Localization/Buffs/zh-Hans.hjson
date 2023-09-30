@@ -155,6 +155,11 @@ Mods: {
 				DisplayName: 宵暗妖怪
 				Description: "'是~这样吗？'"
 			}
+
+			KoakumaBuff: {
+				DisplayName: 小恶魔
+				Description: "'小恶魔一号，为您服务！'"
+			}
 		}
 	}
 }

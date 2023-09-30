@@ -225,6 +225,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             int type = ProjectileType<Alice>();
             int type2 = ProjectileType<Remilia>();
+            int type3 = ProjectileType<Koakuma>();
+            if (FindChatIndex(out Projectile _, type3, 4, default, 0)
+                || FindChatIndex(out Projectile _, type3, 6, default, 0))
+            {
+                ChatCD = 1;
+            }
 
             if (FindChatIndex(out Projectile p1, type2, 10, default, 1, true))
             {
@@ -252,9 +258,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (FindChatIndex(out Projectile p6, type, 10, default, 1, true))
             {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0, 360, -1);
+                SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0, 360);
                 p6.ai[0] = 0;
                 talkInterval = 3600;
+            }
+            else if (FindChatIndex(out Projectile p7, type3, 4, default, 1, true))
+            {
+                SetChatWithOtherOne(p7, ModUtils.GetChatText("Patchouli", "16"), myColor, 16, 600);
+            }
+            else if (FindChatIndex(out Projectile p8, type3, 5, default, 1, true))
+            {
+                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "17"), myColor, 17, 600);
+                p8.ai[0] = 0;
+            }
+            else if (FindChainedChat(17))
+            {
+                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "18"), myColor, 0, 360);                
+                talkInterval = 3600;
+            }
+            else if (FindChatIndex(out Projectile p9, type3, 6, default, 1, true))
+            {
+                int chance = Main.rand.Next(19, 36);
+                SetChatWithOtherOne(p9, ModUtils.GetChatText("Patchouli", chance.ToString()), myColor, chance, 600);
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(12) && mainTimer > 0)
             {

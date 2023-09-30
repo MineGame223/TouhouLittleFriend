@@ -6,11 +6,10 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入一个精致的玩偶
-加入一根红丝带
+加入一个P点
 
 修改：
-幽幽子现在可以吃掉虚空袋里的食物，但不会再选择被收藏的食物
+无
 
 修复：
 无

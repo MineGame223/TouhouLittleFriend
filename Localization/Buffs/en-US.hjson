@@ -153,7 +153,12 @@ Mods: {
 
 			RumiaBuff: {
 				DisplayName: Youkai of Darkness
-				Description: "'So~na no ka?'"
+				Description: "'So ~nanoka?'"
+			}
+
+			KoakumaBuff: {
+				DisplayName: Little Devil
+				Description: "'Koakuma No.1, at your service!'"
 			}
 		}
 	}
