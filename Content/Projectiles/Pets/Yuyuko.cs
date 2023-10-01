@@ -131,11 +131,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (j < player.bank4.item.Length)
                 {
-                    Item fd2 = player.bank4.item[j];
-                    if (fd2 != null && !fd2.IsAir && ItemID.Sets.IsFood[fd2.type]
-                        && !fd2.favorited)
+                    if (player.IsVoidVaultEnabled)
                     {
-                        foodList.Add(fd2);
+                        Item fd2 = player.bank4.item[j];
+                        if (fd2 != null && !fd2.IsAir && ItemID.Sets.IsFood[fd2.type]
+                            && !fd2.favorited)
+                        {
+                            foodList.Add(fd2);
+                        }
                     }
                 }
             }

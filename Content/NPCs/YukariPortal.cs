@@ -42,7 +42,7 @@ namespace TouhouPets.Content.NPCs
             NPCID.Sets.SpawnsWithCustomName[Type] = false;
 
             NPCID.Sets.TownNPCBestiaryPriority.Add(Type);
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0);
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new ();
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -124,7 +124,7 @@ namespace TouhouPets.Content.NPCs
         }
         public override void AddShops()
         {
-            NPCShop shop = new NPCShop(Type);
+            NPCShop shop = new(Type);
             shop.Add(ItemType<DaiyouseiBomb>());
             shop.Add(ItemType<LilyOneUp>());
             shop.Add(ItemType<KoakumaPower>());

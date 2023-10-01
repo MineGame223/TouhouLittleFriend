@@ -6,9 +6,10 @@ The summon items are dropped from every boss with a 30% chance, and it always dr
 You can also buy these items from the Mysterious Gap which spawns in nighttime.
 
 The loot list is as follows：
-King Slime：Daiyousei
+King Slime：Daiyousei, Lilywhite, Koakuma
 Eye of Cthulhu：Kogasa Tatara
 Eater of Worlds / Brain of Cthulhu：Scarlet Sisters
+Queen Bee: Wriggle Nightbug
 Skeletron：Hina Kagiyama
 Deerclops：Cirno
 Wall of Flesh：Utsuho Reiuji / Rin Kaenbyou
