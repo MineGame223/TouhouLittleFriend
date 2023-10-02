@@ -542,6 +542,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
+            Projectile.timeLeft = 5;
         }
         public override bool PreAI()
         {

@@ -5,6 +5,7 @@ namespace TouhouPets
 {
     public class LuckPlayer : ModPlayer
     {
+        public int koakumaNumber;
         public override void ModifyLuck(ref float luck)
         {
             if (Player.HasBuff(BuffType<HinaBuff>()))

@@ -19,8 +19,15 @@ namespace TouhouPets.Content.Buffs
             if (flag)
             {
                 if (player.whoAmI == Main.myPlayer)
+                {
                     Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, PetType, 0, 0f, player.whoAmI, 0f, 0f);
+                    OnSummonPet(player);
+                }
             }
+        }
+        public virtual void OnSummonPet(Player player)
+        {
+
         }
     }
 }

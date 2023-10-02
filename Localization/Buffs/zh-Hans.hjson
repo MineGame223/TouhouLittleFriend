@@ -158,7 +158,12 @@ Mods: {
 
 			KoakumaBuff: {
 				DisplayName: 小恶魔
-				Description: "'小恶魔一号，为您服务！'"
+				Description: "'小恶魔{0}号，为您服务！'"
+			}
+
+			WakasagihimeBuff: {
+				DisplayName: 人鱼姬
+				Description: "'咕噜咕噜 .oO'"
 			}
 		}
 	}

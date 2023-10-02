@@ -328,13 +328,20 @@ Mods: {
 		}
 
 		Chat_Koakuma: {
-			Chat1: 小恶魔一号，为您服务！
+			Chat1: 小恶魔{0}号，为您服务！
 			Chat2: 不知道其他同伴们都还好么...
 			Chat3: 请问有什么吩咐？
 			Chat4: 帕秋莉大人！该锻炼身体啦！
 			Chat5: 为了您的健康着想，这很必要的哦！
 			Chat6: 帕秋莉大人在看什么？
 			Chat7: 好像很有趣啊！
+		}
+
+		Chat_Wakasagihime: {
+			Chat1: 人家虽然是鱼，也不是不能离开水哦
+			Chat2: 你说咸鱼？人家是淡水鱼！
+			Chat3: 人家才不是什么“鱼脑”！...
+			Chat4: 咕噜咕噜~
 		}
 
 		Chat_Portal: {

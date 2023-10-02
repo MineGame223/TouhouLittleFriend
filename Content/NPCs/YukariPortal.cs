@@ -69,6 +69,7 @@ namespace TouhouPets.Content.NPCs
             NPC.dontTakeDamage = true;
             NPC.dontTakeDamageFromHostiles = true;
             NPC.noGravity = true;
+            NPC.immortal = true;
         }
         public override void AI()
         {
@@ -134,6 +135,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
+            shop.Add(ItemType<WakasagihimeFishingRod>(), Condition.DownedQueenBee);
             shop.Add(ItemType<HinaDoll>(), Condition.DownedSkeletron);
             shop.Add(ItemType<AliceDoll>(), Condition.DownedSkeletron);
             shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);

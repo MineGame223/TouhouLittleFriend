@@ -33,7 +33,9 @@ Mods: {
 			Alice.DisplayName: 爱丽丝·玛格特洛依德
 			AliceDoll_Proj.DisplayName: 上海人偶
 			Rumia.DisplayName: 露米娅
-			Koakuma.DisplayName: 小恶魔一号
+			Koakuma.DisplayName: 小恶魔{0}号
+			Wakasagihime.DisplayName: 若鹭姬
+			WakasagihimeBubble.DisplayName: 泡泡
 		}
 	}
 }

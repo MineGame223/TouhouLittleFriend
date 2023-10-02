@@ -171,12 +171,17 @@ Mods: {
 
 			RumiaRibbon: {
 				DisplayName: Red Ribbon
-				Tooltip: "'You can't unite it'"
+				Tooltip: "'You can't untie it'"
 			}
 
 			KoakumaPower: {
 				DisplayName: POWER
 				Tooltip: "'Actually a dyed BOMB...?'"
+			}
+
+			WakasagihimeFishingRod: {
+				DisplayName: Toy Fishing Rod
+				Tooltip: "'Can catch... something'"
 			}
 		}
 	}

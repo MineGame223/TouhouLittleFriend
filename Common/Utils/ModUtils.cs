@@ -29,9 +29,9 @@ namespace TouhouPets
         /// <param name="tag">角色对应标签</param>
         /// <param name="index">文本对应编号</param>
         /// <returns></returns>
-        public static string GetChatText(string tag,string index)
+        public static string GetChatText(string tag, string index, params object[] args)
         {
-            return Language.GetTextValue($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}");
+            return Language.GetTextValue($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}", args);
         }
         /// <summary>
         /// 快速添加商店物品

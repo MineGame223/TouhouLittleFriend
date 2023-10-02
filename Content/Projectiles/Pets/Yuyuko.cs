@@ -351,7 +351,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 point = new Vector2(-70 * player.direction, -60 + player.gfxOffY);
             if (player.ownedProjectileCounts[ProjectileType<Youmu>()] > 0)
             {
-                point = new Vector2(60 * player.direction, -50 + player.gfxOffY);
+                point = new Vector2(40 * player.direction, -50 + player.gfxOffY);
             }
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;

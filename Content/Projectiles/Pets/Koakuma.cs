@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -11,7 +13,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
-            Main.projPet[Type] = true;
+            Main.projPet[Type] = true;           
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            LuckPlayer lp = Main.LocalPlayer.GetModPlayer<LuckPlayer>();
+            Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -107,8 +114,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(224, 78, 78);
         public override string GetChatText(out string[] text)
         {
+            LuckPlayer lp = Main.player[Projectile.owner].GetModPlayer<LuckPlayer>();
             text = new string[11];
-            text[1] = ModUtils.GetChatText("Koakuma", "1");
+            text[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
             text[2] = ModUtils.GetChatText("Koakuma", "2");
             text[3] = ModUtils.GetChatText("Koakuma", "3");
             if (FindPetState(out _, ProjectileType<Patchouli>(), 0, 1))

@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.DataStructures;
 using TouhouPets.Content.Items;
+using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets.Common
 {
@@ -14,6 +15,8 @@ namespace TouhouPets.Common
             {
                 if (Main.rand.NextBool(7))
                     itemDrop = ItemType<UselessBook>();
+                if (Main.rand.NextBool(7))
+                    itemDrop = ItemType<WakasagihimeFishingRod>();
             }
         }
     }

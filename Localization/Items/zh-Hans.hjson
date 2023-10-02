@@ -178,6 +178,11 @@ Mods: {
 				DisplayName: POWER
 				Tooltip: "'其实是一个染色的BOMB...？'"
 			}
+
+			WakasagihimeFishingRod: {
+				DisplayName: 玩具钓鱼竿
+				Tooltip: "'可以钓上来...某些东西'"
+			}
 		}
 	}
 }
