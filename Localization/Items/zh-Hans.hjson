@@ -183,6 +183,11 @@ Mods: {
 				DisplayName: 玩具钓鱼竿
 				Tooltip: "'可以钓上来...某些东西'"
 			}
+
+			YukaSunflower: {
+				DisplayName: 盆栽向日葵
+				Tooltip: "'啊？？'"
+			}
 		}
 	}
 }

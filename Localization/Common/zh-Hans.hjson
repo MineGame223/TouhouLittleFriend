@@ -2,5 +2,7 @@ Mods: {
 	TouhouPets: {
 		DeathReason.KilledByKoishi: "{0}死于无意识的谋杀。"
 		Bestiary.YukariPortal: 一个不知通往何方的空间裂隙，你能从里面窥见超越常识的景象。
+		YukaRequest: 请求
+		YukaStop: 停止
 	}
 }

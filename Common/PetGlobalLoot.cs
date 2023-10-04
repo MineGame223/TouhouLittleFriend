@@ -76,6 +76,7 @@ namespace TouhouPets
                     break;
 
                 case NPCID.Plantera:
+                    npcLoot.Add(new NotDownedPrime(), new DownedPrime(), ItemType<YukaSunflower>(), commonDropRate);
                     break;
 
                 case NPCID.Golem:

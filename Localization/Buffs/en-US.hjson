@@ -18,7 +18,7 @@ Mods: {
 
 			DaiyouseiBuff: {
 				DisplayName: Daiyousei
-				Description: "'Who is Dai yousei?'"
+				Description: "'Who is Daiyousei?'"
 			}
 
 			PatchouliBuff: {
@@ -68,7 +68,7 @@ Mods: {
 
 			IkuBuff: {
 				DisplayName: Dragon Palace's Messenger
-				Description: "'Arowana Drill !!!'"
+				Description: "'Arowana DRILL !!!'"
 			}
 
 			TenshiBuff: {
@@ -164,6 +164,11 @@ Mods: {
 			WakasagihimeBuff: {
 				DisplayName: Mermaid Hime
 				Description: "'purr purr .oO'"
+			}
+
+			YukaBuff: {
+				DisplayName: Lord of flowers
+				Description: "'Please don't pick that flower'"
 			}
 		}
 	}

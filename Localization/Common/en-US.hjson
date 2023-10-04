@@ -2,5 +2,7 @@ Mods: {
 	TouhouPets: {
 		DeathReason.KilledByKoishi: "{0} dead by an unconscious murder."
 		Bestiary.YukariPortal: A spatial gap that leads to an unknown dimension, you can glimpse scape beyond common sense from its inside.
+		YukaRequest: Request
+		YukaStop: Stop
 	}
 }

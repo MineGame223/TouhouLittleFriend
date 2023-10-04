@@ -42,7 +42,7 @@ namespace TouhouPets.Content.NPCs
             NPCID.Sets.SpawnsWithCustomName[Type] = false;
 
             NPCID.Sets.TownNPCBestiaryPriority.Add(Type);
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new ();
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new (0);
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -146,6 +146,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
             shop.Add(ItemType<KoishiTelephone>(), Condition.DownedTwins);
             shop.Add(ItemType<NitoriCucumber>(), Condition.DownedSkeletronPrime);
+            shop.Add(ItemType<YukaSunflower>(), Condition.DownedPlantera);
             shop.Add(ItemType<YuyukoFan>(), Condition.DownedPlantera);
             shop.Add(ItemType<YoumuKatana>(), Condition.DownedPlantera);
             shop.Add(ItemType<SekibankiBow>(), Condition.DownedGolem);

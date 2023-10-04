@@ -958,5 +958,18 @@ namespace TouhouPets
         /// 白色粒子，自发光,受颜色影响，范围非常大，在重力下迅速变大并且旋转，无重力时消散较快。
         /// </summary>
         public const int RainbowMK2 = 267;
+        /// <summary>
+        /// (.)沙黄色粒子，高亮，在重力下快速扩散范围但不大。
+        /// </summary>
+        public const int YellowBubble = 311;
+        /// <summary>
+        /// (.)雪白色粒子，高亮，在重力下快速扩散范围但不大。
+        /// </summary>
+        public const int WhiteBubble = 312;
+        /// <summary>
+        /// (.)棕色粒子，高亮，在重力下快速扩散范围但不大。
+        /// </summary>
+        public const int BrownBubble = 313;
+        
     }
 }
