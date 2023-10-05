@@ -13,7 +13,7 @@ using static TouhouPets.Content.Projectiles.Pets.Yuka;
 namespace TouhouPets
 {
     public class SolutionSpraySystem : ModSystem
-    {       
+    {
         private static int _sprayMode;
         private static Projectile yuka;
         public static Item _solution;
@@ -40,7 +40,6 @@ namespace TouhouPets
                 _sprayMode = 0;
             }
             yuka = null;
-            _solution = new Item();
             foreach (Projectile p in Main.projectile)
             {
                 if (p != null && p.active)
@@ -67,7 +66,7 @@ namespace TouhouPets
                     InterfaceScaleType.Game)
                 );
             }
-        }       
+        }
         private static void SetSpray()
         {
             if (yuka == null)
@@ -75,6 +74,9 @@ namespace TouhouPets
 
             if (yuka.isAPreviewDummy || PetState == Phase_StopSpray)
                 return;
+
+            if (!InSprayMode)
+                _solution = new Item();
 
             bool request = false;
             Player player = Main.player[yuka.owner];
