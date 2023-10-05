@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -12,6 +13,21 @@ namespace TouhouPets
     /// </summary>
     internal static class ModUtils
     {
+        /// <summary>
+        /// 快速设置toolTip描述(允许添加变量)
+        /// </summary>
+        public static void MyTooltipLine(this List<TooltipLine> tooltips, string text)
+        {
+            int index = tooltips.FindLastIndex((TooltipLine x) => x.Name.StartsWith("EachLine") && x.Mod == nameof(TouhouPets));
+            if (index == -1)
+            {
+                index = tooltips.FindIndex((TooltipLine x) => x.Name == "Tooltip0" && x.Mod == "Terraria");
+            }
+            if (index == -1)
+                return;
+            index++;
+            tooltips.Insert(index, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
+        }
         /// <summary>
         /// 将宠物的绘制状态重置，防止被染料的Shader影响
         /// <br>仅需要插在不需要着色的语句之前和执行着色的语句之后</br>

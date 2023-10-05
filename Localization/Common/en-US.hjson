@@ -4,5 +4,15 @@ Mods: {
 		Bestiary.YukariPortal: A spatial gap that leads to an unknown dimension, you can glimpse scape beyond common sense from its inside.
 		YukaRequest: Request
 		YukaStop: Stop
+		YukaTips:
+			'''
+			---
+			You find a papper under this pot
+			“Project Clentaminator - Code Yuka”
+			“Hi! Welcome to use 'Yuka'!”
+			“If there are any colored solutions in your inventory, then right click 'Yuka' can automatically spray them.”
+			“Left click 'Yuka' when not spraying can switch between two spray modes.”
+			“Wishing you a pleasant use!”
+			'''
 	}
 }

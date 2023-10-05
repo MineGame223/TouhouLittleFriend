@@ -6,11 +6,10 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入一个P点
-加入一根玩具鱼竿
+无
 
 修改：
-若背包内仅有闭合的虚空袋或没有虚空袋，则幽幽子将不会选取其中的食物
+优化幽香的溶液喷洒机制
 
 修复：
-没有相应Buff维持的宠物将不会长久存在
+无

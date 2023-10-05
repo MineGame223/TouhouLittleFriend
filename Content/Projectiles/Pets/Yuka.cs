@@ -1,14 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using static TouhouPets.SolutionSpraySystem;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -34,12 +30,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 DrawHand(lightColor, AltVanillaFunction.GetExtraTexture("Yuka_Cloth"), true);
             }
             Projectile.DrawStateNormalizeForPet();
-            if (!Projectile.isAPreviewDummy
-                && (PetState == Phase_Spray && extraAI[0] == 0 || PetState != Phase_Spray)
-                && Main.netMode == NetmodeID.SinglePlayer)
-            {
-                SetSpray();
-            }
             return false;
         }
         private void DrawYuka(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
@@ -47,7 +37,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
             int width = t.Width / 2;
             int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
+            Vector2 pos = Projectile.Center + new Vector2(0, -10) - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new(width * columns, frame * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
@@ -61,10 +51,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
             int width = t.Width / 2;
             int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale)
-                + new Vector2(-2 * Projectile.spriteDirection, 12);
+            Vector2 pos = YukaHandOrigin - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new(width, 7 * height, 16, 48);
-            Vector2 orig = new Vector2(8, 48);
+            Vector2 orig = new(8, 48);
             float rot = MathHelper.ToRadians(angle);
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             if (entitySpriteDraw)
@@ -75,80 +64,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
         }
         #region 溶液喷洒设置
-        private void SetSpray()
-        {
-            bool request = false;
-            Player player = Main.player[Projectile.owner];
-            if (!PlayerInput.IgnoreMouseInterface)
-            {
-                Vector2 yugaPos = Projectile.position - Main.screenPosition;
-                Rectangle yuka = new((int)yugaPos.X, (int)yugaPos.Y, Projectile.width, Projectile.height);
-                if (yuka.Contains(new Point(Main.mouseX, Main.mouseY)))
-                {
-                    player.mouseInterface = true;
-                    request = true;
-                    solution = player.ChooseAmmo(new Item(ItemID.Clentaminator));
-                    if (solution != null && !solution.IsAir
-                        && Main.mouseRight && Main.mouseRightRelease
-                        && extraAI[2] == 0)
-                    {
-                        extraAI[1] = 0;
-                        extraAI[2] = 3;
-                        if (PetState != 3)
-                        {
-                            PetState = 3;
-                            extraAI[0] = 0;
-                        }
-                        else
-                        {
-                            extraAI[0] = 1;
-                        }
-                    }
-                    if (solution != null && !solution.IsAir
-                        && Main.mouseLeft && Main.mouseLeftRelease
-                        && sprayModeTimer == 0)
-                    {
-                        sprayModeTimer = 3;
-                        sprayMode++;
-                    }
-                }
-            }
-            DrawLeftSolution(request);
-        }
-        private void DrawLeftSolution(bool drawRequestText)
-        {
-            if (solution == null || solution.IsAir)
-            {
-                return;
-            }
-            Main.instance.LoadItem(solution.type);
-            Texture2D t = AltVanillaFunction.ItemTexture(solution.type);
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale)
-                + new Vector2(-20, -40);
-            Rectangle rect = new(0, 0, t.Width, t.Height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = SpriteEffects.None;
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(Color.White), 0, orig, 1.3f, effect, 0f);
-            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
-                            , ": " + solution.stack.ToString(), pos.X + 20
-                            , pos.Y - 4
-                            , Color.White, Color.Black
-                            , orig, 1f);
-
-            string text = Language.GetTextValue("Mods.TouhouPets.YukaRequest");
-            if (PetState == Phase_Spray)
-                text = Language.GetTextValue("Mods.TouhouPets.YukaStop");
-            if (drawRequestText)
-                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
-                                , text, Main.MouseScreen.X + TextureAssets.Cursors[2].Width()
-                                , Main.MouseScreen.Y + TextureAssets.Cursors[2].Height()
-                                , Color.White, Color.Black
-                                , orig, 1f);
-        }
+        Item solution_Actually;
+        public const int Phase_Spray_Mode1 = 3;
+        public const int Phase_Spray_Mode2 = 4;
+        public const int Phase_StopSpray = 5;
         private static int SolutionSprayType(int type)
         {
             return type switch
             {
+                ItemID.GreenSolution => ProjectileID.PureSpray,
                 ItemID.BlueSolution => ProjectileID.HallowSpray,
                 ItemID.DarkBlueSolution => ProjectileID.MushroomSpray,
                 ItemID.DirtSolution => ProjectileID.DirtSpray,
@@ -156,13 +80,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ItemID.RedSolution => ProjectileID.CrimsonSpray,
                 ItemID.SandSolution => ProjectileID.SandSpray,
                 ItemID.SnowSolution => ProjectileID.SnowSpray,
-                _ => ProjectileID.PureSpray,
+                _ => SolutionSpraySystem.Sprayer.shoot,
             };
         }
         private static int SolutionSprayDust(int type)
         {
             return type switch
             {
+                ProjectileID.PureSpray => MyDustId.GreenBubble,
                 ProjectileID.HallowSpray => MyDustId.CyanBubble,
                 ProjectileID.MushroomSpray => MyDustId.BlueIce,
                 ProjectileID.DirtSpray => MyDustId.BrownBubble,
@@ -170,115 +95,111 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.CrimsonSpray => MyDustId.PinkYellowBubble,
                 ProjectileID.SandSpray => MyDustId.YellowBubble,
                 ProjectileID.SnowSpray => MyDustId.WhiteBubble,
-                _ => MyDustId.GreenBubble,
+                _ => MyDustId.RedBubble,
             };
         }
-        private void Spray()
+        private void Spray(int mode)
         {
             Player player = Main.player[Projectile.owner];
             if (Projectile.frame < 5)
             {
                 Projectile.frame = 5;
             }
-            if (++Projectile.frameCounter > 7)
+            if (++Projectile.frameCounter > 4)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (extraAI[2] > 0)
+            _solution = player.ChooseAmmo(Sprayer);
+            if (_solution == null || _solution.IsAir)
             {
-                extraAI[2]--;
-            }
-            if (extraAI[0] == 0)
-            {
-                solution = player.ChooseAmmo(new Item(ItemID.Clentaminator));
-                if (solution == null || solution.IsAir)
-                {
-                    extraAI[0] = 1;
-                    return;
-                }
-                else
-                {
-                    solution_Actually = new Item(solution.type);
-                    solution_Actually.shoot = SolutionSprayType(solution.type);
-                }
-                if (Projectile.frame >= 8)
-                {
-                    Projectile.frame = 8;
-                    if (++extraAI[1] > 45)
-                    {
-                        extraAI[1] = 0;
-                        if (Main.rand.NextBool(2, 3))
-                            solution.stack--;
-                    }
-
-                    if (sprayMode == 0)
-                    {
-                        angle += 2;
-                        if (angle > 359)
-                            angle = 0;
-                    }
-                    else
-                    {
-                        Vector2 pos = Projectile.Center
-                            + new Vector2(-2 * Projectile.spriteDirection, 12);
-                        angle = (int)MathHelper.ToDegrees((Main.MouseWorld - pos).ToRotation() + MathHelper.PiOver2);
-                    }
-
-                    if (Projectile.frameCounter % 2 == 0)
-                    {
-                        Vector2 pos = Projectile.Center + new Vector2(0, 7f * Main.essScale)
-                            + new Vector2(-2 * Projectile.spriteDirection, 12);
-                        pos += new Vector2(0, -48).RotatedBy(MathHelper.ToRadians(angle));
-
-                        for (int i = 0; i < 5; i++)
-                        {
-                            Dust.NewDustPerfect(pos, SolutionSprayDust(solution_Actually.shoot)
-                            , new Vector2(0, Main.rand.NextFloat(2.4f, 4.8f)).RotatedByRandom(MathHelper.TwoPi), 100
-                            , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
-                        }
-
-                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis()
-                            , Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 12)
-                            , new Vector2(0, -8).RotatedBy(MathHelper.ToRadians(angle))
-                            , solution_Actually.shoot, 0, 0, player.whoAmI);
-                    }
-                }
-                if (solution.stack <= 0)
-                {
-                    solution.TurnToAir();
-                    extraAI[0] = 1;
-                    extraAI[1] = 0;
-                }
+                PetState = Phase_StopSpray;
+                return;
             }
             else
             {
-                if (angle > 0)
+                solution_Actually = new(_solution.type);
+                solution_Actually.shoot = SolutionSprayType(_solution.type);
+            }
+            if (Projectile.frame >= 8)
+            {
+                Projectile.frame = 8;
+                if (++extraAI[1] > 45)
                 {
-                    Projectile.frame = 8;
+                    extraAI[1] = 0;
+                    if (Main.rand.NextBool(2, 3) && _solution.consumable && _solution.ammo > AmmoID.None)
+                        _solution.stack--;
                 }
-                if (angle > 359 || angle < 0)
+
+                if (mode == 1)
                 {
-                    angle = 0;
+                    angle += 2;
+                    if (angle > 359)
+                        angle = 0;
                 }
                 else
                 {
-                    if (angle <= 359 && angle >= 180)
-                    {
-                        angle += 6;
-                    }
-                    else if (angle < 180)
-                    {
-                        angle -= 6;
-                    }
+                    angle = (int)MathHelper.ToDegrees((Main.MouseWorld - YukaHandOrigin).ToRotation() + MathHelper.PiOver2);
                 }
-                if (Projectile.frame > 10 && angle <= 0)
+
+                if (Projectile.frameCounter % 2 == 0)
                 {
-                    extraAI[2] = 0;
-                    extraAI[0] = 0;
-                    Projectile.frame = 0;
-                    PetState = 0;
+                    Vector2 pos = YukaHandOrigin + new Vector2(0, 7f * Main.essScale);
+                    pos += new Vector2(0, -48).RotatedBy(MathHelper.ToRadians(angle));
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Dust.NewDustPerfect(pos, SolutionSprayDust(solution_Actually.shoot)
+                        , new Vector2(0, Main.rand.NextFloat(2.4f, 4.8f)).RotatedByRandom(MathHelper.TwoPi), 100
+                        , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
+                    }
+
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis()
+                        , Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 12)
+                        , new Vector2(0, -Sprayer.shootSpeed).RotatedBy(MathHelper.ToRadians(angle))
+                        , solution_Actually.shoot, Sprayer.damage, Sprayer.knockBack, player.whoAmI);
                 }
+            }
+            if (_solution.stack <= 0)
+            {
+                _solution.TurnToAir();
+                solution_Actually.TurnToAir();
+                extraAI[1] = 0;
+                PetState = Phase_StopSpray;
+            }
+        }
+        private void StopSpray()
+        {
+            if (Projectile.frame < 8)
+            {
+                Projectile.frame = 8;
+            }
+            if (++Projectile.frameCounter > 4 && angle <= 0)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (angle > 359 || angle < 0)
+            {
+                angle = 0;
+            }
+            else
+            {
+                int rate = 9;
+                if (angle <= 359 && angle >= 180)
+                {
+                    angle += rate;
+                }
+                else if (angle < 180)
+                {
+                    angle -= rate;
+                }
+            }
+            if (Projectile.frame > 10 && angle <= 0)
+            {
+                extraAI[0] = 0;
+                Projectile.frame = 0;
+                PetState = 0;
             }
         }
         #endregion
@@ -298,8 +219,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         int clothFrame, clothFrameCounter;
         int blinkFrame, blinkFrameCounter;
         int angle;
-        Item solution_Actually, solution;
-        int sprayMode, sprayModeTimer;
+        private Vector2 YukaHandOrigin
+        {
+            get
+            {
+                return Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 2);
+            }
+        }
         private void Blossom()
         {
             if (++Projectile.frameCounter > 7)
@@ -312,7 +238,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame >= 3)
                 {
                     Projectile.frame = 3;
-                    Vector2 pos = Projectile.Center + new Vector2(20 * Projectile.spriteDirection, 6);
+                    Vector2 pos = Projectile.Center + new Vector2(20 * Projectile.spriteDirection, -4);
                     int dustID = MyDustId.GreenTrans;
                     Dust.NewDustPerfect(pos, dustID
                         , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
@@ -337,7 +263,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateClothFrame()
         {
-            int count = PetState == Phase_Spray ? 3 : 5;
+            int count = PetState == Phase_Spray_Mode1 ? 3 : 5;
             if (clothFrame < 3)
             {
                 clothFrame = 3;
@@ -383,27 +309,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateClothFrame();
         }
-        const int Phase_Spray = 3;
-        private void SprayModeSafeLimit()
-        {
-            if (sprayModeTimer > 0)
-            {
-                sprayModeTimer--;
-            }
-            if (sprayMode > 1 || sprayMode < 0)
-            {
-                sprayMode = 0;
-            }
-        }
         public override void AI()
         {
-            SprayModeSafeLimit();
-
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<YukaBuff>());
             UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -60 + player.gfxOffY);
-            if (PetState == Phase_Spray && sprayMode == 0)
+            Vector2 point = new(-50 * player.direction, -45 + player.gfxOffY);
+            if (PetState == Phase_Spray_Mode2)
             {
                 point = Main.MouseWorld - player.Center;
             }
@@ -441,13 +353,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Blossom();
             }
-            else if (PetState == Phase_Spray)
+            else if (PetState == Phase_Spray_Mode1)
             {
-                Spray();
+                Spray(0);
             }
-            if (PetState != 3)
+            else if (PetState == Phase_Spray_Mode2)
             {
-                solution = solution_Actually = new Item();
+                Spray(1);
+            }
+            else if (PetState == Phase_StopSpray)
+            {
+                StopSpray();
             }
         }
     }

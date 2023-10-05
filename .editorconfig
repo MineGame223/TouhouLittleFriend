@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# IDE0059: 不需要赋值
+dotnet_diagnostic.IDE0059.severity = warning
