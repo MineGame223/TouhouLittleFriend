@@ -12,28 +12,6 @@ namespace TouhouPets.Content.NPCs
 {
     public class YukariPortal : ModNPC
     {
-        private int currentframe
-        {
-            get
-            {
-                return NPC.frame.Y;
-            }
-            set
-            {
-                NPC.frame.Y = value;
-            }
-        }
-        private int tick
-        {
-            get
-            {
-                return (int)NPC.frameCounter;
-            }
-            set
-            {
-                NPC.frameCounter = value;
-            }
-        }
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 15;
@@ -165,11 +143,11 @@ namespace TouhouPets.Content.NPCs
         public override void FindFrame(int frameHeight)
         {
             NPC.frame.Width = 32;
-            int frame = currentframe / frameHeight;
-            tick++;
-            if (tick >= 5)
+            int frame = NPC.frame.Y / frameHeight;
+            NPC.frameCounter++;
+            if (NPC.frameCounter >= 5)
             {
-                tick = 0;
+                NPC.frameCounter = 0;
                 frame++;
             }
             if (NPC.ai[3] < 0)
@@ -187,7 +165,7 @@ namespace TouhouPets.Content.NPCs
                     frame = 0;
                 }
             }
-            currentframe = frame * frameHeight;
+            NPC.frame.Y = frame * frameHeight;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

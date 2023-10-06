@@ -1,362 +1,362 @@
 Mods: {
 	TouhouPets: {
 		Chat_Kogasa: {
-			Chat1: 略略略略~
-			Chat2: 吓你一跳！
+			Chat1: relo relo~
+			Chat2: BOO!
 		}
 
 		Chat_Cirno: {
-			Chat1: 今天该冻点什么呢...
-			Chat2: 琪露诺天下无敌！
-			Chat3: 我是最强的！
-			Chat4: 最喜欢大酱了！
-			Chat6: 1+1=...多少来着，⑨？
-			Chat7: 热死了...要化了...
-			Chat8: 好多青蛙啊！
-			Chat9: 大酱别怕，有我在！
-			Chat10: 大酱去哪儿我就去哪儿！
-			Chat11: 我没事...大概...
+			Chat1: What should I freeze today...
+			Chat2: Cirno is invincible!
+			Chat3: I'm the strongest!
+			Chat4: Like Dai-chan most!
+			Chat6: 1+1=... What, ⑨?
+			Chat7: So hot... I'm gonna melting...
+			Chat8: So many frogs!
+			Chat9: Don't be afraid, Dai-chan. I'm here!
+			Chat10: Where Dai-chan goes, where I go!
+			Chat11: I'm OK... maybe...
 		}
 
 		Chat_Daiyousei: {
-			Chat1: 你..你好！
-			Chat2: 今天去哪里玩？
-			Chat3: ...最喜欢琪露诺酱了！
-			Chat4: 琪露诺酱，今天去哪里玩？
-			Chat5: 好...好可怕的地方！
-			Chat6: 琪露诺酱你没事吧...
-			Chat7: 我也最喜欢琪露诺酱！
-			Chat8: 嗯...我，我不怕！
+			Chat1: He... Hello!
+			Chat2: Where to play today?
+			Chat3: ...I like Cirno!
+			Chat4: Where will we go today Cirno-chan?
+			Chat5: What... what a horrible place!
+			Chat6: Are you OK Cirno-chan?...
+			Chat7: Me too!
+			Chat8: Eh...I, I don't afraid that!
 		}
 
 		Chat_Flandre: {
-			Chat1: 你能陪芙兰一起玩嘛？
-			Chat2: 芙兰想要和你一起玩！
-			Chat3: 芙兰喜欢姐姐，但姐姐总是不理会芙兰...
-			Chat4: 好吃的！
-			Chat5: 芙兰喜欢的东西...
-			Chat6: 姐姐？叫芙兰有什么事嘛？
-			Chat7: ...姐姐什么时候能和芙兰一起玩...
-			Chat8: 姐姐老是这么说...
+			Chat1: Can you playing with me?
+			Chat2: I want to play with you!
+			Chat3: I'm not detest my sister, but she always doesn't react me
+			Chat4: Delicious!
+			Chat5: The thing what I like...
+			Chat6: Sister? what's the matter?
+			Chat7: ...When can sister play with me...
+			Chat8: You always say so...
 		}
 
 		Chat_Remilia: {
-			Chat1: 人类，臣服于我！
-			Chat2: 终有一日世界将化为红魔之乡！
-			Chat3: 嗯...温度还差点...
-			Chat4: 感觉味道可以再浓一些...
-			Chat5: 多么美妙的夜晚！
-			Chat6: 我亲爱的芙兰哟...
-			Chat7: 没什么...只是想叫你一下
-			Chat8: 有空会陪你的啦~
-			Chat9: 芙兰不能总是依赖姐姐哦
-			Chat10: 嗯？帕琪？有啥事么？
-			Chat11: 哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰
-			Chat12: 当然了，帕琪你也要多出来走走嘛
+			Chat1: Human, submit to me!
+			Chat2: This world will finally be the homeland of scarlet devil in one day!
+			Chat3: Eh...The temperature is almost there...
+			Chat4: The taste should be a bit thicker...
+			Chat5: What a awesome night!
+			Chat6: My dear Flandre...
+			Chat7: Nothing...Just want to give you a call
+			Chat8: I will do when I have free time~
+			Chat9: You can't always rely on your sister~
+			Chat10: What's the matter, Patchi?
+			Chat11: Haha, that's all lies. The vampire afraid the cross just is human's imagination.
+			Chat12: Of course, Patchi. You really should go out more.
 		}
 
 		Chat_Patchouli: {
-			Chat1: 不想动...
-			Chat2: 是没读到过的内容呢...
-			Chat3: 这里...似乎和我之前了解的不太一样？
-			Chat4: 有意思的东西...
-			Chat5: ...真的是这样吗？
-			Chat6: 唔...蕾咪？
-			Chat7: 上次看到哪儿了来着...?
-			Chat8: 咳...咳咳...
-			Chat9: 你身为吸血鬼，为什么不像书里说的一样怕十字架？
-			Chat10: 好吧...看来书里说的不全是正确的。
-			Chat11: 不要...
-			Chat12: 最近魔理沙那家伙还安分么
-			Chat13: 她偷走的那好几本书也一直没还...
-			Chat14: ...一定要找她算账！
-			Chat15: 不不不，我去就行，我去就行...
-			Chat16: 不要！会累死人的...
-			Chat17: 一点都不必要，我现在挺好的...咳咳！咳！
-			Chat18: ...我真的很好！
-			Chat19: 是关于如何烹饪中餐的书...
-			Chat20: 是关于人类中世纪历史的书...
-			Chat21: 是关于世界未解之谜的书...
-			Chat22: 是关于网络工程的书...
-			Chat23: 是关于量子力学的书...
-			Chat24: 是关于有机化学的书...
-			Chat25: 是关于经济管理的书...
-			Chat26: 是关于食品科学的书...
-			Chat27: 是关于动物医学的书...
-			Chat28: 是关于风景园林的书...
-			Chat29: 是关于...什么...上海爱丽丝幻乐团的书？...
-			Chat30: 是关于土木工程的书...
-			Chat31: 是关于内科医学的书...
-			Chat32: 是关于植物保护的书...
-			Chat33: 是关于高等数学的书...
-			Chat34: 是关于自动化系统的书...
-			Chat35: 是关于心理学的书...
+			Chat1: I don't want to move...
+			Chat2: Is the content that haven't read...
+			Chat3: Here...Seems like is different than what I know?
+			Chat4: Interesting...
+			Chat5: ...Is that real?
+			Chat6: Hey...Remi?
+			Chat7: What page have I read last time...?
+			Chat8: *cough...*cough...
+			Chat9: You are a vampire, but why don't you afraid the cross just like what the book says?
+			Chat10: Well...Looks like what book says is not always right.
+			Chat11: Nope...
+			Chat12: Has Marisa keep her nose clean recently?
+			Chat13: She never returns the book she stole from me too...
+			Chat14: ...We have to give her a lesson!
+			Chat15: No no no! let me do, just let me do...
+			Chat16: NO! I will tire to death!...
+			Chat17: That's really unnecessary, I'm pretty fine now...*A-choo!
+			Chat18: ...I'M REALLY OK!
+			Chat19: Is a book about how to cook Chinese food...
+			Chat20: Is a book about human's history of Middle Ages...
+			Chat21: Is a book about world's uncovered mysteries...
+			Chat22: Is a book about network engineering...
+			Chat23: Is a book about quantum mechanics...
+			Chat24: Is a book about organic chemistry...
+			Chat25: Is a book about economy management...
+			Chat26: Is a book about food science...
+			Chat27: Is a book about animal medicine...
+			Chat28: Is a book about landscape architecture...
+			Chat29: Is a book about... What? Team Shanghai Alice?...
+			Chat30: Is a book about civil engineering...
+			Chat31: Is a book about internal medicine...
+			Chat32: Is a book about plant protection...
+			Chat33: Is a book about advanced mathematic...
+			Chat34: Is a book about automate management...
+			Chat35: Is a book about psychology...
 		}
 
 		Chat_Hecatia: {
-			Chat1: 司掌三界之地狱，有时候还真是个苦差事呢...
-			Chat2: 我的穿搭是无可挑剔的...真的会有人不喜欢么？
+			Chat1: Manage three world's hell, sometimes would be a troublesome work...
+			Chat2: My clothing style is impeccable...Is anyone really wouldn't like it?
 		}
 
 		Chat_Piece: {
-			Chat1: 啦啦啦~啦~ 今天要在哪儿恶作剧呢...
-			Chat2: 那儿看起来像是个点火的好地方。
-			Chat3: 主人大人的着装当然是最时尚的啦！
+			Chat1: Lalala~ la~ Where to trick today...
+			Chat2: Looks like there's a good place to set fire...
+			Chat3: Master's clothing is the best of course!
 		}
 
 		Chat_Hina: {
-			Chat1: 今天你过得怎样？
-			Chat2: 愿灾厄不再扩散...
-			Chat3: 转啊转啊转...
+			Chat1: How do you do today?
+			Chat2: May the unfortune never appear...
+			Chat3: Turn and turn...
 		}
 
 		Chat_Iku: {
-			Chat1: 月亮被诅咒侵蚀，鲜血染红大地...
-			Chat2: 太阳被月亮遮蔽，妖魔四处横行...
-			Chat3: 风沙肆虐...
-			Chat4: 粘稠生物正从天而降
-			Chat5: 希望今天也是相安无事的一天
-			Chat6: 世界充满着欢快的气氛
-			Chat7: 和平的光芒从四周升起
-			Chat8: 气候并没有什么特别的变化
-			Chat9: 和煦的微风吹拂着大地
-			Chat10: 今天的风甚是清爽
-			Chat11: 风在奔涌
-			Chat12: 清爽的雨水洗涤着万物
-			Chat13: 风暴将至...
-			Chat14: 猛烈的风雨正在席卷大地
-			Chat15: 一定是龙神在发怒了...
-			Chat16: 天女大人您还是安分点吧...
+			Chat1: The moon is cursed and the land is blooded...
+			Chat2: The sun is blocked by the moon, now monsters are everywhere...
+			Chat3: The sandstorm is raging...
+			Chat4: Slimly creatures are dropping from the sky
+			Chat5: Wish today would be peaceful
+			Chat6: The whole world is happy
+			Chat7: Light of peace is rising from surrounding
+			Chat8: The climate is stable
+			Chat9: Warm breeze crossover the land
+			Chat10: Today's wind is so clean
+			Chat11: The wind is flushing
+			Chat12: Cool rain is cleaning the dirt
+			Chat13: The storm is approaching...
+			Chat14: Violent storm is crashing the earth
+			Chat15: The dragon god must be infuriated...
+			Chat16: Please be quite, Tenshin sama...
 		}
 
 		Chat_Tenshin: {
-			Chat1: 我要向你们证明，我是很强的！
-			Chat2: 今天也要大干一场！
-			Chat3: 天界太无聊了...所以本天人特别下凡来照顾一下你们地上人！
+			Chat1: I'm gonna to prove to you all that I'm the most powerful!
+			Chat2: Let's make a big bang today!
+			Chat3: The heaven is too boring...So, So, I the great celestial get down to here to give you a care!
 		}
 
-		Chat_Junko.Chat1: 嫦娥啊，你看到了吗...
+		Chat_Junko.Chat1: Have you see that, Chang E?...
 
 		Chat_Marisa: {
-			Chat1: 今天要试试哪种魔法呢...
-			Chat2: 嘿，那个东西好像很值得收藏...
-			Chat3: 你喜欢星星吗？
-			Chat4: 今天天气不错Da⭐ze！
-			Chat5: 天上好多星星啊！
-			Chat6: 嘿，嘿，灵梦。
-			Chat7: 今天的天象不太正常...
-			Chat8: 我今天找到了一个很有意思的东西！
-			Chat9: 不是啦...是一颗落星！货真价实的星星欸！
-			Chat10: 但这颗星星要更闪亮一些啊，你不觉得吗？
-			Chat11: 欸嘿嘿嘿...
-			Chat12: 哎呀，人家的事情那能叫偷嘛？那叫借啦！
-			Chat13: 放心，死了以后保证还给你！
-			Chat14: 下次一定！
+			Chat1: Try what kind of magic today?...
+			Chat2: That thing looks worthy to collect...
+			Chat3: Do you like star?
+			Chat4: What a nice day Da⭐ze!
+			Chat5: So many stars in the sky!
+			Chat6: Hey, hey. Reimu?
+			Chat7: Today is abnormal...
+			Chat8: I just found an interesting thing!
+			Chat9: No no...Is a fallen star! A REAL star!
+			Chat10: But it looks more shine, isn't it?
+			Chat11: Hey hey...
+			Chat12: Ah, Should it called 'steal'? it should called 'borrow'!
+			Chat13: Take it easy, the deadline is my dead-day!
+			Chat14: Then next next time!
 		}
 
 		Chat_Reimu: {
-			Chat1: 今天也很闲呢...
-			Chat2: 谁可以给我投点钱啊...
-			Chat3: 说麻烦麻烦就到...
-			Chat4: 啧，看来有“异变”出现了...
-			Chat5: ...咋了？
-			Chat6: 是什么？不会又是从图书馆偷来的书吧...
-			Chat7: ...那东西不是一到夜晚满地都是么？
-			Chat8: 不觉得，一定是你又闲得慌了...
-			Chat9: 给我适可而止啊喂！
-			Chat10: 这是“异变”啊...
+			Chat1: Today is idle too...
+			Chat2: Somebody give me some money please...
+			Chat3: Trouble always comes when you speak of it...
+			Chat4: Tut, looks like a 'mutation' is coming...
+			Chat5: ...What?
+			Chat6: What it is? Don't tell me is the book you stole from Patchouli...
+			Chat7: ...That thing has a lot during the night...
+			Chat8: I don't think so, You must be boring again...
+			Chat9: JUST ENOUGH!
+			Chat10: Is a 'mutation'...
 		}
 
 		Chat_Nitori: {
-			Chat1: 河童科技天下第一！
-			Chat2: 想啃根黄瓜...
-			Chat3: 要参加河童市场吗？
+			Chat1: Kappa technology No.1!
+			Chat2: Shall I eat a cucumber now?...
+			Chat3: Wanna join the kappa's market?
 		}
 
 		Chat_Sanae: {
-			Chat1: 我将永远追随两位大人...
-			Chat2: 在这里，可不能被常识束缚啊！
-			Chat3: 偶尔也会怀念过去的日子...啊啊，当下才最重要啊！
-			Chat4: 加入守矢神社，信仰伟大的乾神和坤神吧！
-			Chat5: 感受风的气息！
+			Chat1: I'll follow the two dear gods forever...
+			Chat2: You shouldn't just stick on common sense here!
+			Chat3: Sometimes I will miss the old days...Ah, what the important is present!
+			Chat4: Join the Moriya Shrine, and believe in Kanako sama and Suwako sama!
+			Chat5: Feel the wind!
 		}
 
 		Chat_Sekibanki: {
-			Chat1: 独来独往...
-			Chat2: 请不要随便和我说话...
-			Chat3: 一直以来我都穿着斗篷，
-			Chat4: 因为我不喜欢被人类认出是妖怪，
-			Chat5: 人类不喜欢妖怪，我也不怎么想亲近人类...
-			Chat6: ...好吧，除了你
-			Chat7: ...我将超越一切！
-			Chat8: 超——变——身——！！！
+			Chat1: Being alone...
+			Chat2: Please don't always talking to me...
+			Chat3: I wear this cape all long,
+			Chat4: Because I don't want to looks like a youkai
+			Chat5: Human don't like youkai, and I don't want to get close to them too...
+			Chat6: ...Well, excapet you
+			Chat7: ...I'll get over all!
+			Chat8: CHO——HEN——SHIN——! ! !
 			Chat9: ......
-			Chat10: ...呃，你什么都没听见
+			Chat10: ...Eh, you heard nothing
 		}
 
 		Chat_Koishi: {
-			Chat-1: 喂喂？
-			Chat-2: 是我，恋啊...
-			Chat-3: 我现在就在你背后哦...
-			Chat1: 恋可以和你一起玩吗？
-			Chat2: 我要把你挂到地灵殿门口去当——当什么好呢...
-			Chat3: 想要玩心跳大冒险吗？
-			Chat4: 你有在注意恋吗？
-			Chat5: 就算是姐姐，也不知道恋在想什么哦。
+			Chat-1: Moshi moshi?
+			Chat-2: It's me, Koishi...
+			Chat-3: I'm at your back...
+			Chat1: Can I play with you?
+			Chat2: I'll put your body on to!... To where?
+			Chat3: Wanna play Doki Doki Adventure?
+			Chat4: Have you noticed me?
+			Chat5: Even my sister doesn't know what I'm thinking
 		}
 
 		Chat_Satori: {
-			Chat1: 让我看看你在想什么...
-			Chat2: 想起了有意思的事情...
-			Chat3: 你的内心好单纯啊，除了打架就是搜刮...
-			Chat4: 姐姐现在就在看着你呢...
-			Chat5: 阿燐也是我最喜欢的猫咪哦
-			Chat6: 阿空也是我最喜欢的乌鸦哦
-			Chat7: 别担心啦
+			Chat1: Let me see what you are thinking now...
+			Chat2: I thought some interesting things...
+			Chat3: Your mind is so simple, beside battling, only have robbing...
+			Chat4: I'm watching you now...
+			Chat5: Rin is my favorite cat too
+			Chat6: Utsuho is my favorite crow too
+			Chat7: Don't worry me
 		}
 
 		Chat_Rin: {
-			Chat1: 今天也有新的尸体呢...
-			Chat2: 咱最擅长和鬼魂打交道了！
-			Chat3: 喵？
-			Chat4: 地狱，怨灵狂欢！
-			Chat5: 觉大人最好了！
-			Chat6: 今天觉大人有好好吃饭吗？
-			Chat7: 阿空，今天也要好好干活啊！
+			Chat1: Today got new corpse too...
+			Chat2: I'm good at getting alone well with ghost!
+			Chat3: Meow?
+			Chat4: The underworld, wraith's orgy!
+			Chat5: Satori sama is the best!
+			Chat6: Is Satori sama eatting well today?...
+			Chat7: Just keep hardworking today, Utsuho!
 		}
 
 		Chat_Utsuho: {
-			Chat1: 我就是太阳！
-			Chat2: 发光发热！
-			Chat3: ...我刚刚要说啥来着？
-			Chat4: 简直就像回家了一样！
-			Chat5: 觉大人最好了！
-			Chat6: 放心交给我吧！
+			Chat1: I am the sun!
+			Chat2: Glowing and burning!
+			Chat3: ...What I want to say just now?
+			Chat4: Here just like my home!
+			Chat5: Satori sama best ever!
+			Chat6: Take easy and leave to me!
 		}
 
 		Chat_Lily: {
-			Chat1: 只要有我在，哪里都可以是春天哦！
-			Chat2: 人家是春天的使者！
-			Chat3: 春天是最适合玩耍的时候了！
+			Chat1: Everywhere could be spring just if I'm in!
+			Chat2: Lily is spring bringer!
+			Chat3: Spring is the best time to play!
 		}
 
 		Chat_Mystia: {
-			Chat1: 迷失在夜雀的歌声中吧~
-			Chat2: 什么时候再在兽道上开店呢...
-			Chat3: 啦啦啦、啦~~
-			Chat4: 人家不好吃也不能吃！
-			Chat5: （她在吟唱你听不懂、但听起来很圣洁的歌曲）
-			Chat6: （她在吟唱你听不懂、但听起来很欢快的歌曲）
-			Chat7: （她在吟唱你听不懂、但听起来很舒缓的歌曲）
-			Chat8: （她在吟唱你听不懂、但听起来很悲伤的歌曲）
-			Chat9: 挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
+			Chat1: Lost in nightbird's song~
+			Chat2: When can I open my izakaya again...
+			Chat3: Lalala, la~~
+			Chat4: I'm not tasty and you can't eat me too!
+			Chat5: (She is singing a song that you don't understand but seems holy)
+			Chat6: (She is singing a song that you don't understand but seems frisky)
+			Chat7: (She is singing a song that you don't understand but seems leisurely)
+			Chat8: (She is singing a song that you don't understand but seems sorrow)
+			Chat9: Up above the world so high~ Like a diamond in... Wait bug doesn't look like diamond!
 		}
 
 		Chat_Wriggle: {
-			Chat1: 一闪一闪亮晶晶~满天都是小蜻蜓~
-			Chat2: 在过去虫族可是令人畏惧的存在！
-			Chat3: 堂堂虫族后裔竟沦落至此...实在是不甘心呐！
-			Chat4: 也就在这里能见到萤火虫了吧...
-			Chat5: 虫儿飞~虫儿飞~你在...呃，还是算了...
-			Chat6: ...冻死虫了...
-			Chat7: 想不想体验一下“昆虫提醒”服务？
-			Chat8: 蜘蛛不属于昆虫，蜈蚣和蝎子也不是，你最好能记住
-			Chat9: “蛛丝马迹”的“马”说的可是灶马而不是那种马！
-			Chat10: 你知道萤火虫只会出现在环境优美的地方吗？
+			Chat1: Twinkle twinkle little bug~ How I wonder what you are~
+			Chat2: Bug is a horrifying being in the past!
+			Chat3: The great bugs are falling now... That's unacceptable!
+			Chat4: Only in here can you see the firefly...
+			Chat5: Happy bugs day to you~ happy bugs day to you~...Ugh, forget it anyway
+			Chat6: ...TOO COLD...
+			Chat7: Wanna enjoy 'Bug Service'?
+			Chat8: Spider is not a insect, scorpion and centipede is not too. Remember?
+			Chat9: Can you identify bee, wasp and hornet?
+			Chat10: Do you know that firefly only appears in clean place?
 		}
 
 		Chat_Aya: {
-			Chat1: 今天的风儿甚是喧嚣啊！
-			Chat2: 你能追上我的速度吗？
-			Chat3: 素材素材...今天的素材在哪里...
-			Chat4: 我可不是什么“无良记者”，我只是稍微加了点修饰而已
-			Chat5: 搞个大新闻！
-			Chat6: 上好的新闻材料啊！
-			Chat7: 今天的报道有着落了！
-			Chat8: 完美！
+			Chat1: Today's wind is so noisy!
+			Chat2: Can you reach my speed?
+			Chat3: material...Where is today's material...
+			Chat4: I'm not a 'fake news maker', I just make it a little bit 'exaggerate'
+			Chat5: Make s BIG news!
+			Chat6: What an excellent news material!
+			Chat7: Today's report gocha!
+			Chat8: Perfect!
 		}
 
 		Chat_Yuyuko: {
-			Chat1: 生亦好、死也罢，不过都是场轮回。可惜与我无关...
-			Chat2: 无论生死，能简单快乐地存在着大概就是件美事吧
-			Chat3: 待到西行樱绽放之时，就...就会发生什么来着？
-			Chat4: 待会儿吃点什么呢？
-			Chat5: 我开动啦！
-			Chat6: 好吃的！
-			Chat7: 谢谢款待！
-			Chat5-1: 好饿...
-			Chat6-1: 亡灵也要吃饭，快把好吃的端上来吧！
-			Chat7-1: 什么时候开饭呢？
-			Chat8: 妖梦酱，今天晚上吃什么？
-			Chat9: 妖梦酱有为未来做过打算嘛？
-			Chat10: 妖梦酱果然还是太单纯了呀~以后再聊吧
+			Chat1: Whether is die or live, it is just a cycle, but it is not related to me...
+			Chat2: It would be nice to exist simply and happily despite dead or alive
+			Chat3: When the Sakura blooming, then it will happen...What 'it' is?
+			Chat4: What to eat later?
+			Chat5: The food!
+			Chat6: Delicious!
+			Chat7: Thank you!
+			Chat5-1: Hungry...
+			Chat6-1: Ghost need food too, just take it quickly!
+			Chat7-1: When is dinner time?
+			Chat8: Youmu-chan, what we eat tonight?
+			Chat9: Have Youmu-chan make any plan about the future?
+			Chat10: Youmu-chan is as simple as I thought, just talk this later
 		}
 
 		Chat_Youmu: {
-			Chat1: 管理庭院、驱逐闯入者，不过是每天的家常便饭...
-			Chat2: 希望幽幽子大人能吃饱每一顿
-			Chat3: 发现敌人！
-			Chat4: 这里...好可怕...
-			Chat5: ...那里是不是有鬼？！
-			Chat6: 欸？只要伺候幽幽子大人就行了吧...
-			Chat7: 唔...不太能理解...
-			Chat8: 幽幽子大人您五分钟之前刚吃过饭
-			Chat9: 可是幽幽子大人您已经死了啊，也不会复生
-			Chat10: 只要能待在幽幽子大人身旁，我就很知足了！
+			Chat1: Manage the yard and drive out invaders, There are just my daily work...
+			Chat2: Wish Yuyuko sama eats enough every time
+			Chat3: ENEMY FOUND!
+			Chat4: Here...so scary...
+			Chat5: ...IS THERE A GHOST?!
+			Chat6: Eh? Just take good care of Yuyuko sama is enough...
+			Chat7: Ah...I can't understand...
+			Chat8: You just ate a meal before 5 minutes, Yuyuko sama
+			Chat9: But you are already dead, Yuyuko sama! You can't reborn too
+			Chat10: I'm content that I can stay with Yuyuko sama
 		}
 
 		Chat_Alice: {
-			Chat1: 最近人偶损坏的有点快了呢...
-			Chat2: 要不要再多做几个人偶
-			Chat3: 就算成为魔法使，旧时的习惯也改不掉啊
-			Chat4: 我说，你上次偷走的我的蘑菇什么时候能还我？
-			Chat5: 别在这里耍嘴皮子了！给我个期限啊
-			Chat6: ...你还是别还了...下次不许再偷了！
-			Chat7: 你！......
-			Chat8: 别说了，上次刚顺走我一瓶魔药
-			Chat9: ...一定要找她算账！
-			Chat10: ...？还是我去找她吧，就不麻烦你了...
+			Chat1: Recently puppets are easily to worn out...
+			Chat2: Should I make some puppets more?
+			Chat3: I just can't give up old time's habits even I'm already a mage
+			Chat4: Marisa, when can you give me my mushroom that you stole from me?
+			Chat5: Stop joking and give me a clear deadline
+			Chat6: ...You better not do so...There is no next time!
+			Chat7: YOU!......
+			Chat8: God she just stole one of my potions last time
+			Chat9: ...We have to give her a lesson!
+			Chat10: ...? Just let me to find her, you don't need to trouble yourself...
 		}
 
 		Chat_Rumia: {
-			Chat1: 是~这样吗？
-			Chat2: 黑暗，喜欢！阳光，讨厌！
-			Chat3: 我可以咬你一口吗？就一口
-			Chat4: 你看我这样像不像十字架上的圣人？
-			Chat5: 你在哪里啊？好黑哦...
-			Chat6: 好晒哦...
+			Chat1: So~ nanoka?
+			Chat2: Dark, like! Light, hate!
+			Chat3: Can I bite you? Only this time
+			Chat4: Am I looks like a saint on the cross?
+			Chat5: Where are you? it is so dake...
+			Chat6: Too sunny...
 		}
 
 		Chat_Koakuma: {
-			Chat1: 小恶魔{0}号，为您服务！
-			Chat2: 不知道其他同伴们都还好么...
-			Chat3: 请问有什么吩咐？
-			Chat4: 帕秋莉大人！该锻炼身体啦！
-			Chat5: 为了您的健康着想，这很必要的哦！
-			Chat6: 帕秋莉大人在看什么？
-			Chat7: 好像很有趣啊！
+			Chat1: Koakuma No.{0}, at your service!
+			Chat2: Are my fellows fine?...
+			Chat3: Any thing I can do?
+			Chat4: Time to do exercise, Patchouli sama!
+			Chat5: It is necessary for your health!
+			Chat6: What are you reading Patchouli sama?
+			Chat7: Sounds interesting!
 		}
 
 		Chat_Wakasagihime: {
-			Chat1: 人家虽然是鱼，也不是不能离开水哦
-			Chat2: 你说咸鱼？人家是淡水鱼！
-			Chat3: 人家才不是什么“鱼脑”！...
-			Chat4: 咕噜咕噜~
+			Chat1: Although I'm a fish, I can leave water as well
+			Chat2: I'm a freshwater fish!
+			Chat3: I'm not a 'fish brain'!...
+			Chat4: *purr purr~
 		}
 
 		Chat_Yuka: {
-			Chat1: 百花齐放永远都是最美丽的时刻
-			Chat2: 又是安宁且无聊的一天...
-			Chat3: 每一朵花都有一个短暂而绚烂的一生，你最好不要破坏它
+			Chat1: The most beautiful time always is the time when all flowers blossom
+			Chat2: Another peaceful and boring day...
+			Chat3: Every flower has a short and colorful life, you'd better don't bother them
 			Chat4: _
 			Chat5: _
 		}
 
 		Chat_Portal: {
-			Chat1: 嘿，嘿...既然你已经找到这个了，为何不试着在你们那个被称为‘闲鱼’的互联网应用上，搜索一下‘二十世纪NEKO’呢？我让他们准备了很多精致的小玩意儿，来看一下吧，就当是为了幻想乡。
-			Chat2: 在这里留下一点钱财，然后带走一个小玩意儿，为幻想乡的存续做出一份贡献吧。
-			Chat3: 想要拥有一个贴身小伴侣吗？为什么不在这里看看呢？
-			Chat4: 你今后的人生可能与幻想乡毫无干系，但你此刻的举动将会关乎幻想乡的存亡...我是说，买点东西吧？
+			Chat1: Hey, if you find this, why don't you buy something? All for the Gensokyo
+			Chat2: Leave some coin here and take your favorite gift. Just do something for Gensokyo's exist
+			Chat3: Want to have a cute partner? Why don't look here!
+			Chat4: Your later life may have no relationship with the Gensokyo, but what you do now will influence Gensokyo's fate...I mean, buy something?
 		}
 
 		Chat_Template: {

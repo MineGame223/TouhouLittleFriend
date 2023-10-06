@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
@@ -305,7 +306,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatBaseY = -24;
                 chatScale = 0f;
                 chatText = chat;
-                ChatTimeLeft = chat.Length * timeLeftPreWord;
+                ChatTimeLeft = Math.Clamp(chat.Length * timeLeftPreWord, 0, 600);
                 chatColor = color;
                 chatLag = lag;
             }
