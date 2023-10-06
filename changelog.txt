@@ -1,3 +1,4 @@
+v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 
 注意：
 从v1.0.6版本起本模组将不再支持英文版更新日志

@@ -46,7 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Color clr = Projectile.GetAlpha(Color.Black);
             Vector2 orig = tex.Size() / 2;
             for (int i = 0; i < 3; i++)
-                Main.spriteBatch.TeaNPCDraw(tex, pos, null, clr * darkAuraScale, 0f, orig, darkAuraScale * 1.7f * Main.essScale, SpriteEffects.None, 0);
+                Main.spriteBatch.TeaNPCDraw(tex, pos, null, clr * darkAuraScale, 0f, orig, darkAuraScale * 1.2f * Main.essScale, SpriteEffects.None, 0);
         }
         private void Blink()
         {
@@ -70,7 +70,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         float darkAuraScale;
         private void Darkin()
         {
-            Projectile.velocity *= 0.7f;
             if (++Projectile.frameCounter > 7)
             {
                 Projectile.frameCounter = 0;
@@ -81,6 +80,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame >= 1 && Projectile.frameCounter > 4 || Projectile.frame >= 2)
                 {
                     darkAuraScale = Math.Clamp(darkAuraScale + 0.03f, 0, 1);
+                    if (darkAuraScale > 0.36f)
+                        Projectile.scale -= 0.02f;
                 }
                 if (Projectile.frame > 2)
                 {
@@ -96,6 +97,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
             {
                 darkAuraScale = Math.Clamp(darkAuraScale - 0.01f, 0, 1);
+                if (Projectile.scale < 1)
+                    Projectile.scale += 0.05f;
                 if (darkAuraScale > 0.3f)
                 {
                     Projectile.frame = 2;
@@ -130,7 +133,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override Color ChatTextBoardColor => Color.White;
         public override string GetChatText(out string[] text)
         {
-            text = new string[21];           
+            text = new string[21];
             if (PetState == 2)
             {
                 text[5] = ModUtils.GetChatText("Rumia", "5");
@@ -145,7 +148,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     text[6] = ModUtils.GetChatText("Rumia", "6");
                 }
-            }            
+            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -180,6 +183,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
+            Projectile.scale = Math.Clamp(Projectile.scale, 0, 1);
+
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<RumiaBuff>());
             UpdateTalking();
@@ -193,7 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 PetState = 1;
             }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 2 && extraAI[0] == 0)
+            if (mainTimer >= 600 && mainTimer < 3600 && PetState != 2 && extraAI[0] == 0)
             {
                 if (mainTimer % 600 == 0 && Main.rand.NextBool(1))
                 {
