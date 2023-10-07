@@ -250,7 +250,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p0, ModUtils.GetChatText("Reimu", "10"), myColor, 0, 600);
                 p0.ai[0] = 0;
-                talkInterval = 1200;
             }
             else if (FindChatIndex(out Projectile p1, type2, 6, default, 1, true))
             {
@@ -275,7 +274,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p5, ModUtils.GetChatText("Reimu", "9"), myColor, 0, 360);
                 p5.ai[0] = 0;
-                talkInterval = 600;
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
             {
@@ -387,10 +385,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState == 2 && player.AnyBosses())
             {
                 PetState = 0;
-            }
-            if (PetState != 2 && chatFuncIsOccupied)
-            {
-                chatFuncIsOccupied = false;
             }
         }
     }

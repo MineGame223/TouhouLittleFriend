@@ -194,7 +194,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p1, ModUtils.GetChatText("Utsuho", "6"), myColor, 6, 600);
                 p1.ai[0] = 0;
-                talkInterval = 1200;
             }
             if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
             {

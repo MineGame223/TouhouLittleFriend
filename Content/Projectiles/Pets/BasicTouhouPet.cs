@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 
@@ -24,7 +26,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         private int chatLag;
         /// <summary>
-        /// 主要计时器，从0增加至4799再重置并循环
+        /// 打字机式文本显示状态下，打印文本总共需要的时间（Projectile.ai[2]）
+        /// </summary>
+        private float totalTimeToType;
+        /// <summary>
+        /// 打字机式文本显示状态下，打印单个字符所需的时间
+        /// </summary>
+        private float timeToType;
+        /// <summary>
+        /// 主要计时器，从0增加至4800再重置并循环
         /// </summary>
         internal int mainTimer;
         /// <summary>
@@ -32,27 +42,25 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         internal int[] extraAI = new int[3];
         /// <summary>
-        /// 完成一次交互后的间隔，在大于0且 <see cref="ChatTimeLeft"/> 小于等于0时会一直减少至0
-        /// <br/>用途：两个宠物完成一次长交互后一段时间内不会再进行交互，主要为交互发起者设置
+        /// 完成一次交互后的间隔，在大于0且 <see cref="ChatTimeLeft"/> 小于等于0时会一直减少至0       
+        /// <br/>用途：主要为交互发起者设置。一般而言两个宠物完成一次长交互后一段时间内不会再进行交互。交互发起者在发起长交互前
+        /// 先检查一次talkInterval是否为0，随后发起交互。在属于交互发起者的最后一句结束时设置talkInterval，以防止宠物在短时间内
+        /// 重复该交互
+        /// <br/>!--该属性不会自动设置与检测，需要手动执行
         /// </summary>
         internal int talkInterval;
         /// <summary>
         /// 对话功能是否已被占用
         /// <br/>当返回true时，大部分对话属性都将被重置为初始值
+        /// <br/>!--该属性会反复重置
         /// </summary>
         internal bool chatFuncIsOccupied;
         /// <summary>
         /// 是否开启对话文字震动
         /// <br/>恋恋专用
-        /// <br/>记得在不用的时候改回 false
+        /// <br/>!--该属性会反复重置
         /// </summary>
         internal bool textShaking;
-        /// <summary>
-        /// 文本长度
-        /// <br/>恋恋专用
-        /// </summary>
-        private int textLength;
-        private int textLengthOriginal;
         /// <summary>
         /// 对话文本对应的索引值（Projectile.ai[0]）
         /// </summary>
@@ -86,48 +94,75 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[1];
             set => Projectile.localAI[1] = value;
         }
-        private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default)
+        private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default, bool typerStyle = false)
         {
-            if (boardColor == default)
-            {
-                boardColor = Color.Black;
-            }
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
                 return;
             }
+            if (boardColor == default)
+            {
+                boardColor = Color.Black;
+            }
+            DynamicSpriteFont font = FontAssets.MouseText.Value;
             float totalScale = 0.9f;
-            string[] array = Utils.WordwrapString(text, FontAssets.MouseText.Value, 240, 10, out int chatLine);
+            string _text = text;
+            if (typerStyle)
+            {
+                int textLength = (int)Math.Clamp(timeToType / (totalTimeToType / text.Length), 0, text.Length);
+                _text = text.Remove(textLength);
+            }
+            string[] array = Utils.WordwrapString(_text, font, 180, 10, out int chatLine);
             chatLine++;
             for (int i = 0; i < chatLine; i++)
             {
                 if (array[i] != null)
                 {
-                    Vector2 vector2 = FontAssets.MouseText.Value.MeasureString(array[i]);
-                    Vector2 orig = new Vector2(vector2.X * 0.5f, vector2.Y * 0.5f);
-                    if (textShaking)
+                    if (typerStyle)
                     {
-                        textLengthOriginal = text.Length;
-                        char[] array2 = text.ToCharArray();
-                        for (int l = 0; l < array.Length - textLengthOriginal + textLength; l++)
-                        {
-                            Vector2 offset = FontAssets.MouseText.Value.MeasureString(text);
-                            vector2 -= new Vector2(offset.X / 2, offset.Y / 2);
-                            string chara = array2[l].ToString();
-                            float xOffset = FontAssets.MouseText.Value.MeasureString(text.Remove(l)).X;
-                            ModUtils.MyDrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
-                                , chara, pos.X + orig.X / 8 + xOffset + Main.rand.Next(-2, 2)
-                                , pos.Y + orig.Y + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale + Main.rand.Next(-2, 2)
-                                , color * alpha, boardColor * alpha, orig, chatScale * totalScale);
-                        }
+                        chatBaseY = 0;
+                        chatScale = 1;
                     }
-                    else
-                    {
-                        Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
+                    Vector2 offset = font.MeasureString(array[i]);
+                    Vector2 orig = offset / 2;
+                    Utils.DrawBorderStringFourWay(Main.spriteBatch, font
                             , array[i], pos.X + orig.X / 8
-                            , pos.Y + orig.Y + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale - chatBaseY
+                            , pos.Y - 10 + orig.Y + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale - chatBaseY
                             , color * alpha, boardColor * alpha
                             , orig, chatScale * totalScale);
+                }
+            }
+        }
+        private void DrawChatPanel_Koishi(Vector2 pos, string text, Color color, float alpha, Color boardColor = default)
+        {
+            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
+            if (boardColor == default)
+            {
+                boardColor = Color.Black;
+            }
+            DynamicSpriteFont font = FontAssets.MouseText.Value;
+            float totalScale = 0.9f;
+            string[] array = Utils.WordwrapString(text, font, 240, 10, out int chatLine);
+            chatLine++;
+            for (int i = 0; i < chatLine; i++)
+            {
+                if (array[i] != null)
+                {
+                    Vector2 offset = font.MeasureString(array[i]);
+                    Vector2 orig = offset / 2;
+                    char[] array2 = text.ToCharArray();
+                    int textLength = (int)Math.Clamp(timeToType / (totalTimeToType / text.Length), 0, text.Length);
+                    for (int l = 0; l < array.Length - text.Length + textLength; l++)
+                    {
+                        string chara = array2[l].ToString();
+                        float xOffset = FontAssets.MouseText.Value.MeasureString(text.Remove(l)).X;
+                        ModUtils.MyDrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
+                            , chara, pos.X + orig.X / 8 + xOffset + Main.rand.Next(-2, 2)
+                            , pos.Y + orig.Y + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale + Main.rand.Next(-2, 2)
+                            , color * alpha, boardColor * alpha, orig, chatScale * totalScale);
                     }
                 }
             }
@@ -185,12 +220,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chatBaseY += 1.2f;
                     chatScale += 0.05f;
                     chatAlpha += 0.1f;
-                    ChatTimeLeft--;
+                    if (timeToType >= totalTimeToType)
+                        ChatTimeLeft--;
                 }
             }
             else
             {
-                textLength = 0;
                 chatBaseY = 0;
                 chatScale = 1;
                 ChatTimeLeft = 0;
@@ -229,6 +264,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chatAlpha = 1;
             }
+            if (chatAlpha > 0)
+                timeToType++;
+            timeToType = Math.Clamp(timeToType, 0, totalTimeToType);
             if (chatFuncIsOccupied)
             {
                 ChatIndex = 0;
@@ -237,14 +275,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 talkInterval = 0;
                 ChatCD = 0;
             }
+            chatFuncIsOccupied = false;
 
-            if (mainTimer % 30 == 0)
-                textLength++;
-
-            if (textLength > textLengthOriginal)
-            {
-                textLength = textLengthOriginal;
-            }
+            textShaking = false;
         }
         private string GetChatAndSetIndex(out int index)
         {
@@ -265,6 +298,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 设置要说的话
         /// <br/>当 <see cref="ChatTimeLeft"/> 或 <see cref="ChatCD"/> 大于0时不输出结果
+        /// <br/>!--执行时会执行一次netUpdate
         /// </summary>
         /// <param name="color">文本颜色</param>
         /// <param name="altText">指定文本</param>
@@ -272,7 +306,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="lag">说话前的延时</param>
         /// <param name="timeLeftPreWord">每个字符的剩余时间值；文本持续时间为该变量 * 字符数</param>
         /// <param name="breakTimeLimit">打破字符剩余时间的限制，默认情况下，当字符长度超过10个时，timeLeftPreWord上限为10</param>
-        internal void SetChat(Color color = default, string altText = default, int altIndex = 0, int lag = 0, int timeLeftPreWord = 20, bool breakTimeLimit = false)
+        /// /// <param name="typerTime">打字机模式打印文本所需总时长，默认为字符数 * 5且默认上限为240</param>
+        internal void SetChat(Color color = default, string altText = default, int altIndex = 0, int lag = 0, int timeLeftPreWord = 20, bool breakTimeLimit = false, float typerTime = -1)
         {
             if (ChatTimeLeft > 0 || ChatCD > 0)
             {
@@ -307,8 +342,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatScale = 0f;
                 chatText = chat;
                 ChatTimeLeft = Math.Clamp(chat.Length * timeLeftPreWord, 0, 600);
+                if (typerTime == -1)
+                {
+                    typerTime = Math.Clamp(chat.Length * 5, 0, 240);
+                }
+                timeToType = 0;
+                totalTimeToType = typerTime;
                 chatColor = color;
                 chatLag = lag;
+                Projectile.netUpdate = true;
             }
         }
         /// <summary>
@@ -323,13 +365,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="timeleft">每个字符的剩余时间值；文本持续时间为该变量 * 字符数</param>
         /// <param name="breakLimit">打破字符剩余时间的限制，默认情况下，当字符长度超过10个时，timeLeftPreWord上限为10</param>
         /// <param name="lag">说话前的延时</param>
-        internal void SetChatWithOtherOne(Projectile otherP, string text, Color color, int index, int cd, int cd2 = -1, int timeleft = 20, bool breakLimit = false, int lag = 20)
+        /// <param name="typerTime">打字机模式打印文本所需总时长</param>
+        internal void SetChatWithOtherOne(Projectile otherP, string text, Color color, int index, int cd, int cd2 = -1, int timeleft = 20, bool breakLimit = false, int lag = 20, int typerTime = -1)
         {
             if (ChatCD > 0)
             {
                 ChatCD = 0;
             }
-            SetChat(color, text, index, lag, timeleft, breakLimit);
+            SetChat(color, text, index, lag, timeleft, breakLimit, typerTime);
             ChatCD = cd;
             if (otherP != null)
                 otherP.localAI[1] = cd2 == -1 ? cd : cd2;
@@ -576,7 +619,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawStateNormalizeForPet();
             if (chatAlpha > 0 && Projectile.owner == Main.myPlayer)
             {
-                DrawChatPanel(Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20), chatText, chatColor, chatAlpha * Projectile.Opacity, ChatTextBoardColor);
+                Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
+                float alpha = chatAlpha * Projectile.Opacity;
+                if (textShaking)
+                {
+                    DrawChatPanel_Koishi(drawPos, chatText, chatColor, alpha, ChatTextBoardColor);
+                }
+                else
+                {
+                    DrawChatPanel(drawPos, chatText, chatColor, alpha, ChatTextBoardColor, true);
+                }
             }
             if (Projectile.isAPreviewDummy)
             {
@@ -588,11 +640,28 @@ namespace TouhouPets.Content.Projectiles.Pets
                 bool drawingForTest = false;
                 DrawStatePanelForTesting(drawingForTest, ChatCD + "," + ChatIndex + "," + chatLag + "," + ChatTimeLeft + "," + talkInterval, new Vector2(0, 0));
                 DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
+                DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
             }
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindProjectiles.Add(index);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            for (int i = 0; i < extraAI.Length; i++)
+            {
+                extraAI[i] = reader.ReadInt32();
+            }
+            chatText = reader.ReadString();
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            for (int i = 0; i < extraAI.Length; i++)
+            {
+                writer.Write(extraAI[i]);
+            }
+            writer.Write(chatText);
         }
     }
 }

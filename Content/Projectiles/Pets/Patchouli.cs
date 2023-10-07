@@ -190,7 +190,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 text[3] = ModUtils.GetChatText("Patchouli", "3");
                 text[4] = ModUtils.GetChatText("Patchouli", "4");
                 text[5] = ModUtils.GetChatText("Patchouli", "5");
-                if (talkInterval <= 0 && FindPetState(out Projectile _, ProjectileType<Remilia>(), 0) && !Main.dayTime)
+                if (FindPetState(out Projectile _, ProjectileType<Remilia>(), 0) && !Main.dayTime)
                 {
                     text[6] = ModUtils.GetChatText("Patchouli", "6");
                 }
@@ -244,7 +244,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p3, ModUtils.GetChatText("Patchouli", "11"), myColor, 0, 360, -1);
                 p3.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (FindChatIndex(out Projectile p4, type, 8, default, 1, true))
             {
@@ -260,7 +259,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0, 360);
                 p6.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (FindChatIndex(out Projectile p7, type3, 4, default, 1, true))
             {
@@ -273,8 +271,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (FindChainedChat(17))
             {
-                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "18"), myColor, 0, 360);                
-                talkInterval = 3600;
+                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "18"), myColor, 0, 360);
             }
             else if (FindChatIndex(out Projectile p9, type3, 6, default, 1, true))
             {

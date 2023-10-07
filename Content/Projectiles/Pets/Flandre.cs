@@ -226,7 +226,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p3, ModUtils.GetChatText("Flandre", "8"), myColor, 0, 360);
                 p3.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (PetState == 2 && mainTimer % 120 == 0 && Main.rand.NextBool(5) && mainTimer > 0)
             {
@@ -275,22 +274,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
             ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Remilia>()] > 0);
+            MoveToPoint(point, 19);
             if (HateSunlight())
             {
                 extraAI[0] = 0;
                 extraAI[1] = 0;
                 extraAI[2] = 0;
                 Projectile.rotation = 0f;
-                MoveToPoint(point, 36);
                 PetState = 0;
                 Projectile.frame = 10;
                 chatFuncIsOccupied = true;
                 return;
-            }
-            else
-            {
-                MoveToPoint(point, 19);
-                chatFuncIsOccupied = false;
             }
 
             if (mainTimer % 270 == 0 && PetState != 2)

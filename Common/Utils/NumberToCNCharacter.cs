@@ -1,6 +1,4 @@
-﻿
-
-using Terraria;
+﻿using Terraria;
 using Terraria.Localization;
 
 namespace TouhouPets
@@ -70,7 +68,8 @@ namespace TouhouPets
             }
             if (_tens <= 0)
             {
-                if (_hundred > 0 && _single <= 0)
+                if (_hundred > 0 && _single <= 0
+                    || _single > 0 && _hundred <= 0)
                     tensD = string.Empty;
             }
             if (_tens == 1 && _hundred > 0)
@@ -91,7 +90,7 @@ namespace TouhouPets
         public static string GetNumberText(int value)
         {
             string result = value.ToString();
-            if(Language.ActiveCulture.LegacyId== (int)GameCulture.CultureName.Chinese)
+            if (Language.ActiveCulture.LegacyId == (int)GameCulture.CultureName.Chinese)
             {
                 result = GetCNNumber(value);
             }

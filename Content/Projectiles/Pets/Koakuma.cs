@@ -123,7 +123,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 text[4] = ModUtils.GetChatText("Koakuma", "4");
             }
-            if (FindPetState(out _, ProjectileType<Patchouli>(), 2) && talkInterval <= 0)
+            if (FindPetState(out _, ProjectileType<Patchouli>(), 2))
             {
                 text[6] = ModUtils.GetChatText("Koakuma", "6");
             }
@@ -153,7 +153,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p2, ModUtils.GetChatText("Koakuma", "7"), myColor, 0, 360);
                 p2.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (mainTimer % 666 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
             {

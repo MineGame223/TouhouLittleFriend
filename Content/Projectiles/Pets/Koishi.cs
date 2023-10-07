@@ -170,7 +170,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    chatFuncIsOccupied = false;
                     if (extraAI[1] == 0 && ChatTimeLeft <= 0)
                     {
                         SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-1"), myColor, -1, cd: 60, -1, 60);
@@ -199,6 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (extraAI[0] == 1)
             {
+                textShaking = true;
                 Projectile.Opacity += 0.01f;
                 if (Projectile.Opacity < 1)
                 {
@@ -206,15 +206,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (extraAI[1] == 0 && Projectile.frame == 8)
                 {
-                    textShaking = true;
-                    SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-3"), Color.Red, -3, cd: 4, -1, 45);
+                    SetChat(Color.Red, ModUtils.GetChatText("Koishi", "-3"), -3, 0, 45, true, 300);
                     extraAI[1]++;
                 }
                 if (Projectile.frame > 10)
                 {
                     Projectile.frame = 9;
                 }
-                if (extraAI[1] > 0 && ChatCD <= 0)
+                if (extraAI[1] > 0 && ChatTimeLeft <= 0)
                 {
                     extraAI[0]++;
                     extraAI[1] = 0;
@@ -222,6 +221,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (extraAI[0] == 2)
             {
+                textShaking = true;
                 Projectile.frameCounter += 2;
                 if (Projectile.frame > 13)
                 {
@@ -363,14 +363,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (PetState == State_Kill)
             {
                 KillingPhoneCall();
-            }
-            if (PetState != State_Kill)
-            {
-                if (chatFuncIsOccupied && PetState != 3)
-                {
-                    chatFuncIsOccupied = false;
-                }
-                textShaking = false;
             }
         }
     }

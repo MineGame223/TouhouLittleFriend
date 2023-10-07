@@ -174,7 +174,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(185, 228, 255);
         public override string GetChatText(out string[] text)
         {
-            Player player = Main.player[Projectile.owner];
             text = new string[21];
             text[1] = ModUtils.GetChatText("Alice", "1");
             text[2] = ModUtils.GetChatText("Alice", "2");
@@ -206,17 +205,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (FindChatIndex(out Projectile p1, type, 12, default, 1, true))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Alice", "5"), myColor, 5, 600, -1, 9);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Alice", "5"), myColor, 5, 600);
             }
             else if (FindChatIndex(out Projectile p2, type, 13, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Alice", "6"), myColor, 6, 600, -1, 9);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Alice", "6"), myColor, 6, 600);
             }
             else if (FindChatIndex(out Projectile p3, type, 14, default, 1, true))
             {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Alice", "7"), myColor, 0, 360, -1);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Alice", "7"), myColor, 0, 360);
                 p3.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (FindChatIndex(out Projectile p4, type2, 12, default, 1, true))
             {
@@ -224,7 +222,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (FindChatIndex(out Projectile p5, type2, 13, default, 1, true))
             {
-                SetChatWithOtherOne(p5, ModUtils.GetChatText("Alice", "9"), myColor, 9, 600, -1, 20);
+                SetChatWithOtherOne(p5, ModUtils.GetChatText("Alice", "9"), myColor, 9, 600);
             }
             else if (FindChatIndex(out Projectile p6, type2, 14, default, 1, true))
             {

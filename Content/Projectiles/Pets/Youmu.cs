@@ -165,7 +165,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (PetState < 2)
                     SetChatWithOtherOne(p1, ModUtils.GetChatText("Youmu", "7"), myColor, 0, 600);
                 p1.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (FindChatIndex(out Projectile p2, type1, 4)
                 || FindChatIndex(out p2, type1, 8))

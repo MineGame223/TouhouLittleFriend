@@ -171,25 +171,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p1, ModUtils.GetChatText("Satori", "4"), myColor, 0, 600);
                 p1.ai[0] = 0;
-                talkInterval = 1200;
             }
             else if (FindChatIndex(out Projectile p2, type4, 5, default, 1, true))
             {
                 SetChatWithOtherOne(p2, ModUtils.GetChatText("Satori", "5"), myColor, 0, 600);
                 p2.ai[0] = 0;
-                talkInterval = 2400;
             }
             else if (FindChatIndex(out Projectile p3, type3, 5, default, 1, true))
             {
                 SetChatWithOtherOne(p3, ModUtils.GetChatText("Satori", "6"), myColor, 0, 600);
                 p3.ai[0] = 0;
-                talkInterval = 2400;
             }
             else if (FindChatIndex(out Projectile p4, type4, 6, default, 1, true))
             {
                 SetChatWithOtherOne(p4, ModUtils.GetChatText("Satori", "7"), myColor, 0, 600);
                 p4.ai[0] = 0;
-                talkInterval = 2400;
             }
             else if (mainTimer % 960 == 0 && Main.rand.NextBool(8))
             {

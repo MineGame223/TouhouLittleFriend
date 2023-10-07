@@ -177,7 +177,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 text[5] = ModUtils.GetChatText("Remilia", "5");
             }
-            if (talkInterval <= 0 && FindPetState(out Projectile _, ProjectileType<Flandre>(), 0))
+            if (FindPetState(out Projectile _, ProjectileType<Flandre>(), 0))
             {
                 text[6] = ModUtils.GetChatText("Remilia", "6");
             }
@@ -219,7 +219,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p6, ModUtils.GetChatText("Remilia", "9"), myColor, 0, 360, -1, 10);
                 p6.ai[0] = 0;
-                talkInterval = 600;
             }
             else if (FindChatIndex(out Projectile p1, type3, 6, default, 1, true))
             {
@@ -277,10 +276,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 11;
                 chatFuncIsOccupied = true;
                 return;
-            }
-            else
-            {
-                chatFuncIsOccupied = false;
             }
             if (mainTimer % 270 == 0 && PetState != 2)
             {

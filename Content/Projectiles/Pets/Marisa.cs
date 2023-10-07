@@ -145,7 +145,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 text[4] = ModUtils.GetChatText("Marisa", "4");
             if (player.ZoneForest && !Main.dayTime && Main.cloudAlpha == 0)
                 text[5] = ModUtils.GetChatText("Marisa", "5");
-            if (talkInterval <= 0 && (FindPetState(out Projectile _, ProjectileType<Reimu>(), 0, 1)
+            if ((FindPetState(out Projectile _, ProjectileType<Reimu>(), 0, 1)
                 || FindPetState(out Projectile _, ProjectileType<Reimu>(), 3, 4)))
             {
                 text[6] = ModUtils.GetChatText("Marisa", "6");
@@ -193,7 +193,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
                 p4.ai[0] = 0;
-                talkInterval = 3600;
             }
             else if (FindChatIndex(out Projectile p5, type, 4, default, 1, true))
             {

@@ -328,8 +328,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (PetState != 2)
             {
-                if (chatFuncIsOccupied)
-                    chatFuncIsOccupied = false;
                 if (auraScale > 0)
                 {
                     auraScale -= 0.01f;
