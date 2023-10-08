@@ -74,6 +74,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 blinkFrame = 10;
                 PetState = 0;
+                Projectile.netUpdate = true;
             }
         }
         int auraFrame, auraFrameCounter;
@@ -93,9 +94,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     float posX = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
                     float posY = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
+                    if (Projectile.owner == Main.myPlayer)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
                             , new Vector2(Main.rand.NextFloat(-8f, 8f), Main.rand.NextFloat(-8f, 8f)), ProjectileType<AliceDoll_Proj>(), 0, 0
                             , Main.myPlayer, Projectile.whoAmI, posX, posY);
+                    }
                 }
                 if (Projectile.frame > 3)
                 {
@@ -107,6 +111,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[1] = 0;
                     extraAI[0]++;
                     extraAI[2] = Main.rand.Next(400, 600);
+                    Projectile.netUpdate = true;
                 }
             }
             else if (extraAI[0] == 1)
@@ -115,9 +120,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     float posX = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
                     float posY = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
+                    if (Projectile.owner == Main.myPlayer)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
                             , new Vector2(Main.rand.NextFloat(-8f, 8f), Main.rand.NextFloat(-8f, 8f)), ProjectileType<AliceDoll_Proj>(), 0, 0
                             , Main.myPlayer, Projectile.whoAmI, posX, posY);
+                    }
                 }
                 if (Projectile.frame > 7)
                 {
@@ -138,6 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 240;
                     extraAI[2] = 0;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -250,16 +259,21 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(player, true);
             MoveToPoint(point, 12f);
-            if (mainTimer % 270 == 0 && PetState == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 600 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
-            {
-                if (mainTimer % 600 == 0 && Main.rand.NextBool(12) && Projectile.velocity.Length() <= 3f)
+                if (mainTimer % 270 == 0 && PetState == 0)
                 {
-                    PetState = 2;
-                    extraAI[2] = Main.rand.Next(400, 600);
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 600 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
+                {
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(12) && Projectile.velocity.Length() <= 3f)
+                    {
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(400, 600);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

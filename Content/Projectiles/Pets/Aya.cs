@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -102,19 +103,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                         extraAI[2]--;
                         if (extraAI[2] <= 0)
                         {
-                            extraAI[0]--;                            
+                            extraAI[0]--;
                             flashChance = 6;
                             extraAI[1] = 0;
                             extraAI[2] = Main.rand.Next(180, 600);
                             if (extraAI[0] > 1)
                             {
                                 Projectile.frame = 1;
-                                SetShotChat();                               
+                                SetShotChat();
                             }
                             else
                             {
                                 extraAI[2] = Main.rand.Next(30, 60);
                             }
+                            Projectile.netUpdate = true;
                         }
                     }
                 }
@@ -122,11 +124,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.frame = 3;
                     extraAI[1]++;
-                    if (extraAI[1] % 30 == 0 && Main.rand.NextBool(7 - flashChance))
+                    if (extraAI[1] % 30 == 0)
                     {
-                        flash = 1;
-                        flashChance -= 2;
-                        AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
+                       Projectile.ai[2] = Main.rand.Next(7 - flashChance);
+                        Projectile.netUpdate = true;
+                        if (Projectile.ai[2] == 0)
+                        {
+                            flash = 1;
+                            flashChance -= 2;
+                            AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
+                        }
                     }
                 }
             }
@@ -138,6 +145,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 1800;
                     extraAI[2] = 0;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -245,19 +253,24 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(player, true);
             MoveToPoint(point, 30f);
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
-            {
-                if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && PetState != 2)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
-                    extraAI[2] = Main.rand.Next(180, 600);
-                    extraAI[0] = Main.rand.Next(1, 5);
-                    flashChance = 6;
-                    SetShotChat();
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
+                {
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && PetState != 2)
+                    {
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(180, 600);
+                        extraAI[0] = Main.rand.Next(1, 5);
+                        flashChance = 6;
+                        Projectile.netUpdate = true;
+                        SetShotChat();
+                    }
                 }
             }
             if (PetState == 0)
@@ -283,6 +296,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 extraAdjY = -2;
             }
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(flashChance);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            flashChance = reader.ReadInt32();
         }
     }
 }

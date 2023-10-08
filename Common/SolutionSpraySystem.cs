@@ -17,6 +17,7 @@ namespace TouhouPets
         private static int _sprayMode;
         private static Projectile yuka;
         public static Item _solution;
+        public static int SprayState;
         public static Item Sprayer => new(ItemID.Clentaminator2);
         public static bool InSprayMode => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
         private static float PetState
@@ -24,10 +25,6 @@ namespace TouhouPets
             get
             {
                 return yuka.ai[1];
-            }
-            set
-            {
-                yuka.ai[1] = value;
             }
         }
         public override void PostUpdateProjectiles()
@@ -96,12 +93,12 @@ namespace TouhouPets
                             int targetMode = _sprayMode == 0 ? Phase_Spray_Mode1 : Phase_Spray_Mode2;
                             if (PetState != targetMode)
                             {
-                                PetState = targetMode;
+                                SprayState = targetMode;
                                 AltVanillaFunction.PlaySound(SoundID.MenuOpen, yuka.position);
                             }
                             else
                             {
-                                PetState = Phase_StopSpray;
+                                SprayState = Phase_StopSpray;
                                 AltVanillaFunction.PlaySound(SoundID.MenuClose, yuka.position);
                             }
                         }

@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -49,7 +51,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawFood(Color lightColor)
         {
-            if (food == null || food.type == ItemID.None)
+            if (food.IsAir)
                 return;
 
             Main.instance.LoadItem(food.type);
@@ -73,6 +75,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 blinkFrame = 0;
                 PetState = 0;
+                Projectile.netUpdate = true;
             }
         }
         int hatFrame, hatFrameCounter;
@@ -113,6 +116,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 600;
                     extraAI[2] = 0;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -221,7 +225,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Eat()
         {
-            if (food == null || food.type == ItemID.None)
+            if (food.IsAir)
             {
                 Projectile.frame = 0;
                 extraAI[0] = 60;
@@ -259,6 +263,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 0;
                     extraAI[0] = 60;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -345,6 +350,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
+            if (food == null)
+            {
+                food = new();
+            }
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<YuyukoBuff>());
             UpdateTalking();
@@ -358,28 +367,34 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Youmu>()] <= 0);
             MoveToPoint(point, 16f);
-            if (mainTimer % 20 == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
-                            , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);
-            }
-
-            if (mainTimer % 270 == 0 && PetState < 1)
-            {
-                PetState = 1;
-            }
-            if (mainTimer >= 600 && extraAI[0] == 0)
-            {
-                if (mainTimer % 600 == 0 && PetState < 2)
+                if (mainTimer % 20 == 0)
                 {
-                    if (Main.rand.NextBool(6))
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
+                                , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);
+                }
+
+                if (mainTimer % 270 == 0 && PetState < 1)
+                {
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 600 && extraAI[0] == 0)
+                {
+                    if (mainTimer % 600 == 0 && PetState < 2)
                     {
-                        PetState = 2;
-                        extraAI[2] = Main.rand.Next(10, 30);
-                    }
-                    else if (Main.rand.NextBool(3))
-                    {
-                        FoodSelect(player);
+                        if (Main.rand.NextBool(6))
+                        {
+                            PetState = 2;
+                            extraAI[2] = Main.rand.Next(10, 30);
+                            Projectile.netUpdate = true;
+                        }
+                        else if (Main.rand.NextBool(3))
+                        {
+                            FoodSelect(player);
+                            Projectile.netUpdate = true;
+                        }
                     }
                 }
             }
@@ -418,6 +433,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                 default:
                     break;
             }
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            if (food != null)
+                ItemIO.Receive(food, reader);
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            if (food != null)
+                ItemIO.Send(food, writer);
         }
     }
 }

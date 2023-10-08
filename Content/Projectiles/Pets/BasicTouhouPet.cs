@@ -298,7 +298,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 设置要说的话
         /// <br/>当 <see cref="ChatTimeLeft"/> 或 <see cref="ChatCD"/> 大于0时不输出结果
-        /// <br/>!--执行时会执行一次netUpdate
         /// </summary>
         /// <param name="color">文本颜色</param>
         /// <param name="altText">指定文本</param>
@@ -309,7 +308,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// /// <param name="typerTime">打字机模式打印文本所需总时长，默认为字符数 * 5且默认上限为150</param>
         internal void SetChat(Color color = default, string altText = default, int altIndex = 0, int lag = 0, int timeLeftPreWord = 20, bool breakTimeLimit = false, float typerTime = -1)
         {
-            if (ChatTimeLeft > 0 || ChatCD > 0)
+            if (Projectile.owner != Main.myPlayer || ChatTimeLeft > 0 || ChatCD > 0)
             {
                 return;
             }
@@ -318,15 +317,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 color = Lighting.GetColor((int)((Projectile.position.X + Projectile.width / 2f) / 16f), (int)((Projectile.position.Y + Projectile.height / 2f) / 16f));
             }
             string chat = GetChatAndSetIndex(out int index);
-            int index2;
+            int _index;
             if (altText != null)
             {
                 chat = altText;
-                index2 = altIndex;
+                _index = altIndex;
             }
             else
             {
-                index2 = index;
+                _index = index;
             }
             if (chat.Length > 10 && breakTimeLimit)
             {
@@ -341,7 +340,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (chat != null && chat != string.Empty)
             {
-                ChatIndex = index2;
+                ChatIndex = _index;
                 chatBaseY = -24;
                 chatScale = 0f;
                 chatText = chat;
@@ -350,7 +349,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 totalTimeToType = typerTime;
                 chatColor = color;
                 chatLag = lag;
-                Projectile.netUpdate = true;
             }
         }
         /// <summary>
@@ -652,7 +650,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 extraAI[i] = reader.ReadInt32();
             }
-            chatText = reader.ReadString();
         }
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -660,7 +657,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 writer.Write(extraAI[i]);
             }
-            writer.Write(chatText);
         }
     }
 }

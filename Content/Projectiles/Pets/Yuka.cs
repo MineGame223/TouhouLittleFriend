@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -114,6 +115,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (_solution == null || _solution.IsAir)
             {
                 PetState = Phase_StopSpray;
+                Projectile.netUpdate = true;
                 return;
             }
             else
@@ -127,8 +129,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (++extraAI[1] > 45)
                 {
                     extraAI[1] = 0;
-                    if (Main.rand.NextBool(2, 3) && _solution.consumable && _solution.ammo > AmmoID.None)
-                        _solution.stack--;
+                    if (Projectile.owner == Main.myPlayer)
+                    {
+                        if (Main.rand.NextBool(2, 3) && _solution.consumable && _solution.ammo > AmmoID.None)
+                            _solution.stack--;
+                    }
                 }
 
                 if (mode == 1)
@@ -139,7 +144,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    angle = (int)MathHelper.ToDegrees((Main.MouseWorld - YukaHandOrigin).ToRotation() + MathHelper.PiOver2);
+                    angle = (int)MathHelper.ToDegrees((mousePos - YukaHandOrigin).ToRotation() + MathHelper.PiOver2);
                 }
 
                 if (Projectile.frameCounter % 2 == 0)
@@ -154,10 +159,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                         , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
                     }
 
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromThis()
+                    if (Projectile.owner == Main.myPlayer)
+                    {
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis()
                         , Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 12)
                         , new Vector2(0, -Sprayer.shootSpeed).RotatedBy(MathHelper.ToRadians(angle))
                         , solution_Actually.shoot, Sprayer.damage, Sprayer.knockBack, player.whoAmI);
+                    }
                 }
             }
             if (_solution.stack <= 0)
@@ -166,6 +174,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 solution_Actually.TurnToAir();
                 extraAI[1] = 0;
                 PetState = Phase_StopSpray;
+                Projectile.netUpdate = true;
+                SprayState = -1;
             }
         }
         private void StopSpray()
@@ -200,6 +210,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 extraAI[0] = 0;
                 Projectile.frame = 0;
                 PetState = 0;
+                Projectile.netUpdate = true;
+                SprayState = -1;
             }
         }
         #endregion
@@ -219,6 +231,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         int clothFrame, clothFrameCounter;
         int blinkFrame, blinkFrameCounter;
         int angle;
+        Vector2 mousePos = Vector2.Zero;
         private Vector2 YukaHandOrigin
         {
             get
@@ -258,6 +271,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 0;
                     Projectile.frame = 0;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -311,31 +325,46 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
+            if (Projectile.owner == Main.myPlayer)
+            {
+                mousePos = Main.MouseWorld;
+                if (mainTimer % 5 == 0)
+                    Projectile.netUpdate = true;
+            }
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<YukaBuff>());
             UpdateTalking();
             Vector2 point = new(-50 * player.direction, -45 + player.gfxOffY);
             if (PetState == Phase_Spray_Mode2)
             {
-                point = Main.MouseWorld - player.Center;
+                point = mousePos - player.Center;
             }
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
             ChangeDir(player, true);
             MoveToPoint(point, 12f);
-            if (mainTimer % 270 == 0 && PetState == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            /*if (mainTimer >= 400 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
-            {
-                if (mainTimer % 600 == 0 && Main.rand.NextBool(1))
+                if (mainTimer % 270 == 0 && PetState == 0)
                 {
-                    PetState = 2;
-                    extraAI[2] = Main.rand.Next(600, 900);
+                    PetState = 1;
+                    Projectile.netUpdate = true;
                 }
-            }*/
+                if (PetState != SprayState && SprayState > 0)
+                {
+                    PetState = SprayState;
+                    Projectile.netUpdate = true;
+                }
+                /*if (mainTimer >= 400 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
+                {
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(1))
+                    {
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(600, 900);
+                    }
+                }*/
+            }
             if (PetState == 0)
             {
                 Projectile.frame = 0;
@@ -365,6 +394,22 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 StopSpray();
             }
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(mousePos);
+
+            if (PetState == Phase_Spray_Mode2)
+                writer.Write(angle);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            mousePos = reader.ReadVector2();
+
+            if (PetState == Phase_Spray_Mode2)
+                angle = reader.ReadInt32();
         }
     }
 }
