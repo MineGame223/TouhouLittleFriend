@@ -7,7 +7,8 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入了新的可选择的宠物对话弹出方式
+加入了新的可选择的宠物对话弹出方式（在模组配置中查看）
+加入了是否显示宠物对话的模组配置选项
 
 修改：
 无

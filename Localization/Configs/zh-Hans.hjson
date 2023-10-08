@@ -1,0 +1,19 @@
+Mods: {
+	TouhouPets: {
+		Configs: {
+			PetDialogConfig: {
+				DisplayName: 宠物对话配置
+
+				TyperStyleChat: {
+					Label: 打字机样式对话文本
+					Tooltip: 宠物对话文本是否以打字机的形式呈现
+				}
+
+				CanPetChat: {
+					Label: 显示宠物对话文本
+					Tooltip: 是否显示宠物的对话文本
+				}
+			}
+		}
+	}
+}

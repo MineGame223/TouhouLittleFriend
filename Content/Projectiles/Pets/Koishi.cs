@@ -170,22 +170,37 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    if (extraAI[1] == 0 && ChatTimeLeft <= 0)
+                    if (extraAI[2] <= 0)
                     {
-                        SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-1"), myColor, -1, cd: 60, -1, 60);
-                        extraAI[1] = 1;
-                    }
-                    if (extraAI[1] == 1 && ChatTimeLeft <= 0)
-                    {
-                        SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-2"), myColor, -2, cd: 60, -1);
-                        extraAI[1] = 2;
+                        if (extraAI[1] == 0)
+                        {
+                            SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-1"), myColor, -1, cd: 60, -1, 60);
+                            extraAI[2] = 240;
+                            extraAI[1]++;
+                        }
+                        if (extraAI[1] == 1 && extraAI[2] <= 0)
+                        {
+                            extraAI[2] = 240;
+                            extraAI[1]++;
+                        }
+                        if (extraAI[1] == 2)
+                        {
+                            SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-2"), myColor, -2, cd: 60, -1, 60);
+                            extraAI[2] = 240;
+                            extraAI[1]++;
+                        }
+                        if (extraAI[1] == 3 && extraAI[2] <= 0)
+                        {
+                            extraAI[2] = 360;
+                            extraAI[1]++;
+                        }
                     }
                 }
                 if (Projectile.frame > 6)
                 {
                     Projectile.frame = 5;
                 }
-                if (extraAI[1] >= 2 && ChatCD <= 0)
+                if (extraAI[1] >= 4 && extraAI[2] <= 0)
                 {
                     Projectile.frame = 6;
                     Projectile.Opacity -= 0.01f;
@@ -194,7 +209,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         extraAI[0] = 1;
                         extraAI[1] = 0;
                     }
-                }
+                }             
             }
             else if (extraAI[0] == 1)
             {
@@ -208,12 +223,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     SetChat(Color.Red, ModUtils.GetChatText("Koishi", "-3"), -3, 0, 45, true, 300);
                     extraAI[1]++;
+                    extraAI[2] = 420;
                 }
                 if (Projectile.frame > 10)
                 {
                     Projectile.frame = 9;
                 }
-                if (extraAI[1] > 0 && ChatTimeLeft <= 0)
+                if (extraAI[1] > 0 && extraAI[2] <= 0)
                 {
                     extraAI[0]++;
                     extraAI[1] = 0;
@@ -229,10 +245,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
                     if (!player.dead || player.respawnTimer <= 60)
                     {
+                        extraAI[2] = 0;
                         extraAI[0] = 0;
                         PetState = 0;
                     }
                 }
+            }
+            if (extraAI[2] > 0)
+            {
+                extraAI[2]--;
             }
             if (player.active && extraAI[0] > 0 && !player.dead)
             {

@@ -1,0 +1,19 @@
+Mods: {
+	TouhouPets: {
+		Configs: {
+			PetDialogConfig: {
+				DisplayName: Pet's Dialogs Config
+
+				TyperStyleChat: {
+					Label: Typer-style Dialogs
+					Tooltip: Whether pet's dialogs will show in a typer-style
+				}
+
+				CanPetChat: {
+					Label: Show pet's dialogs
+					Tooltip: Whether pet's dialogs will show
+				}
+			}
+		}
+	}
+}
