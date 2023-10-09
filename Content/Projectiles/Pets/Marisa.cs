@@ -192,7 +192,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p4, type2, 8, default, 1, true))
             {
                 SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
-                p4.ai[0] = 0;
+                p4.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p5, type, 4, default, 1, true))
             {

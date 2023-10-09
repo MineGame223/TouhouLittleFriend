@@ -243,7 +243,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p3, type2, 12, default, 1, true))
             {
                 SetChatWithOtherOne(p3, ModUtils.GetChatText("Patchouli", "11"), myColor, 0, 360, -1);
-                p3.ai[0] = 0;
+                p3.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p4, type, 8, default, 1, true))
             {
@@ -254,12 +254,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ChatCD = 0;
                 SetChat(myColor, ModUtils.GetChatText("Patchouli", "14"), 14, 0);
                 ChatCD = 600;
-                p5.ai[0] = 0;
+                p5.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p6, type, 10, default, 1, true))
             {
                 SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0, 360);
-                p6.ai[0] = 0;
+                p6.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p7, type3, 4, default, 1, true))
             {
@@ -268,7 +268,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p8, type3, 5, default, 1, true))
             {
                 SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "17"), myColor, 17, 600);
-                p8.ai[0] = 0;
+                p8.localAI[2] = 0;
             }
             else if (FindChainedChat(17))
             {

@@ -84,7 +84,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         int clothFrame, clothFrameCounter;
         int extraAdjX, extraAdjY;
         float flash;
-        int flashChance;
+        private int FlashChance
+        {
+            get => (int)Projectile.ai[0];
+            set => Projectile.ai[0] = value;
+        }
+        private int ShotChance
+        {
+            get => (int)Projectile.ai[2];
+            set => Projectile.ai[2] = value;
+        }
         private void Shot()
         {
             Projectile.velocity *= 0.9f;
@@ -104,7 +113,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         if (extraAI[2] <= 0)
                         {
                             extraAI[0]--;
-                            flashChance = 6;
+                            FlashChance = 6;
                             extraAI[1] = 0;
                             extraAI[2] = Main.rand.Next(180, 600);
                             if (extraAI[0] > 1)
@@ -126,12 +135,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[1]++;
                     if (extraAI[1] % 30 == 0)
                     {
-                       Projectile.ai[2] = Main.rand.Next(7 - flashChance);
-                        Projectile.netUpdate = true;
-                        if (Projectile.ai[2] == 0)
+                        if(Projectile.owner==Main.myPlayer)
+                        {
+                            ShotChance = Main.rand.Next(7 - FlashChance);
+                            Projectile.netUpdate = true;
+                        }
+                        if (ShotChance == 0)
                         {
                             flash = 1;
-                            flashChance -= 2;
+                            FlashChance -= 2;
                             AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
                         }
                     }
@@ -267,7 +279,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                         PetState = 2;
                         extraAI[2] = Main.rand.Next(180, 600);
                         extraAI[0] = Main.rand.Next(1, 5);
-                        flashChance = 6;
+                        FlashChance = 6;
+                        ShotChance = FlashChance;
                         Projectile.netUpdate = true;
                         SetShotChat();
                     }
@@ -296,16 +309,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 extraAdjY = -2;
             }
-        }
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            base.SendExtraAI(writer);
-            writer.Write(flashChance);
-        }
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            base.ReceiveExtraAI(reader);
-            flashChance = reader.ReadInt32();
         }
     }
 }

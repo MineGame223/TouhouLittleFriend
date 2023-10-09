@@ -152,7 +152,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p2, type, 19, 35, 1, true))
             {
                 SetChatWithOtherOne(p2, ModUtils.GetChatText("Koakuma", "7"), myColor, 0, 360);
-                p2.ai[0] = 0;
+                p2.localAI[2] = 0;
             }
             else if (mainTimer % 666 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
             {

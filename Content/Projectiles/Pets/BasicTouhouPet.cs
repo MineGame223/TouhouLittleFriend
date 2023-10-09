@@ -35,6 +35,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private float timeToType;
         /// <summary>
         /// 主要计时器，从0增加至4800再重置并循环
+        /// <br/>由于该计时器并不接受同步，故最好只在本地客户端执行与其相关的操作
         /// </summary>
         internal int mainTimer;
         /// <summary>
@@ -60,15 +61,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <br/>恋恋专用
         /// <br/>!--该属性会反复重置
         /// </summary>
-        internal bool textShaking;
-        /// <summary>
-        /// 对话文本对应的索引值（Projectile.ai[0]）
-        /// </summary>
-        public int ChatIndex
-        {
-            get => (int)Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
+        internal bool textShaking;      
         /// <summary>
         /// 宠物的状态值（Projectile.ai[1]）
         /// </summary>
@@ -93,6 +86,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             get => (int)Projectile.localAI[1];
             set => Projectile.localAI[1] = value;
+        }
+        /// <summary>
+        /// 对话文本对应的索引值（Projectile.localAI[2]）
+        /// </summary>
+        public int ChatIndex
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
         }
         private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default, bool typerStyle = false)
         {
@@ -398,7 +399,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (p.localAI[1] <= 0 && !ignoreCD || ignoreCD)
                     {
-                        if (p.type == type && p.ai[0] >= minIndex && p.ai[0] <= maxIndex)
+                        if (p.type == type && p.localAI[2] >= minIndex && p.localAI[2] <= maxIndex)
                         {
                             if (timeLeft <= 0 || timeLeft > 0 && p.localAI[0] <= timeLeft)
                             {

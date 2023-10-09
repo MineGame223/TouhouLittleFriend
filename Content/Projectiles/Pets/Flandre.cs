@@ -114,10 +114,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 3;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(90, 120))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > Main.rand.Next(90, 120))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 1)
@@ -127,10 +131,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 7;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(120, 360))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 2;
+                    if (extraAI[1] > Main.rand.Next(120, 360))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -141,6 +149,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 0;
                     extraAI[0] = 1200;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -209,6 +218,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if (Main.dayTime)
+                return;
+
             int type2 = ProjectileType<Remilia>();
             if (FindChatIndex(out Projectile _, type2, 6, default, 0))
             {
@@ -225,7 +237,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p3, type2, 8, default, 1, true))
             {
                 SetChatWithOtherOne(p3, ModUtils.GetChatText("Flandre", "8"), myColor, 0, 360);
-                p3.ai[0] = 0;
+                p3.localAI[2] = 0;
             }
             else if (PetState == 2 && mainTimer % 120 == 0 && Main.rand.NextBool(5) && mainTimer > 0)
             {
@@ -260,8 +272,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<FlandreBuff>());
             Projectile.SetPetActive(player, BuffType<ScarletBuff>());
 
-            if (!Main.dayTime)
-                UpdateTalking();
+            UpdateTalking();
             Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
             if (player.ownedProjectileCounts[ProjectileType<Remilia>()] > 0)
             {
@@ -286,18 +297,22 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatFuncIsOccupied = true;
                 return;
             }
-
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 600 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
                 }
-            }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
+                }
+            }            
             if (PetState == 0)
             {
                 Projectile.frame = 0;

@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles
         }
         private void DrawLine(Color lightColor)
         {
-            Vector2 startP = alice.Center + AliceHandPoint() + new Vector2(0, 7f * Main.essScale);
+            Vector2 startP = Alice.Center + AliceHandPoint() + new Vector2(0, 7f * Main.essScale);
             Texture2D tex = AltVanillaFunction.ExtraTexture(ExtrasID.StardustTowerMark);
             Vector2 pos = Projectile.Center - Main.screenPosition;
             Rectangle rect = new Rectangle(0, 0, tex.Width, (int)Vector2.Distance(startP, Projectile.Center));
@@ -55,7 +55,7 @@ namespace TouhouPets.Content.Projectiles
             Main.EntitySpriteDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
             Projectile.DrawStateNormalizeForPet();
         }
-        Projectile alice
+        Projectile Alice
         {
             get
             {
@@ -64,17 +64,17 @@ namespace TouhouPets.Content.Projectiles
         }
         Vector2 AliceHandPoint()
         {
-            return alice.frame switch
+            return Alice.frame switch
             {
-                0 => new Vector2(-10 * alice.spriteDirection, 4),
-                2 => new Vector2(-14 * alice.spriteDirection, 0),
-                3 => new Vector2(-14 * alice.spriteDirection, -4),
-                4 => new Vector2(-10 * alice.spriteDirection, 0),
-                5 => new Vector2(-4 * alice.spriteDirection, 0),
-                6 => new Vector2(0 * alice.spriteDirection, -2),
-                7 => new Vector2(6 * alice.spriteDirection, -4),
-                8 => new Vector2(0 * alice.spriteDirection, -2),
-                9 => new Vector2(-10 * alice.spriteDirection, 6),
+                0 => new Vector2(-10 * Alice.spriteDirection, 4),
+                2 => new Vector2(-14 * Alice.spriteDirection, 0),
+                3 => new Vector2(-14 * Alice.spriteDirection, -4),
+                4 => new Vector2(-10 * Alice.spriteDirection, 0),
+                5 => new Vector2(-4 * Alice.spriteDirection, 0),
+                6 => new Vector2(0 * Alice.spriteDirection, -2),
+                7 => new Vector2(6 * Alice.spriteDirection, -4),
+                8 => new Vector2(0 * Alice.spriteDirection, -2),
+                9 => new Vector2(-10 * Alice.spriteDirection, 6),
                 _ => Vector2.Zero,
             };
         }
@@ -82,7 +82,7 @@ namespace TouhouPets.Content.Projectiles
         {
             get
             {
-                return alice != null && alice.active && alice.type == ProjectileType<Alice>();
+                return Alice != null && Alice.active && Alice.type == ProjectileType<Alice>() && Alice.owner == Projectile.owner;
             }
         }
         internal void MoveToPoint(Vector2 point, float speed)
@@ -129,24 +129,26 @@ namespace TouhouPets.Content.Projectiles
             }
             if (IsAliceExited)
             {
-                if (alice.ai[1] != 2)
+                if (Alice.ai[1] != 2)
                 {
-                    Projectile.velocity = Vector2.Normalize(alice.Center - Projectile.Center) * (5f + alice.velocity.Length());
-                    if (Projectile.Distance(alice.Center) <= 5f)
+                    Projectile.velocity = Vector2.Normalize(Alice.Center - Projectile.Center) * (5f + Alice.velocity.Length());
+                    if (Projectile.Distance(Alice.Center) <= 5f)
                     {
                         Projectile.active = false;
+                        Projectile.netUpdate = true;
                         return;
                     }
                 }
                 else
                 {
-                    Vector2 point = alice.Center + new Vector2(Projectile.ai[1], Projectile.ai[2]);
+                    Vector2 point = Alice.Center + new Vector2(Projectile.ai[1], Projectile.ai[2]);
                     MoveToPoint(point, 18f);
                 }
             }
             else
             {
                 Projectile.active = false;
+                Projectile.netUpdate = true;
             }
         }
     }

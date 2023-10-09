@@ -112,7 +112,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindChatIndex(out Projectile p, type1, 4))
             {
                 SetChatWithOtherOne(p, ModUtils.GetChatText("Daiyousei", "7"), myColor, 0, 360);
-                p.ai[0] = 0;
+                p.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p1, type1, 7))
             {
@@ -121,7 +121,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p2, type1, 9, default, 1, true))
             {
                 SetChatWithOtherOne(p2, ModUtils.GetChatText("Daiyousei", "8"), myColor, 0, 360);
-                p2.ai[0] = 0;
+                p2.localAI[2] = 0;
             }
             if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0)
             {
@@ -149,17 +149,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Cirno>()] <= 0);
             MoveToPoint(point, 9f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
+                if (mainTimer % 270 == 0)
+                {
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
             }
             if (PetState == 0)
             {
                 Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
             }
             else if (PetState == 1)
             {

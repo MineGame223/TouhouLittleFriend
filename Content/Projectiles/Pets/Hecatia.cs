@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -61,12 +62,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateWorldState()
         {
-            float xSpeed = 1.5f;           
-            if (worldState > 2)
+            float xSpeed = 1.5f;
+            if (PlanteState > 2)
             {
-                worldState = 0;
+                PlanteState = 0;
             }
-            if (worldState == 1)
+            if (PlanteState == 1)
             {
                 if (plantePos[1].X > 0)
                     plantePos[1].X--;
@@ -92,7 +93,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 bodyAlpha[2] -= 0.02f;
                 myColor = new Color(79, 215, 239);
             }
-            else if (worldState == 2)
+            else if (PlanteState == 2)
             {
                 if (plantePos[2].X > 0)
                     plantePos[2].X--;
@@ -172,9 +173,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        public int worldState;
         float[] bodyAlpha = new float[3];
         Vector2[] plantePos = new Vector2[3];
+        private int PlanteState
+        {
+            get => (int)Projectile.ai[2];
+            set => Projectile.ai[2] = value;
+        }
         #endregion
         private void Blink()
         {
@@ -252,13 +257,18 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             MoveToPoint(point, 14.5f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer == 4798)
-            {
-                worldState++;
+                if (mainTimer % 270 == 0)
+                {
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer == 4798)
+                {
+                    PlanteState++;
+                    Projectile.netUpdate = true;
+                }
             }
             if (PetState == 1)
             {

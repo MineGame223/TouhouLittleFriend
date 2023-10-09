@@ -164,26 +164,26 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (PetState < 2)
                     SetChatWithOtherOne(p1, ModUtils.GetChatText("Youmu", "7"), myColor, 0, 600);
-                p1.ai[0] = 0;
+                p1.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p2, type1, 4)
                 || FindChatIndex(out p2, type1, 8))
             {
                 if (PetState < 2)
                     SetChatWithOtherOne(p2, ModUtils.GetChatText("Youmu", "8"), myColor, 0, 360);
-                p2.ai[0] = 0;
+                p2.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p3, type1, 1))
             {
                 if (PetState < 2)
                     SetChatWithOtherOne(p3, ModUtils.GetChatText("Youmu", "9"), myColor, 0, 360);
-                p3.ai[0] = 0;
+                p3.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p4, type1, 2))
             {
                 if (PetState < 2)
                     SetChatWithOtherOne(p4, ModUtils.GetChatText("Youmu", "10"), myColor, 0, 360);
-                p4.ai[0] = 0;
+                p4.localAI[2] = 0;
             }
             else if (mainTimer % 960 == 0 && Main.rand.NextBool(12))
             {

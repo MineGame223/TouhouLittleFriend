@@ -158,7 +158,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (FindChatIndex(out Projectile p, type1, 1))
                 {
                     SetChatWithOtherOne(p, ModUtils.GetChatText("Mystia", "9"), myColor, 0, 360);
-                    p.ai[0] = 0;
+                    p.localAI[2] = 0;
                 }
                 else if (mainTimer % 840 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
                 {

@@ -223,7 +223,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p3, type, 14, default, 1, true))
             {
                 SetChatWithOtherOne(p3, ModUtils.GetChatText("Alice", "7"), myColor, 0, 360);
-                p3.ai[0] = 0;
+                p3.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p4, type2, 12, default, 1, true))
             {

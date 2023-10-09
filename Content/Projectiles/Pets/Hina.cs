@@ -82,10 +82,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 6;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(10, 20))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > Main.rand.Next(10, 20))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -96,6 +100,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 0;
                     extraAI[0] = 300;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -120,12 +125,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (PetState == 2 && extraAI[1] <= 3 && mainTimer % 60 == 0 && Main.rand.NextBool(9) && extraAI[2] == 0)
-            {
-                SetChat(myColor, ModUtils.GetChatText("Hina", "3"), 3, default, 30);
-                extraAI[2] = 1;
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9))
+            if (mainTimer % 720 == 0 && Main.rand.NextBool(9))
             {
                 SetChat(myColor);
             }
@@ -150,15 +150,22 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             MoveToPoint(point, 13f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if(Projectile.owner==Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 200 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 200 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                        if (Main.rand.NextBool(3))
+                            SetChat(myColor, ModUtils.GetChatText("Hina", "3"), 3, 60, 30);
+                    }
                 }
             }
             if (PetState == 0)

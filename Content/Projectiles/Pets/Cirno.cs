@@ -70,11 +70,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 4;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(10, 20))
+                if (Projectile.owner == Main.myPlayer)//拥有随机数的操作需要在本端选择完成后同步到其他端
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
-                }
+                    if (extraAI[1] > Main.rand.Next(10, 20))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
+                }               
             }
             else
             {
@@ -83,6 +87,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 0;
                     extraAI[0] = 600;
                     PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -184,7 +189,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 //同时给对方与自己设置ChatCD以确保对话不会“走神”
                 SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0, 360);//作为收尾的对话，ChatIndex通常为0
-                p.ai[0] = 0;//将对方的ChatIndex设为0，防止重复检测并接话
+                p.localAI[2] = 0;//将对方的ChatIndex设为0，防止重复检测并接话
             }
             else if (FindChatIndex(out Projectile p1, type1, 5))
             {
@@ -194,7 +199,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p2, type1, 6, default, 1, true))
             {
                 SetChatWithOtherOne(p2, ModUtils.GetChatText("Cirno", "11"), myColor, 0, 360);
-                p2.ai[0] = 0;
+                p2.localAI[2] = 0;
             }
             else if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState != 2)
             {
@@ -219,15 +224,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player);
             MoveToPoint(point, 9f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)//仅当处于本端时进行状态更新并同步到其他客户端
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 300 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 300 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

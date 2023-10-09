@@ -249,7 +249,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindChatIndex(out Projectile p0, type2, 7))
             {
                 SetChatWithOtherOne(p0, ModUtils.GetChatText("Reimu", "10"), myColor, 0, 600);
-                p0.ai[0] = 0;
+                p0.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p1, type2, 6, default, 1, true))
             {
@@ -273,7 +273,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (FindChatIndex(out Projectile p5, type3, 4, default, 1, true))
             {
                 SetChatWithOtherOne(p5, ModUtils.GetChatText("Reimu", "9"), myColor, 0, 360);
-                p5.ai[0] = 0;
+                p5.localAI[2] = 0;
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
             {
