@@ -149,7 +149,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 0;
                     extraAI[0] = 1200;
                     PetState = 0;
-                    Projectile.netUpdate = true;
                 }
             }
         }

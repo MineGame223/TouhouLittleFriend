@@ -17,6 +17,9 @@ namespace TouhouPets
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
+            if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
+                return;
+
             int commonDropRate = 3;
             switch (npc.type)
             {
@@ -34,8 +37,7 @@ namespace TouhouPets
                     break;
 
                 case NPCID.BrainofCthulhu:
-                    npcLoot.Add(new NotDownedEvilBoss(), new DownedEvilBoss(), commonDropRate,
-                        ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>());
+                    npcLoot.Add(new NotDownedEvilBoss(), new DownedEvilBoss(), commonDropRate, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>());
                     break;
 
                 case NPCID.QueenBee:

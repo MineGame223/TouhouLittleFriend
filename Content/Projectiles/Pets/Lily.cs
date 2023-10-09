@@ -154,18 +154,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     , Main.rand.NextFloat(1f, 1.2f)).noGravity = true;
             }
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (PetState == 0)
-            {
-                if (extraAI[0] >= 1)
+                if (mainTimer % 270 == 0)
                 {
-                    extraAI[0]--;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
                 }
             }
-            else if (PetState == 1)
+            if (PetState == 1)
             {
                 Blink();
             }

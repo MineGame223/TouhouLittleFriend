@@ -106,11 +106,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.velocity *= 0.5f;
                 Projectile.frame = 1;
-                extraAI[1]++;
-                if (extraAI[1] > Main.rand.Next(60, 180))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    extraAI[1]++;
+                    if (extraAI[1] > Main.rand.Next(60, 180))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 1)
@@ -120,16 +124,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.frame = 3;
                 }
-                if (mainTimer % 240 == 0 && Main.rand.NextBool(3) && !Main.player[Projectile.owner].sleeping.FullyFallenAsleep)
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    if (Main.rand.NextBool(2))
+                    if (mainTimer % 240 == 0 && Main.rand.NextBool(3) && !Main.player[Projectile.owner].sleeping.FullyFallenAsleep)
                     {
-                        extraAI[0] = 2;
-                    }
-                    else
-                    {
-                        Projectile.frame = 1;
-                        extraAI[0] = 0;
+                        if (Main.rand.NextBool(2))
+                        {
+                            extraAI[0] = 2;
+                        }
+                        else
+                        {
+                            Projectile.frame = 1;
+                            extraAI[0] = 0;
+                        }
+                        Projectile.netUpdate = true;
                     }
                 }
             }
@@ -145,24 +153,32 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 4;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(2, 4))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 3;
+                    if (extraAI[1] > Main.rand.Next(2, 4))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 3;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 3)
             {
                 Projectile.frame = 5;
                 Projectile.velocity *= 0.75f;
-                if (extraAI[1] > Main.rand.Next(40, 60))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 4;
-                }
-                else
-                {
-                    extraAI[1]++;
+                    if (extraAI[1] > Main.rand.Next(40, 60))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 4;
+                        Projectile.netUpdate = true;
+                    }
+                    else
+                    {
+                        extraAI[1]++;
+                    }
                 }
             }
             else if (extraAI[0] == 4)
@@ -173,10 +189,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 7;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(6, 9))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 5;
+                    if (extraAI[1] > Main.rand.Next(6, 9))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 5;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -307,33 +327,37 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             MoveToPoint(point, 22f);
 
-            if (mainTimer % 270 == 0 && PetState != 2 && PetState < 3)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            else if (mainTimer % 270 == 0 && PetState == 3)
-            {
-                PetState = 4;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && PetState < 3 && !player.AnyBosses())
-            {
-                int chance = 6;
-                if (Main.bloodMoon || Main.eclipse)
+                if (mainTimer % 270 == 0)
                 {
-                    chance = 11;
+                    if (PetState != 2 && PetState < 3)
+                        PetState = 1;
+                    else if (PetState == 3)
+                        PetState = 4;
+                    Projectile.netUpdate = true;
                 }
-                else if (Main.dayTime || Main.raining)
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && PetState < 3 && !player.AnyBosses())
                 {
-                    chance = 3;
-                }
-                else if (player.sleeping.FullyFallenAsleep)
-                {
-                    chance = 1;
-                }
-                if (mainTimer % 120 == 0 && Main.rand.NextBool(chance) && extraAI[0] <= 0 && player.velocity.Length() == 0 && ChatCD <= 0)
-                {
-                    SetChat(myColor, "好困...", 3);
-                    PetState = 2;
+                    int chance = 6;
+                    if (Main.bloodMoon || Main.eclipse)
+                    {
+                        chance = 11;
+                    }
+                    else if (Main.dayTime || Main.raining)
+                    {
+                        chance = 3;
+                    }
+                    else if (player.sleeping.FullyFallenAsleep)
+                    {
+                        chance = 1;
+                    }
+                    if (mainTimer % 120 == 0 && Main.rand.NextBool(chance) && extraAI[0] <= 0 && player.velocity.Length() == 0 && ChatCD <= 0)
+                    {
+                        SetChat(myColor, "好困...", 3);
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (player.velocity.Length() > 4f && PetState == 2)

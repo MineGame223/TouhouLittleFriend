@@ -14,6 +14,20 @@ Mods: {
 					Tooltip: 是否显示宠物的对话文本
 				}
 			}
+
+			PetObtainConfig: {
+				DisplayName: 宠物获取配置
+
+				PetCanDropFromBoss: {
+					Label: 宠物掉落自各Boss
+					Tooltip: 宠物是否可以从各Boss处掉落
+				}
+
+				PetSoldAtAnyTime: {
+					Label: 宠物随时有售
+					Tooltip: 神秘隙间是否无条件出售所有宠物
+				}
+			}
 		}
 	}
 }

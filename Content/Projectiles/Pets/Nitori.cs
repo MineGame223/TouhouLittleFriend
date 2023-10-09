@@ -132,10 +132,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                             , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.25f, 0.5f));
                     }
                 }
-                if (extraAI[1] > 2)
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0]++;
+                    if (extraAI[1] > 2)
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0]++;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 2)
@@ -167,10 +171,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = extraAI[1] % 6 == 0 ? 8 : 9;
                 else
                     Projectile.frame = 8;
-                if (extraAI[1] > 240)
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0]++;
+                    if (extraAI[1] > 240)
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0]++;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 3)
@@ -264,16 +272,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             MoveToPoint(point, 12.5f);
 
-            if (mainTimer % 270 == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                if (PetState == 0)
-                    PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState < 1)
-            {
-                if (mainTimer % 900 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState == 0)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState < 1)
+                {
+                    if (mainTimer % 900 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

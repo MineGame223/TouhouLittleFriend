@@ -83,10 +83,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 6;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(7, 14))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        extraAI[2] = Main.rand.Next(30, 50);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 1)
@@ -101,10 +106,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 9;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(30, 50))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 2;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
                 if (Projectile.frame >= 9)
                 {
@@ -141,7 +150,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        private void UpdateMiscFrame()
+        private void UpdateClothFrame()
         {
             if (clothFrame < 0)
             {
@@ -163,7 +172,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Player player = Main.player[Projectile.owner];
             text = new string[11];
             WeightedRandom<string> chat = new WeightedRandom<string>();
-            {               
+            {
                 if (Main.bloodMoon)
                 {
                     chat.Add(ModUtils.GetChatText("Iku", "1"));
@@ -230,7 +239,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         chat.Add(ModUtils.GetChatText("Iku", "15"));
                     }
-                }               
+                }
             }
             return chat;
         }
@@ -257,13 +266,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Idel();
             }
+            UpdateClothFrame();
         }
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 0.79f, 2.15f, 2.39f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<IkuBuff>());
-            UpdateMiscFrame();
             UpdateTalking();
             Vector2 point = new Vector2(45 * player.direction, -45 + player.gfxOffY);
             if (player.ownedProjectileCounts[ProjectileType<Tenshi>()] > 0)
@@ -276,15 +285,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Tenshi>()] > 0);
             MoveToPoint(point, 15f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 600 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(7, 14);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

@@ -86,9 +86,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame == 3 && Projectile.frameCounter == 0)
             {
                 AltVanillaFunction.PlaySound(SoundID.Item85, Projectile.Center);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(4 * Projectile.spriteDirection, 4)
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(4 * Projectile.spriteDirection, 4)
                     , new Vector2(Main.rand.NextFloat(1f, 3f) * Projectile.spriteDirection, Main.rand.NextFloat(-0.4f, 0.2f)), ProjectileType<WakasagihimeBubble>(), 0, 0, Main.myPlayer
                     , Main.rand.Next(0, 3), Main.rand.NextFloat(0.6f, 1.2f));
+                }
             }
             if (Projectile.frame > 4 && extraAI[1] <= 0)
             {
@@ -165,18 +168,23 @@ namespace TouhouPets.Content.Projectiles.Pets
             Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
                 , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
                 , Main.rand.NextFloat(0.75f, 1.05f)).noGravity = true;
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (PetState == 0)
-            {
-                if (mainTimer >= 300 && mainTimer % 800 == 0 && extraAI[0] <= 0 && Main.rand.NextBool(5))
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
-                    extraAI[1] = Main.rand.Next(360, 480);
-                    extraAI[2] = Main.rand.Next(30, 90);
-                    SetChat(myColor, ModUtils.GetChatText("Wakasagihime", "4"), 4, 120, 30, true);
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (PetState == 0)
+                {
+                    if (mainTimer >= 300 && mainTimer % 800 == 0 && extraAI[0] <= 0 && Main.rand.NextBool(5))
+                    {
+                        PetState = 2;
+                        extraAI[1] = Main.rand.Next(360, 480);
+                        extraAI[2] = Main.rand.Next(30, 90);
+                        Projectile.netUpdate = true;
+                        SetChat(myColor, ModUtils.GetChatText("Wakasagihime", "4"), 4, 120, 30, true);
+                    }
                 }
             }
             if (PetState == 0)

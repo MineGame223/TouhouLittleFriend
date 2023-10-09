@@ -89,10 +89,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 5;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(120, 360))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > Main.rand.Next(120, 360))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (extraAI[0] == 1)
@@ -102,18 +106,22 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 6;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(120, 360))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[2]++;
-                    if (extraAI[2] > Main.rand.Next(3, 9))
+                    if (extraAI[1] > Main.rand.Next(120, 360))
                     {
-                        extraAI[2] = 0;
-                        extraAI[0] = 2;
-                    }
-                    else
-                    {
-                        extraAI[0] = 0;
+                        extraAI[1] = 0;
+                        extraAI[2]++;
+                        if (extraAI[2] > Main.rand.Next(3, 9))
+                        {
+                            extraAI[2] = 0;
+                            extraAI[0] = 2;
+                        }
+                        else
+                        {
+                            extraAI[0] = 0;
+                        }
+                        Projectile.netUpdate = true;
                     }
                 }
             }
@@ -277,15 +285,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatFuncIsOccupied = true;
                 return;
             }
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 900 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() < 4f)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 900 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() < 4f)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

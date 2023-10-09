@@ -80,10 +80,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 3;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(20, 45))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[2] = 0;
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -180,15 +185,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                 , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
                 , Main.rand.NextFloat(0.5f, 0.75f)).noGravity = true;
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 120 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 120 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
+                    {
+                        extraAI[2] = Main.rand.Next(20, 45);
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

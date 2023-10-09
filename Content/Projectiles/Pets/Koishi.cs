@@ -91,11 +91,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.Opacity -= 0.005f;
             }
-            if (extraAI[0] > extraAI[1])
+            if (Projectile.owner == Main.myPlayer)
             {
-                extraAI[0] = 3600;
-                extraAI[1] = 0;
-                PetState = 0;
+                if (extraAI[0] > extraAI[1])
+                {
+                    extraAI[0] = 3600;
+                    extraAI[1] = 0;
+                    PetState = 0;
+                    Projectile.netUpdate = true;
+                }
             }
         }
         private void Annoying()
@@ -122,19 +126,32 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 14;
             }
-            if (Projectile.frame > 16 && extraAI[1] <= extraAI[2])
+            if (Projectile.owner == Main.myPlayer)
             {
-                extraAI[1]++;
-                Projectile.frame = 15;
+                if (extraAI[1] > extraAI[2])
+                {
+                    extraAI[0] = 1;
+                    Projectile.netUpdate = true;
+                }
             }
-            if (Projectile.frame > 17)
+            if (extraAI[0] >= 1)
             {
-                extraAI[0] = 1800;
-                extraAI[1] = 0;
-                extraAI[2] = 0;
-                PetState = 0;
-                Projectile.frame = 0;
-                return;
+                if (Projectile.frame > 17)
+                {
+                    extraAI[0] = 1800;
+                    extraAI[1] = 0;
+                    extraAI[2] = 0;
+                    PetState = 0;
+                    Projectile.frame = 0;
+                }
+            }
+            else
+            {
+                if (Projectile.frame > 16)
+                {
+                    extraAI[1]++;
+                    Projectile.frame = 15;
+                }
             }
             chatFuncIsOccupied = true;
         }
@@ -186,13 +203,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                         if (extraAI[1] == 2)
                         {
                             SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-2"), myColor, -2, cd: 60, -1, 60);
-                            extraAI[2] = 240;
+                            extraAI[2] = 540;
                             extraAI[1]++;
                         }
-                        if (extraAI[1] == 3 && extraAI[2] <= 0)
+                        if (Projectile.owner == Main.myPlayer)
                         {
-                            extraAI[2] = 360;
-                            extraAI[1]++;
+                            if (extraAI[1] == 3 && extraAI[2] <= 0)
+                            {
+                                extraAI[1]++;
+                                Projectile.netUpdate = true;
+                            }
                         }
                     }
                 }
@@ -200,16 +220,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.frame = 5;
                 }
-                if (extraAI[1] >= 4 && extraAI[2] <= 0)
+                if (extraAI[1] >= 4)
                 {
                     Projectile.frame = 6;
                     Projectile.Opacity -= 0.01f;
                     if (Projectile.Opacity <= 0f)
                     {
-                        extraAI[0] = 1;
-                        extraAI[1] = 0;
+                        if (Projectile.owner == Main.myPlayer)
+                        {
+                            extraAI[0] = 1;
+                            extraAI[1] = 0;
+                            Projectile.netUpdate = true;
+                        }
                     }
-                }             
+                }
             }
             else if (extraAI[0] == 1)
             {
@@ -229,10 +253,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.frame = 9;
                 }
-                if (extraAI[1] > 0 && extraAI[2] <= 0)
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[0]++;
-                    extraAI[1] = 0;
+                    if (extraAI[1] > 0 && extraAI[2] <= 0)
+                    {
+                        extraAI[0]++;
+                        extraAI[1] = 0;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 2)
@@ -242,18 +270,25 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame > 13)
                 {
                     Projectile.frame = 13;
-                    player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
-                    if (!player.dead || player.respawnTimer <= 60)
+                    if (Projectile.owner == Main.myPlayer)
                     {
-                        extraAI[2] = 0;
-                        extraAI[0] = 0;
-                        PetState = 0;
+                        player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
+                        if (!player.dead || player.respawnTimer <= 60)
+                        {
+                            extraAI[2] = 0;
+                            extraAI[0] = 0;
+                            PetState = 0;
+                            Projectile.netUpdate = true;
+                        }
                     }
                 }
             }
-            if (extraAI[2] > 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                extraAI[2]--;
+                if (extraAI[2] > 0)
+                {
+                    extraAI[2]--;
+                }
             }
             if (player.active && extraAI[0] > 0 && !player.dead)
             {
@@ -284,13 +319,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if (Projectile.owner != Main.myPlayer)
+                return;
+
             Player player = Main.player[Projectile.owner];
             if (player.statLife < player.statLifeMax2 / 10 && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
             {
-                if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(1) && PetState == 0 && ChatCD <= 0)
+                if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(3) && PetState == 0 && ChatCD <= 0)
                 {
                     PetState = State_Kill;
                     extraAI[0] = 0;
+                    Projectile.netUpdate = true;
                 }
             }
             else if (mainTimer % 720 == 0 && mainTimer > 0 && Main.rand.NextBool(7) && PetState <= 1)
@@ -339,23 +378,29 @@ namespace TouhouPets.Content.Projectiles.Pets
                 MoveToPoint(point, 13f);
             SetKoishiActive(player);
 
-            if (mainTimer % 270 == 0 && PetState < 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 600 && mainTimer < 4200 && PetState == 0)
-            {
-                if (mainTimer % 360 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState < 2)
                 {
-                    if (Main.rand.NextBool(4) && ChatTimeLeft <= 0)
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 600 && mainTimer < 4200 && PetState == 0)
+                {
+                    if (mainTimer % 360 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
                     {
-                        PetState = 3;
-                        extraAI[2] = Main.rand.Next(5, 14);
-                    }
-                    else if (player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
-                    {
-                        PetState = 2;
-                        extraAI[1] = Main.rand.Next(1800, 3600);
+                        if (Main.rand.NextBool(2) && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
+                        {
+                            PetState = 2;
+                            extraAI[1] = Main.rand.Next(1800, 3600);
+                            Projectile.netUpdate = true;
+                        }
+                        else if (ChatTimeLeft <= 0)
+                        {
+                            PetState = 3;
+                            extraAI[2] = Main.rand.Next(5, 14);
+                            Projectile.netUpdate = true;
+                        }
                     }
                 }
             }

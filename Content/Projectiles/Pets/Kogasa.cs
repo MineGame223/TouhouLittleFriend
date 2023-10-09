@@ -75,13 +75,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         int umbrellaFrame, umbrellaFrameCounter;
         private void UpdateUmbrellaFrame()
         {
+            if (PetState >= 5)
+            {
+                umbrellaFrame = 14;
+                return;
+            }
             if (++umbrellaFrameCounter > 5)
             {
                 umbrellaFrameCounter = 0;
                 umbrellaFrame++;
-                if (PetState == 3 || PetState == 4)
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1]++;
+                    if (PetState == 3 || PetState == 4)
+                    {
+                        extraAI[1]++;
+                    }
                 }
             }
             if (PetState <= 2)
@@ -92,12 +100,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
             else
-            {
-                if (PetState >= 5)
-                {
-                    umbrellaFrame = 14;
-                    return;
-                }
+            {                
                 if (umbrellaFrame < 7)
                 {
                     umbrellaFrame = 7;
@@ -162,9 +165,24 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
-                extraAI[1]++;
+                if (Projectile.owner == Main.myPlayer)
+                    extraAI[1]++;
             }
-            extraAI[0] = (extraAI[1] > extraAI[2]) ? 1 : 0;
+            if (extraAI[0] == 0)
+            {
+                if (Projectile.frame > 3)
+                {
+                    Projectile.frame = 2;
+                }
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
+                }
+            }
             if (extraAI[0] == 1)
             {
                 if (Projectile.frame > 4)
@@ -176,24 +194,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PetState = 0;
                 }
             }
-            else
-            {
-                if (Projectile.frame > 3)
-                {
-                    Projectile.frame = 2;
-                }
-            }
         }
         private void SpingUmbrella()
         {
-            if (extraAI[1] > extraAI[2])
+            if (Projectile.owner == Main.myPlayer)
             {
-                if (umbrellaFrame == 7)
+                if (extraAI[1] > extraAI[2])
                 {
-                    extraAI[1] = 0;
-                    extraAI[2] = 0;
-                    extraAI[0] = 1200;
-                    PetState = 0;
+                    if (umbrellaFrame == 7)
+                    {
+                        extraAI[1] = 0;
+                        extraAI[2] = 0;
+                        extraAI[0] = 1200;
+                        PetState = 0;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
         }
@@ -242,28 +257,45 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             MoveToPoint(point, 12.5f);
 
-            if (mainTimer % 270 == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                if (PetState == 0)
-                    PetState = 1;
-                else if (PetState == 3)
-                    PetState = 4;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState < 1)
-            {
-                if (mainTimer % 120 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0)
                 {
-                    if (Main.rand.NextBool(2))
+                    if (PetState == 0)
+                        PetState = 1;
+                    else if (PetState == 3)
+                        PetState = 4;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState < 1)
+                {
+                    if (mainTimer % 120 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
                     {
-                        PetState = 3;
-                        extraAI[2] = Main.rand.Next(30, 40);
-                    }
-                    else
-                    {
-                        PetState = 2;
-                        extraAI[2] = Main.rand.Next(14, 20);
+                        if (Main.rand.NextBool(2))
+                        {
+                            PetState = 3;
+                            extraAI[2] = Main.rand.Next(30, 40);
+                        }
+                        else
+                        {
+                            PetState = 2;
+                            extraAI[2] = Main.rand.Next(14, 20);
+                        }
+                        Projectile.netUpdate = true;
                     }
                 }
+            }
+            if (player.AnyBosses())
+            {
+                PetState = 5;
+            }
+            if (PetState == 5)
+            {
+                chatFuncIsOccupied = true;
+                Projectile.frame = 5;
+                if (!player.AnyBosses())
+                    PetState = 0;
+                return;
             }
             if (PetState == 0)
             {
@@ -286,17 +318,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 0;
                 SpingUmbrella();
-            }
-            else if (PetState == 5)
-            {
-                chatFuncIsOccupied = true;
-                Projectile.frame = 5;
-                if (!player.AnyBosses())
-                    PetState = 0;
-            }
-            if (player.AnyBosses())
-            {
-                PetState = 5;
             }
         }
     }

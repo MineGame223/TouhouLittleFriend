@@ -14,6 +14,20 @@ Mods: {
 					Tooltip: Whether pet's dialogs will show
 				}
 			}
+
+			PetObtainConfig: {
+				DisplayName: Pet's Obtain Config
+
+				PetCanDropFromBoss: {
+					Label: Pets can drop from bosses
+					Tooltip: Whether pets can drop from every bosses
+				}
+
+				PetSoldAtAnyTime: {
+					Label: Pets can be sold at anytime
+					Tooltip: Whether the Mysterious Gap can sell all pets without any conditions
+				}
+			}
 		}
 	}
 }

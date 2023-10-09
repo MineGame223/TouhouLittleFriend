@@ -33,7 +33,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Main.EntitySpriteDraw(AltVanillaFunction.GetExtraTexture("Piece_Cloth"), pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
             Projectile.DrawStateNormalizeForPet();
-            
+
             DrawTorch(t, pos, Projectile.GetAlpha(lightColor), orig, effect);
             return false;
         }
@@ -154,7 +154,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int xPos = 55;
             foreach (Projectile otherPets in Main.projectile)
             {
-                if (otherPets != null && otherPets.active)
+                if (otherPets != null && otherPets.active && otherPets.owner == Projectile.owner)
                 {
                     if ((Main.projPet[otherPets.type] || ProjectileID.Sets.LightPet[otherPets.type])
                         && otherPets.type != Projectile.type && otherPets.type != ProjectileType<Hecatia>())
@@ -174,9 +174,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true, 150);
             MoveToPoint(point, 13f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
+                if (mainTimer % 270 == 0)
+                {
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
             }
             if (PetState == 1)
             {

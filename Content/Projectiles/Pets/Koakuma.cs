@@ -13,7 +13,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
-            Main.projPet[Type] = true;           
+            Main.projPet[Type] = true;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -65,7 +65,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         int blinkFrame, blinkFrameCounter;
         int earFrame, earFrameCounter;
         int hairFrame, hairFrameCounter;
-        bool earActive = false;
+        bool EarActive
+        {
+            get => Projectile.ai[2] == 0;
+            set => Projectile.ai[2] = value ? 0 : 1;
+        }
         private void UpdateWingFrame()
         {
             if (wingFrame < 4)
@@ -100,7 +104,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateEarsFrame()
         {
-            if (++earFrameCounter > 5 && earActive)
+            if (++earFrameCounter > 5 && EarActive)
             {
                 earFrameCounter = 0;
                 earFrame++;
@@ -108,7 +112,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (earFrame > 3)
             {
                 earFrame = 0;
-                earActive = false;
+                EarActive = false;
             }
         }
         Color myColor = new Color(224, 78, 78);
@@ -178,19 +182,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             MoveToPoint(point, 9f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-                if (Main.rand.NextBool(4))
-                    earActive = true;
+                if (mainTimer % 270 == 0)
+                {
+                    PetState = 1;
+                    if (Main.rand.NextBool(4))
+                        EarActive = true;
+                    Projectile.netUpdate = true;
+                }
             }
             if (PetState == 0)
             {
                 Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
             }
             else if (PetState == 1)
             {

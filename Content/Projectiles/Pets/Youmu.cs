@@ -251,12 +251,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             shake = Vector2.Zero;
-            if (mainTimer % 270 == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                if (PetState < 2)
-                    PetState = 1;
-                else if (PetState == 3)
-                    PetState = 4;
+                if (mainTimer % 270 == 0)
+                {
+                    if (PetState < 2)
+                        PetState = 1;
+                    else if (PetState == 3)
+                        PetState = 4;
+                    Projectile.netUpdate = true;
+                }
             }
             if (PetState == 0)
             {

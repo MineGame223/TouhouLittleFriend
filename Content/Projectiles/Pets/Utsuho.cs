@@ -119,8 +119,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                     vel = (new Vector2(6 * Projectile.spriteDirection, -4) * 2f * Main.rand.NextFloat(0.5f, 2f)).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
                     Dust.NewDustDirect(center, 4, 4, MyDustId.OrangeFire2, vel.X, vel.Y, 100, default, Main.rand.NextFloat(1.4f, 1.9f)).noGravity = true;
                 }
-                Projectile.velocity.X = 9 * -Projectile.spriteDirection;
-                Projectile.velocity.Y = 4;
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    Projectile.velocity.X = 9 * -Projectile.spriteDirection;
+                    Projectile.velocity.Y = 4;
+                    Projectile.netUpdate = true;
+                }
             }
             if (Projectile.frame >= 5)
             {
@@ -213,7 +217,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<UtsuhoBuff>());
             Projectile.SetPetActive(player, BuffType<HellPetsBuff>());
 
-            UpdateTalking();          
+            UpdateTalking();
             Vector2 point = new Vector2(0, -60 + player.gfxOffY);
             if (player.ownedProjectileCounts[ProjectileType<Rin>()] > 0)
             {
@@ -231,15 +235,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame < 5)
                 MoveToPoint(point, 13.5f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 300 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 300 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

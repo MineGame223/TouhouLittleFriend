@@ -266,20 +266,24 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             MoveToPoint(point, 22f);
 
-            if (mainTimer % 270 == 0 && PetState == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            else if (mainTimer % 270 == 0 && PetState == 3)
-            {
-                PetState = 4;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && PetState < 3)
-            {
-                if (mainTimer % 480 == 0 && Main.rand.NextBool(5) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 2;
-                    extraAI[2] = Main.rand.Next(120, 240);
+                    if (PetState == 0)
+                        PetState = 1;
+                    else if (PetState == 3)
+                        PetState = 4;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && PetState < 3)
+                {
+                    if (mainTimer % 480 == 0 && Main.rand.NextBool(5) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(120, 240);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (player.velocity.Length() > 15f)

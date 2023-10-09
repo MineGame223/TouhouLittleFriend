@@ -88,10 +88,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 11;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(5, 10))
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > Main.rand.Next(5, 10))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -120,7 +124,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                extraAI[2] = 560;
                 if (Projectile.frame == 10)
                     Projectile.frame = 15;
                 if (Projectile.frame > 16)
@@ -211,11 +214,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if (Projectile.owner != Main.myPlayer)
+                return;
+
             if (FindChainedChat(1) && PetState <= 1)
             {
                 if (Main.rand.NextBool(4) && extraAI[0] <= 0)
                 {
                     extraAI[0] = 0;
+                    Projectile.netUpdate = true;
                     SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "7"), myColor, 7, 600);
                 }
                 else
@@ -223,7 +230,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (FindChainedChat(7))
             {
-                PetState = 3;
+                if (PetState != 3)
+                {
+                    PetState = 3;
+                    Projectile.netUpdate = true;
+                }
                 SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "8"), myColor, 8, 600, -1, 30, true);
             }
             else if (FindChainedChat(8))
@@ -232,7 +243,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (FindChainedChat(9))
             {
-                extraAI[0] = 10800;
+                if (extraAI[0] < 10800)
+                {
+                    extraAI[0] = 10800;
+                    Projectile.netUpdate = true;
+                }
                 SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "10"), myColor, 0, 600);
             }
             if (FindChainedChat(3))
@@ -273,15 +288,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             MoveToPoint(point, 7f);
 
-            if (mainTimer % 270 == 0 && PetState == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
-            {
-                if (mainTimer % 555 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState == 0)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
+                {
+                    if (mainTimer % 555 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState <= 1)

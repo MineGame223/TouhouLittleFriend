@@ -115,10 +115,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 5;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > Main.rand.Next(24, 48))
+                if(Projectile.owner==Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > Main.rand.Next(24, 48))
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -192,15 +196,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player);
             MoveToPoint(point, 17f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if(Projectile.owner==Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-            {
-                if (mainTimer % 450 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                {
+                    if (mainTimer % 450 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)
@@ -218,14 +227,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Wrath();
             }
-            if (auraValue < 0)
-            {
-                auraValue = 0;
-            }
-            if (auraValue > 1)
-            {
-                auraValue = 1;
-            }
             if (PetState == 2)
             {
                 auraValue += 0.08f;
@@ -234,6 +235,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 auraValue -= 0.01f;
             }
+            auraValue = MathHelper.Clamp(auraValue, 0, 1);
         }
     }
 }

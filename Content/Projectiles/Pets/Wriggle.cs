@@ -54,7 +54,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 (!Main.dayTime
                 || player.ZoneDirtLayerHeight || player.ZoneRockLayerHeight || player.ZoneUnderworldHeight);
         }
-        private int FireflyType(Player player)
+        private static int FireflyType(Player player)
         {
             if (player.ZoneHallow)
             {
@@ -91,7 +91,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         int antennaeFrame, antennaeFrameCounter;
         int extraAdjX, extraAdjY;
         Vector2 shake;
-        bool antennaeActive;
+        bool AntennaeActive
+        {
+            get => Projectile.ai[2] == 0;
+            set => Projectile.ai[2] = value ? 0 : 1;
+        }
         private void BugSwarm()
         {
             Player player = Main.player[Projectile.owner];
@@ -118,21 +122,25 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (extraAI[1] == 0)
                     AltVanillaFunction.PlaySound(SoundID.Pixie, Projectile.Center);
                 extraAI[1]++;
-                if (extraAI[1] % 2 == 0 &&
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    if (extraAI[1] % 2 == 0 &&
                    player.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
-                {
-                    Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
-                    if (CheckEmptyPlace(point))
                     {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), point
-                            , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
-                            , FireflyType(player), Main.rand.Next(0, 2));
+                        Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
+                        if (CheckEmptyPlace(point))
+                        {
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), point
+                                , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
+                                , FireflyType(player), Main.rand.Next(0, 2));
+                        }
                     }
-                }
-                if (extraAI[1] > extraAI[2])
-                {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -166,7 +174,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateAntennaeFrame()
         {
             int count = 5;
-            if (++antennaeFrameCounter > count && antennaeActive)
+            if (++antennaeFrameCounter > count && AntennaeActive)
             {
                 antennaeFrameCounter = 0;
                 antennaeFrame++;
@@ -174,7 +182,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (antennaeFrame > 3)
             {
                 antennaeFrame = 0;
-                antennaeActive = false;
+                AntennaeActive = false;
             }
         }
         private static List<int> IsFlyInsect()
@@ -271,22 +279,30 @@ namespace TouhouPets.Content.Projectiles.Pets
             MoveToPoint(point, 14f);
             if (mainTimer % (PetState == 2 ? 15 : 30) == 0 && CanGenFireFly(player))
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-40, 40))
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-40, 40))
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
                             , FireflyType(player), Main.rand.Next(0, 2));
+                }
             }
-            if (mainTimer % 270 == 0 && PetState == 0)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-                if (Main.rand.NextBool(4))
-                    antennaeActive = true;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
-            {
-                if (mainTimer % 600 == 0 && Main.rand.NextBool(1) && CanGenFireFly(player))
+                if (mainTimer % 270 == 0 && PetState == 0)
                 {
-                    PetState = 2;
-                    extraAI[2] = Main.rand.Next(600, 1200);
+                    PetState = 1;
+                    if (Main.rand.NextBool(4))
+                        AntennaeActive = true;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
+                {
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(1) && CanGenFireFly(player))
+                    {
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(600, 1200);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             shake = Vector2.Zero;

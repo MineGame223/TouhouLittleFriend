@@ -84,16 +84,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         int clothFrame, clothFrameCounter;
         int extraAdjX, extraAdjY;
         float flash;
-        private int FlashChance
-        {
-            get => (int)Projectile.ai[0];
-            set => Projectile.ai[0] = value;
-        }
-        private int ShotChance
-        {
-            get => (int)Projectile.ai[2];
-            set => Projectile.ai[2] = value;
-        }
+        int flashChance;
         private void Shot()
         {
             Projectile.velocity *= 0.9f;
@@ -104,47 +95,72 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (extraAI[0] > 0)
             {
-                if (extraAI[1] > extraAI[2])
+                if (extraAI[1] == 0)
                 {
-                    if (Projectile.frame >= 5)
+                    if (Projectile.frame >= 3)
                     {
-                        Projectile.frame = 5;
-                        extraAI[2]--;
-                        if (extraAI[2] <= 0)
+                        Projectile.frame = 3;
+                    }
+                    if (Projectile.ai[2] > 0)
+                    {
+                        flash = 1;
+                        AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
+                        Projectile.ai[2] = 0;
+                    }
+                    if (Projectile.owner == Main.myPlayer)
+                    {
+                        if (extraAI[2] == 0 && Main.rand.NextBool(3))
                         {
-                            extraAI[0]--;
-                            FlashChance = 6;
-                            extraAI[1] = 0;
-                            extraAI[2] = Main.rand.Next(180, 600);
-                            if (extraAI[0] > 1)
-                            {
-                                Projectile.frame = 1;
-                                SetShotChat();
-                            }
-                            else
+                            SetShotChat();
+                        }
+                        extraAI[2]++;
+                        int chance = Main.rand.Next(180, 600);
+                        if (extraAI[2] >= chance)
+                        {
+                            extraAI[1] = 1;
+                            if (extraAI[0] <= 1)
                             {
                                 extraAI[2] = Main.rand.Next(30, 60);
                             }
                             Projectile.netUpdate = true;
                         }
-                    }
-                }
-                else if (Projectile.frame >= 3)
-                {
-                    Projectile.frame = 3;
-                    extraAI[1]++;
-                    if (extraAI[1] % 30 == 0)
-                    {
-                        if(Projectile.owner==Main.myPlayer)
+                        else if (extraAI[2] % 30 == 0 && Main.rand.NextBool(7 - flashChance))
                         {
-                            ShotChance = Main.rand.Next(7 - FlashChance);
+                            flashChance -= 2;
+                            Projectile.ai[2]++;
                             Projectile.netUpdate = true;
                         }
-                        if (ShotChance == 0)
+                    }
+                }
+                if (extraAI[1] == 1)
+                {
+                    if (Projectile.frame >= 5)
+                    {
+                        Projectile.frame = 5;
+                    }
+                    if (Projectile.owner == Main.myPlayer)
+                    {
+                        extraAI[2]--;
+                        if (extraAI[2] < 0)
                         {
-                            flash = 1;
-                            FlashChance -= 2;
-                            AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
+                            extraAI[2] = 0;
+                            extraAI[0]--;
+                            flashChance = 6;
+                            if (extraAI[0] > 0)
+                                extraAI[1] = 2;
+                            Projectile.netUpdate = true;
+                        }
+                    }
+                }
+                if (extraAI[1] == 2)
+                {
+                    if (Projectile.frame >= 1)
+                    {
+                        Projectile.frame = 1;
+                        if (Projectile.owner == Main.myPlayer)
+                        {
+                            extraAI[1] = 0;
+                            Projectile.netUpdate = true;
                         }
                     }
                 }
@@ -277,12 +293,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && PetState != 2)
                     {
                         PetState = 2;
-                        extraAI[2] = Main.rand.Next(180, 600);
                         extraAI[0] = Main.rand.Next(1, 5);
-                        FlashChance = 6;
-                        ShotChance = FlashChance;
+                        flashChance = 6;
                         Projectile.netUpdate = true;
-                        SetShotChat();
                     }
                 }
             }

@@ -104,14 +104,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame > 3)
                 {
                     Projectile.frame = 3;
-                }
-                extraAI[1]++;
-                if (extraAI[1] > extraAI[2])
+                }               
+                if(Projectile.owner==Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0]++;
-                    extraAI[2] = Main.rand.Next(400, 600);
-                    Projectile.netUpdate = true;
+                    extraAI[1]++;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0]++;
+                        extraAI[2] = Main.rand.Next(400, 600);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else if (extraAI[0] == 1)
@@ -131,11 +134,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.frame = 7;
                 }
-                extraAI[1]++;
-                if (extraAI[1] > extraAI[2])
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0]++;
+                    extraAI[1]++;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0]++;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -146,7 +153,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 240;
                     extraAI[2] = 0;
                     PetState = 0;
-                    Projectile.netUpdate = true;
                 }
             }
         }

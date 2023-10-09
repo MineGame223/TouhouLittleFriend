@@ -214,16 +214,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player);
             MoveToPoint(point, 11f);
 
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (PetState == 0)
-            {
-                if (mainTimer >= 600 && mainTimer % 120 == 0 && extraAI[0] <= 0)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
-                    extraAI[1] = Main.rand.Next(360, 480);
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (PetState == 0)
+                {
+                    if (mainTimer >= 600 && mainTimer % 120 == 0 && extraAI[0] <= 0)
+                    {
+                        PetState = 2;
+                        extraAI[1] = Main.rand.Next(360, 480);
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             if (PetState == 0)

@@ -100,7 +100,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 0;
                     extraAI[0] = 300;
                     PetState = 0;
-                    Projectile.netUpdate = true;
                 }
             }
         }
@@ -150,14 +149,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             MoveToPoint(point, 13f);
 
-            if(Projectile.owner==Main.myPlayer)
+            if (Projectile.owner == Main.myPlayer)
             {
                 if (mainTimer % 270 == 0 && PetState != 2)
                 {
                     PetState = 1;
                     Projectile.netUpdate = true;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
                 {
                     if (mainTimer % 200 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
                     {

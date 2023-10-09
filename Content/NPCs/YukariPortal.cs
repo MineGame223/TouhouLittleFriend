@@ -103,8 +103,8 @@ namespace TouhouPets.Content.NPCs
             {
                 shopName = "Shop";
             }
-        }
-        public override void AddShops()
+        }        
+        private void AddShopItem_Legacy()
         {
             NPCShop shop = new(Type);
             shop.Add(ItemType<DaiyouseiBomb>());
@@ -139,6 +139,53 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<JunkoMooncake>(), Condition.DownedMoonLord);
             shop.Add(ItemType<HecatiaPlanet>(), Condition.DownedMoonLord);
             shop.Register();
+        }
+        private void AddShopItem()
+        {
+            NPCShop shop = new(Type);
+            shop.Add(ItemType<DaiyouseiBomb>());
+            shop.Add(ItemType<LilyOneUp>());
+            shop.Add(ItemType<KoakumaPower>());
+            shop.Add(ItemType<KogasaUmbrella>());
+            shop.Add(ItemType<RumiaRibbon>());
+            shop.Add(ItemType<RemiliaRedTea>());
+            shop.Add(ItemType<FlandrePudding>());
+            shop.Add(ItemType<MystiaFeather>());
+            shop.Add(ItemType<WriggleInAJar>());
+            shop.Add(ItemType<WakasagihimeFishingRod>());
+            shop.Add(ItemType<HinaDoll>());
+            shop.Add(ItemType<AliceDoll>());
+            shop.Add(ItemType<CirnoIceShard>());
+            shop.Add(ItemType<RinSkull>());
+            shop.Add(ItemType<UtsuhoEye>());
+            shop.Add(ItemType<AyaCamera>());
+            shop.Add(ItemType<PatchouliMoon>());
+            shop.Add(ItemType<SatoriSlippers>());
+            shop.Add(ItemType<KoishiTelephone>());
+            shop.Add(ItemType<NitoriCucumber>());
+            shop.Add(ItemType<YukaSunflower>());
+            shop.Add(ItemType<YuyukoFan>());
+            shop.Add(ItemType<YoumuKatana>());
+            shop.Add(ItemType<SekibankiBow>());
+            shop.Add(ItemType<IkuOarfish>());
+            shop.Add(ItemType<TenshiKeyStone>());
+            shop.Add(ItemType<ReimuYinyangOrb>());
+            shop.Add(ItemType<MarisaHakkero>());
+            shop.Add(ItemType<SanaeCoin>());
+            shop.Add(ItemType<JunkoMooncake>());
+            shop.Add(ItemType<HecatiaPlanet>());
+            shop.Register();
+        }
+        public override void AddShops()
+        {
+            if (GetInstance<PetObtainConfig>().PetSoldAtAnyTime)
+            {
+                AddShopItem();
+            }
+            else
+            {
+                AddShopItem_Legacy();
+            }
         }
         public override void FindFrame(int frameHeight)
         {

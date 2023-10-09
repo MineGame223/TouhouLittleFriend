@@ -78,10 +78,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 2;
                     extraAI[1]++;
                 }
-                if (extraAI[1] > extraAI[2])
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    if (extraAI[1] > extraAI[2])
+                    {
+                        extraAI[1] = 0;
+                        extraAI[0] = 1;
+                        Projectile.netUpdate = true;
+                    }
                 }
             }
             else
@@ -185,31 +189,36 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(player, true);
             MoveToPoint(point, 14f);
-            if (mainTimer % 270 == 0 && PetState != 2)
+            if (Projectile.owner == Main.myPlayer)
             {
-                PetState = 1;
-            }
-            if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
-            {
-                if (mainTimer % 1200 == 0 && Main.rand.NextBool(3) && PetState != 2)
+                if (mainTimer % 270 == 0 && PetState != 2)
                 {
-                    PetState = 2;
-                    extraAI[2] = Main.rand.Next(60, 180);
-                    int chance = Main.rand.Next(4);
-                    switch (chance)
+                    PetState = 1;
+                    Projectile.netUpdate = true;
+                }
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
+                {
+                    if (mainTimer % 1200 == 0 && Main.rand.NextBool(3) && PetState != 2)
                     {
-                        case 1:
-                            SetChat(myColor, ModUtils.GetChatText("Mystia", "6"), 6, 90, 30, true);
-                            break;
-                        case 2:
-                            SetChat(myColor, ModUtils.GetChatText("Mystia", "7"), 7, 90, 30, true);
-                            break;
-                        case 3:
-                            SetChat(myColor, ModUtils.GetChatText("Mystia", "8"), 8, 90, 30, true);
-                            break;
-                        default:
-                            SetChat(myColor, ModUtils.GetChatText("Mystia", "5"), 5, 90, 30, true);
-                            break;
+                        PetState = 2;
+                        extraAI[2] = Main.rand.Next(60, 180);
+                        Projectile.netUpdate = true;
+                        int chance = Main.rand.Next(4);
+                        switch (chance)
+                        {
+                            case 1:
+                                SetChat(myColor, ModUtils.GetChatText("Mystia", "6"), 6, 90, 30, true);
+                                break;
+                            case 2:
+                                SetChat(myColor, ModUtils.GetChatText("Mystia", "7"), 7, 90, 30, true);
+                                break;
+                            case 3:
+                                SetChat(myColor, ModUtils.GetChatText("Mystia", "8"), 8, 90, 30, true);
+                                break;
+                            default:
+                                SetChat(myColor, ModUtils.GetChatText("Mystia", "5"), 5, 90, 30, true);
+                                break;
+                        }
                     }
                 }
             }
