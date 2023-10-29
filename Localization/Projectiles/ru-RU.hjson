@@ -1,0 +1,45 @@
+Mods: {
+	TouhouPets: {
+		Projectiles: {
+			Mods: {
+	TouhouPets: {
+		Projectiles: {
+			Cirno.DisplayName: Чирно
+			Daiyousei.DisplayName: Дэйсей
+			Flandre.DisplayName: Фландр Скарлет
+			Hecatia.DisplayName: Гекатия Лапислазули
+			Hina.DisplayName: Хина Кагияма 
+			Iku.DisplayName: Ику Нагае
+			Junko.DisplayName: Дзюнко
+			Marisa.DisplayName: Мариса Кирисаме
+			Patchouli.DisplayName: Пачули Нолидж
+			Piece.DisplayName: Клаунпис
+			Reimu.DisplayName: Рейму Хакурей
+			Remilia.DisplayName: Ремилия Скарлет 
+			Sekibanki.DisplayName: Секибанки
+			Tenshi.DisplayName: Тенши Хинанави
+			Utsuho.DisplayName: Уцухо Реуджи
+			Koishi.DisplayName: Коиши Комейджи
+			Satori.DisplayName: Сатори Комейджи
+			Sanae.DisplayName: Санаэ Кочия
+			Kogasa.DisplayName: Когаса Татара
+			Nitori.DisplayName: Нитори Каваширо
+			Rin.DisplayName: Рин Каэмбё
+			Lily.DisplayName: Лили Уайт
+			Mystia.DisplayName: Мистия Лорейли
+			Wriggle.DisplayName: Риггл Найтбаг
+			WriggleFirefly.DisplayName: Светляк
+			Aya.DisplayName: Ая Шаммеймару
+			Yuyuko.DisplayName: Ююко Сайгёдзи
+			YuyukoButterfly.DisplayName: Бабочка
+			Youmu.DisplayName: Ёму Конпаку
+			Alice.DisplayName: Алиса Маргатроид
+			AliceDoll_Proj.DisplayName: Кукла Шанхай
+			Rumia.DisplayName: Румия
+			Koakuma.DisplayName: Коакума номер {0}
+			Wakasagihime.DisplayName: Вакасагихиме
+			WakasagihimeBubble.DisplayName: Пузарь
+			Yuka.DisplayName: Юка Кадзами
+		}
+	}
+}
