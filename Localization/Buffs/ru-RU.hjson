@@ -1,0 +1,175 @@
+Mods: {
+	TouhouPets: {
+		Buffs: {
+			CirnoBuff: {
+				DisplayName: Бака
+				Description: ⑨
+			}
+
+			UtsuhoBuff: {
+				DisplayName: Адский Ворон
+				Description: "'Я - адское солнце!'"
+			}
+
+			HinaBuff: {
+				DisplayName: Богиня Проклятий
+				Description: "'Крутится и крутится...'"
+			}
+
+			DaiyouseiBuff: {
+				DisplayName: Дэйсей
+				Description: "'Кто это?'"
+			}
+
+			PatchouliBuff: {
+				DisplayName: Волшебник
+				Description: "'Маленькая неподвижная библиотека...?'"
+			}
+
+			SekibankiBuff: {
+				DisplayName: Дуллахан
+				Description: "'Не играйте с моей головой пожалуйста'"
+			}
+
+			MarisaBuff: {
+				DisplayName: Человек, Занимающийся Магией			
+				Description: "'Больше она ничего не украдёт"
+			}
+
+			ReimuBuff: {
+				DisplayName: Хакурейская Жрица
+				Description: "'...'"
+			}
+
+			RemiliaBuff: {
+				DisplayName: Старшая Сестра-Вампир
+				Description: "'Покажи свою кровь, человек!'"
+			}
+
+			FlandreBuff: {
+				DisplayName: Младшая Сестра-Вампир
+				Description: "'Поиграй со мной пожалуйста!'"
+			}
+
+			ScarletBuff: {
+				DisplayName: Сёстры Скарлет
+				Description: "'Не хочешь присоединиться к нашему вечернему чаепитию?'"
+			}
+
+			JunkoBuff: {
+				DisplayName: Бог Чистоты
+				Description: "'Где находится сердце'"
+			}
+
+			HecatiaBuff: {
+				DisplayName: Богиня Ада
+				Description: "'Добро Пожаловать ♥ Ад'"
+			}
+
+			IkuBuff: {
+				DisplayName: Гонец Драконьего Дворца
+				Description: "'КОРОЛЕВСКАЯ сельдь!!!'"
+			}
+
+			TenshiBuff: {
+				DisplayName: Небожитель
+				Description: "'Плохиш с небес'"
+			}
+
+			SatoriBuff: {
+				DisplayName: Ёкай, Властвующий Сознанием
+				Description: "'Я знаю о чём ты думаешь...'"
+			}
+
+			KoishiBuff: {
+				DisplayName: Бессознательная Девочка
+				Description: "'А где?'"
+			}
+
+			KomeijiBuff: {
+				DisplayName: Сёстры Комейджи
+				Description: O v U
+			}
+
+			SanaeBuff: {
+				// DisplayName: Wind Sorceress
+				// Description: "'Watching for the miracle!'"
+			}
+
+			KogasaBuff: {
+				DisplayName: Ёкай-Зонтик
+				Description: "'БУ!'"
+			}
+
+			NitoriBuff: {
+				// DisplayName: Kappa Engineer
+				// Description: "'Kappa technology NO.1!'"
+			}
+
+			HellPetsBuff: {
+				DisplayName: Адские Питомцы 
+				Description: "'Хорошие питомцы, адски любят!'"
+			}
+
+			RinBuff: {
+				DisplayName: Кася
+				Description: "'Оставь тело и я заберу его!'"
+			}
+
+			LilyBuff: {
+				DisplayName: Фея Весны
+				Description: "'Весна пришла!'"
+			}
+
+			MystiaBuff: {
+				DisplayName: Ночная Пташка
+				Description: "'Погрузись в пение ночной птицы!'"
+			}
+
+			WriggleBuff: {
+				DisplayName: Ёкай-Светляк
+				Description: "'Мерцай, Мерцай, Маленький Жучок'"
+			}
+
+			YuyukoBuff: {
+				DisplayName: Дух Вишни
+				Description: "'Граница Жизни'"
+			}
+
+			AyaBuff: {
+				DisplayName: Урганная Дева
+				Description: "'БОГИНЯ СКОРОСТИ!'"
+			}
+
+			YoumuBuff: {
+				DisplayName: Маленький Садовник
+				Description: "'КТО ЗДЕСЬ?!'"
+			}
+
+			AliceBuff: {
+				DisplayName: Кукловод
+				Description: "'Мастер марионеток'"
+			}
+
+			RumiaBuff: {
+				DisplayName: Ёкай Тьмы
+				Description: "'Во.оот как~?'"
+			}
+
+			KoakumaBuff: {
+				DisplayName: Маленький Дьявол
+				Description: "'Коакума Номер {0} к вашим услугам!'"
+			}
+
+			WakasagihimeBuff: {
+				DisplayName: Принцесса-Русалка
+				Description: "'буль-буль .oO'"
+			}
+
+			YukaBuff: {
+				DisplayName: Бог Цветов
+				Description: "'Пожалуйста, не трогайте цветы'"
+			}
+		}
+	}
+}

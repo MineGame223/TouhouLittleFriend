@@ -1,0 +1,33 @@
+Mods: {
+	TouhouPets: {
+		Configs: {
+			PetDialogConfig: {
+				DisplayName: Настройки Диалога Питомцев
+
+				TyperStyleChat: {
+					Label: Стиль Печатания
+					Tooltip: Показывать диалог питомцев в стиле 'печатной машинки'
+				}
+
+				CanPetChat: {
+					Label: Показывать Диалоги Питомцев
+					Tooltip: Показывать диалоги питомцев
+				}
+			}
+
+			PetObtainConfig: {
+				DisplayName: Настройки Получения Питомцев
+
+				PetCanDropFromBoss: {
+					Label: Питомцы Могут Выпасть с Боссов
+					Tooltip: Питомцы могут выпасть с боммов
+				}
+
+				PetSoldAtAnyTime: {
+					Label: Питомцы могут быть куплены в любое время
+					Tooltip: Загадочный Разрыв будет продавать всех питомцев без каких-либо условий
+				}
+			}
+		}
+	}
+}

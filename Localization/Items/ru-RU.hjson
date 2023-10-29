@@ -1,0 +1,193 @@
+Mods: {
+	TouhouPets: {
+		Items: {
+			CirnoIceShard: {
+				DisplayName: Полный Мудрости Осколок Льда
+				Tooltip: "'Выглядит словно полный мудрости!'"
+			}
+
+			UtsuhoEye: {
+				DisplayName: Багровый Глаз
+				Tooltip: "'Горячий на ощупь'"
+			}
+
+			HinaDoll: {
+				DisplayName: Кукла Хины
+				Tooltip: "'Говорят она могут избавить от неудач... Или принести их?'"
+			}
+
+			DaiyouseiBomb: {
+				DisplayName: БОМБА
+				Tooltip: "'Это БОМБА'"
+			}
+
+			PatchouliMoon: {
+				DisplayName: Гримуар Золотой Луны
+				Tooltip: "'Светится знаниями'"
+			}
+
+			SekibankiBow: {
+				DisplayName: Синий Бант
+				Tooltip: "'Этот - девятый'"
+			}
+
+			MarisaHakkero: {
+				DisplayName: Мини-хаккеро
+				Tooltip: "'Мягко горит'"
+			}
+
+			ReimuYinyangOrb: {
+				DisplayName: Сфера Инь-Ян
+				Tooltip: "'Полна ауры... И довольно тяжёлая'"
+			}
+
+			RemiliaRedTea: {
+				DisplayName: Чашка Красного Чая
+				Tooltip: "'Отлично расслабляет по вечерам'"
+			}
+
+			FlandrePudding: {
+				DisplayName: Вишнёвый Пуддинг
+				Tooltip: "'Выглядит вкусно!'"
+			}
+
+			CakeOfScarlet: {
+				DisplayName: Пирог Скарлет
+				Tooltip: "'Вечернее чаепитие только для членов семьи Скарлет'"
+			}
+
+			JunkoMooncake: {
+				DisplayName: Чистый Юэбин
+				Tooltip: "'Начинка из пяти орехов и больше ничего'"
+			}
+
+			HecatiaPlanet: {
+				DisplayName: Странная Красная Планета
+				Tooltip: "'Штука из другого мира'"
+			}
+
+			IkuOarfish: {
+				DisplayName: Легендарная Рыба
+				Tooltip: "'Редкая и прекрасная'"
+			}
+
+			TenshiKeyStone: {
+				DisplayName: Краеугольный Камень
+				Tooltip: "'Защищает землю от землетрясений'"
+			}
+
+			SatoriSlippers: {
+				DisplayName: Розовые Тапочки
+				Tooltip: "'Долдно быть они очень тёплые'"
+			}
+
+			KoishiTelephone: {
+				DisplayName: Фиолетовый Телефон
+				Tooltip:
+					'''
+					'Моши Моши?'
+					[c/ff0000:МОЖЕТ ДОБИТЬ НАХОДЯЩЕГОСЯ НА ГРАНИ ХОЗЯИНА!]
+					'''
+			}
+
+			TheThirdEye: {
+				DisplayName: Третий Глаз
+				Tooltip: "'Следит за тем что внутри тебя...'"
+			}
+
+			SanaeCoin: {
+				DisplayName: Серебряная Лягушачья Монета
+				Tooltip: "'Быть может, если собрать достаточно, то произойдёт что-то интересное?'"
+			}
+
+			KogasaUmbrella: {
+				DisplayName: Странный Зонт
+				Tooltip: "'На нём что, ГЛАЗ?!'"
+			}
+
+			NitoriCucumber: {
+				DisplayName: Огурец
+				Tooltip: "'Очень свежий'"
+			}
+
+			UselessBook: {
+				DisplayName: Бесполезная Волшебная Книга
+				Tooltip:
+					'''
+					Повидавшая жизнь водостойкая книга
+					Она полна записей очевидных вещей и не может быть использована в качестве оружия
+					Может если окунуть её в сверкающее озеро она освежится?
+					''' 
+			}
+
+			GoldenNameplate: {
+				DisplayName: Золотая Именная Табличка
+				Tooltip: "'Для самого королевского питомца'"
+			}
+
+			RinSkull: {
+				DisplayName: Одержимый Череп
+				Tooltip: "'Наверное, не лучшая игрушка для кота...?'"
+			}
+			
+			LilyOneUp: {
+				DisplayName: 1 UP
+				Tooltip: "'Extend!'"
+			}
+
+			MystiaFeather: {
+				DisplayName: Перо Ночной Пташки
+				Tooltip: "'Пахнет как куринный наггетс...?'"
+			}
+
+			WriggleInAJar: {
+				DisplayName: Светляк в Банке
+				Tooltip: "'Свет воспоминания о далёком-далёком прошлом'"
+			}
+
+			AyaCamera: {
+				DisplayName: Старомодная Камера
+				Tooltip: "'На задней стороне кленовый листок'"
+			}
+
+			YuyukoFan: {
+				DisplayName: Вишнёвый веер
+				Tooltip:
+					'''
+					"Он по-прежнему пахнет весной"
+					Пожалуйста, позаботьтесь о ЕДЕ в вашем инвентаре!
+					'''
+			}
+
+			YoumuKatana: {
+				DisplayName: Игрушечная Катана
+				Tooltip: "'На ней призрак'"
+			}
+
+			AliceDoll: {
+				DisplayName: Изысканная Кукла
+				Tooltip: "'Яркая и живая'"
+			}
+
+			RumiaRibbon: {
+				DisplayName: Красный бант
+				Tooltip: "'Его не развязать'"
+			}
+
+			KoakumaPower: {
+				DisplayName: POWER
+				Tooltip: "'На деле это мёртвая БОМБА...?'"
+			}
+
+			WakasagihimeFishingRod: {
+				DisplayName: Игрушечная Удочка
+				Tooltip: "'Может поймать... Что-то'"
+			}
+
+			YukaSunflower: {
+				DisplayName: Подсолнух в Горшке
+				Tooltip: "'Что??'"
+			}
+		}
+	}
+}
