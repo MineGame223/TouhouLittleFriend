@@ -197,7 +197,7 @@ Mods: {
 		Chat_Koishi: {
 			Chat-1: Moshi moshi?
 			Chat-2: It's me, Koishi...
-			Chat-3: I'm at your back...
+			Chat-3: I'M AT YOUR BACK NOW...
 			Chat1: Can I play with you?
 			Chat2: I'll put your body on to!... To where?
 			Chat3: Wanna play Doki Doki Adventure?
@@ -235,9 +235,10 @@ Mods: {
 		}
 
 		Chat_Lily: {
-			Chat1: Everywhere could be spring just if I'm in!
-			Chat2: Lily is spring bringer!
+			Chat1: If winter comes, can spring be far behind?
+			Chat2: Lily is the bringer of spring!
 			Chat3: Spring is the best time to play!
+			Chat4: 春天在哪里呀，春天在哪里？~
 		}
 
 		Chat_Mystia: {
@@ -258,7 +259,7 @@ Mods: {
 			Chat3: The great bugs are falling now... That's unacceptable!
 			Chat4: Only in here can you see the firefly...
 			Chat5: Happy bugs day to you~ happy bugs day to you~...Ugh, forget it anyway
-			Chat6: ...TOO COLD...
+			Chat6: ...TOO COLD!...
 			Chat7: Wanna enjoy 'Bug Service'?
 			Chat8: Spider is not a insect, scorpion and centipede is not too. Remember?
 			Chat9: Can you identify bee, wasp and hornet?

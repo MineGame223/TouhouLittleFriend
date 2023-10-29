@@ -7,7 +7,8 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-无
+加入了俄语翻译
+made by @Typical Guy
 
 修改：
 无

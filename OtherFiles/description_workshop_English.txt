@@ -4,3 +4,5 @@ Adventure with partners from Gensokyo!
 This is a vanity pet mod.
 The summon items are dropped from every boss with a 30% chance, and it always drops the first time you defeat them.
 You can also buy these items from the Mysterious Gap which spawns in nighttime.
+
+The russian translation is made by @Typical Guy
