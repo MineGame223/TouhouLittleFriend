@@ -32,7 +32,7 @@ Mods: {
 			}
 
 			MarisaBuff: {
-				DisplayName: Человек, Занимающийся Магией			
+				DisplayName: Человек, Занимающийся Магией
 				Description: "'Больше она ничего не украдёт"
 			}
 
@@ -107,7 +107,7 @@ Mods: {
 			}
 
 			HellPetsBuff: {
-				DisplayName: Адские Питомцы 
+				DisplayName: Адские Питомцы
 				Description: "'Хорошие питомцы, адски любят!'"
 			}
 
