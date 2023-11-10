@@ -50,13 +50,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 orig = rect4.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true);
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 8; i++)
             {
                 Vector2 spinningpoint = new Vector2(0f, -1f);
                 Main.EntitySpriteDraw(t, pos + spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly + MathHelper.TwoPi / 8 * i * 0.6f), rect4, Projectile.GetAlpha(Color.White) * 0.4f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
             Projectile.DrawStateNormalizeForPet();
             Main.EntitySpriteDraw(t, pos, rect4, Projectile.GetAlpha(Color.White) * 0.8f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }

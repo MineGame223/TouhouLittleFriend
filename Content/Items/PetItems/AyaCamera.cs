@@ -33,7 +33,6 @@ namespace TouhouPets.Content.Items.PetItems
             .AddIngredient(ItemID.BlackLens, 1)
             .AddRecipeGroup(RecipeGroupID.IronBar, 5)
             .AddIngredient(ItemID.Wire, 7)
-            .AddIngredient(ItemID.SoulofFlight, 3)
             .AddTile(TileID.Anvils)
             .Register();
         }

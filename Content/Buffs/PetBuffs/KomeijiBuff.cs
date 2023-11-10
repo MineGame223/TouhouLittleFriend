@@ -7,21 +7,8 @@ namespace TouhouPets.Content.Buffs.PetBuffs
     {
         public override void Update(Player player, ref int buffIndex)
         {
-            int type1 = ProjectileType<Satori>();
-            int type2 = ProjectileType<Koishi>();
-            player.buffTime[buffIndex] = 18000;
-            bool flag = player.ownedProjectileCounts[type1] <= 0;
-            if (flag)
-            {
-                if (player.whoAmI == Main.myPlayer)
-                    Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, type1, 0, 0f, player.whoAmI, 0f, 0f);
-            }
-            bool flag2 = player.ownedProjectileCounts[type2] <= 0;
-            if (flag2)
-            {
-                if (player.whoAmI == Main.myPlayer)
-                    Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, type2, 0, 0f, player.whoAmI, 0f, 0f);
-            }
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Satori>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Koishi>());
         }
     }
 }

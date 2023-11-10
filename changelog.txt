@@ -7,11 +7,10 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入了俄语翻译
-made by @Typical Guy
+无
 
 修改：
-无
+删去了老旧照相机的合成配方中的飞翔之魂
 
 修复：
-无
+一些技术性的小修复

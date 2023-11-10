@@ -42,12 +42,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             int height = t.Height / Main.projFrames[Type];
             Main.spriteBatch.TeaNPCDraw(t, pos, new Rectangle(0, 11 * height, t.Width, height), color, Projectile.rotation, orig, Projectile.scale, effect, 0f);
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true);
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 7; i++)
             {
                 Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), new Rectangle(0, 12 * height, t.Width, height), Projectile.GetAlpha(Color.White) * 0.5f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
         private void Blink()
         {

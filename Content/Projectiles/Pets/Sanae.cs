@@ -32,7 +32,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState == 2)
             {
                 float t2 = Main.GlobalTimeWrappedHourly * 6f;
-                Main.spriteBatch.QuickToggleAdditiveMode(true);
+                Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
                 for (int o = 0; o < 8; o++)
                 {
                     for (int i = -1; i < 2; i++)
@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             orig, effect, rect4, rect, rect3);
                     }
                 }
-                Main.spriteBatch.QuickToggleAdditiveMode(false);
+                Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
             }
             Projectile.DrawStateNormalizeForPet();
 

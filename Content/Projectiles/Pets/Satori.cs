@@ -60,22 +60,22 @@ namespace TouhouPets.Content.Projectiles.Pets
             float s = 1 + Main.rand.NextFloat(0.9f, 1.1f);
             Texture2D glow = AltVanillaFunction.GetExtraTexture("SatoriEyeSpark");
             Texture2D aura = AltVanillaFunction.GetExtraTexture("SatoriEyeAura");
-            Main.spriteBatch.QuickToggleAdditiveMode(true);
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 2; i++)
             {
                 Main.spriteBatch.TeaNPCDraw(aura, eyePos + new Vector2(0, 2), null, Projectile.GetAlpha(Color.DeepPink) * 0.5f, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
 
             Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(Color.White), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true);
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 8; i++)
             {
                 Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, Projectile.GetAlpha(Color.DeepPink) * 0.5f, Projectile.rotation + MathHelper.PiOver2, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
                 Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, Projectile.GetAlpha(Color.DeepPink) * 0.5f, Projectile.rotation, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
         private void Blink()
         {

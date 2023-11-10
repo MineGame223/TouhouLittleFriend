@@ -40,7 +40,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawAura(Texture2D t, Vector2 pos, Rectangle rect, Vector2 orig, SpriteEffects effect)
         {
-            Main.spriteBatch.QuickToggleAdditiveMode(true);
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             float rot2 = 20;
             DrawAuraSingle(t, pos, rect, Projectile.GetAlpha(Color.White), 0, orig, effect);
             DrawAuraSingle2(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(10) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
@@ -56,7 +56,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawAuraSingle(t, pos + new Vector2(0, 16), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(-60) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
             DrawAuraSingle2(t, pos + new Vector2(4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(-110) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
             DrawAuraSingle(t, pos + new Vector2(4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(-120) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
         public override bool PreDraw(ref Color lightColor)
         {

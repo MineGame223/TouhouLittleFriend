@@ -14,6 +14,22 @@ namespace TouhouPets
     internal static class ModUtils
     {
         /// <summary>
+        /// 在Buff内生成宠物并设置Buff时间
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="buffIndex"></param>
+        /// <param name="petType">宠物ID</param>
+        /// <param name="buffTime">Buff持续时间，默认18000</param>
+        public static void SpawnPetAndSetBuffTime(this Player player, int buffIndex, int petType, int buffTime = 18000)
+        {
+            player.buffTime[buffIndex] = buffTime;
+            bool flag = petType != -1 && player.ownedProjectileCounts[petType] <= 0;
+            if (flag && player.whoAmI == Main.myPlayer)
+            {
+                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, petType, 0, 0f, player.whoAmI);
+            }
+        }
+        /// <summary>
         /// 快速设置toolTip描述(允许添加变量)
         /// </summary>
         public static void MyTooltipLine(this List<TooltipLine> tooltips, string text)
@@ -118,7 +134,8 @@ namespace TouhouPets
         /// <param name="spriteBatch"></param>
         /// <param name="start">开启or关闭。设置非默认混合模式时，开启后必须设置关闭</param>
         /// <param name="state">混合模式，默认为Additive</param>
-        public static void QuickToggleAdditiveMode(this SpriteBatch spriteBatch, bool start, BlendState state = default)
+        /// <param name="useUIMatrix">是否采用UI矩阵转换</param>
+        public static void QuickToggleAdditiveMode(this SpriteBatch spriteBatch, bool start, bool useUIMatrix = false, BlendState state = default)
         {
             if (state == default)
             {
@@ -127,12 +144,12 @@ namespace TouhouPets
             if (start)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, state, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                spriteBatch.Begin(SpriteSortMode.Immediate, state, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
             }
             else
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
             }
         }
         /// <summary>

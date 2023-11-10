@@ -54,13 +54,13 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(extraAdjX, extraAdjY), rect2, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true);
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 8; i++)
             {
                 Vector2 spinningpoint = new Vector2(0f, -2f);
                 Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(extraAdjX, extraAdjY) + spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly + MathHelper.TwoPi / 8 * i * 0.6f), rect2, Projectile.GetAlpha(Color.White) * 0.4f, Projectile.rotation, orig, Projectile.scale * 0.95f, effect, 0f);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(extraAdjX, extraAdjY), rect2, Projectile.GetAlpha(Color.White) * 0.6f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private bool HateSunlight()

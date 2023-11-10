@@ -15,7 +15,8 @@ namespace TouhouPets.Content.Buffs.PetBuffs
         }
         public override void OnSummonPet(Player player)
         {
-            player.GetModPlayer<LuckPlayer>().koakumaNumber = Main.rand.Next(1, 301);
+            if (player.whoAmI == Main.myPlayer)
+                player.GetModPlayer<LuckPlayer>().koakumaNumber = Main.rand.Next(1, 301);
         }
     }
 }
