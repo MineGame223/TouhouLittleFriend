@@ -115,9 +115,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 5;
                     extraAI[1]++;
                 }
-                if(Projectile.owner==Main.myPlayer)
+                if (Projectile.owner == Main.myPlayer)
                 {
-                    if (extraAI[1] > Main.rand.Next(24, 48))
+                    if (extraAI[1] > Main.rand.Next(48, 72))
                     {
                         extraAI[1] = 0;
                         extraAI[0] = 1;
@@ -158,6 +158,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             text = new string[11];
             if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
                 text[1] = ModUtils.GetChatText("Junko", "1");
+            text[2] = "......";
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -196,7 +197,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player);
             MoveToPoint(point, 17f);
 
-            if(Projectile.owner==Main.myPlayer)
+            if (Projectile.owner == Main.myPlayer)
             {
                 if (mainTimer % 270 == 0 && PetState != 2)
                 {

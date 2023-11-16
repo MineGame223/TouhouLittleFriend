@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -120,10 +121,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        private void FoodSelect(Player player)
+        private void FoodListUpdate(Player player)
         {
             foodList.Clear();
-
             for (int j = 0; j < player.inventory.Length; j++)
             {
                 Item fd = player.inventory[j];
@@ -146,10 +146,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                 }
             }
+        }
+        private void FoodSelect(Player player)
+        {
+            FoodListUpdate(player);
 
             if (foodList.Count > 0)
             {
-                Item fd = foodList[Main.rand.Next(foodList.Count)];
+                Item fd;
+                if (ModLoader.TryGetMod("CyberNewYear", out Mod result) && result.TryFind("Dumpling", out ModItem dumpling)
+                                && player.HasItemInInventoryOrOpenVoidBag(dumpling.Type))
+                {
+                    fd = foodList.First(food => food.type == dumpling.Type);
+                }
+                else
+                    fd = foodList[Main.rand.Next(foodList.Count)];
                 food = new Item(fd.type);
                 fd.stack--;
                 if (fd.stack <= 0)

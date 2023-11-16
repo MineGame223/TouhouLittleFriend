@@ -122,7 +122,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);
             shop.Add(ItemType<RinSkull>(), Condition.Hardmode);
             shop.Add(ItemType<UtsuhoEye>(), Condition.Hardmode);
-            shop.Add(ItemType<AyaCamera>(), Condition.Hardmode);
+            shop.Add(ItemType<AyaCamera>(), Condition.DownedSkeletron);
             shop.Add(ItemType<PatchouliMoon>(), Condition.DownedQueenSlime);
             shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
             shop.Add(ItemType<KoishiTelephone>(), Condition.DownedTwins);
