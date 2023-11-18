@@ -187,6 +187,10 @@ namespace TouhouPets.Content.NPCs
                 AddShopItem_Legacy();
             }
         }
+        public override void ModifyActiveShop(string shopName, Item[] items)
+        {
+            Main.LocalPlayer.currentShoppingSettings.PriceAdjustment = 1;
+        }
         public override void FindFrame(int frameHeight)
         {
             NPC.frame.Width = 32;

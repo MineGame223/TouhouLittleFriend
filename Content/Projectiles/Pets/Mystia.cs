@@ -101,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateWingFrame()
         {
-            int count = 7;
+            int count = 5;
             if (++wingFrameCounter > count)
             {
                 wingFrameCounter = 0;

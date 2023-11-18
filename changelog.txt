@@ -15,3 +15,4 @@ This mod no longer supports English change log from v1.0.6
 修复：
 一些技术性的小修复
 修复了纯狐的对话可能导致的一个错误
+修复了神秘隙间价格会受到幸福值波动的错误

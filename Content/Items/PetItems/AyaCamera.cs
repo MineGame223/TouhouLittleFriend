@@ -18,10 +18,6 @@ namespace TouhouPets.Content.Items.PetItems
             Item.DefaultToVanitypet(ProjectileType<Aya>(), BuffType<AyaBuff>());
             Item.DefaultToVanitypetExtra(30, 24);
         }
-        public override void Update(ref float gravity, ref float maxFallSpeed)
-        {
-            Item.shimmerTime = 0;
-        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             player.AddBuff(Item.buffType, 2);
@@ -34,6 +30,7 @@ namespace TouhouPets.Content.Items.PetItems
             .AddRecipeGroup(RecipeGroupID.IronBar, 5)
             .AddIngredient(ItemID.Wire, 7)
             .AddTile(TileID.Anvils)
+            .DisableDecraft()
             .Register();
         }
     }
