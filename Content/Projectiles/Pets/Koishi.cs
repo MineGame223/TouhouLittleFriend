@@ -323,7 +323,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 return;
 
             Player player = Main.player[Projectile.owner];
-            if (player.statLife < player.statLifeMax2 / 10 && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
+            if (player.statLife < player.statLifeMax2 / 10 && !player.HasBuff<SatoriBuff>() && !player.HasBuff<KomeijiBuff>())
             {
                 if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(3) && PetState == 0 && ChatCD <= 0)
                 {
