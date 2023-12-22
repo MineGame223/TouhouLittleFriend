@@ -37,6 +37,9 @@ Mods: {
 			Wakasagihime.DisplayName: Вакасагихиме
 			WakasagihimeBubble.DisplayName: Пузарь
 			Yuka.DisplayName: Юка Кадзами
+			// Chen.DisplayName: Chen
+			// Ran.DisplayName: Ran Yakumo
+			// Yukari.DisplayName: Yukari Yakumo
 		}
 	}
 }

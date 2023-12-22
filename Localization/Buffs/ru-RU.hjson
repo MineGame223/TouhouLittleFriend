@@ -170,6 +170,16 @@ Mods: {
 				DisplayName: Бог Цветов
 				Description: "'Пожалуйста, не трогайте цветы'"
 			}
+
+			YukariBuff: {
+				// DisplayName: Sage of the Gap
+				// Description: "'Thank your support for the Gensokyo!'"
+			}
+
+			LightYukariBuff: {
+				// DisplayName: Yukari's Buff
+				// Description: You can see THIS? It means you meet a bug or you are cheating
+			}
 		}
 	}
 }

@@ -170,6 +170,16 @@ Mods: {
 				DisplayName: 花之主
 				Description: "'请不要摘下那朵花'"
 			}
+
+			YukariBuff: {
+				DisplayName: 隙间贤者
+				Description: "'感谢你对幻想乡的支持！'"
+			}
+
+			LightYukariBuff: {
+				DisplayName: 八云紫的Buff
+				Description: 你能看到这个？要么你出Bug了要么你开修改器了
+			}
 		}
 	}
 }

@@ -188,6 +188,24 @@ Mods: {
 				DisplayName: Подсолнух в Горшке
 				Tooltip: "'Что??'"
 			}
+
+			YukariTicketLeft: {
+				// DisplayName: Sage's license - Left
+				/* Tooltip:
+					'''
+					Can equipped in pet slot
+					'May require another half part...'
+					''' */
+			}
+
+			YukariTicketRight: {
+				// DisplayName: Sage's license - Right
+				/* Tooltip:
+					'''
+					Can equipped in light pet slot
+					'May require another half part...'
+					''' */
+			}
 		}
 	}
 }
