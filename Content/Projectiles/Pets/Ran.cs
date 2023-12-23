@@ -93,7 +93,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(254, 216, 82);
         public override string GetChatText(out string[] text)
         {
-            text = new string[21];
+            text = new string[5];
+            text[1] = ModUtils.GetChatText("Ran", "1");
+            text[2] = ModUtils.GetChatText("Ran", "2");
+            text[3] = ModUtils.GetChatText("Ran", "3");
+            text[4] = ModUtils.GetChatText("Ran", "4");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -109,7 +113,29 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-
+            int type1 = ProjectileType<Yukari>();
+            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
+            {
+                ChatCD = 1;
+            }
+            if (FindChatIndex(out Projectile p, type1, 2))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Ran", "5"), myColor, 5, 600);                
+            }
+            else if (FindChatIndex(out Projectile p1, type1, 6, default, 1, true))
+            {
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Ran", "6"), myColor, 0, 360);
+                p1.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out Projectile p2, type1, 5, default, 1, true))
+            {
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Ran", "7"), myColor, 0, 600);
+                p2.localAI[2] = 0;
+            }
+            else if (mainTimer % 720 == 0 && Main.rand.NextBool(8) && mainTimer > 0)
+            {
+                SetChat(myColor);
+            }
         }
         public override void VisualEffectForPreview()
         {

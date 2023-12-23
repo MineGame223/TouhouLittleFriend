@@ -104,7 +104,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 10)
             {
                 Projectile.frame = 0;
-                PetState = 0;                
+                PetState = 0;
                 Projectile.netUpdate = true;
             }
         }
@@ -123,7 +123,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(89, 196, 108);
         public override string GetChatText(out string[] text)
         {
-            text = new string[21];
+            text = new string[3];
+            text[1] = ModUtils.GetChatText("Chen", "1");
+            text[2] = ModUtils.GetChatText("Chen", "2");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -139,7 +141,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-
+            int type1 = ProjectileType<Ran>();
+            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
+            {
+                ChatCD = 1;
+            }
+            if (FindChatIndex(out Projectile p, type1, 4))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Chen", "3"), myColor, 0, 360);
+                p.localAI[2] = 0;
+            }
+            else if (mainTimer % 640 == 0 && Main.rand.NextBool(7) && mainTimer > 0)
+            {
+                SetChat(myColor);
+            }
         }
         public override void VisualEffectForPreview()
         {
@@ -153,11 +168,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<YukariBuff>());
             UpdateTalking();
-            Vector2 point = new Vector2(0 * player.direction, -80 + player.gfxOffY);
+            Vector2 point = new Vector2(-120 * player.direction, -40 + player.gfxOffY);
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
-            ChangeDir(player);
+            ChangeDir(player, true);
             MoveToPoint(point, 17f);
             if (Projectile.owner == Main.myPlayer)
             {

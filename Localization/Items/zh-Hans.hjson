@@ -206,6 +206,11 @@ Mods: {
 					'似乎需要另一半...'
 					'''
 			}
+
+			YukariTicket: {
+				DisplayName: 贤者之证
+				Tooltip: 开发者道具
+			}
 		}
 	}
 }

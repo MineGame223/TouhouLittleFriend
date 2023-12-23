@@ -14,6 +14,23 @@ namespace TouhouPets
     internal static class ModUtils
     {
         /// <summary>
+        /// 将输入价格转换为货币单位价格的文本
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string CoinValue(int value)
+        {
+            int p = value % (100 * 100 * 100 * 100) / (100 * 100 * 100);
+            int g = value % (100 * 100 * 100) / (100 * 100);
+            int s = value % (100 * 100) / 100;
+            int c = value % 100;
+            string textP = p <= 0 ? "" : $"[i/s{p}:{ItemID.PlatinumCoin}]";
+            string textG = g <= 0 ? "" : $"[i/s{g}:{ItemID.GoldCoin}]";
+            string textS = s <= 0 ? "" : $"[i/s{s}:{ItemID.SilverCoin}]";
+            string textC = c <= 0 ? "" : $"[i/s{c}:{ItemID.CopperCoin}]";
+            return textP + textG + textS + textC;
+        }
+        /// <summary>
         /// 在Buff内生成宠物并设置Buff时间
         /// </summary>
         /// <param name="player"></param>
@@ -85,7 +102,7 @@ namespace TouhouPets
         /// <param name="width">物品宽</param>
         /// <param name="height">物品高</param>
         /// <param name="rare">物品稀有度，默认为橙色</param>
-        /// <param name="value">物品出售价值，默认为2金</param>
+        /// <param name="value">物品购买价值，默认为2金</param>
         public static void DefaultToVanitypetExtra(this Item item, int width, int height, int rare = ItemRarityID.Orange, int value = 20000)
         {
             item.width = width;

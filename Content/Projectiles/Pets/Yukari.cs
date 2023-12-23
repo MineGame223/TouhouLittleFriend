@@ -17,8 +17,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawYukari(gapFrame, lightColor, 0);
-            DrawYukari(gapFrame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Yukari_Cloth"), true);
+            DrawGap(lightColor);
             Projectile.DrawStateNormalizeForPet();
 
             DrawYukari(hairFrame, lightColor, 0);
@@ -28,6 +27,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawYukari(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Yukari_Cloth"), true);
             DrawYukari(clothFrame, lightColor, 1, default, null, true);
             return false;
+        }
+        private void DrawGap(Color lightColor)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                DrawYukari(gapFrame, Projectile.GetAlpha(Color.Purple * 0.2f), 0, new Vector2(0, -2 * Main.essScale).RotatedBy(MathHelper.ToRadians(90 * i)));
+                DrawYukari(gapFrame, Projectile.GetAlpha(Color.Purple * 0.2f), 0, new Vector2(0, -2 * Main.essScale).RotatedBy(MathHelper.ToRadians(90 * i)), AltVanillaFunction.GetExtraTexture("Yukari_Cloth"), true);
+            }
+            DrawYukari(gapFrame, Projectile.GetAlpha(Color.White * 0.9f * Main.essScale), 0);
+            DrawYukari(gapFrame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Yukari_Cloth"), true);
         }
         private void DrawYukari(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
         {
@@ -109,10 +118,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                 hairFrame = 4;
             }
         }
-        Color myColor = new Color(156, 91, 25);
+        Color myColor = new Color(156, 91, 250);
         public override string GetChatText(out string[] text)
         {
-            text = new string[21];
+            text = new string[5];
+            text[1] = ModUtils.GetChatText("Yukari", "1");
+            text[2] = ModUtils.GetChatText("Yukari", "2");
+            text[3] = ModUtils.GetChatText("Yukari", "3");
+            text[4] = ModUtils.GetChatText("Yukari", "4");
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -128,7 +141,23 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-
+            int type1 = ProjectileType<Ran>();
+            if (FindChatIndex(out Projectile _, type1, 3, default, 0))
+            {
+                ChatCD = 1;
+            }
+            if (FindChatIndex(out Projectile p, type1, 3))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Yukari", "5"), myColor, 5, 600);
+            }
+            else if (FindChatIndex(out Projectile p1, type1, 5, default, 1, true))
+            {
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Yukari", "6"), myColor, 6, 600);
+            }
+            else if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0)
+            {
+                SetChat(myColor);
+            }
         }
         public override void VisualEffectForPreview()
         {
@@ -137,13 +166,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Lighting.AddLight(Projectile.Center, 2.52f, 1.97f, 2.38f);
+            Lighting.AddLight(Projectile.Center, 1.56f, 0.91f, 2.50f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<YukariBuff>());
             UpdateTalking();
             Vector2 point = new Vector2(60 * player.direction, -30 + player.gfxOffY);
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.002f;
+
+            if (Main.rand.NextBool(7))
+                Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)), MyDustId.PurpleLight
+                    , new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)), 100, default
+                    , Main.rand.NextFloat(1f, 2f)).noGravity = true;
 
             ChangeDir(player);
             MoveToPoint(point, 18f);

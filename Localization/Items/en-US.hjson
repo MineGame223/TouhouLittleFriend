@@ -206,6 +206,11 @@ Mods: {
 					'May require another half part...'
 					'''
 			}
+
+			YukariTicket: {
+				DisplayName: Sage's license
+				Tooltip: Dev Item
+			}
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
@@ -13,7 +14,7 @@ namespace TouhouPets.Content.Items.PetItems
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ProjectileType<Yukari>(), BuffType<YukariBuff>());
-            Item.DefaultToVanitypetExtra(20, 20);
-        }
+            Item.DefaultToVanitypetExtra(20, 20, ItemRarityID.Yellow, Item.sellPrice(0, 25, 0, 0));
+        }        
     }
 }

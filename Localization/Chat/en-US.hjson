@@ -349,8 +349,31 @@ Mods: {
 			Chat1: The most beautiful time always is the time when all flowers blossom
 			Chat2: Another peaceful and boring day...
 			Chat3: Every flower has a short and colorful life, you'd better don't bother them
-			Chat4: _
-			Chat5: _
+		}
+
+		Chat_Yukari: {
+			Chat1: As a sage, protect the barrier is my forever duty...
+			Chat2: Is that old friend currently fine?...
+			Chat3: Reimu, she should be more diligent
+			Chat4: You wanna know my age? Of course is 17 year's old~... You should say no more
+			Chat5: If you miss her, I allow you to take a temporary leave
+			Chat6: Nothing, Maybe I don't need to worry about her appetite
+		}
+
+		Chat_Ran: {
+			Chat1: There are something wrong about the sun's position and the time...
+			Chat2: How could gold harder than iron?
+			Chat3: Is youma still living in the animal world?...
+			Chat4: Don't leave me too far, CHen!
+			Chat5: You mean?
+			Chat6: Maybe I know who she is...
+			Chat7: I, I'm NOT! Yukari sama!
+		}
+
+		Chat_Chen: {
+			Chat1: Meow!
+			Chat2: want some fish...
+			Chat3: I know, Ran sama!
 		}
 
 		Chat_Portal: {
@@ -358,6 +381,12 @@ Mods: {
 			Chat2: Leave some coin here and take your favorite gift. Just do something for Gensokyo's exist
 			Chat3: Want to have a cute partner? Why don't look here!
 			Chat4: Your later life may have no relationship with the Gensokyo, but what you do now will influence Gensokyo's fate...I mean, buy something?
+			Chat5: Thank your support for the Gensokyo so long! This is what you should own.
+			Chat6:
+				'''
+				You have provided {0}, may the Gensokyo be with you.
+				By the way, selling items here will reduce the wealth count.
+				'''
 		}
 
 		Chat_Template: {

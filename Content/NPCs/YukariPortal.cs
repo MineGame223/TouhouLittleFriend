@@ -47,7 +47,7 @@ namespace TouhouPets.Content.NPCs
             NPC.dontTakeDamage = true;
             NPC.dontTakeDamageFromHostiles = true;
             NPC.immortal = true;
-            NPC.noGravity = true;          
+            NPC.noGravity = true;
         }
         public override void AI()
         {
@@ -96,6 +96,7 @@ namespace TouhouPets.Content.NPCs
         public override void SetChatButtons(ref string button, ref string button2)
         {
             button = Language.GetTextValue("LegacyInterface.28");
+            button2 = Language.GetTextValue("Mods.TouhouPets.YukariWealthCount");
         }
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
@@ -103,7 +104,8 @@ namespace TouhouPets.Content.NPCs
             {
                 shopName = "Shop";
             }
-        }        
+            Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>().totalPurchaseValueCount));
+        }
         private void AddShopItem_Legacy()
         {
             NPCShop shop = new(Type);
