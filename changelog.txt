@@ -19,4 +19,6 @@ This mod no longer supports English change log from v1.0.6
 修复了神秘隙间价格会受到幸福值波动的错误
 进一步修复了恋恋捅人可能会引起的Bug
 
+俄语翻译后续更新
+
 Merry Christmas ;)
