@@ -352,27 +352,61 @@ Mods: {
 		}
 
 		Chat_Yukari: {
-			// Chat1: 身为贤者，守护结界即是永远的使命...
-			// Chat2: 不知那位旧友最近是否安好呢
-			// Chat3: 灵梦这家伙，也该变得勤快点了
-			// Chat4: 若是叨念的话，我允许你临时请假哦
-			// Chat5: 没什么，吃这种事应该用不着我替她操心
+			// Chat1: As a sage, protect the barrier is my forever duty...
+			// Chat2: Is that old friend currently fine?...
+			// Chat3: Reimu, she should be more diligent
+			// Chat4: You wanna know my age? Of course is 17 year's old~... You should say no more
+			// Chat5: If you miss her, I allow you to take a temporary leave
+			// Chat6: Nothing, Maybe I don't need to worry about her appetite
 		}
 
 		Chat_Ran: {
-			// Chat1: 太阳的位置和时间的流逝是不是有些不太对劲...
-			// Chat2: 铁的硬度怎会不如黄金？
-			// Chat3: 饕餮那家伙，依旧坚持在畜牲界混吗...
-			// Chat4: 橙，不要乱跑哦！
-			// Chat5: 紫大人是指？
-			// Chat6: 大概知道是哪位了啊...
-			// Chat7: 才、才没有啊紫大人！
+			// Chat1: There are something wrong about the sun's position and the time...
+			// Chat2: How could gold harder than iron?
+			// Chat3: Is youma still living in the animal world?...
+			// Chat4: Don't leave me too far, CHen!
+			// Chat5: You mean?
+			// Chat6: Maybe I know who she is...
+			// Chat7: I, I'm NOT! Yukari sama!
 		}
 
 		Chat_Chen: {
-			// Chat1: 喵！
-			// Chat2: 想吃小鱼干...
-			// Chat3: 知道啦蓝大人，橙可没有乱跑！
+			// Chat1: Meow!
+			// Chat2: want some fish...
+			// Chat3: I know, Ran sama!
+		}
+
+		Chat_Kaguya: {
+			// Chat-1: 这一轮，我的胜利！
+			// Chat-2: 菜就多练懂不懂啊？
+			// Chat-3: 啊哈哈哈！
+			// Chat-4: 可恶啊！！！
+			// Chat-5: 不讲武德！
+			// Chat-6: 下次一定能实现你的愿望——去死！
+			// Chat1: 所谓地上，也没有如此“污秽”啊...
+			// Chat2: 久居于此，难免也会怀念一下过去的日子啊
+			// Chat3: ...这把一定要赢啊！
+			// Chat4: 稳住，稳住...
+			// Chat5: 菜就多练
+			// Chat6: 要你管！
+			// Chat7: 你说，咱俩斗了多久了？
+			// Chat8: 今天要不要尝试点新花样？
+			// Chat9: 要不就...做一点更 刺 激 的事儿？
+		}
+
+		Chat_Moku: {
+			// Chat-1: 认清现实吧，我比你厉害多了！
+			// Chat-2: 就凭你还想战胜我？
+			// Chat-3: 嘁，就这？
+			// Chat-4: 下一次绝对不会输给你！
+			// Chat-5: 大意了...
+			// Chat-6: 这是你最后一次洋洋得意了...
+			// Chat1: 永生，只是一种罪过而绝非幸事
+			// Chat2: ...已经过去多少年了？
+			// Chat3: 你这家伙能不能消停一会儿？
+			// Chat4: 我怎么知道，大概几千年了吧
+			// Chat5: ...？你想干什么
+			// Chat6: 想都不要想！...不过我知道哪里适合...
 		}
 
 		Chat_Portal: {

@@ -376,6 +376,39 @@ Mods: {
 			Chat3: I know, Ran sama!
 		}
 
+		Chat_Kaguya: {
+			Chat-1: 这一轮，我的胜利！
+			Chat-2: 菜就多练懂不懂啊？
+			Chat-3: 啊哈哈哈！
+			Chat-4: 可恶啊！！！
+			Chat-5: 不讲武德！
+			Chat-6: 下次一定能实现你的愿望——去死！
+			Chat1: 所谓地上，也没有如此“污秽”啊...
+			Chat2: 久居于此，难免也会怀念一下过去的日子啊
+			Chat3: ...这把一定要赢啊！
+			Chat4: 稳住，稳住...
+			Chat5: 菜就多练
+			Chat6: 要你管！
+			Chat7: 你说，咱俩斗了多久了？
+			Chat8: 今天要不要尝试点新花样？
+			Chat9: 要不就...做一点更 刺 激 的事儿？
+		}
+
+		Chat_Moku: {
+			Chat-1: 认清现实吧，我比你厉害多了！
+			Chat-2: 就凭你还想战胜我？
+			Chat-3: 嘁，就这？
+			Chat-4: 下一次绝对不会输给你！
+			Chat-5: 大意了...
+			Chat-6: 这是你最后一次洋洋得意了...
+			Chat1: 永生，只是一种罪过而绝非幸事
+			Chat2: ...已经过去多少年了？
+			Chat3: 你这家伙能不能消停一会儿？
+			Chat4: 我怎么知道，大概几千年了吧
+			Chat5: ...？你想干什么
+			Chat6: 想都不要想！...不过我知道哪里适合...
+		}
+
 		Chat_Portal: {
 			Chat1: Hey, if you find this, why don't you buy something? All for the Gensokyo
 			Chat2: Leave some coin here and take your favorite gift. Just do something for Gensokyo's exist

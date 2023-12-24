@@ -180,6 +180,16 @@ Mods: {
 				DisplayName: 八云紫的Buff
 				Description: 你能看到这个？要么你出Bug了要么你开修改器了
 			}
+
+			KaguyaBuff: {
+				DisplayName: 月之公主
+				Description: 很抱歉但我实在是懒得设计了orz
+			}
+
+			MokuBuff: {
+				DisplayName: 不死凤凰
+				Description: '永远的燃烧！'
+			}
 		}
 	}
 }

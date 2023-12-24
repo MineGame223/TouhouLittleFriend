@@ -180,6 +180,16 @@ Mods: {
 				DisplayName: Yukari's Buff
 				Description: You can see THIS? It means you meet a bug or you are cheating
 			}
+
+			KaguyaBuff: {
+				DisplayName: Luna Princess
+				Description: Sorry but I'm too lazy to desigh orz
+			}
+
+			MokuBuff: {
+				DisplayName: Undying Phoenix
+				Description: 'Burning forever!'
+			}
 		}
 	}
 }

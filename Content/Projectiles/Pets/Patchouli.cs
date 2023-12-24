@@ -80,7 +80,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (Projectile.frame > 6)
                 {
-                    if(Projectile.owner==Main.myPlayer)
+                    if (Projectile.owner == Main.myPlayer)
                     {
                         extraAI[0] = Main.rand.Next(360, 540);
                         extraAI[1] = 0;
@@ -120,7 +120,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (blinkFrame < 10)
                 {
                     blinkFrame = 10;
-                }               
+                }
                 if (blinkFrame > 11)
                 {
                     blinkFrame = 10;

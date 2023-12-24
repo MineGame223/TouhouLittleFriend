@@ -180,6 +180,16 @@ Mods: {
 				// DisplayName: Yukari's Buff
 				// Description: You can see THIS? It means you meet a bug or you are cheating
 			}
+
+			KaguyaBuff: {
+				// DisplayName: Kaguya Buff
+				// Description: Mods.TouhouPets.Buffs.KaguyaBuff.Description
+			}
+
+			MokuBuff: {
+				// DisplayName: Moku Buff
+				// Description: Mods.TouhouPets.Buffs.MokuBuff.Description
+			}
 		}
 	}
 }

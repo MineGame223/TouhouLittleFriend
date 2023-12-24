@@ -211,6 +211,16 @@ Mods: {
 				DisplayName: Sage's license
 				Tooltip: Dev Item
 			}
+
+			KaguyaBranch: {
+				DisplayName: Penglai Jade Branch
+				Tooltip: "'A ordinary branch with colorful jewels'"
+			}
+
+			MokuMatch: {
+				DisplayName: match that never put out
+				Tooltip: "'No matter rainning or blowing'"
+			}
 		}
 	}
 }

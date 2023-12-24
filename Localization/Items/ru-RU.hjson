@@ -211,6 +211,16 @@ Mods: {
 				// DisplayName: Sage's license
 				// Tooltip: Dev Item
 			}
+
+			KaguyaBranch: {
+				// DisplayName: Kaguya Branch
+				// Tooltip: ""
+			}
+
+			MokuMatch: {
+				// DisplayName: Moku Match
+				// Tooltip: ""
+			}
 		}
 	}
 }

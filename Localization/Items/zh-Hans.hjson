@@ -211,6 +211,16 @@ Mods: {
 				DisplayName: 贤者之证
 				Tooltip: 开发者道具
 			}
+
+			KaguyaBranch: {
+				DisplayName: 蓬莱玉枝
+				Tooltip: "'串着各色宝石的普通树枝'"
+			}
+
+			MokuMatch: {
+				DisplayName: 不灭的火柴
+				Tooltip: "'风吹雨打，未曾熄灭'"
+			}
 		}
 	}
 }
