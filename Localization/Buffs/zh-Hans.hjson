@@ -188,7 +188,7 @@ Mods: {
 
 			MokuBuff: {
 				DisplayName: 不死凤凰
-				Description: '永远的燃烧！'
+				Description: "'永远的燃烧！'"
 			}
 		}
 	}

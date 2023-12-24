@@ -8,6 +8,7 @@ This mod no longer supports English change log from v1.0.6
 
 新增：
 为神秘隙间加入了消费总量查询
+加入了一根蓬莱玉枝和一根不灭火柴
 
 修改：
 删去了老旧照相机的合成配方中的飞翔之魂，同时将隙间的对应出售时期改为骷髅王后
@@ -17,3 +18,5 @@ This mod no longer supports English change log from v1.0.6
 修复了纯狐的对话可能导致的一个错误
 修复了神秘隙间价格会受到幸福值波动的错误
 进一步修复了恋恋捅人可能会引起的Bug
+
+Merry Christmas ;)

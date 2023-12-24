@@ -114,6 +114,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<KoakumaPower>());
             shop.Add(ItemType<KogasaUmbrella>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RumiaRibbon>(), Condition.DownedEyeOfCthulhu);
+            shop.Add(ItemType<KaguyaBranch>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
@@ -124,6 +125,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);
             shop.Add(ItemType<RinSkull>(), Condition.Hardmode);
             shop.Add(ItemType<UtsuhoEye>(), Condition.Hardmode);
+            shop.Add(ItemType<MokuMatch>(), Condition.Hardmode);
             shop.Add(ItemType<AyaCamera>(), Condition.DownedSkeletron);
             shop.Add(ItemType<PatchouliMoon>(), Condition.DownedQueenSlime);
             shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
@@ -160,6 +162,8 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<CirnoIceShard>());
             shop.Add(ItemType<RinSkull>());
             shop.Add(ItemType<UtsuhoEye>());
+            shop.Add(ItemType<KaguyaBranch>());
+            shop.Add(ItemType<MokuMatch>());
             shop.Add(ItemType<AyaCamera>());
             shop.Add(ItemType<PatchouliMoon>());
             shop.Add(ItemType<SatoriSlippers>());

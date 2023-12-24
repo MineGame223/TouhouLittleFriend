@@ -15,6 +15,7 @@ namespace TouhouPets.Content.Items.PetItems
         {
             Item.DefaultToVanitypet(ProjectileType<Yukari>(), BuffType<YukariBuff>());
             Item.DefaultToVanitypetExtra(20, 20, ItemRarityID.Yellow, Item.sellPrice(0, 25, 0, 0));
+            Item.UseSound = null;
         }        
     }
 }

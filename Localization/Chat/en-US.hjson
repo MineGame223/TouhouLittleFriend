@@ -377,36 +377,36 @@ Mods: {
 		}
 
 		Chat_Kaguya: {
-			Chat-1: 这一轮，我的胜利！
-			Chat-2: 菜就多练懂不懂啊？
-			Chat-3: 啊哈哈哈！
-			Chat-4: 可恶啊！！！
-			Chat-5: 不讲武德！
-			Chat-6: 下次一定能实现你的愿望——去死！
-			Chat1: 所谓地上，也没有如此“污秽”啊...
-			Chat2: 久居于此，难免也会怀念一下过去的日子啊
-			Chat3: ...这把一定要赢啊！
-			Chat4: 稳住，稳住...
-			Chat5: 菜就多练
-			Chat6: 要你管！
-			Chat7: 你说，咱俩斗了多久了？
-			Chat8: 今天要不要尝试点新花样？
-			Chat9: 要不就...做一点更 刺 激 的事儿？
+			Chat-1: This turn, I win!
+			Chat-2: Practice make perfect, understand?
+			Chat-3: Ah hahaha!
+			Chat-4: DAMN!!!
+			Chat-5: You must cheated!
+			Chat-6: I'll achieve your wish in the next round-- DIE!
+			Chat1: It's not very "dirty" on the ground...
+			Chat2: Can't help to memory the old days since I come to the ground so long
+			Chat3: ...I have to win this time!
+			Chat4: hold on, hold on...
+			Chat5: Practice make perfect
+			Chat6: Not your business!
+			Chat7: Hey, how long have we been fighting each other?
+			Chat8: Wanna do something new today?
+			Chat9: How about...something EXCITING?
 		}
 
 		Chat_Moku: {
-			Chat-1: 认清现实吧，我比你厉害多了！
-			Chat-2: 就凭你还想战胜我？
-			Chat-3: 嘁，就这？
-			Chat-4: 下一次绝对不会输给你！
-			Chat-5: 大意了...
-			Chat-6: 这是你最后一次洋洋得意了...
-			Chat1: 永生，只是一种罪过而绝非幸事
-			Chat2: ...已经过去多少年了？
-			Chat3: 你这家伙能不能消停一会儿？
-			Chat4: 我怎么知道，大概几千年了吧
-			Chat5: ...？你想干什么
-			Chat6: 想都不要想！...不过我知道哪里适合...
+			Chat-1: Just accept that I'm stronger!
+			Chat-2: You even want to defeat ME?
+			Chat-3: That's your all?
+			Chat-4: I won't lose in the next round!
+			Chat-5: I'm too careless...
+			Chat-6: It's your last time to be complacent...
+			Chat1: Living forever, is absolutely a sin than a blessing...
+			Chat2: ...How many years ago from that time?
+			Chat3: How could I know, about thousand of years?
+			Chat4: ...What you want to do?
+			Chat5: No and never!...well I know a place can go...
+			Chat6: Can you just be QUIET for a time?
 		}
 
 		Chat_Portal: {

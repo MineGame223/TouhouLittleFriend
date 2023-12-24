@@ -42,6 +42,8 @@ Mods: {
 			Yukari.DisplayName: 八云 紫
 			Kaguya.DisplayName: 蓬莱山 辉夜
 			Moku.DisplayName: 藤原 妹红
+			// KaguyaBullet.DisplayName: Kaguya Bullet
+			// MokuBullet.DisplayName: Moku Bullet
 		}
 	}
 }

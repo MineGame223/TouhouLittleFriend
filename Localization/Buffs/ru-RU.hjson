@@ -182,13 +182,13 @@ Mods: {
 			}
 
 			KaguyaBuff: {
-				// DisplayName: Kaguya Buff
-				// Description: Mods.TouhouPets.Buffs.KaguyaBuff.Description
+				// DisplayName: Luna Princess
+				// Description: Sorry but I'm too lazy to desigh orz
 			}
 
 			MokuBuff: {
-				// DisplayName: Moku Buff
-				// Description: Mods.TouhouPets.Buffs.MokuBuff.Description
+				// DisplayName: Undying Phoenix
+				// Description: "'Burning forever!'"
 			}
 		}
 	}

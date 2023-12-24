@@ -213,13 +213,13 @@ Mods: {
 			}
 
 			KaguyaBranch: {
-				// DisplayName: Kaguya Branch
-				// Tooltip: ""
+				// DisplayName: Penglai Jade Branch
+				// Tooltip: "'A ordinary branch with colorful jewels'"
 			}
 
 			MokuMatch: {
-				// DisplayName: Moku Match
-				// Tooltip: ""
+				// DisplayName: match that never put out
+				// Tooltip: "'No matter rainning or blowing'"
 			}
 		}
 	}

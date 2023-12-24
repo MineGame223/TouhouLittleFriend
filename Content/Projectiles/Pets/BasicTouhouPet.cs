@@ -61,7 +61,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <br/>恋恋专用
         /// <br/>!--该属性会反复重置
         /// </summary>
-        internal bool textShaking;      
+        internal bool textShaking;
         /// <summary>
         /// 宠物的状态值（Projectile.ai[1]）
         /// </summary>
@@ -452,7 +452,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal bool FindPetState(out Projectile target, int type, int minState, int maxState = 0)
         {
             target = null;
-            if (maxState <= minState)
+            if (maxState <= minState && minState > 0
+                || maxState >= minState && minState < 0)
             {
                 maxState = minState;
             }

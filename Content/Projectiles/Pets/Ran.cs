@@ -119,7 +119,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (FindChatIndex(out Projectile p, type1, 2))
             {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Ran", "5"), myColor, 5, 600);                
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Ran", "5"), myColor, 5, 600);
             }
             else if (FindChatIndex(out Projectile p1, type1, 6, default, 1, true))
             {

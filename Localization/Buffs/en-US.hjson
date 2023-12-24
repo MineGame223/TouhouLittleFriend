@@ -188,7 +188,7 @@ Mods: {
 
 			MokuBuff: {
 				DisplayName: Undying Phoenix
-				Description: 'Burning forever!'
+				Description: "'Burning forever!'"
 			}
 		}
 	}

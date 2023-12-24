@@ -42,6 +42,8 @@ Mods: {
 			Yukari.DisplayName: Yukari Yakumo
 			Kaguya.DisplayName: Kaguya Houraisan
 			Moku.DisplayName: Fujiwara no Mokou
+			KaguyaBullet.DisplayName: Kaguya Bullet
+			MokuBullet.DisplayName: Moku Bullet
 		}
 	}
 }
