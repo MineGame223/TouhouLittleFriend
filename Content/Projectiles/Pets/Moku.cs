@@ -21,6 +21,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Fighting)
+            {
+                DrawDanmakuRing();
+            }
             DrawWings(Projectile.GetAlpha(Color.White) * 0.3f);
             Projectile.DrawStateNormalizeForPet();
 
@@ -31,13 +35,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawMoku(Projectile.frame, lightColor);
             if (PetState == 1 || PetState == 3)
                 DrawMoku(blinkFrame, lightColor, 1);
-            DrawMoku(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Moku_Cloth"), true);
+            DrawMoku(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Moku_Cloth"), true);            
             Projectile.DrawStateNormalizeForPet();
-
-            if (Fighting)
-            {
-                DrawDanmakuRing();
-            }
             if (Projectile.owner == Main.myPlayer)
             {
                 DrawFightState();
@@ -282,6 +281,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                     else if (extraAI[2] <= 0)
                     {
+                        Projectile.FailEffect();
                         CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
                         PetState = -3;
                         extraAI[0] = 0;

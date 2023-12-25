@@ -42,10 +42,10 @@ Mods: {
 			// Yukari.DisplayName: Yukari Yakumo
 			// Kaguya.DisplayName: Kaguya Houraisan
 			// Moku.DisplayName: Fujiwara no Mokou
-			// KaguyaBullet.DisplayName: Kaguya Bullet
-			// MokuBullet.DisplayName: Moku Bullet
-			// MokuFireball.DisplayName: Moku Fireball
-			// KaguyaWave.DisplayName: Kaguya Wave
+			// KaguyaBullet.DisplayName: Bullet
+			// MokuBullet.DisplayName: Bullet
+			// MokuFireball.DisplayName: Fireball
+			// KaguyaWave.DisplayName: Fullmoon Wave
 		}
 	}
 }

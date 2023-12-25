@@ -20,18 +20,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Fighting)
+            {
+                DrawDanmakuRing();
+            }
+            Projectile.DrawStateNormalizeForPet();
             DrawKaguya(hairFrame, lightColor, 1, new Vector2(extraX, extraY));
             DrawKaguya(Projectile.frame, lightColor, 0);
             if (PetState == 1)
                 DrawKaguya(blinkFrame, lightColor, 1);
             DrawKaguya(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Kaguya_Cloth"), true);
-            DrawKaguya(clothFrame, lightColor, 1, default, null, true);
+            DrawKaguya(clothFrame, lightColor, 1, default, null, true);           
             Projectile.DrawStateNormalizeForPet();
-
-            if (Fighting)
-            {
-                DrawDanmakuRing();
-            }
             if (Projectile.owner == Main.myPlayer)
             {
                 DrawFightState();
@@ -326,6 +326,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                     else if (extraAI[2] <= 0)
                     {
+                        Projectile.FailEffect();
                         CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
                         PetState = -3;
                         extraAI[0] = 0;

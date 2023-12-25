@@ -18,17 +18,40 @@ namespace TouhouPets
             Round = 0;
             RoundTimer = 0;
         }
+        public static void FailEffect(this Projectile projectile)
+        {
+            var dustType = Main.rand.Next(4) switch
+            {
+                1 => MyDustId.TrailingYellow,
+                2 => MyDustId.TrailingGreen1,
+                3 => MyDustId.TrailingBlue,
+                _ => MyDustId.TrailingRed1,
+            };
+            int circle = 14;
+            for (int i = 0; i < circle; i++)
+            {
+                Dust d = Dust.NewDustPerfect(projectile.Center, dustType, null, 100, default, Main.rand.NextFloat(0.7f, 1.7f));
+                d.velocity = new Vector2(0, -Main.rand.NextFloat(4, 8)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
+            }
+        }
         public static void DrawBattleRound()
         {
             Player player = Main.LocalPlayer;
             string source = "Round " + Round.ToString();
-            if (RoundTimer > 300)
+            Color clr = Color.SkyBlue;
+            if (RoundTimer > 180 && RoundTimer <= 300)
             {
-                source = "GO!";
+                source = "READY...";
+                clr = Color.Yellow;
+            }
+            else if (RoundTimer > 300)
+            {
+                source = "FIGHT!";
+                clr = Color.Red;
             }
             Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(source).X / 2, player.Center.Y - 232) - Main.screenPosition;
             Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, source
-            , pos.X, pos.Y, Color.Yellow, Color.Black, Vector2.Zero, 1f);
+            , pos.X, pos.Y, clr, Color.Black, Vector2.Zero, 1f);
         }
         public static void HandleDanmakuCollide(this Projectile projectile)
         {

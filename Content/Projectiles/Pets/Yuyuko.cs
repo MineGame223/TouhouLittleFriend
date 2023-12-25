@@ -368,7 +368,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<YuyukoBuff>());
             UpdateTalking();
-            Vector2 point = new Vector2(-70 * player.direction, -60 + player.gfxOffY);
+            Vector2 point = new Vector2(-40 * player.direction, -50 + player.gfxOffY);
             if (player.ownedProjectileCounts[ProjectileType<Youmu>()] > 0)
             {
                 point = new Vector2(40 * player.direction, -50 + player.gfxOffY);
