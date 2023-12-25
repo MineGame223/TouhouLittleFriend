@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 
-namespace TouhouPets.Content.Projectiles
+namespace TouhouPets.Content.Projectiles.Danmaku
 {
     public class MokuBullet : ModProjectile
     {
@@ -23,6 +24,15 @@ namespace TouhouPets.Content.Projectiles
             Projectile.timeLeft = 360;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku = true;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isDanmakuDestorible = true;
+            Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().belongsToPlayerB = true;
+        }
+        public override bool? CanCutTiles()
+        {
+            return false;
+        }
+        public override bool? CanDamage()
+        {
+            return false;
         }
         public override bool PreDraw(ref Color lightColor)
         {

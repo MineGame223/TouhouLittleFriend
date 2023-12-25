@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Projectiles.Danmaku;
+using static TouhouPets.DanmakuFightHelper;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -18,6 +21,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Fighting)
+            {
+                DrawDanmakuRing();
+            }
             DrawWings(Projectile.GetAlpha(Color.White) * 0.3f);
             Projectile.DrawStateNormalizeForPet();
 
@@ -28,26 +35,24 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawMoku(Projectile.frame, lightColor);
             if (PetState == 1 || PetState == 3)
                 DrawMoku(blinkFrame, lightColor, 1);
-            DrawMoku(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Moku_Cloth"), true);
+            DrawMoku(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Moku_Cloth"), true);            
             Projectile.DrawStateNormalizeForPet();
-
-            DrawFightSprite();
+            if (Projectile.owner == Main.myPlayer)
+            {
+                DrawFightState();
+            }
             return false;
         }
-        private void DrawFightSprite()
+        private void DrawFightState()
         {
-            if (PetState == -1 && extraAI[0] > 0)
+            if (Fighting)
             {
-                DrawDanmakuRing();
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    Main.instance.DrawHealthBar(Projectile.Center.X, Projectile.position.Y + Projectile.height + 16
+                Main.instance.DrawHealthBar(Projectile.Center.X, Projectile.position.Y + Projectile.height + 16
                     , extraAI[2], 360, 0.8f);
-                }
             }
-            if (PetState < -1 && Projectile.owner == Main.myPlayer)
+            if (PetState < -1)
             {
-                string source = "Win: " + DanmakuFightHelper.PlayerB_Source.ToString();
+                string source = "Win: " + PlayerB_Source.ToString();
                 Vector2 pos = new Vector2(Projectile.Center.X - FontAssets.MouseText.Value.MeasureString(source).X / 2, Projectile.Center.Y + 36) - Main.screenPosition;
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, source
                     , pos.X, pos.Y, Color.White, Color.Black, Vector2.Zero, 1f);
@@ -103,6 +108,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         int wingFrame, wingFrameCounter;
         int hairFrame, hairFrameCounter;
         float extraX, extraY;
+        float floatingX, floatingY;
+        float ringAlpha;
         private void UpdateMiscFrame()
         {
             if (wingFrame < 9)
@@ -183,8 +190,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        private float floatingX, floatingY;
-        private float ringAlpha;
+        private bool Fighting => PetState == -1 && extraAI[0] > 0;
         private void Battle()
         {
             float speed = 15f;
@@ -199,7 +205,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
                 if (extraAI[1] == 0)
                 {
-                    DanmakuFightHelper.Round++;
+                    Round++;
                 }
                 extraAI[1]++;
                 if (Projectile.owner == Main.myPlayer)
@@ -242,19 +248,30 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         floatingX = Main.rand.Next(-50, 50);
                         floatingY = Main.rand.Next(-50, 50);
+                        Projectile.netUpdate = true;
                     }
                     if (extraAI[1] % 20 == 0)
                     {
-                        Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -50).RotatedByRandom(MathHelper.ToRadians(360)),
-                            new Vector2(Main.rand.Next(5, 9), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-9, 9))), ProjectileType<MokuBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner);
+                        if (Main.rand.NextBool(30) && player.ownedProjectileCounts[ProjectileType<MokuFireball>()] < 1)
+                        {
+                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center,
+                                new Vector2(Main.rand.Next(7, 9), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-3, 3)))
+                                , ProjectileType<MokuFireball>(), Main.rand.Next(12, 20), 0, Projectile.owner);
+                        }
+                        else
+                        {
+                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -50).RotatedByRandom(MathHelper.ToRadians(360)),
+                                new Vector2(Main.rand.Next(5, 9), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-9, 9)))
+                                , ProjectileType<MokuBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner);
+                        }
                     }
                 }
-                Projectile.HandleHurting(ProjectileType<KaguyaBullet>(), ref extraAI[2]);
+                Projectile.HandleHurt(ref extraAI[2], false);
                 if (Projectile.owner == Main.myPlayer)
                 {
                     if (FindPetState(out _, ProjectileType<Kaguya>(), -3))
                     {
-                        DanmakuFightHelper.PlayerB_Source++;
+                        PlayerB_Source++;
                         CombatText.NewText(Projectile.getRect(), Color.Yellow, "WIN!", true, false);
                         PetState = -2;
                         extraAI[0] = 0;
@@ -264,6 +281,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                     else if (extraAI[2] <= 0)
                     {
+                        Projectile.FailEffect();
                         CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
                         PetState = -3;
                         extraAI[0] = 0;
@@ -439,12 +457,12 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (player.afkCounter >= 600 && player.ownedProjectileCounts[ProjectileType<Kaguya>()] > 0 && PetState >= 0)
+                if (player.afkCounter >= 600 && PetState >= 0)
                 {
                     if (mainTimer % 60 == 0 && Main.rand.NextBool(2)
                         || FindPetState(out _, ProjectileType<Kaguya>(), -1))
                     {
-                        DanmakuFightHelper.InitializeFightData();
+                        InitializeFightData();
                         extraAI[0] = 0;
                         extraAI[1] = 0;
                         extraAI[2] = 0;
@@ -523,7 +541,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 extraY = 2;
             }
-            ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * ((PetState == -1 && extraAI[0] == 1) ? 1 : -1), 0, 1);
+            ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * (Fighting ? 1 : -1), 0, 1);
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            floatingX = reader.ReadSingle();
+            floatingY = reader.ReadSingle();
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(floatingX);
+            writer.Write(floatingY);
         }
     }
 }
