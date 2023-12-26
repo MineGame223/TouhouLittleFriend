@@ -9,6 +9,7 @@ namespace TouhouPets
 {
     public class TouhouPetPlayer : ModPlayer
     {
+        public int koakumaNumber;
         public bool yukariLicenseLeft;
         public bool yukariLicenseRight;
 

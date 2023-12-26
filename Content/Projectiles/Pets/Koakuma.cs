@@ -17,7 +17,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
-            LuckPlayer lp = Main.LocalPlayer.GetModPlayer<LuckPlayer>();
+            TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
         }
         public override bool PreDraw(ref Color lightColor)
@@ -118,7 +118,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(224, 78, 78);
         public override string GetChatText(out string[] text)
         {
-            LuckPlayer lp = Main.player[Projectile.owner].GetModPlayer<LuckPlayer>();
+            TouhouPetPlayer lp = Main.player[Projectile.owner].GetModPlayer<TouhouPetPlayer>();
             text = new string[11];
             text[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
             text[2] = ModUtils.GetChatText("Koakuma", "2");

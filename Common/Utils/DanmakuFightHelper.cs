@@ -11,6 +11,28 @@ namespace TouhouPets
         public static int PlayerB_Source;
         public static int Round;
         public static int RoundTimer;
+
+        private static float myEssScale;
+        private static int myEssDir;
+        public static float DanmakuRingScale { get => myEssScale; }
+        public static void UpdateDanmakuRingScale()
+        {
+            if (!Main.gamePaused)
+            {
+                myEssScale += myEssDir * 0.003f;
+                if (myEssScale > 1f)
+                {
+                    myEssDir = -1;
+                    myEssScale = 1f;
+                }
+
+                if (myEssScale < 0.85f)
+                {
+                    myEssDir = 1;
+                    myEssScale = 0.85f;
+                }
+            }
+        }
         public static void InitializeFightData()
         {
             PlayerA_Source = 0;
@@ -20,19 +42,26 @@ namespace TouhouPets
         }
         public static void FailEffect(this Projectile projectile)
         {
-            var dustType = Main.rand.Next(4) switch
-            {
-                1 => MyDustId.TrailingYellow,
-                2 => MyDustId.TrailingGreen1,
-                3 => MyDustId.TrailingBlue,
-                _ => MyDustId.TrailingRed1,
-            };
-            int circle = 14;
+            int circle = 50;
             for (int i = 0; i < circle; i++)
             {
-                Dust d = Dust.NewDustPerfect(projectile.Center, dustType, null, 100, default, Main.rand.NextFloat(0.7f, 1.7f));
-                d.velocity = new Vector2(0, -Main.rand.NextFloat(4, 8)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
+                Dust d = Dust.NewDustPerfect(projectile.Center, MyDustId.TrailingRed1, null, 100, default, Main.rand.NextFloat(0.7f, 1.7f));
+                d.velocity = new Vector2(0, -Main.rand.NextFloat(3, 8)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
             }
+        }
+        public static void DrawBattleSource()
+        {
+            Player player = Main.LocalPlayer;
+            string source = PlayerB_Source + " : " + PlayerA_Source;
+            Color clr = Color.Yellow;
+            Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(source).X / 2, player.Center.Y - Main.screenHeight / 2) - Main.screenPosition;
+            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, source
+            , pos.X, pos.Y, clr, Color.Black, Vector2.Zero, 1f);
+
+            source = "Round " + Round.ToString();
+            clr = Color.AliceBlue;
+            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, source
+            , pos.X + 14, pos.Y + 52, clr, Color.Black, Vector2.Zero, 1f);
         }
         public static void DrawBattleRound()
         {

@@ -420,6 +420,11 @@ Mods: {
 				You have provided {0}, may the Gensokyo be with you.
 				By the way, selling items here will reduce the wealth count.
 				''' */
+			/* Chat7:
+				'''
+				You haven't buy anything here, it's never too late to do.
+				By the way, selling items here will reduce the wealth count.
+				''' */
 		}
 
 		Chat_Template: {

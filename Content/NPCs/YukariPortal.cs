@@ -100,11 +100,17 @@ namespace TouhouPets.Content.NPCs
         }
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
+            TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (firstButton)
             {
                 shopName = "Shop";
             }
-            Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>().totalPurchaseValueCount));
+            if (mp.totalPurchaseValueCount <= 0)
+            {
+                Main.npcChatText = ModUtils.GetChatText("Portal", "7");
+                return;
+            }
+            Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));           
         }
         private void AddShopItem_Legacy()
         {

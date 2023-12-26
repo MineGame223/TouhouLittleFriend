@@ -10,13 +10,13 @@ namespace TouhouPets.Content.Buffs.PetBuffs
         public override bool LightPet => false;
         public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
         {
-            LuckPlayer lp = Main.LocalPlayer.GetModPlayer<LuckPlayer>();
+            TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             tip = Language.GetTextValue("Mods.TouhouPets.Buffs.KoakumaBuff.Description", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
         }
         public override void OnSummonPet(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
-                player.GetModPlayer<LuckPlayer>().koakumaNumber = Main.rand.Next(1, 301);
+                player.GetModPlayer<TouhouPetPlayer>().koakumaNumber = Main.rand.Next(1, 301);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 360;
+            Projectile.extraUpdates = 1;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku = true;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isDanmakuDestorible = true;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().belongsToPlayerB = true;
@@ -40,7 +41,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Vector2 pos = Projectile.Center - Main.screenPosition;
             int height = tex.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
-            Color clr = Projectile.GetAlpha(lightColor);
+            Color clr = Projectile.GetAlpha(Color.White);
             Vector2 orig = rect.Size() / 2;
             Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
             return false;
