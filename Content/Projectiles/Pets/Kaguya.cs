@@ -50,10 +50,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (PetState < -1)
                 {
-                    string source = "Win: " + PlayerA_Source.ToString();
-                    Vector2 pos = new Vector2(Projectile.Center.X - FontAssets.MouseText.Value.MeasureString(source).X / 2, Projectile.Center.Y + 36) - Main.screenPosition;
-                    Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, source
-                        , pos.X, pos.Y, Color.White, Color.Black, Vector2.Zero, 1f);
+                    Projectile.DrawIndividualSource(PlayerA_Source);
                 }
                 if (PetState == -1 && extraAI[0] <= 0)
                 {
@@ -259,7 +256,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 extraAI[1]++;
                 if (Projectile.owner == Main.myPlayer)
                 {
-                    if (extraAI[1] > 360)
+                    if (extraAI[1] > 375)
                     {
                         extraAI[2] = 360;
                         extraAI[1] = 0;
@@ -560,10 +557,9 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (player.afkCounter >= 600 && player.ownedProjectileCounts[ProjectileType<Moku>()] > 0 && PetState >= 0)
+                if (player.afkCounter >= 600 && player.HasBuff<MokuBuff>() && PetState >= 0)
                 {
-                    if (mainTimer % 60 == 0 && Main.rand.NextBool(2)
-                        || FindPetState(out _, ProjectileType<Moku>(), -1))
+                    if (mainTimer % 60 == 0 && Main.rand.NextBool(2) || FindPetState(out _, ProjectileType<Moku>(), -1))
                     {
                         extraAI[0] = 0;
                         extraAI[1] = 0;
@@ -614,8 +610,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Lose();
             }
-            if (PetState < 0 && (player.afkCounter <= 0
-                || !player.HasBuff<MokuBuff>() || player.ownedProjectileCounts[ProjectileType<Moku>()] < 0))
+            if (PetState < 0 && (player.afkCounter <= 0 || !player.HasBuff<MokuBuff>()))
             {
                 PetState = 0;
             }
