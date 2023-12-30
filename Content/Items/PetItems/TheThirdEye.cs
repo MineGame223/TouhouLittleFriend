@@ -27,6 +27,8 @@ namespace TouhouPets.Content.Items.PetItems
             CreateRecipe()
             .AddIngredient(ItemType<SatoriSlippers>(), 1)
             .AddIngredient(ItemType<KoishiTelephone>(), 1)
+            .AddIngredient(ItemType<RinSkull>(), 1)
+            .AddIngredient(ItemType<UtsuhoEye>(), 1)
             .Register();
         }
     }

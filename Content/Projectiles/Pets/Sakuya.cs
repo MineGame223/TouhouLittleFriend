@@ -45,13 +45,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawUmbrella(Color lightColor)
         {
-            int type = ItemID.Umbrella;
+            int type = ItemID.TragicUmbrella;
             Main.instance.LoadItem(type);
             Texture2D tex = AltVanillaFunction.ItemTexture(type);
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(11 * Projectile.spriteDirection, -18) + new Vector2(0, 7f * Main.essScale);
             Color clr = Projectile.GetAlpha(lightColor);
             Vector2 orig = tex.Size() / 2;
-            Main.EntitySpriteDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
+            SpriteEffects effect = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            Main.EntitySpriteDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, effect, 0);
         }
         private void Blink()
         {
@@ -185,27 +186,24 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(player, true);
 
-            Vector2 point;
-            Vector2 center;
-            if (FindPetState(out Projectile master, ProjectileType<Remilia>(), 0, 2) && Remilia.HateSunlight(Projectile))
+            Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? 90 : -50) * player.direction, -30 + player.gfxOffY);
+            Vector2 center = default;
+            if (FindPet(out Projectile master, ProjectileType<Remilia>()))
             {
-                center = master.Center;
-                point = new Vector2(-20 * master.spriteDirection, player.gfxOffY);
                 Projectile.spriteDirection = master.spriteDirection;
-            }
-            else if (FindPetState(out master, ProjectileType<Remilia>(), 2))
-            {
-                center = master.Center;
-                point = new Vector2(-40 * master.spriteDirection, player.gfxOffY);
-                Projectile.spriteDirection = master.spriteDirection;
-            }
-            else
-            {
-                center = player.MountedCenter;
-                point = new Vector2((player.HasBuff<ScarletBuff>() ? 90 : -50) * player.direction, -30 + player.gfxOffY);
+                if (PetState == 3)
+                {
+                    center = master.Center;
+                    point = new Vector2(-20 * master.spriteDirection, player.gfxOffY);                    
+                }
+                else if (PetState == 2)
+                {
+                    center = master.Center;
+                    point = new Vector2(-40 * master.spriteDirection, player.gfxOffY);
+                }
             }
 
-            MoveToPointFreely(point, center, 19f);
+            MoveToPoint(point, 19f, center);
         }
         public override void AI()
         {
@@ -218,20 +216,22 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (FindPet(out Projectile master, ProjectileType<Remilia>())
-                    && Remilia.HateSunlight(Projectile) && PetState != 3)
+                if (FindPet(out Projectile master, ProjectileType<Remilia>()))
                 {
-                    Teleport(master.Center + new Vector2(-20 * master.spriteDirection, player.gfxOffY));
-                    PetState = 3;
-                    Projectile.netUpdate = true;
+                    if (Remilia.HateSunlight(Projectile) && PetState != 3)
+                    {
+                        Teleport(master.Center + new Vector2(-20 * master.spriteDirection, player.gfxOffY));
+                        PetState = 3;
+                        Projectile.netUpdate = true;
+                    }
+                    else if (master.ai[1] == 2 && PetState != 2)
+                    {
+                        Teleport(master.Center + new Vector2(-40 * master.spriteDirection, player.gfxOffY));
+                        PetState = 2;
+                        Projectile.netUpdate = true;
+                    }
                 }
-                else if (FindPetState(out master, ProjectileType<Remilia>(), 2) && PetState != 2)
-                {
-                    Teleport(master.Center + new Vector2(-40 * master.spriteDirection, player.gfxOffY));
-                    PetState = 2;
-                    Projectile.netUpdate = true;
-                }
-                else if (mainTimer % 270 == 0 && PetState <= 0)
+                if (mainTimer % 270 == 0 && PetState <= 0)
                 {
                     PetState = 1;
                     Projectile.netUpdate = true;

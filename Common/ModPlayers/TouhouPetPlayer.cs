@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items.PetItems;
@@ -85,7 +86,11 @@ namespace TouhouPets
             {
                 yukariLicenseRight = true;
             }
-
+            if (Player.miscEquips[0].type == ItemType<CakeOfScarlet>()
+                || Player.miscEquips[0].type == ItemType<TheThirdEye>())
+            {
+                Player.hideMisc[1] = true;
+            }
         }
         public override void PostUpdateBuffs()
         {

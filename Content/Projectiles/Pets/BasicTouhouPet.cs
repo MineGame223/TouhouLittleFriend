@@ -491,43 +491,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             return target != null;
         }
         /// <summary>
-        /// 常规移动AI，以玩家为中心
+        /// 常规移动AI
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>
-        internal void MoveToPoint(Vector2 point, float speed)
+        internal void MoveToPoint(Vector2 point, float speed, Vector2 center = default)
         {
             Player player = Main.player[Projectile.owner];
-            Vector2 pos = player.MountedCenter + point;
-            float dist = Vector2.Distance(Projectile.Center, pos);
-            if (dist > 1200f)
-                Projectile.Center = player.Center + point;
-            Vector2 vel = pos - Projectile.Center;
-
-            float actualSpeed = 1;
-
-            if (dist < actualSpeed)
-                Projectile.velocity *= 0.25f;
-
-            if (vel != Vector2.Zero)
+            if (center == default)
             {
-                if (vel.Length() < actualSpeed)
-                    Projectile.velocity = vel;
-                else
-                    Projectile.velocity = vel * 0.01f * speed;
+                center = player.MountedCenter;
             }
-        }
-        /// <summary>
-        /// 常规移动AI，自定义中心
-        /// </summary>
-        /// <param name="point">移动到的位置</param>
-        /// <param name="speed">移动速度</param>
-        internal void MoveToPointFreely(Vector2 point, Vector2 center, float speed)
-        {
+            else
+            {
+                speed *= 4;
+            }
             Vector2 pos = center + point;
             float dist = Vector2.Distance(Projectile.Center, pos);
             if (dist > 1200f)
-                Projectile.Center = pos;
+                Projectile.Center = center + point;
             Vector2 vel = pos - Projectile.Center;
 
             float actualSpeed = 1;
@@ -544,7 +526,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
         }
         /// <summary>
-        /// 常规移动AI：2，以玩家为中心
+        /// 常规移动AI：2
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>

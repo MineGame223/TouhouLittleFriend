@@ -178,7 +178,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
 
             Vector2 point;
-            Vector2 center;
+            Vector2 center = default;
             if (FindPet(out Projectile master, ProjectileType<Patchouli>()) && player.HasBuff<ScarletBuff>())
             {
                 center = master.Center;
@@ -187,11 +187,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                center = player.MountedCenter;
                 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
             }
 
-            MoveToPointFreely(point, center, 9f);
+            MoveToPoint(point, 9f, center);
         }
         public override void AI()
         {

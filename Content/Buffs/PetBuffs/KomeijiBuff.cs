@@ -9,6 +9,8 @@ namespace TouhouPets.Content.Buffs.PetBuffs
         {
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Satori>());
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Koishi>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Rin>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Utsuho>());
         }
     }
 }

@@ -21,10 +21,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawStateNormalizeForPet();
             DrawMeirin(hairFrame, lightColor, 1, hairPosOffset);
             DrawMeirin(Projectile.frame, lightColor);
-            if (PetState == 1)
+            if (PetState == 1 || PetState == 4)
                 DrawMeirin(blinkFrame, lightColor, 1);
             DrawMeirin(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Meirin_Cloth"), true);
             DrawMeirin(clothFrame, lightColor, 1, clothPosOffset, null, true);
+            if (PetState == 3 || PetState == 4)
+            {
+                DrawUmbrella(lightColor);
+            }
             return false;
         }
         private void DrawMeirin(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
@@ -40,6 +44,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
+        private void DrawUmbrella(Color lightColor)
+        {
+            int type = ItemID.Umbrella;
+            Main.instance.LoadItem(type);
+            Texture2D tex = AltVanillaFunction.ItemTexture(type);
+            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(17 * Projectile.spriteDirection, -20) + new Vector2(0, 7f * Main.essScale);
+            Color clr = Projectile.GetAlpha(lightColor);
+            Vector2 orig = tex.Size() / 2;
+            Main.EntitySpriteDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
+        }
         private void Blink()
         {
             if (++blinkFrameCounter > 3)
@@ -50,7 +64,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 2)
             {
                 blinkFrame = 0;
-                PetState = 0;
+                if (PetState == 4)
+                {
+                    PetState = 3;
+                }
+                else
+                {
+                    PetState = 0;
+                }
             }
         }
         int blinkFrame, blinkFrameCounter;
@@ -103,6 +124,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                         Projectile.netUpdate = true;
                     }
                 }
+            }
+        }
+        private void Serve()
+        {
+            Projectile.frame = 23;
+            if (Main.player[Projectile.owner].ownedProjectileCounts[ProjectileType<Flandre>()] <= 0
+                || !Remilia.HateSunlight(Projectile))
+            {
+                Projectile.frame = 0;
+                PetState = 0;
             }
         }
         private void UpdateMiscFrame()
@@ -199,14 +230,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;
 
-            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-            if (player.HasBuff<ScarletBuff>())
-            {
-                point = new Vector2(-80 * player.direction, -40 + player.gfxOffY);
-            }          
+            ChangeDir(player);
 
-            ChangeDir(player, player.HasBuff<ScarletBuff>(), 120);
-            MoveToPoint(point, 19f);
+            Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? -90 : 50) * player.direction, -30 + player.gfxOffY);
+            Vector2 center = default;
+            if (FindPet(out Projectile master, ProjectileType<Flandre>()))
+            {
+                Projectile.spriteDirection = master.spriteDirection;
+                if (PetState == 3 || PetState == 4)
+                {
+                    center = master.Center;
+                    point = new Vector2(-25 * master.spriteDirection, player.gfxOffY);
+                }
+            }
+            MoveToPoint(point, 19f, center);
         }
         public override void AI()
         {
@@ -220,18 +257,34 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
+                if (Remilia.HateSunlight(Projectile) && PetState != 3 && PetState != 4)
                 {
-                    PetState = 1;
+                    PetState = 3;
                     Projectile.netUpdate = true;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState <= 0)
+                if (PetState == 3)
                 {
-                    if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() <= 5f)
+                    if (mainTimer % 270 == 0)
                     {
-                        extraAI[1] = 0;
-                        PetState = 2;
+                        PetState = 4;
                         Projectile.netUpdate = true;
+                    }
+                }
+                if (PetState <= 0)
+                {
+                    if (mainTimer % 270 == 0)
+                    {
+                        PetState = 1;
+                        Projectile.netUpdate = true;
+                    }
+                    if (mainTimer >= 1200 && mainTimer < 3600)
+                    {
+                        if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() <= 5f)
+                        {
+                            extraAI[1] = 0;
+                            PetState = 2;
+                            Projectile.netUpdate = true;
+                        }
                     }
                 }
             }
@@ -245,12 +298,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (PetState == 1)
             {
-                Projectile.frame = 0;
                 Blink();
+                Projectile.frame = 0;
             }
             else if (PetState == 2)
             {
                 Kongfu();
+            }
+            else if (PetState == 3 || PetState == 4)
+            {
+                if (PetState == 4)
+                    Blink();
+                Serve();
             }
             clothPosOffset = Projectile.frame switch
             {
