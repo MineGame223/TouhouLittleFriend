@@ -46,6 +46,7 @@ Mods: {
 			MokuBullet.DisplayName: 子弹
 			MokuFireball.DisplayName: 火球
 			KaguyaWave.DisplayName: 满月光波
+			Meirin.DisplayName: 红美铃
 		}
 	}
 }

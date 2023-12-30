@@ -190,6 +190,11 @@ Mods: {
 				DisplayName: Undying Phoenix
 				Description: "'Burning forever!'"
 			}
+
+			MeirinBuff: {
+				DisplayName: The Gatekeeper
+				Description: "'I'm guarding here!'"
+			}
 		}
 	}
 }

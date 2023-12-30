@@ -123,6 +123,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<KaguyaBranch>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
+            shop.Add(ItemType<MeirinPanda>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
             shop.Add(ItemType<WakasagihimeFishingRod>(), Condition.DownedQueenBee);
@@ -160,6 +161,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<RumiaRibbon>());
             shop.Add(ItemType<RemiliaRedTea>());
             shop.Add(ItemType<FlandrePudding>());
+            shop.Add(ItemType<MeirinPanda>());
             shop.Add(ItemType<MystiaFeather>());
             shop.Add(ItemType<WriggleInAJar>());
             shop.Add(ItemType<WakasagihimeFishingRod>());

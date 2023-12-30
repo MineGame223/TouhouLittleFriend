@@ -221,6 +221,11 @@ Mods: {
 				// DisplayName: match that never put out
 				// Tooltip: "'No matter rainning or blowing'"
 			}
+
+			MeirinPanda: {
+				// DisplayName: Panda Pendant
+				// Tooltip: "'From the mysterious eastern land'"
+			}
 		}
 	}
 }

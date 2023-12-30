@@ -221,6 +221,11 @@ Mods: {
 				DisplayName: 不灭的火柴
 				Tooltip: "'风吹雨打，未曾熄灭'"
 			}
+
+			MeirinPanda: {
+				DisplayName: 熊猫挂坠
+				Tooltip: "'满是熟悉的感觉'"
+			}
 		}
 	}
 }

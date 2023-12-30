@@ -190,6 +190,11 @@ Mods: {
 				DisplayName: 不死凤凰
 				Description: "'永远的燃烧！'"
 			}
+
+			MeirinBuff: {
+				DisplayName: 小小看门人
+				Description: "'我就守在这里！'"
+			}
 		}
 	}
 }

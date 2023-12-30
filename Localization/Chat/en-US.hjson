@@ -409,6 +409,23 @@ Mods: {
 			Chat6: Can you just be QUIET for a time?
 		}
 
+		Chat_Meirin: {
+			Chat1: Today is another boring...no no no, hardworking day!
+			Chat2: My name is "Meirin Hong", not "China"!
+			Chat3: It's really idle to be a gatekeeper here...
+			Chat4: My homeland is in the eastern, where above the Yangtze River!
+			//Don't translate this		
+			Chat5: 易有太极，是生两仪...
+		}
+
+		Chat_Sakuya: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+
 		Chat_Portal: {
 			Chat1: Hey, if you find this, why don't you buy something? All for the Gensokyo
 			Chat2: Leave some coin here and take your favorite gift. Just do something for Gensokyo's exist
