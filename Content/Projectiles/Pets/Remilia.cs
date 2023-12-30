@@ -22,7 +22,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState == 1)
                 DrawRemilia(blinkFrame, lightColor);
             DrawRemilia(Projectile.frame, lightColor, default, AltVanillaFunction.GetExtraTexture("Remilia_Cloth"), true);
-            if (!HateSunlight())
+            if (!HateSunlight(Projectile))
                 DrawRemilia(clothFrame, lightColor, new Vector2(extraAdjX, extraAdjY), null, true);
             return false;
         }
@@ -41,13 +41,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
-        private bool HateSunlight()
+        public static bool HateSunlight(Projectile projectile)
         {
-            Player player = Main.player[Projectile.owner];
+            Player player = Main.player[projectile.owner];
             bool sunlight = Main.dayTime && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && !player.behindBackWall;
             bool rain = Main.raining && (player.ZoneOverworldHeight || player.ZoneSkyHeight);
             if (sunlight || rain)
-                return true;
+            {
+                if (projectile.type == ProjectileType<Remilia>() && player.ownedProjectileCounts[ProjectileType<Sakuya>()] > 0
+                    || projectile.type == ProjectileType<Flandre>() && player.ownedProjectileCounts[ProjectileType<Meirin>()] > 0)
+                    return false;
+                else
+                    return true;
+            }
             return false;
         }
         private void Blink()
@@ -254,27 +260,35 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateWingFrame();
             UpdateClothFrame();
         }
-        public override void AI()
+        private void ControlMovement(Player player)
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<RemiliaBuff>());
-            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
-            if (!Main.dayTime)
-                UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -50 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Flandre>()] > 0)
-            {
-                point = new Vector2(50 * player.direction, -50 + player.gfxOffY);
-            }
             Projectile.tileCollide = false;
             if (PetState != 2)
                 Projectile.rotation = Projectile.velocity.X * 0.03f;
             else
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Flandre>()] <= 0);
+            Vector2 point = new Vector2(-50 * player.direction, -50 + player.gfxOffY);
+            bool hasFlandre = player.ownedProjectileCounts[ProjectileType<Flandre>()] > 0;
+            if (hasFlandre)
+            {
+                point = new Vector2(50 * player.direction, -50 + player.gfxOffY);
+            }
+
+            ChangeDir(player, !hasFlandre);
             MoveToPoint(point, 19f);
-            if (HateSunlight())
+        }
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            Projectile.SetPetActive(player, BuffType<RemiliaBuff>());
+            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
+
+            if (!Main.dayTime)
+                UpdateTalking();
+            ControlMovement(player);
+
+            if (HateSunlight(Projectile))
             {
                 extraAI[0] = 0;
                 extraAI[1] = 0;
@@ -294,7 +308,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
                 {
-                    if (mainTimer % 900 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() < 4f)
+                    if (mainTimer % 900 == 0 && Main.rand.NextBool(3) && extraAI[0] <= 0 && player.velocity.Length() < 4f)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;

@@ -442,6 +442,27 @@ namespace TouhouPets.Content.Projectiles.Pets
             return false;
         }
         /// <summary>
+        /// 查找对应宠物
+        /// </summary>
+        /// <param name="target">被查找的对象</param>
+        /// <param name="type">宠物ID</param>
+        /// <returns></returns>
+        internal bool FindPet(out Projectile target, int type)
+        {
+            target = null;
+            foreach (Projectile p in Main.projectile)
+            {
+                if (p != null && p.active && p.owner == Projectile.owner)
+                {
+                    if (p.type == type)
+                    {
+                        target = p;
+                    }
+                }
+            }
+            return target != null;
+        }
+        /// <summary>
         /// 查找对应宠物的状态（ai[1]）
         /// </summary>
         /// <param name="target">被查找的对象</param>
@@ -449,7 +470,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="minState">最小状态值</param>
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
         /// <returns></returns>
-        internal bool FindPetState(out Projectile target, int type, int minState, int maxState = 0)
+        internal bool FindPetState(out Projectile target, int type, int minState = 0, int maxState = 0)
         {
             target = null;
             if (maxState <= minState && minState > 0
@@ -470,7 +491,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             return target != null;
         }
         /// <summary>
-        /// 常规移动AI
+        /// 常规移动AI，以玩家为中心
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>
@@ -497,7 +518,33 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
         }
         /// <summary>
-        /// 常规移动AI：2
+        /// 常规移动AI，自定义中心
+        /// </summary>
+        /// <param name="point">移动到的位置</param>
+        /// <param name="speed">移动速度</param>
+        internal void MoveToPointFreely(Vector2 point, Vector2 center, float speed)
+        {
+            Vector2 pos = center + point;
+            float dist = Vector2.Distance(Projectile.Center, pos);
+            if (dist > 1200f)
+                Projectile.Center = pos;
+            Vector2 vel = pos - Projectile.Center;
+
+            float actualSpeed = 1;
+
+            if (dist < actualSpeed)
+                Projectile.velocity *= 0.25f;
+
+            if (vel != Vector2.Zero)
+            {
+                if (vel.Length() < actualSpeed)
+                    Projectile.velocity = vel;
+                else
+                    Projectile.velocity = vel * 0.01f * speed;
+            }
+        }
+        /// <summary>
+        /// 常规移动AI：2，以玩家为中心
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>

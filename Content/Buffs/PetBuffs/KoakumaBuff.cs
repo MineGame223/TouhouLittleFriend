@@ -13,10 +13,5 @@ namespace TouhouPets.Content.Buffs.PetBuffs
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             tip = Language.GetTextValue("Mods.TouhouPets.Buffs.KoakumaBuff.Description", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
         }
-        public override void OnSummonPet(Player player)
-        {
-            if (player.whoAmI == Main.myPlayer)
-                player.GetModPlayer<TouhouPetPlayer>().koakumaNumber = Main.rand.Next(1, 301);
-        }
     }
 }

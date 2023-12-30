@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
 {
@@ -43,6 +44,10 @@ namespace TouhouPets
             bool flag = petType != -1 && player.ownedProjectileCounts[petType] <= 0;
             if (flag && player.whoAmI == Main.myPlayer)
             {
+                if (petType == ProjectileType<Koakuma>())
+                {
+                    player.GetModPlayer<TouhouPetPlayer>().koakumaNumber = Main.rand.Next(1, 301);
+                }
                 Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, petType, 0, 0f, player.whoAmI);
             }
         }

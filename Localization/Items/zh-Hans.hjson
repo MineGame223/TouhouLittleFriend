@@ -226,6 +226,11 @@ Mods: {
 				DisplayName: 熊猫挂坠
 				Tooltip: "'满是熟悉的感觉'"
 			}
+
+			SaukyaWatch: {
+				DisplayName: 月时计
+				Tooltip: "'指针永远停留在了四点十六分'"
+			}
 		}
 	}
 }

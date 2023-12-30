@@ -226,6 +226,11 @@ Mods: {
 				// DisplayName: Panda Pendant
 				// Tooltip: "'From the mysterious eastern land'"
 			}
+
+			SaukyaWatch: {
+				// DisplayName: Luna Dial
+				// Tooltip: "'The pointer remained at 4:16 forever'"
+			}
 		}
 	}
 }

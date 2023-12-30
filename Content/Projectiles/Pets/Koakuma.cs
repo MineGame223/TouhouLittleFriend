@@ -18,6 +18,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void OnSpawn(IEntitySource source)
         {
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
+            lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
         }
         public override bool PreDraw(ref Color lightColor)
@@ -46,18 +47,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Blink()
         {
-            if (blinkFrame < 4)
+            if (blinkFrame < 3)
             {
-                blinkFrame = 4;
+                blinkFrame = 3;
             }
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;
                 blinkFrame++;
             }
-            if (blinkFrame > 6)
+            if (blinkFrame > 5)
             {
-                blinkFrame = 4;
+                blinkFrame = 3;
                 PetState = 0;
             }
         }
@@ -169,18 +170,37 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateEarsFrame();
             UpdateHairFrame();
         }
-        public override void AI()
+        private void ControlMovement(Player player)
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<KoakumaBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.022f;
 
             ChangeDir(player, true);
-            MoveToPoint(point, 9f);
+
+            Vector2 point;
+            Vector2 center;
+            if (FindPet(out Projectile master, ProjectileType<Patchouli>()) && player.HasBuff<ScarletBuff>())
+            {
+                center = master.Center;
+                point = new Vector2(-60 * master.spriteDirection, player.gfxOffY);
+                Projectile.spriteDirection = master.spriteDirection;
+            }
+            else
+            {
+                center = player.MountedCenter;
+                point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
+            }
+
+            MoveToPointFreely(point, center, 9f);
+        }
+        public override void AI()
+        {
+            Player player = Main.player[Projectile.owner];
+            Projectile.SetPetActive(player, BuffType<KoakumaBuff>());
+            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
+
+            UpdateTalking();
+            ControlMovement(player);
 
             if (Projectile.owner == Main.myPlayer)
             {
@@ -192,11 +212,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.netUpdate = true;
                 }
             }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-            }
-            else if (PetState == 1)
+            Projectile.frame = 0;
+            if (PetState == 1)
             {
                 Blink();
             }

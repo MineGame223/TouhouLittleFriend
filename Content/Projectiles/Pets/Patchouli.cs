@@ -284,22 +284,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateClothFrame();
             UpdateAuraFrame();
         }
+        private void ControlMovement(Player player)
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.012f;
+
+            Vector2 point = new Vector2(50 * player.direction, -20 + player.gfxOffY);
+            if (player.HasBuff<ScarletBuff>())
+            {
+                point = new Vector2(0, -120 + player.gfxOffY);
+            }
+
+            ChangeDir(player);
+            MoveToPoint(point, 4.5f);
+        }
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 2.52f, 1.97f, 2.38f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<PatchouliBuff>());
-            UpdateTalking();
-            Vector2 point = new Vector2(50 * player.direction, -20 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Flandre>()] > 0)
-            {
-                point = new Vector2(0, -60 + player.gfxOffY);
-            }
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.012f;
+            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
 
-            ChangeDir(player);
-            MoveToPoint(point, 4.5f);
+            UpdateTalking();           
+            ControlMovement(player);
 
             if (Projectile.owner == Main.myPlayer)
             {

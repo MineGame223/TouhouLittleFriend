@@ -7,21 +7,12 @@ namespace TouhouPets.Content.Buffs.PetBuffs
     {
         public override void Update(Player player, ref int buffIndex)
         {
-            int type1 = ProjectileType<Remilia>();
-            int type2 = ProjectileType<Flandre>();
-            player.buffTime[buffIndex] = 18000;
-            bool flag = player.ownedProjectileCounts[type1] <= 0;
-            if (flag)
-            {
-                if (player.whoAmI == Main.myPlayer)
-                    Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, type1, 0, 0f, player.whoAmI, 0f, 0f);
-            }
-            bool flag2 = player.ownedProjectileCounts[type2] <= 0;
-            if (flag2)
-            {
-                if (player.whoAmI == Main.myPlayer)
-                    Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, type2, 0, 0f, player.whoAmI, 0f, 0f);
-            }
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Remilia>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Flandre>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Sakuya>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Meirin>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Patchouli>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Koakuma>());
         }
     }
 }

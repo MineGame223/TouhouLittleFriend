@@ -192,8 +192,13 @@ Mods: {
 			}
 
 			MeirinBuff: {
-				DisplayName: 小小看门人
+				DisplayName: 小小门卫
 				Description: "'我就守在这里！'"
+			}
+
+			SakuyaBuff: {
+				DisplayName: 小小女仆
+				Description: "'请问您需要什么？'"
 			}
 		}
 	}

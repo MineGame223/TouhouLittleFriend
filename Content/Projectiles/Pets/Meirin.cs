@@ -11,7 +11,7 @@ namespace TouhouPets.Content.Projectiles.Pets
     {
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 23;
+            Main.projFrames[Type] = 24;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
@@ -194,19 +194,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             Lighting.AddLight(Projectile.Center, r, g, b);
             Lighting.AddLight(Projectile.Center, 0.40f, 0.31f, 0.48f);
         }
+        private void ControlMovement(Player player)
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.003f;
+
+            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
+            if (player.HasBuff<ScarletBuff>())
+            {
+                point = new Vector2(-80 * player.direction, -40 + player.gfxOffY);
+            }          
+
+            ChangeDir(player, player.HasBuff<ScarletBuff>(), 120);
+            MoveToPoint(point, 19f);
+        }
         public override void AI()
         {
             SetMeirinLight();
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<MeirinBuff>());
+            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.003f;
-
-            ChangeDir(player);
-            MoveToPoint(point, 14.5f);
+            ControlMovement(player);
 
             if (Projectile.owner == Main.myPlayer)
             {
