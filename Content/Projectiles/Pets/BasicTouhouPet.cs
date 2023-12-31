@@ -359,14 +359,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="text">文本</param>
         /// <param name="color">文本颜色</param>
         /// <param name="index">文本索引</param>
-        /// <param name="cd">说完这句话以后的CD</param>
+        /// <param name="cd">说完这句话以后的CD，默认10s</param>
         /// <param name="cd2">另一个宠物的对应CD，防止出现意外接话。默认与cd一致</param>
         /// <param name="timeleft">每个字符的剩余时间值；文本持续时间为该变量 * 字符数</param>
         /// <param name="breakLimit">打破字符剩余时间的限制，默认情况下，当字符长度超过10个时，timeLeftPreWord上限为10</param>
         /// <param name="lag">说话前的延时</param>
         /// <param name="typerTime">打字机模式打印文本所需总时长</param>
-        internal void SetChatWithOtherOne(Projectile otherP, string text, Color color, int index, int cd, int cd2 = -1, int timeleft = 20, bool breakLimit = false, int lag = 20, int typerTime = -1)
+        internal void SetChatWithOtherOne(Projectile otherP, string text, Color color, int index, int cd = 600, int cd2 = -1, int timeleft = 20, bool breakLimit = false, int lag = 20, int typerTime = -1)
         {
+            if (cd == default)
+                cd = 600;
+
             if (ChatCD > 0)
             {
                 ChatCD = 0;
@@ -374,7 +377,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             SetChat(color, text, index, lag, timeleft, breakLimit, typerTime);
             ChatCD = cd;
             if (otherP != null)
-                otherP.localAI[1] = cd2 == -1 ? cd : cd2;
+                otherP.localAI[1] = (cd2 == -1 || cd2 == default) ? cd : cd2;
         }
         /// <summary>
         /// 查找对应宠物的对话索引值
@@ -501,10 +504,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (center == default)
             {
                 center = player.MountedCenter;
-            }
-            else
-            {
-                speed *= 4;
             }
             Vector2 pos = center + point;
             float dist = Vector2.Distance(Projectile.Center, pos);

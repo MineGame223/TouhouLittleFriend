@@ -152,11 +152,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             int type = ProjectileType<Patchouli>();
             if (FindChatIndex(out Projectile p1, type, 16, default, 1, true))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Koakuma", "5"), myColor, 5, 360);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Koakuma", "5"), myColor, 5);
             }
             else if (FindChatIndex(out Projectile p2, type, 19, 35, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Koakuma", "7"), myColor, 0, 360);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Koakuma", "7"), myColor, 0);
                 p2.localAI[2] = 0;
             }
             else if (mainTimer % 666 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
@@ -179,10 +179,12 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Vector2 point;
             Vector2 center = default;
+            float speed = 9f;
             if (FindPet(out Projectile master, ProjectileType<Patchouli>()) && player.HasBuff<ScarletBuff>())
             {
+                speed += master.velocity.Length() * 4;
                 center = master.Center;
-                point = new Vector2(-60 * master.spriteDirection, player.gfxOffY);
+                point = new Vector2(-50 * master.spriteDirection, player.gfxOffY);
                 Projectile.spriteDirection = master.spriteDirection;
             }
             else
@@ -190,7 +192,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
             }
 
-            MoveToPoint(point, 9f, center);
+            MoveToPoint(point, speed, center);
         }
         public override void AI()
         {

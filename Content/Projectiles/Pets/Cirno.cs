@@ -179,7 +179,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int type1 = ProjectileType<Daiyousei>();
             //为了尽可能确保对话接应成功，在检测到可接应对话的第一刻起就保持CD以避免出现其他对话
             //只适用于最开始的对话，进入对话后无需继续检测
-            if (FindChatIndex(out Projectile _, type1, 3, default, 0)
+            if (FindChatIndex(out Projectile _, type1, 4, default, 0)
                 || FindChatIndex(out Projectile _, type1, 5, default, 0))
             {
                 ChatCD = 1;
@@ -188,17 +188,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindChatIndex(out Projectile p, type1, 4))
             {
                 //同时给对方与自己设置ChatCD以确保对话不会“走神”
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0, 360);//作为收尾的对话，ChatIndex通常为0
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0);//作为收尾的对话，ChatIndex通常为0
                 p.localAI[2] = 0;//作为收尾的对话，将对方的ChatIndex设为0，防止重复检测并接话
             }
             else if (FindChatIndex(out Projectile p1, type1, 5))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Cirno", "9"), myColor, 9, 600);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Cirno", "9"), myColor, 9);
             }
             //无视对方的ChatCD，避免对话被无视，常用于交互中的第三句话及以后
             else if (FindChatIndex(out Projectile p2, type1, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Cirno", "11"), myColor, 0, 360);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Cirno", "11"), myColor, 0);
                 p2.localAI[2] = 0;
             }
             else if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState != 2)

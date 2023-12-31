@@ -38,6 +38,9 @@ Mods: {
 			Chat6: Sister? what's the matter?
 			Chat7: ...When can sister play with me...
 			Chat8: You always say so...
+			Chat9: What are you saying, Meirin?
+			Chat10: Is Meirin doing some kind of weird dance?
+			Chat11: Looks awsome...Can you teach me?
 		}
 
 		Chat_Remilia: {
@@ -53,6 +56,8 @@ Mods: {
 			Chat10: What's the matter, Patchi?
 			Chat11: Haha, that's all lies. The vampire afraid the cross just is human's imagination.
 			Chat12: Of course, Patchi. You really should go out more.
+			Chat13: Sometimes sakuya should care yourself
+			Chat14: Does Sakuya still remember the past?
 		}
 
 		Chat_Patchouli: {
@@ -341,7 +346,7 @@ Mods: {
 		Chat_Wakasagihime: {
 			Chat1: Although I'm a fish, I can leave water as well
 			Chat2: I'm a freshwater fish!
-			Chat3: I'm not a 'fish brain'!...
+			Chat3: I'm not a 'fish memory'!...
 			Chat4: *purr purr~
 		}
 
@@ -416,14 +421,29 @@ Mods: {
 			Chat4: My homeland is in the eastern, where above the Yangtze River!
 			//Don't translate this
 			Chat5: 易有太极，是生两仪...
+			Chat6: It is my home language, Flandre sama
+			Chat7: It called "Tai ji", Flandre sama
+			Chat8: Mmm...Maybe need Remilia sama's agreement
+			Chat9: I'm NOT!
+			Chat10: Ms.Sakuya is so busy, do you have any vacation?
+			Chat11: This job is as same as vacation...
+			Chat12: NOTHING!...
+			Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid fall in love
+			Chat14: Ah! I shoulden't say this...
+			Chat15: Too bad...Wait what?
 		}
 
 		Chat_Sakuya: {
-			Chat1: _
-			Chat2: _
-			Chat3: _
-			Chat4: _
-			Chat5: _
+			Chat1: Past is past, now I only need to serve Remilia sama
+			Chat2: The storage of alcohol in the mansion is not enough...
+			Chat3: I'll be fine if Remilia sama is fine
+			Chat4: Is Meirin swinging the lead now...
+			Chat5: Enjoy the tea, Remilia sama...
+			Chat6: The day with Remilia sama is my vacation, and you also don't have vacation right?
+			Chat7: What?
+			Chat8: You read comic during your work time?
+			Chat9: I'll give you a big punish at night!...Also let me see the comic...
+			Chat10: My life already restarted since I meet you, there is no past
 		}
 
 		Chat_Portal: {

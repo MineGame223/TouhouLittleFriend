@@ -28,7 +28,7 @@ namespace TouhouPets.Content.Items.PetItems
             .AddIngredient(ItemType<RemiliaRedTea>(), 1)
             .AddIngredient(ItemType<FlandrePudding>(), 1)
             .AddIngredient(ItemType<MeirinPanda>(), 1)
-            .AddIngredient(ItemType<SaukyaWatch>(), 1)
+            .AddIngredient(ItemType<SakuyaWatch>(), 1)
             .AddIngredient(ItemType<PatchouliMoon>(), 1)
             .AddIngredient(ItemType<KoakumaPower>(), 1)
             .Register();

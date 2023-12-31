@@ -11,9 +11,6 @@ namespace TouhouPets
     public class TouhouPetPlayer : ModPlayer
     {
         public int koakumaNumber;
-        public bool yukariLicenseLeft;
-        public bool yukariLicenseRight;
-
         public int purchaseValueCount;
         public int totalPurchaseValueCount;
         private void ChangePurchaseCount(int amount)
@@ -23,8 +20,6 @@ namespace TouhouPets
         }
         private void CommonResetUpdate()
         {
-            yukariLicenseLeft = false;
-            yukariLicenseRight = false;
         }
         public override void ResetEffects()
         {
@@ -54,8 +49,7 @@ namespace TouhouPets
                 if (purchaseValueCount > Item.buyPrice(0, 50))
                 {
                     purchaseValueCount = 0;
-                    Player.QuickSpawnItemDirect(Player.GetSource_GiftOrReward(), ItemType<YukariTicketLeft>());
-                    Player.QuickSpawnItemDirect(Player.GetSource_GiftOrReward(), ItemType<YukariTicketRight>());
+                    Player.QuickSpawnItemDirect(Player.GetSource_GiftOrReward(), ItemType<YukarisItem>());
 
                     if (Player.whoAmI == Main.myPlayer)
                         Main.npcChatText = ModUtils.GetChatText("Portal", "5");
@@ -78,27 +72,11 @@ namespace TouhouPets
         }
         public override void PreUpdateBuffs()
         {
-            if (Player.miscEquips[0].type == ItemType<YukariTicketLeft>())
-            {
-                yukariLicenseLeft = true;
-            }
-            if (Player.miscEquips[1].type == ItemType<YukariTicketRight>())
-            {
-                yukariLicenseRight = true;
-            }
-            if (Player.miscEquips[0].type == ItemType<CakeOfScarlet>()
+            /*if (Player.miscEquips[0].type == ItemType<CakeOfScarlet>()
                 || Player.miscEquips[0].type == ItemType<TheThirdEye>())
             {
                 Player.hideMisc[1] = true;
-            }
-        }
-        public override void PostUpdateBuffs()
-        {
-            Player.buffImmune[BuffType<LightYukariBuff>()] = true;
-            if (!yukariLicenseLeft || !yukariLicenseRight)
-            {
-                Player.buffImmune[BuffType<YukariBuff>()] = true;
-            }
+            }*/
         }
         public override void SaveData(TagCompound tag)
         {

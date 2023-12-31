@@ -1,11 +1,12 @@
+using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
+using Terraria.DataStructures;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class YukariTicketRight : ModItem
+    public class YukarisItem : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -13,9 +14,8 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void SetDefaults()
         {
-            Item.DefaultToVanitypet(ProjectileType<Yukari>(), BuffType<LightYukariBuff>());
-            Item.DefaultToVanitypetExtra(20, 20, ItemRarityID.Yellow, Item.sellPrice(0, 25, 0, 0));
-            Item.UseSound = null;
+            Item.DefaultToVanitypet(ProjectileType<Yukari>(), BuffType<YukariBuff>());
+            Item.DefaultToVanitypetExtra(30, 20);
         }
     }
 }

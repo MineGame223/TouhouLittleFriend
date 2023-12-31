@@ -104,7 +104,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame++;
                 if (Projectile.owner == Main.myPlayer)
                 {
-                    if (Main.rand.NextBool(6) && extraAI[1] <= 0)
+                    if (Main.rand.NextBool(25) && extraAI[1] <= 0)
                     {
                         SetChat(myColor, ModUtils.GetChatText("Meirin", "5"), 5);
                         extraAI[1]++;
@@ -132,6 +132,68 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Main.player[Projectile.owner].ownedProjectileCounts[ProjectileType<Flandre>()] <= 0
                 || !Remilia.HateSunlight(Projectile))
             {
+                Projectile.frame = 0;
+                PetState = 0;
+            }
+        }
+        private void Sleep()
+        {
+            Player player = Main.player[Projectile.owner];
+            if (extraAI[0] == 0)
+            {
+                Projectile.velocity *= 0.5f;
+                Projectile.frame = 1;
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    if (++extraAI[1] >= extraAI[2])
+                    {
+                        extraAI[0]++;
+                        extraAI[1] = 0;
+                        extraAI[2] = 0;
+                        Projectile.netUpdate = true;
+                    }
+                }
+            }
+            else
+            {
+                Projectile.velocity *= 0.1f;
+                Projectile.frame = 2;
+                if (Projectile.owner == Main.myPlayer)
+                {
+                    if (player.velocity.Length() > 6f)
+                    {
+                        PetState = 0;
+                        extraAI[0] = 1200;
+                        Projectile.netUpdate = true;
+                    }
+                }
+            }
+        }
+        private void GetHurt()
+        {
+            if (Projectile.frame < 3)
+            {
+                Projectile.frame = 3;
+            }
+            var count = Projectile.frame switch
+            {
+                3 => 60,
+                _ => 10,
+            };
+            if (++Projectile.frameCounter >= count)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+                extraAI[1]++;
+            }
+            if (Projectile.frame > 5)
+            {
+                Projectile.frame = 4;
+            }
+            if (extraAI[1] > 10)
+            {
+                extraAI[1] = 0;
+                extraAI[0] = 1200;
                 Projectile.frame = 0;
                 PetState = 0;
             }
@@ -183,12 +245,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(255, 81, 81);
         public override string GetChatText(out string[] text)
         {
-            //Player player = Main.player[Projectile.owner];
+            Player player = Main.player[Projectile.owner];
             text = new string[21];
             text[1] = ModUtils.GetChatText("Meirin", "1");
             text[2] = ModUtils.GetChatText("Meirin", "2");
             text[3] = ModUtils.GetChatText("Meirin", "3");
             text[4] = ModUtils.GetChatText("Meirin", "4");
+            if (player.ownedProjectileCounts[ProjectileType<Sakuya>()] > 0)
+            {
+                text[10] = ModUtils.GetChatText("Meirin", "10");
+                text[13] = ModUtils.GetChatText("Meirin", "13");
+            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -204,7 +271,55 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 960 == 0 && Main.rand.NextBool(5) && PetState != 2)
+            Player player = Main.player[Projectile.owner];
+            bool chance = Main.rand.NextBool(player.HasBuff<ScarletBuff>() ? 30 : 5);
+
+            int sakuya = ProjectileType<Sakuya>();
+            int flandre = ProjectileType<Flandre>();
+
+            if (FindChatIndex(out Projectile _, sakuya, 4, default, 0) && PetState <= 4
+                || FindChatIndex(out Projectile _, flandre, 10, default, 0))
+            {
+                ChatCD = 1;
+            }
+            if (FindChatIndex(out Projectile p, sakuya, 4))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "9"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, sakuya, 6, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "11"), myColor, 11);
+            }
+            else if (FindChatIndex(out p, sakuya, 7, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "12"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, sakuya, 8, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "14"), myColor, 14);
+            }
+            else if (FindChatIndex(out p, sakuya, 9, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "15"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, flandre, 9, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "6"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, flandre, 10))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "7"), myColor, 7);
+            }
+            else if (FindChatIndex(out p, flandre, 11, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "8"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (mainTimer % 960 == 0 && chance && PetState <= 1)
             {
                 SetChat(myColor);
             }
@@ -230,20 +345,22 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;
 
-            ChangeDir(player);
+            ChangeDir(player, false, 120);
 
-            Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? -90 : 50) * player.direction, -30 + player.gfxOffY);
+            Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? -100 : 50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;
+            float speed = 15f;
             if (FindPet(out Projectile master, ProjectileType<Flandre>()))
             {
                 Projectile.spriteDirection = master.spriteDirection;
                 if (PetState == 3 || PetState == 4)
                 {
+                    speed += master.velocity.Length() * 4;
                     center = master.Center;
                     point = new Vector2(-25 * master.spriteDirection, player.gfxOffY);
                 }
             }
-            MoveToPoint(point, 19f, center);
+            MoveToPoint(point, speed, center);
         }
         public override void AI()
         {
@@ -257,7 +374,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (Remilia.HateSunlight(Projectile) && PetState != 3 && PetState != 4)
+                if (Remilia.HateSunlight(Projectile) && PetState != 3 && PetState != 4
+                    && player.ownedProjectileCounts[ProjectileType<Flandre>()] > 0)
                 {
                     PetState = 3;
                     Projectile.netUpdate = true;
@@ -272,17 +390,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (PetState <= 0)
                 {
-                    if (mainTimer % 270 == 0)
+                    if (mainTimer % 270 == 0 && PetState <= 0)
                     {
                         PetState = 1;
                         Projectile.netUpdate = true;
                     }
-                    if (mainTimer >= 1200 && mainTimer < 3600)
+                    if (mainTimer >= 10 && mainTimer < 3600)
                     {
-                        if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() <= 5f)
+                        if (mainTimer % 480 == 0 && Main.rand.NextBool(9) && extraAI[0] <= 0 && player.velocity.Length() <= 5f)
                         {
+                            bool chance = !player.HasBuff<ScarletBuff>();
                             extraAI[1] = 0;
-                            PetState = 2;
+                            if (chance)
+                                extraAI[2] = Main.rand.Next(120, 540);
+                            PetState = chance ? 5 : 2;
                             Projectile.netUpdate = true;
                         }
                     }
@@ -311,10 +432,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Blink();
                 Serve();
             }
+            else if (PetState == 5)
+            {
+                Sleep();
+            }
+            else if (PetState == 6)
+            {
+                GetHurt();
+            }
             clothPosOffset = Projectile.frame switch
             {
-                2 => new Vector2(0, 2),
-                3 => new Vector2(0, 4),
                 7 => new Vector2(2, 0),
                 8 => new Vector2(2, 0),
                 9 => new Vector2(2, -2),
@@ -333,7 +460,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             clothPosOffset.X *= -Projectile.spriteDirection;
             hairPosOffset = Projectile.frame switch
             {
-                3 => new Vector2(0, 2),
+                2 => new Vector2(0, 2),
+                3 => new Vector2(0, 4),
                 7 => new Vector2(2, 0),
                 8 => new Vector2(2, 0),
                 9 => new Vector2(2, -2),

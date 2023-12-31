@@ -52,8 +52,8 @@ Mods: {
 			}
 
 			CakeOfScarlet: {
-				DisplayName: 斯卡雷特之蛋糕
-				Tooltip: "'只属于斯卡雷特家族的下午茶时间'"
+				DisplayName: 红魔蛋糕
+				Tooltip: "'只属于红魔馆的下午茶时间'"
 			}
 
 			JunkoMooncake: {
@@ -73,7 +73,7 @@ Mods: {
 
 			TenshiKeyStone: {
 				DisplayName: 要石
-				Tooltip: "'镇压地动，守护疆土'"
+				Tooltip: "'既不是陀螺也不是腌菜石！'"
 			}
 
 			SatoriSlippers: {
@@ -118,11 +118,6 @@ Mods: {
 					上面写满了晦涩的文字，以至于都不能拿来当武器用
 					也许扔进一个闪闪发光的池子里能让它恢复往日的风采？
 					'''
-			}
-
-			GoldenNameplate: {
-				DisplayName: 镀金铭牌
-				Tooltip: "'仅为最忠心的宠物献上'"
 			}
 
 			RinSkull: {
@@ -189,27 +184,9 @@ Mods: {
 				Tooltip: "'啊？？'"
 			}
 
-			YukariTicketLeft: {
-				DisplayName: 贤者之证-左
-				Tooltip:
-					'''
-					可装备在宠物栏中
-					'似乎需要另一半...'
-					'''
-			}
-
-			YukariTicketRight: {
-				DisplayName: 贤者之证-右
-				Tooltip:
-					'''
-					可装备在照明宠物栏中
-					'似乎需要另一半...'
-					'''
-			}
-
-			YukariTicket: {
+			YukarisItem: {
 				DisplayName: 贤者之证
-				Tooltip: 开发者道具
+				Tooltip: "'这是我对你的认可，收下吧'"
 			}
 
 			KaguyaBranch: {
@@ -227,7 +204,7 @@ Mods: {
 				Tooltip: "'满是熟悉的感觉'"
 			}
 
-			SaukyaWatch: {
+			SakuyaWatch: {
 				DisplayName: 月时计
 				Tooltip: "'指针永远停留在了四点十六分'"
 			}

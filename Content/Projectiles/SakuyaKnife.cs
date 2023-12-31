@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Projectiles
 {
@@ -53,6 +54,21 @@ namespace TouhouPets.Content.Projectiles
                     Projectile.active = false;
                     Projectile.netUpdate = true;
                     return;
+                }
+            }
+            foreach (Projectile t in Main.projectile)
+            {
+                if (t != null && t.active)
+                {
+                    if (t.type == ProjectileType<Meirin>() && t.owner == Projectile.owner
+                        && t.Hitbox.Intersects(Projectile.Hitbox))
+                    {
+                        Projectile.timeLeft = 0;
+                        Projectile.netUpdate = true;
+                        t.ai[1] = 6;
+                        t.netUpdate = true;
+                        return;
+                    }
                 }
             }
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;

@@ -214,37 +214,52 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if (HateSunlight(Projectile))
+                return;
+
+            int type1 = ProjectileType<Sakuya>();
             int type2 = ProjectileType<Flandre>();
             int type3 = ProjectileType<Patchouli>();
             if (FindChatIndex(out Projectile _, type2, 3, default, 0)
-                || FindChatIndex(out Projectile _, type3, 16, default, 0))
+                || FindChatIndex(out Projectile _, type3, 6, default, 0)
+                || FindChatIndex(out Projectile _, type1, 1, default, 0)
+                || FindChatIndex(out Projectile _, type1, 3, default, 0))
             {
                 ChatCD = 1;
             }
-            if (FindChatIndex(out Projectile p4, type2, 6, default, 1, true))
+            if (FindChatIndex(out Projectile p, type2, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Remilia", "7"), myColor, 7, 600, -1);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "7"), myColor, 7);
             }
-            else if (FindChatIndex(out Projectile p5, type2, 7, default, 1, true))
+            else if (FindChatIndex(out p, type2, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p5, ModUtils.GetChatText("Remilia", "8"), myColor, 8, 360, -1);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "8"), myColor, 8);
             }
-            else if (FindChatIndex(out Projectile p6, type2, 3, default, 1, true))
+            else if (FindChatIndex(out p, type2, 3))
             {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Remilia", "9"), myColor, 0, 360, -1, 10);
-                p6.localAI[2] = 0;
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "9"), myColor, 0);
+                p.localAI[2] = 0;
             }
-            else if (FindChatIndex(out Projectile p1, type3, 6, default, 1, true))
+            else if (FindChatIndex(out p, type3, 6))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Remilia", "10"), myColor, 10, 600, -1, 11);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "10"), myColor, 10);
             }
-            else if (FindChatIndex(out Projectile p2, type3, 9, default, 1, true))
+            else if (FindChatIndex(out p, type3, 9, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Remilia", "11"), myColor, 11, 600, -1, 6);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "11"), myColor, 11);
             }
-            else if (FindChatIndex(out Projectile p3, type3, 10, default, 1, true))
+            else if (FindChatIndex(out p, type3, 10, default, 1, true))
             {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Remilia", "12"), myColor, 12, 360, -1, 10);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "12"), myColor, 12);
+            }
+            else if (FindChatIndex(out p, type1, 3))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "13"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, type1, 1))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Remilia", "14"), myColor, 14);
             }
             else if (PetState == 2 && mainTimer % 120 == 0 && Main.rand.NextBool(5) && mainTimer > 0)
             {
@@ -274,6 +289,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 point = new Vector2(50 * player.direction, -50 + player.gfxOffY);
             }
+            if (player.HasBuff<ScarletBuff>())
+            {
+                point = new Vector2(60 * player.direction, -20 + player.gfxOffY);
+            }
 
             ChangeDir(player, !hasFlandre);
             MoveToPoint(point, 19f);
@@ -284,8 +303,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<RemiliaBuff>());
             Projectile.SetPetActive(player, BuffType<ScarletBuff>());
 
-            if (!Main.dayTime)
-                UpdateTalking();
+            UpdateTalking();
             ControlMovement(player);
 
             if (HateSunlight(Projectile))

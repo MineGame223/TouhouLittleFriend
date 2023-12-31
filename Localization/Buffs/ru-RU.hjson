@@ -106,11 +106,6 @@ Mods: {
 				// Description: "'Kappa technology NO.1!'"
 			}
 
-			HellPetsBuff: {
-				DisplayName: Адские Питомцы
-				Description: "'Хорошие питомцы, адски любят!'"
-			}
-
 			RinBuff: {
 				DisplayName: Кася
 				Description: "'Оставь тело и я заберу его!'"
@@ -174,11 +169,6 @@ Mods: {
 			YukariBuff: {
 				// DisplayName: Sage of the Gap
 				// Description: "'Thank your support for the Gensokyo!'"
-			}
-
-			LightYukariBuff: {
-				// DisplayName: Yukari's Buff
-				// Description: You can see THIS? It means you meet a bug or you are cheating
 			}
 
 			KaguyaBuff: {

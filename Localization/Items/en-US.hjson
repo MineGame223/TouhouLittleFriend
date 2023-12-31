@@ -53,7 +53,7 @@ Mods: {
 
 			CakeOfScarlet: {
 				DisplayName: Cake of Scarlet
-				Tooltip: "'The afternoon teatime that only belongs to the Scarlet Family'"
+				Tooltip: "'The afternoon teatime that only belongs to the Scarlet Mansion'"
 			}
 
 			JunkoMooncake: {
@@ -73,7 +73,7 @@ Mods: {
 
 			TenshiKeyStone: {
 				DisplayName: Key Stone
-				Tooltip: "'Protect the ground from earthquake'"
+				Tooltip: "'Neither a top nor a pickles stone!'"
 			}
 
 			SatoriSlippers: {
@@ -118,11 +118,6 @@ Mods: {
 					It's full of obscurities that can't even be a weapon
 					Maybe throw it into a sparkling pool will refresh it?
 					'''
-			}
-
-			GoldenNameplate: {
-				DisplayName: Golden Nameplate
-				Tooltip: "'Only for the most royal pet'"
 			}
 
 			RinSkull: {
@@ -189,27 +184,9 @@ Mods: {
 				Tooltip: "'What ??'"
 			}
 
-			YukariTicketLeft: {
-				DisplayName: Sage's license - Left
-				Tooltip:
-					'''
-					Can equipped in pet slot
-					'May require another half part...'
-					'''
-			}
-
-			YukariTicketRight: {
-				DisplayName: Sage's license - Right
-				Tooltip:
-					'''
-					Can equipped in light pet slot
-					'May require another half part...'
-					'''
-			}
-
-			YukariTicket: {
+			YukarisItem: {
 				DisplayName: Sage's license
-				Tooltip: Dev Item
+				Tooltip: "'This is my approvement to you, just take it'"
 			}
 
 			KaguyaBranch: {
@@ -227,7 +204,7 @@ Mods: {
 				Tooltip: "'From the mysterious eastern land'"
 			}
 
-			SaukyaWatch: {
+			SakuyaWatch: {
 				DisplayName: Luna Dial
 				Tooltip: "'The pointer remained at 4:16 forever'"
 			}

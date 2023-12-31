@@ -4,7 +4,7 @@ using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class SaukyaWatch : ModItem
+    public class SakuyaWatch : ModItem
     {
         public override void SetStaticDefaults()
         {

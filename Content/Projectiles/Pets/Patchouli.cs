@@ -229,20 +229,20 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (FindChatIndex(out Projectile p1, type2, 10, default, 1, true))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Patchouli", "9"), myColor, 9, 600, -1, 7);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Patchouli", "9"), myColor, 9);
             }
             else if (FindChatIndex(out Projectile p2, type2, 11, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Patchouli", "10"), myColor, 10, 600, -1, 7);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Patchouli", "10"), myColor, 10);
             }
             else if (FindChatIndex(out Projectile p3, type2, 12, default, 1, true))
             {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Patchouli", "11"), myColor, 0, 360, -1);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Patchouli", "11"), myColor, 0);
                 p3.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p4, type, 8, default, 1, true))
             {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Patchouli", "13"), myColor, 13, 600, -1, 12);
+                SetChatWithOtherOne(p4, ModUtils.GetChatText("Patchouli", "13"), myColor, 13);
             }
             else if (FindChatIndex(out Projectile p5, type, 9, default, 0, true))
             {
@@ -253,26 +253,26 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (FindChatIndex(out Projectile p6, type, 10, default, 1, true))
             {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0, 360);
+                SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0);
                 p6.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p7, type3, 4, default, 1, true))
             {
-                SetChatWithOtherOne(p7, ModUtils.GetChatText("Patchouli", "16"), myColor, 16, 600);
+                SetChatWithOtherOne(p7, ModUtils.GetChatText("Patchouli", "16"), myColor, 16);
             }
             else if (FindChatIndex(out Projectile p8, type3, 5, default, 1, true))
             {
-                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "17"), myColor, 17, 600);
+                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "17"), myColor, 17);
                 p8.localAI[2] = 0;
             }
             else if (FindChainedChat(17))
             {
-                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "18"), myColor, 0, 360);
+                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "18"), myColor, 0);
             }
             else if (FindChatIndex(out Projectile p9, type3, 6, default, 1, true))
             {
                 int chance = Main.rand.Next(19, 36);
-                SetChatWithOtherOne(p9, ModUtils.GetChatText("Patchouli", chance.ToString()), myColor, chance, 600);
+                SetChatWithOtherOne(p9, ModUtils.GetChatText("Patchouli", chance.ToString()), myColor, chance);
             }
             else if (mainTimer % 720 == 0 && Main.rand.NextBool(12) && mainTimer > 0)
             {
@@ -289,13 +289,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;
 
+            ChangeDir(player);
+
             Vector2 point = new Vector2(50 * player.direction, -20 + player.gfxOffY);
             if (player.HasBuff<ScarletBuff>())
             {
                 point = new Vector2(0, -120 + player.gfxOffY);
             }
-
-            ChangeDir(player);
+            
             MoveToPoint(point, 4.5f);
         }
         public override void AI()
