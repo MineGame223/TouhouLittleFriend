@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -30,9 +31,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState == 1)
                 DrawKaguya(blinkFrame, lightColor, 1);
             DrawKaguya(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Kaguya_Cloth"), true);
-            DrawKaguya(clothFrame, lightColor, 1, default, null, true);           
+            DrawKaguya(clothFrame, lightColor, 1, default, null, true);
             Projectile.DrawStateNormalizeForPet();
-            if (Projectile.owner == Main.myPlayer)
+            if (Projectile.owner == Main.myPlayer && PetState < 0)
             {
                 DrawFightState();
             }
@@ -49,16 +50,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (PetState < -1)
                 {
-                    string source = "Win: " + PlayerA_Source.ToString();
-                    Vector2 pos = new Vector2(Projectile.Center.X - FontAssets.MouseText.Value.MeasureString(source).X / 2, Projectile.Center.Y + 36) - Main.screenPosition;
-                    Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, source
-                        , pos.X, pos.Y, Color.White, Color.Black, Vector2.Zero, 1f);
+                    Projectile.DrawIndividualSource(PlayerA_Source);
                 }
                 if (PetState == -1 && extraAI[0] <= 0)
                 {
                     DrawBattleRound();
                 }
             }
+            //DrawBattleSource();
         }
         private void DrawDanmakuRing()
         {
@@ -69,11 +68,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             Rectangle rect = new Rectangle(0, 0, t.Width, t.Height);
             Vector2 orig = rect.Size() / 2;
             Color clr = Projectile.GetAlpha(Color.LightGoldenrodYellow * 0.7f * Main.essScale) * ringAlpha;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Main.EntitySpriteDraw(t, pos, rect, clr, -Main.GlobalTimeWrappedHourly * 0.6f, orig, Projectile.scale * (Main.essScale / 2), effect, 0f);
+            float scale = Projectile.scale * DanmakuRingScale;
+            SpriteEffects effect = SpriteEffects.None;
+            Main.EntitySpriteDraw(t, pos, rect, clr, -Main.GlobalTimeWrappedHourly * 0.6f, orig, scale / 2, effect, 0f);
             rect = new Rectangle(0, 0, t2.Width, t2.Height);
             orig = rect.Size() / 2;
-            Main.EntitySpriteDraw(t2, pos, rect, clr, Main.GlobalTimeWrappedHourly, orig, Projectile.scale * (Main.essScale / 2), effect, 0f);
+            Main.EntitySpriteDraw(t2, pos, rect, clr, Main.GlobalTimeWrappedHourly, orig, scale / 2, effect, 0f);
         }
         private void DrawKaguya(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
         {
@@ -121,6 +121,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         float extraX, extraY;
         float floatingX, floatingY;
         float ringAlpha;
+        int[] abilityCD;
         private void UpdateMiscFrame()
         {
             if (clothFrame < 3)
@@ -255,7 +256,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 extraAI[1]++;
                 if (Projectile.owner == Main.myPlayer)
                 {
-                    if (extraAI[1] > 360)
+                    if (extraAI[1] > 375)
                     {
                         extraAI[2] = 360;
                         extraAI[1] = 0;
@@ -295,18 +296,31 @@ namespace TouhouPets.Content.Projectiles.Pets
                         floatingY = Main.rand.Next(-50, 50);
                         Projectile.netUpdate = true;
                     }
-                    if (extraAI[1] % 20 == 0)
+                    if (extraAI[1] % (30 * MathHelper.Clamp(extraAI[2] / 360, 0.5f, 1)) == 0)
                     {
-                        if (Main.rand.NextBool(25) && player.ownedProjectileCounts[ProjectileType<KaguyaWave>()] < 1)
+                        if (Main.rand.NextBool(25) && abilityCD[0] <= 0
+                            && player.ownedProjectileCounts[ProjectileType<KaguyaWave>()] < 1)
                         {
+                            abilityCD[0] = 180;
                             Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center,
                                 Vector2.Zero
                                 , ProjectileType<KaguyaWave>(), Main.rand.Next(12, 20), 0, Projectile.owner);
                         }
+                        else if (Main.rand.NextBool(25) && abilityCD[1] <= 0)
+                        {
+                            abilityCD[1] = 180;
+                            for (int i = 0; i < 12; i++)
+                            {
+                                Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(),
+                                    Projectile.Center + new Vector2(0, -90).RotatedBy(MathHelper.ToRadians(360 / 12 * i)),
+                                    new Vector2(-4, 0)
+                                    , ProjectileType<KaguyaBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner, Main.rand.Next(0, 5));
+                            }
+                        }
                         else
                         {
-                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -50).RotatedByRandom(MathHelper.ToRadians(360)),
-                            new Vector2(-Main.rand.Next(5, 9), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-9, 9)))
+                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, Main.rand.Next(-50, -50)).RotatedByRandom(MathHelper.ToRadians(360)),
+                            new Vector2(-Main.rand.Next(4, 8), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-9, 9)))
                             , ProjectileType<KaguyaBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner, Main.rand.Next(0, 5));
                         }
                     }
@@ -488,6 +502,40 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState != 2 && PetState >= 0)
                 Idle();
         }
+        private void UpdateMiscData()
+        {
+            extraX = 0;
+            extraY = 0;
+            if (Projectile.frame >= 8 && Projectile.frame <= 11 || Projectile.frame == 15 || Projectile.frame == 18)
+            {
+                extraX = -2 * Projectile.spriteDirection;
+            }
+            if (Projectile.frame == 18)
+            {
+                extraY = -2;
+            }
+            if (Projectile.frame == 20)
+            {
+                extraY = 2;
+            }
+            ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * (Fighting ? 1 : -1), 0, 1);
+            if (!Fighting)
+            {
+                abilityCD[0] = 0;
+                abilityCD[1] = 0;
+            }
+            else
+            {
+                if (abilityCD[0] > 0)
+                    abilityCD[0]--;
+                if (abilityCD[1] > 0)
+                    abilityCD[1]--;
+            }
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            abilityCD = new int[2];
+        }
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -509,10 +557,9 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (player.afkCounter >= 600 && player.ownedProjectileCounts[ProjectileType<Moku>()] > 0 && PetState >= 0)
+                if (player.afkCounter >= 600 && player.HasBuff<MokuBuff>() && PetState >= 0)
                 {
-                    if (mainTimer % 60 == 0 && Main.rand.NextBool(2)
-                        || FindPetState(out _, ProjectileType<Moku>(), -1))
+                    if (mainTimer % 60 == 0 && Main.rand.NextBool(2) || FindPetState(out _, ProjectileType<Moku>(), -1))
                     {
                         extraAI[0] = 0;
                         extraAI[1] = 0;
@@ -563,25 +610,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Lose();
             }
-            if (player.afkCounter <= 0 && PetState < 0)
+            if (PetState < 0 && (player.afkCounter <= 0 || !player.HasBuff<MokuBuff>()))
             {
                 PetState = 0;
             }
-            extraX = 0;
-            extraY = 0;
-            if (Projectile.frame >= 8 && Projectile.frame <= 11 || Projectile.frame == 15 || Projectile.frame == 18)
-            {
-                extraX = -2 * Projectile.spriteDirection;
-            }
-            if (Projectile.frame == 18)
-            {
-                extraY = -2;
-            }
-            if (Projectile.frame == 20)
-            {
-                extraY = 2;
-            }
-            ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * (Fighting ? 1 : -1), 0, 1);
+            UpdateMiscData();
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {

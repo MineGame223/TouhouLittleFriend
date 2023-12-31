@@ -120,11 +120,6 @@ Mods: {
 					'''
 			}
 
-			GoldenNameplate: {
-				DisplayName: Золотая Именная Табличка
-				Tooltip: "'Для самого королевского питомца'"
-			}
-
 			RinSkull: {
 				DisplayName: Одержимый Череп
 				Tooltip: "'Наверное, не лучшая игрушка для кота...?'"
@@ -189,27 +184,9 @@ Mods: {
 				Tooltip: "'Что??'"
 			}
 
-			YukariTicketLeft: {
-				// DisplayName: Sage's license - Left
-				/* Tooltip:
-					'''
-					Can equipped in pet slot
-					'May require another half part...'
-					''' */
-			}
-
-			YukariTicketRight: {
-				// DisplayName: Sage's license - Right
-				/* Tooltip:
-					'''
-					Can equipped in light pet slot
-					'May require another half part...'
-					''' */
-			}
-
-			YukariTicket: {
+			YukarisItem: {
 				// DisplayName: Sage's license
-				// Tooltip: Dev Item
+				// Tooltip: "'This is my approvement to you, just take it'"
 			}
 
 			KaguyaBranch: {
@@ -220,6 +197,16 @@ Mods: {
 			MokuMatch: {
 				// DisplayName: match that never put out
 				// Tooltip: "'No matter rainning or blowing'"
+			}
+
+			MeirinPanda: {
+				// DisplayName: Panda Pendant
+				// Tooltip: "'From the mysterious eastern land'"
+			}
+
+			SakuyaWatch: {
+				// DisplayName: Luna Dial
+				// Tooltip: "'The pointer remained at 4:16 forever'"
 			}
 		}
 	}

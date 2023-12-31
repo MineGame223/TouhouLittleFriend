@@ -273,13 +273,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (Projectile.owner == Main.myPlayer)
                     {
                         player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
-                        if (!player.dead || player.respawnTimer <= 60)
-                        {
-                            extraAI[2] = 0;
-                            extraAI[0] = 0;
-                            PetState = 0;
-                            Projectile.netUpdate = true;
-                        }
+                        extraAI[2] = 0;
+                        extraAI[0] = 0;
+                        PetState = 0;
+                        Projectile.netUpdate = true;
                     }
                 }
             }

@@ -1,11 +1,10 @@
 ﻿using Terraria;
 using TouhouPets.Content.Buffs.PetBuffs;
 
-namespace TouhouPets
+namespace TouhouPets.Common
 {
     public class LuckPlayer : ModPlayer
-    {
-        public int koakumaNumber;
+    {       
         public override void ModifyLuck(ref float luck)
         {
             if (Player.HasBuff(BuffType<HinaBuff>()))

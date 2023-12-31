@@ -359,14 +359,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="text">文本</param>
         /// <param name="color">文本颜色</param>
         /// <param name="index">文本索引</param>
-        /// <param name="cd">说完这句话以后的CD</param>
+        /// <param name="cd">说完这句话以后的CD，默认10s</param>
         /// <param name="cd2">另一个宠物的对应CD，防止出现意外接话。默认与cd一致</param>
         /// <param name="timeleft">每个字符的剩余时间值；文本持续时间为该变量 * 字符数</param>
         /// <param name="breakLimit">打破字符剩余时间的限制，默认情况下，当字符长度超过10个时，timeLeftPreWord上限为10</param>
         /// <param name="lag">说话前的延时</param>
         /// <param name="typerTime">打字机模式打印文本所需总时长</param>
-        internal void SetChatWithOtherOne(Projectile otherP, string text, Color color, int index, int cd, int cd2 = -1, int timeleft = 20, bool breakLimit = false, int lag = 20, int typerTime = -1)
+        internal void SetChatWithOtherOne(Projectile otherP, string text, Color color, int index, int cd = 600, int cd2 = -1, int timeleft = 20, bool breakLimit = false, int lag = 20, int typerTime = -1)
         {
+            if (cd == default)
+                cd = 600;
+
             if (ChatCD > 0)
             {
                 ChatCD = 0;
@@ -374,7 +377,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             SetChat(color, text, index, lag, timeleft, breakLimit, typerTime);
             ChatCD = cd;
             if (otherP != null)
-                otherP.localAI[1] = cd2 == -1 ? cd : cd2;
+                otherP.localAI[1] = (cd2 == -1 || cd2 == default) ? cd : cd2;
         }
         /// <summary>
         /// 查找对应宠物的对话索引值
@@ -442,6 +445,27 @@ namespace TouhouPets.Content.Projectiles.Pets
             return false;
         }
         /// <summary>
+        /// 查找对应宠物
+        /// </summary>
+        /// <param name="target">被查找的对象</param>
+        /// <param name="type">宠物ID</param>
+        /// <returns></returns>
+        internal bool FindPet(out Projectile target, int type)
+        {
+            target = null;
+            foreach (Projectile p in Main.projectile)
+            {
+                if (p != null && p.active && p.owner == Projectile.owner)
+                {
+                    if (p.type == type)
+                    {
+                        target = p;
+                    }
+                }
+            }
+            return target != null;
+        }
+        /// <summary>
         /// 查找对应宠物的状态（ai[1]）
         /// </summary>
         /// <param name="target">被查找的对象</param>
@@ -449,7 +473,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="minState">最小状态值</param>
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
         /// <returns></returns>
-        internal bool FindPetState(out Projectile target, int type, int minState, int maxState = 0)
+        internal bool FindPetState(out Projectile target, int type, int minState = 0, int maxState = 0)
         {
             target = null;
             if (maxState <= minState && minState > 0
@@ -474,13 +498,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>
-        internal void MoveToPoint(Vector2 point, float speed)
+        internal void MoveToPoint(Vector2 point, float speed, Vector2 center = default)
         {
             Player player = Main.player[Projectile.owner];
-            Vector2 pos = player.MountedCenter + point;
+            if (center == default)
+            {
+                center = player.MountedCenter;
+            }
+            Vector2 pos = center + point;
             float dist = Vector2.Distance(Projectile.Center, pos);
             if (dist > 1200f)
-                Projectile.Center = player.Center + point;
+                Projectile.Center = center + point;
             Vector2 vel = pos - Projectile.Center;
 
             float actualSpeed = 1;

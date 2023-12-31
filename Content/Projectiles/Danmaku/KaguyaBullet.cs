@@ -21,6 +21,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 360;
+            Projectile.extraUpdates = 1;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku = true;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isDanmakuDestorible = true;
             Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().belongsToPlayerA = true;

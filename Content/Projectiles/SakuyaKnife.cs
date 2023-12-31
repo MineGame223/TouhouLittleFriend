@@ -1,31 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using TouhouPets.Content.Projectiles.Pets;
 
-namespace TouhouPets.Content.Projectiles.Danmaku
+namespace TouhouPets.Content.Projectiles
 {
-    public class MokuBullet : ModProjectile
+    public class SakuyaKnife : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Type] = 6;
-        }
         public override void SetDefaults()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 6;
+            Projectile.height = 6;
             Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.alpha = 255;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 360;
-            Projectile.extraUpdates = 1;
-            Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku = true;
-            Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().isDanmakuDestorible = true;
-            Projectile.GetGlobalProjectile<TouhouPetGlobalProj>().belongsToPlayerB = true;
         }
         public override bool? CanCutTiles()
         {
@@ -48,8 +39,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
         }
         public override void AI()
         {
-            Projectile.HandleDanmakuCollide();
-            if (Projectile.localAI[0] < 90)
+            if (Projectile.localAI[0] < 600)
             {
                 if (Projectile.alpha > 10)
                 {
@@ -66,34 +56,30 @@ namespace TouhouPets.Content.Projectiles.Danmaku
                     return;
                 }
             }
-            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
-            Projectile.localAI[0] += 1f;
-            if (Main.rand.NextBool(3))
+            foreach (Projectile t in Main.projectile)
             {
-                for (int i = 0; i < 2; i++)
+                if (t != null && t.active)
                 {
-                    int d = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, MyDustId.Fire, Projectile.velocity.X, Projectile.velocity.Y, 50, default(Color), 1.2f);
-                    Main.dust[d].noGravity = true;
-                    Dust dust = Main.dust[d];
-                    dust.velocity *= 0.3f;
+                    if (t.type == ProjectileType<Meirin>() && t.owner == Projectile.owner
+                        && t.Hitbox.Intersects(Projectile.Hitbox))
+                    {
+                        Projectile.timeLeft = 0;
+                        Projectile.netUpdate = true;
+                        t.ai[1] = 6;
+                        t.netUpdate = true;
+                        return;
+                    }
                 }
             }
-            if (++Projectile.frameCounter > 5)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 5)
-            {
-                Projectile.frame = 0;
-            }
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            Projectile.localAI[0] += 1f;
         }
         public override void OnKill(int timeLeft)
         {
             AltVanillaFunction.PlaySound(SoundID.Dig, Projectile.position);
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 3; i++)
             {
-                int d = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, MyDustId.Fire, Projectile.oldVelocity.X, Projectile.oldVelocity.Y, 50, default(Color), 1.2f);
+                int d = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, MyDustId.BlueMagic, Projectile.oldVelocity.X, Projectile.oldVelocity.Y, 100, default(Color), 1.8f);
                 Main.dust[d].noGravity = true;
                 Dust dust = Main.dust[d];
                 dust.scale *= 1.45f;

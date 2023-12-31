@@ -12,9 +12,4 @@ namespace TouhouPets.Content.Buffs.PetBuffs
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Chen>());
         }
     }
-    public class LightYukariBuff : BasicPetBuff
-    {
-        public override string Texture => "TouhouPets/Content/Buffs/PetBuffs/YukariBuff";
-        public override bool LightPet => true;
-    }
 }

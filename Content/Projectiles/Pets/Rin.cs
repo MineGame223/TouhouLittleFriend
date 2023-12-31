@@ -162,11 +162,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<RinBuff>());
-            Projectile.SetPetActive(player, BuffType<HellPetsBuff>());
+            Projectile.SetPetActive(player, BuffType<KomeijiBuff>());
 
             UpdateTalking();
             Vector2 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Koishi>()] > 0)
+            if (player.HasBuff<KomeijiBuff>())
                 point = new Vector2(-70 * player.direction, 0 + player.gfxOffY);
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;

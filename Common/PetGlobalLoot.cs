@@ -15,8 +15,20 @@ namespace TouhouPets
                 return true;
             }
         }
+        private void AddHomewardJourneyLoot(NPC npc, NPCLoot npcLoot)
+        {
+            bool hasHJMod = ModLoader.TryGetMod("ContinentOfJourney", out Mod result);
+            if (!hasHJMod)
+                return;
+
+            bool isHJTimeGod = result.TryFind("TheOverwatcher", out ModNPC god) && npc.type == god.Type;
+            if (isHJTimeGod)
+                npcLoot.Add(ItemDropRule.Common(ItemType<SakuyaWatch>()));
+        }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
+            AddHomewardJourneyLoot(npc,npcLoot);
+
             if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
                 return;
 

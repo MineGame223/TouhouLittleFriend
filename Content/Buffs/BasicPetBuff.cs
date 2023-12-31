@@ -14,8 +14,13 @@ namespace TouhouPets.Content.Buffs
         }
         public override void Update(Player player, ref int buffIndex)
         {
-            player.SpawnPetAndSetBuffTime(buffIndex, PetType);
-            OnSummonPet(player);
+            player.buffTime[buffIndex] = 18000;
+            bool flag = PetType != -1 && player.ownedProjectileCounts[PetType] <= 0;
+            if (flag && player.whoAmI == Main.myPlayer)
+            {               
+                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, PetType, 0, 0f, player.whoAmI);
+                OnSummonPet(player);
+            }           
         }
         public virtual void OnSummonPet(Player player)
         {

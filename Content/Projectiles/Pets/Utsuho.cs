@@ -215,14 +215,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             Lighting.AddLight(Projectile.Center + sunPos, 1.95f, 1.64f, 0.67f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<UtsuhoBuff>());
-            Projectile.SetPetActive(player, BuffType<HellPetsBuff>());
+            Projectile.SetPetActive(player, BuffType<KomeijiBuff>());
 
             UpdateTalking();
             Vector2 point = new Vector2(0, -60 + player.gfxOffY);
             if (player.ownedProjectileCounts[ProjectileType<Rin>()] > 0)
             {
                 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-                if (player.ownedProjectileCounts[ProjectileType<Satori>()] > 0 || player.ownedProjectileCounts[ProjectileType<Koishi>()] > 0)
+                if (player.HasBuff<KomeijiBuff>())
                     point = new Vector2(70 * player.direction, 0 + player.gfxOffY);
             }
             Projectile.tileCollide = false;

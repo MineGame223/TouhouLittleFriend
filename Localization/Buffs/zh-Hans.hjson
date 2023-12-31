@@ -52,7 +52,7 @@ Mods: {
 			}
 
 			ScarletBuff: {
-				DisplayName: 斯卡雷特姐妹
+				DisplayName: 红魔之家
 				Description: "'想要与我们共进下午茶吗？'"
 			}
 
@@ -87,7 +87,7 @@ Mods: {
 			}
 
 			KomeijiBuff: {
-				DisplayName: 古明地姐妹
+				DisplayName: 地底之家
 				Description: O v U
 			}
 
@@ -104,11 +104,6 @@ Mods: {
 			NitoriBuff: {
 				DisplayName: 河童工程师
 				Description: "'河童科技天下第一！'"
-			}
-
-			HellPetsBuff: {
-				DisplayName: 来自地狱的宠物们
-				Description: "'非常好宠物，爱来自地狱'"
 			}
 
 			RinBuff: {
@@ -176,11 +171,6 @@ Mods: {
 				Description: "'感谢你对幻想乡的支持！'"
 			}
 
-			LightYukariBuff: {
-				DisplayName: 八云紫的Buff
-				Description: 你能看到这个？要么你出Bug了要么你开修改器了
-			}
-
 			KaguyaBuff: {
 				DisplayName: 月之公主
 				Description: 很抱歉但我实在是懒得设计了orz
@@ -189,6 +179,16 @@ Mods: {
 			MokuBuff: {
 				DisplayName: 不死凤凰
 				Description: "'永远的燃烧！'"
+			}
+
+			MeirinBuff: {
+				DisplayName: 小小门卫
+				Description: "'我就守在这里！'"
+			}
+
+			SakuyaBuff: {
+				DisplayName: 小小女仆
+				Description: "'请问您需要什么？'"
 			}
 		}
 	}

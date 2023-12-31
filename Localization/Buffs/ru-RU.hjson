@@ -106,11 +106,6 @@ Mods: {
 				// Description: "'Kappa technology NO.1!'"
 			}
 
-			HellPetsBuff: {
-				DisplayName: Адские Питомцы
-				Description: "'Хорошие питомцы, адски любят!'"
-			}
-
 			RinBuff: {
 				DisplayName: Кася
 				Description: "'Оставь тело и я заберу его!'"
@@ -176,11 +171,6 @@ Mods: {
 				// Description: "'Thank your support for the Gensokyo!'"
 			}
 
-			LightYukariBuff: {
-				// DisplayName: Yukari's Buff
-				// Description: You can see THIS? It means you meet a bug or you are cheating
-			}
-
 			KaguyaBuff: {
 				// DisplayName: Luna Princess
 				// Description: Sorry but I'm too lazy to desigh orz
@@ -189,6 +179,16 @@ Mods: {
 			MokuBuff: {
 				// DisplayName: Undying Phoenix
 				// Description: "'Burning forever!'"
+			}
+
+			MeirinBuff: {
+				// DisplayName: The Gatekeeper
+				// Description: "'I'm guarding here!'"
+			}
+
+			SakuyaBuff: {
+				// DisplayName: The Maid
+				// Description: "'What can I do for you?'"
 			}
 		}
 	}

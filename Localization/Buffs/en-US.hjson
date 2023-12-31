@@ -52,7 +52,7 @@ Mods: {
 			}
 
 			ScarletBuff: {
-				DisplayName: The Scarlet Sister
+				DisplayName: The Scarlet Family
 				Description: "'Wanna join our afternoon teatime?'"
 			}
 
@@ -87,7 +87,7 @@ Mods: {
 			}
 
 			KomeijiBuff: {
-				DisplayName: The Komeiji Sister
+				DisplayName: The Komeiji Family
 				Description: O v U
 			}
 
@@ -104,11 +104,6 @@ Mods: {
 			NitoriBuff: {
 				DisplayName: Kappa Engineer
 				Description: "'Kappa technology NO.1!'"
-			}
-
-			HellPetsBuff: {
-				DisplayName: Pets from the Hell
-				Description: "'Very good pets, love from hell'"
 			}
 
 			RinBuff: {
@@ -176,11 +171,6 @@ Mods: {
 				Description: "'Thank your support for the Gensokyo!'"
 			}
 
-			LightYukariBuff: {
-				DisplayName: Yukari's Buff
-				Description: You can see THIS? It means you meet a bug or you are cheating
-			}
-
 			KaguyaBuff: {
 				DisplayName: Luna Princess
 				Description: Sorry but I'm too lazy to desigh orz
@@ -189,6 +179,16 @@ Mods: {
 			MokuBuff: {
 				DisplayName: Undying Phoenix
 				Description: "'Burning forever!'"
+			}
+
+			MeirinBuff: {
+				DisplayName: The Gatekeeper
+				Description: "'I'm guarding here!'"
+			}
+
+			SakuyaBuff: {
+				DisplayName: The Maid
+				Description: "'What can I do for you?'"
 			}
 		}
 	}

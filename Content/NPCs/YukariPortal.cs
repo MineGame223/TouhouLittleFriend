@@ -100,11 +100,17 @@ namespace TouhouPets.Content.NPCs
         }
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
+            TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (firstButton)
             {
                 shopName = "Shop";
             }
-            Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>().totalPurchaseValueCount));
+            if (mp.totalPurchaseValueCount <= 0)
+            {
+                Main.npcChatText = ModUtils.GetChatText("Portal", "7");
+                return;
+            }
+            Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));           
         }
         private void AddShopItem_Legacy()
         {
@@ -117,6 +123,8 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<KaguyaBranch>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
+            shop.Add(ItemType<MeirinPanda>(), Condition.DownedEowOrBoc);
+            shop.Add(ItemType<SakuyaWatch>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
             shop.Add(ItemType<WakasagihimeFishingRod>(), Condition.DownedQueenBee);
@@ -154,6 +162,8 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<RumiaRibbon>());
             shop.Add(ItemType<RemiliaRedTea>());
             shop.Add(ItemType<FlandrePudding>());
+            shop.Add(ItemType<MeirinPanda>());
+            shop.Add(ItemType<SakuyaWatch>());
             shop.Add(ItemType<MystiaFeather>());
             shop.Add(ItemType<WriggleInAJar>());
             shop.Add(ItemType<WakasagihimeFishingRod>());
