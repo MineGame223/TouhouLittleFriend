@@ -208,6 +208,11 @@ Mods: {
 				// DisplayName: Luna Dial
 				// Tooltip: "'The pointer remained at 4:16 forever'"
 			}
+
+			RaikoDrum: {
+				// DisplayName: Toy Drum
+				// Tooltip: "'Badum, psh~'"
+			}
 		}
 	}
 }

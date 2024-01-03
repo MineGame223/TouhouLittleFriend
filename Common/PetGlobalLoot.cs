@@ -27,10 +27,15 @@ namespace TouhouPets
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            AddHomewardJourneyLoot(npc,npcLoot);
+            AddHomewardJourneyLoot(npc, npcLoot);
 
             if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
                 return;
+
+            if (npc.type == NPCID.AngryNimbus)
+            {
+                npcLoot.Add(ItemType<RaikoDrum>(), 20);
+            }
 
             int commonDropRate = 3;
             switch (npc.type)

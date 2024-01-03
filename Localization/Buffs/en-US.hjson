@@ -190,6 +190,11 @@ Mods: {
 				DisplayName: The Maid
 				Description: "'What can I do for you?'"
 			}
+
+			RaikoBuff: {
+				DisplayName: Drum's Ghost
+				Description: "'Let's PLAY!'"
+			}
 		}
 	}
 }

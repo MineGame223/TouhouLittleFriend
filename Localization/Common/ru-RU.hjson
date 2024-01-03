@@ -15,5 +15,10 @@ Mods: {
 			“Желаем приятного пользования!”
 			'''
 		// YukariWealthCount: Consumption Inquire
+		// SwitchTopic: Switch Topic
+		// PetShop: Ordinary Pet Shop
+		// LightPetShop: Light Pet Shop
+		// QQGroup: _
+		// GoodsShop: _
 	}
 }

@@ -82,6 +82,7 @@ namespace TouhouPets.Content.NPCs
         }
         public override string GetChat()
         {
+            InitializeTopic();
             Main.LocalPlayer.currentShoppingSettings.HappinessReport = "";
 
             WeightedRandom<string> chat = new();
@@ -93,103 +94,178 @@ namespace TouhouPets.Content.NPCs
             }
             return chat;
         }
+        private void InitializeTopic()
+        {
+            buttonText = Language.GetTextValue("Mods.TouhouPets.PetShop");
+            topic = 0;
+        }
+        string buttonText;
+        int topic;
         public override void SetChatButtons(ref string button, ref string button2)
         {
-            button = Language.GetTextValue("LegacyInterface.28");
-            button2 = Language.GetTextValue("Mods.TouhouPets.YukariWealthCount");
+            button = buttonText;
+            button2 = Language.GetTextValue("Mods.TouhouPets.SwitchTopic");
         }
         public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
-            TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (firstButton)
             {
-                shopName = "Shop";
-            }
-            if (mp.totalPurchaseValueCount <= 0)
-            {
-                Main.npcChatText = ModUtils.GetChatText("Portal", "7");
+                switch (topic)
+                {
+                    case 1:
+                        shopName = "Shop2";
+                        break;
+                    case 2:
+                        Chat_ConsumpCount();
+                        break;
+                    case 3:
+                        Chat_QQGroup();
+                        break;
+                    case 4:
+                        Chat_GoodsShop();
+                        break;
+                    default:
+                        shopName = "Shop";
+                        break;
+                }
                 return;
             }
-            Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));           
+            if (topic == 0)
+            {
+                buttonText = Language.GetTextValue("Mods.TouhouPets.LightPetShop");
+                topic++;
+            }
+            else if (topic == 1)
+            {
+                buttonText = Language.GetTextValue("Mods.TouhouPets.YukariWealthCount");
+                topic++;               
+            }
+            else if (topic == 2)
+            {
+                if (Language.ActiveCulture.LegacyId == (int)GameCulture.CultureName.Chinese)
+                {
+                    buttonText = Language.GetTextValue("Mods.TouhouPets.QQGroup");
+                    topic++;
+                }
+                else
+                {
+                    buttonText = Language.GetTextValue("Mods.TouhouPets.PetShop");
+                    topic = 0;
+                }               
+            }
+            else if (topic == 3)
+            {
+                buttonText = Language.GetTextValue("Mods.TouhouPets.GoodsShop");
+                topic++;
+            }
+            else if (topic == 4)
+            {
+                buttonText = Language.GetTextValue("Mods.TouhouPets.PetShop");
+                topic = 0;
+            }
+        }
+        private void Chat_ConsumpCount()
+        {
+            TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
+            if (mp.totalPurchaseValueCount <= 0)
+                Main.npcChatText = ModUtils.GetChatText("Portal", "7");
+            else
+                Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));
+        }
+        private void Chat_QQGroup()
+        {
+            Main.npcChatText = ModUtils.GetChatText("Portal", "8");
+        }
+        private void Chat_GoodsShop()
+        {
+            Main.npcChatText = ModUtils.GetChatText("Portal", "9");
         }
         private void AddShopItem_Legacy()
         {
             NPCShop shop = new(Type);
             shop.Add(ItemType<DaiyouseiBomb>());
-            shop.Add(ItemType<LilyOneUp>());
             shop.Add(ItemType<KoakumaPower>());
             shop.Add(ItemType<KogasaUmbrella>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RumiaRibbon>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<KaguyaBranch>(), Condition.DownedEyeOfCthulhu);
             shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<MeirinPanda>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<SakuyaWatch>(), Condition.DownedEowOrBoc);
             shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
-            shop.Add(ItemType<WakasagihimeFishingRod>(), Condition.DownedQueenBee);
             shop.Add(ItemType<HinaDoll>(), Condition.DownedSkeletron);
             shop.Add(ItemType<AliceDoll>(), Condition.DownedSkeletron);
-            shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);
             shop.Add(ItemType<RinSkull>(), Condition.Hardmode);
-            shop.Add(ItemType<UtsuhoEye>(), Condition.Hardmode);
-            shop.Add(ItemType<MokuMatch>(), Condition.Hardmode);
+            shop.Add(ItemType<RaikoDrum>(), Condition.Hardmode);
             shop.Add(ItemType<AyaCamera>(), Condition.DownedSkeletron);
-            shop.Add(ItemType<PatchouliMoon>(), Condition.DownedQueenSlime);
-            shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
             shop.Add(ItemType<KoishiTelephone>(), Condition.DownedTwins);
             shop.Add(ItemType<NitoriCucumber>(), Condition.DownedSkeletronPrime);
             shop.Add(ItemType<YukaSunflower>(), Condition.DownedPlantera);
             shop.Add(ItemType<YuyukoFan>(), Condition.DownedPlantera);
-            shop.Add(ItemType<YoumuKatana>(), Condition.DownedPlantera);
             shop.Add(ItemType<SekibankiBow>(), Condition.DownedGolem);
-            shop.Add(ItemType<IkuOarfish>(), Condition.DownedDukeFishron);
             shop.Add(ItemType<TenshiKeyStone>(), Condition.DownedEmpressOfLight);
             shop.Add(ItemType<ReimuYinyangOrb>(), Condition.DownedCultist);
+            shop.Add(ItemType<HecatiaPlanet>(), Condition.DownedMoonLord);
+            shop.Register();
+
+            shop = new(Type, "Shop2");
+            shop.Add(ItemType<LilyOneUp>());
+            shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
+            shop.Add(ItemType<MeirinPanda>(), Condition.DownedEowOrBoc);
+            shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
+            shop.Add(ItemType<WakasagihimeFishingRod>(), Condition.DownedQueenBee);
+            shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);
+            shop.Add(ItemType<UtsuhoEye>(), Condition.Hardmode);
+            shop.Add(ItemType<MokuMatch>(), Condition.Hardmode);
+            shop.Add(ItemType<PatchouliMoon>(), Condition.DownedQueenSlime);
+            shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
+            shop.Add(ItemType<YoumuKatana>(), Condition.DownedPlantera);
+            shop.Add(ItemType<IkuOarfish>(), Condition.DownedDukeFishron);
             shop.Add(ItemType<MarisaHakkero>(), Condition.DownedCultist);
             shop.Add(ItemType<SanaeCoin>(), Condition.DownedCultist);
             shop.Add(ItemType<JunkoMooncake>(), Condition.DownedMoonLord);
-            shop.Add(ItemType<HecatiaPlanet>(), Condition.DownedMoonLord);
             shop.Register();
         }
         private void AddShopItem()
         {
             NPCShop shop = new(Type);
             shop.Add(ItemType<DaiyouseiBomb>());
-            shop.Add(ItemType<LilyOneUp>());
             shop.Add(ItemType<KoakumaPower>());
             shop.Add(ItemType<KogasaUmbrella>());
             shop.Add(ItemType<RumiaRibbon>());
             shop.Add(ItemType<RemiliaRedTea>());
-            shop.Add(ItemType<FlandrePudding>());
-            shop.Add(ItemType<MeirinPanda>());
             shop.Add(ItemType<SakuyaWatch>());
             shop.Add(ItemType<MystiaFeather>());
-            shop.Add(ItemType<WriggleInAJar>());
-            shop.Add(ItemType<WakasagihimeFishingRod>());
             shop.Add(ItemType<HinaDoll>());
             shop.Add(ItemType<AliceDoll>());
-            shop.Add(ItemType<CirnoIceShard>());
             shop.Add(ItemType<RinSkull>());
-            shop.Add(ItemType<UtsuhoEye>());
+            shop.Add(ItemType<RaikoDrum>());
             shop.Add(ItemType<KaguyaBranch>());
-            shop.Add(ItemType<MokuMatch>());
             shop.Add(ItemType<AyaCamera>());
-            shop.Add(ItemType<PatchouliMoon>());
-            shop.Add(ItemType<SatoriSlippers>());
             shop.Add(ItemType<KoishiTelephone>());
             shop.Add(ItemType<NitoriCucumber>());
             shop.Add(ItemType<YukaSunflower>());
             shop.Add(ItemType<YuyukoFan>());
-            shop.Add(ItemType<YoumuKatana>());
             shop.Add(ItemType<SekibankiBow>());
-            shop.Add(ItemType<IkuOarfish>());
             shop.Add(ItemType<TenshiKeyStone>());
             shop.Add(ItemType<ReimuYinyangOrb>());
+            shop.Add(ItemType<HecatiaPlanet>());
+            shop.Register();
+
+            shop = new(Type, "Shop2");
+            shop.Add(ItemType<LilyOneUp>());
+            shop.Add(ItemType<FlandrePudding>());
+            shop.Add(ItemType<MeirinPanda>());
+            shop.Add(ItemType<WriggleInAJar>());
+            shop.Add(ItemType<WakasagihimeFishingRod>());
+            shop.Add(ItemType<CirnoIceShard>());
+            shop.Add(ItemType<UtsuhoEye>());
+            shop.Add(ItemType<MokuMatch>());
+            shop.Add(ItemType<PatchouliMoon>());
+            shop.Add(ItemType<SatoriSlippers>());
+            shop.Add(ItemType<YoumuKatana>());
+            shop.Add(ItemType<IkuOarfish>());
             shop.Add(ItemType<MarisaHakkero>());
             shop.Add(ItemType<SanaeCoin>());
             shop.Add(ItemType<JunkoMooncake>());
-            shop.Add(ItemType<HecatiaPlanet>());
             shop.Register();
         }
         public override void AddShops()

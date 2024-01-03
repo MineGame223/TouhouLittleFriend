@@ -446,6 +446,12 @@ Mods: {
 			// Chat10: My life already restarted since I meet you, there is no past
 		}
 
+		Chat_Raiko: {
+			// Chat1: Badum, psh~
+			// Chat2: I have heard that oni can play drums too, even can defeat the monsters by it?
+			// Chat3: Life is a drum set, the loudest is the perfect!
+		}
+
 		Chat_Portal: {
 			Chat1: Эй, раз уж ты нашёл это, почему бы тебе не купить что-нибудь? Вся выручка идёт в генсокё
 			Chat2: Оставь здесь немного монет и возьми то, что нравится. Просто сделай что-нибудь ради существования Генсокё
@@ -462,6 +468,8 @@ Mods: {
 				You haven't buy anything here, it's never too late to do.
 				By the way, selling items here will reduce the wealth count.
 				''' */
+			// Chat8: Wait, you can see THIS? you have found a bug!
+			// Chat9: Wait, you can see THIS? you have found a bug!
 		}
 
 		Chat_Template: {

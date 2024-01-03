@@ -6,11 +6,4 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-新增：
-无
-
-修改：
-无
-
-修复：
-无
+由于有猪记性不好，我们在这个抢修版本正式加入了堀川雷鼓。
