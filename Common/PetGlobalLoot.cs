@@ -1,7 +1,6 @@
 ﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using TouhouPets.Content.Items;
 using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets
@@ -22,19 +21,33 @@ namespace TouhouPets
                 return;
 
             bool isHJTimeGod = result.TryFind("TheOverwatcher", out ModNPC god) && npc.type == god.Type;
+
             if (isHJTimeGod)
                 npcLoot.Add(ItemDropRule.Common(ItemType<SakuyaWatch>()));
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            AddHomewardJourneyLoot(npc, npcLoot);
-
             if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
                 return;
 
+            AddHomewardJourneyLoot(npc, npcLoot);
+
+            int enemiesDropRate = 20;
             if (npc.type == NPCID.AngryNimbus)
             {
-                npcLoot.Add(ItemType<RaikoDrum>(), 20);
+                npcLoot.Add(ItemType<RaikoDrum>(), enemiesDropRate);
+            }
+            if (npc.type == NPCID.BloodNautilus)
+            {
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 15, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
+            }
+            if (npc.type == NPCID.Harpy)
+            {
+                npcLoot.Add(ItemType<MystiaFeather>(), enemiesDropRate);
+            }
+            if (npc.type == NPCID.WindyBalloon || npc.type == NPCID.Dandelion)
+            {
+                npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate);
             }
 
             int commonDropRate = 3;
@@ -47,14 +60,6 @@ namespace TouhouPets
 
                 case NPCID.EyeofCthulhu:
                     npcLoot.Add(new NotDownedEoC(), new DownedEoC(), ItemType<KogasaUmbrella>(), commonDropRate);
-                    break;
-
-                case NPCID.EaterofWorldsHead:
-                    Add_ScarletSister(npcLoot, commonDropRate);
-                    break;
-
-                case NPCID.BrainofCthulhu:
-                    npcLoot.Add(new NotDownedEvilBoss(), new DownedEvilBoss(), commonDropRate, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>());
                     break;
 
                 case NPCID.QueenBee:
@@ -126,14 +131,6 @@ namespace TouhouPets
                 default:
                     break;
             }
-        }
-        private static void Add_ScarletSister(NPCLoot loot, int dropRate)
-        {
-            IItemDropRule rule1 = loot.Add(new LeadingConditionRule(new ScarletSister_NotDownedEoW()));
-            IItemDropRule rule2 = loot.Add(new LeadingConditionRule(new ScarletSister_DownedEoW()));
-            rule1.OnSuccess(ItemDropRule.Common(ItemType<RemiliaRedTea>()));
-            rule1.OnSuccess(ItemDropRule.Common(ItemType<FlandrePudding>()));
-            rule2.OnSuccess(ItemDropRule.OneFromOptions(dropRate, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
         }
     }
 }

@@ -78,7 +78,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         extraAI[0] = 1;
                         Projectile.netUpdate = true;
                     }
-                }               
+                }
             }
             else
             {
@@ -177,10 +177,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateTalking()
         {
             int type1 = ProjectileType<Daiyousei>();
+            int type2 = ProjectileType<Keine>();
             //为了尽可能确保对话接应成功，在检测到可接应对话的第一刻起就保持CD以避免出现其他对话
             //只适用于最开始的对话，进入对话后无需继续检测
             if (FindChatIndex(out Projectile _, type1, 4, default, 0)
-                || FindChatIndex(out Projectile _, type1, 5, default, 0))
+                || FindChatIndex(out Projectile _, type1, 5, default, 0)
+                || FindChatIndex(out Projectile _, type2, 6, default, 0))
             {
                 ChatCD = 1;
             }
@@ -191,15 +193,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0);//作为收尾的对话，ChatIndex通常为0
                 p.localAI[2] = 0;//作为收尾的对话，将对方的ChatIndex设为0，防止重复检测并接话
             }
-            else if (FindChatIndex(out Projectile p1, type1, 5))
+            else if (FindChatIndex(out p, type1, 5))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Cirno", "9"), myColor, 9);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "9"), myColor, 9);
             }
             //无视对方的ChatCD，避免对话被无视，常用于交互中的第三句话及以后
-            else if (FindChatIndex(out Projectile p2, type1, 6, default, 1, true))
+            else if (FindChatIndex(out p, type1, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Cirno", "11"), myColor, 0);
-                p2.localAI[2] = 0;
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "11"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, type2, 6))//慧音的相关对话
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "12"), myColor, 0);
+                p.localAI[2] = 0;
             }
             else if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState != 2)
             {
@@ -211,7 +218,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateWingFrame();
         }
         public override void AI()
-        {            
+        {
             Lighting.AddLight(Projectile.Center, 0.57f, 1.61f, 1.84f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<CirnoBuff>());

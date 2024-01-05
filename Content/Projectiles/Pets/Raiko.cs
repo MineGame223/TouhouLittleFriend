@@ -255,7 +255,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 555 == 0 && Main.rand.NextBool(9) && PetState != 2)
+            if (mainTimer % 555 == 0 && Main.rand.NextBool(9) && PetState < 4)
             {
                 SetChat(myColor);
             }
@@ -305,7 +305,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         if (Main.rand.NextBool(4))
                         {
-                            extraAI[2] = Main.rand.Next(40, 80);
+                            extraAI[2] = Main.rand.Next(10, 30);
                             PetState = 4;
                         }
                         else

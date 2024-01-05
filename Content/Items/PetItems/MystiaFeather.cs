@@ -23,14 +23,5 @@ namespace TouhouPets.Content.Items.PetItems
             player.AddBuff(Item.buffType, 2);
             return false;
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-            .AddIngredient(ItemID.ChickenNugget, 1)
-            .AddIngredient(ItemID.Feather, 5)
-            .AddTile(TileID.WorkBenches)
-            .DisableDecraft()
-            .Register();
-        }
     }
 }

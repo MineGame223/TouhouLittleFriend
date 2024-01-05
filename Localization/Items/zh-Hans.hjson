@@ -213,6 +213,11 @@ Mods: {
 				DisplayName: 玩具鼓
 				Tooltip: "'咚咚、锵~'"
 			}
+
+			KeineLeaf: {
+				DisplayName: 银杏叶
+				Tooltip: "'承载文化，流传千年'"
+			}
 		}
 	}
 }

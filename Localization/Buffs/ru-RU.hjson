@@ -195,6 +195,12 @@ Mods: {
 				// DisplayName: Drum's Ghost
 				// Description: "'Let's PLAY!'"
 			}
+
+			KeineBuff: {
+				// DisplayName: Half Shirasawa
+				// Description: "'Creator of the History'"
+				// Description_2: "'Devourer of the History'"
+			}
 		}
 	}
 }

@@ -213,6 +213,11 @@ Mods: {
 				// DisplayName: Toy Drum
 				// Tooltip: "'Badum, psh~'"
 			}
+
+			KeineLeaf: {
+				// DisplayName: Ginkgo Leaf
+				// Tooltip: "'Load the culture and hold it forever'"
+			}
 		}
 	}
 }

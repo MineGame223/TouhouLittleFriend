@@ -8,8 +8,5 @@ namespace TouhouPets
         public override ConfigScope Mode => ConfigScope.ServerSide;
         [DefaultValue(true)]
         public bool PetCanDropFromBoss;
-
-        [DefaultValue(false)]
-        public bool PetSoldAtAnyTime;
     }
 }

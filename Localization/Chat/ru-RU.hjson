@@ -412,6 +412,9 @@ Mods: {
 			// Chat4: ...What you want to do?
 			// Chat5: No and never!...well I know a place can go...
 			// Chat6: Can you just be QUIET for a time?
+			// Chat7: I'm fine, maybe. Just as usual
+			// Chat8: Nope, I'm trying to forget them...
+			// Chat9: You will become this form every full moon, that's pretty scary!
 		}
 
 		Chat_Meirin: {
@@ -450,6 +453,18 @@ Mods: {
 			// Chat1: Badum, psh~
 			// Chat2: I have heard that oni can play drums too, even can defeat the monsters by it?
 			// Chat3: Life is a drum set, the loudest is the perfect!
+		}
+
+		Chat_Keine: {
+			// Chat1: Recently, village's people don't like to say hello...How could them be so rude?
+			// Chat2: This paper filled with 9...Must be Cirno
+			// Chat3: Only the thing that being recorded is the history
+			// Chat4: Tonight will be a busy night...
+			// Chat5: Create the history, keep the history
+			// Chat6: Let me see is who haven't finished her homework...
+			// Chat7: How are you recently?
+			// Chat8: Still entangled with the past things?
+			// Chat9: This is both my nature and my duty
 		}
 
 		Chat_Portal: {

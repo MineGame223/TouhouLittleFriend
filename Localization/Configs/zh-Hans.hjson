@@ -19,13 +19,8 @@ Mods: {
 				DisplayName: 宠物获取配置
 
 				PetCanDropFromBoss: {
-					Label: 宠物掉落自各Boss
-					Tooltip: 宠物是否可以从各Boss处掉落
-				}
-
-				PetSoldAtAnyTime: {
-					Label: 宠物随时有售
-					Tooltip: 神秘隙间是否无条件出售所有宠物
+					Label: 宠物掉落自各敌怪
+					Tooltip: 宠物是否可以从敌怪处掉落
 				}
 			}
 		}

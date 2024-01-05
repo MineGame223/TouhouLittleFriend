@@ -404,6 +404,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             text = new string[21];
             text[1] = ModUtils.GetChatText("Moku", "1");
             text[2] = ModUtils.GetChatText("Moku", "2");
+            if (FindPetState(out _, ProjectileType<Keine>(), 2, 3))
+            {
+                text[9] = ModUtils.GetChatText("Moku", "9");
+            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -411,6 +415,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
+                        if (i == 9)
+                            weight = 3;
                         chat.Add(text[i], weight);
                     }
                 }
@@ -420,31 +426,42 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UpdateTalking()
         {
             int type1 = ProjectileType<Kaguya>();
-            if (FindChatIndex(out Projectile _, type1, 3, 5, 0)
-                || FindChatIndex(out Projectile _, type1, 7, default, 0))
+            int type2 = ProjectileType<Keine>();
+            if (FindChatIndex(out _, type1, 3, 5, 0)
+                || FindChatIndex(out _, type1, 7, default, 0)
+                || FindChatIndex(out _, type2, 7, default, 0))
             {
                 ChatCD = 1;
             }
 
-            if (FindChatIndex(out Projectile p1, type1, 7))
+            if (FindChatIndex(out Projectile p, type1, 7))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Moku", "3"), myColor, 3, 600);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "3"), myColor, 3);
             }
-            else if (FindChatIndex(out Projectile p2, type1, 8, default, 1, true))
+            else if (FindChatIndex(out p, type1, 8, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Moku", "4"), myColor, 4, 600);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "4"), myColor, 4);
             }
-            else if (FindChatIndex(out Projectile p3, type1, 9, default, 1, true))
+            else if (FindChatIndex(out p, type1, 9, default, 1, true))
             {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Moku", "5"), myColor, 0, 360);
-                p3.localAI[2] = 0;
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "5"), myColor, 0);
+                p.localAI[2] = 0;
             }
-            else if (FindChatIndex(out Projectile p, type1, 3, 5))
+            else if (FindChatIndex(out p, type1, 3, 5))
             {
                 if (mainTimer % 64 == 0 && Main.rand.NextBool(5) && FindPetState(out _, ProjectileType<Kaguya>(), 2))
-                    SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "6"), myColor, 6, 360);
+                    SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "6"), myColor, 6);
             }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(2))
+            else if (FindChatIndex(out p, type2, 7))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "7"), myColor, 7);
+            }
+            else if (FindChatIndex(out p, type2, 8, default, 1, true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "8"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (mainTimer % 960 == 0 && Main.rand.NextBool(5))
             {
                 SetChat(myColor);
             }

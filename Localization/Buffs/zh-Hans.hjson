@@ -195,6 +195,12 @@ Mods: {
 				DisplayName: 鼓的附丧神
 				Description: "'一起演奏吧！'"
 			}
+
+			KeineBuff: {
+				DisplayName: 半白泽
+				Description: "'历史的创造者'"
+				Description_2: "'历史的吞噬者'"
+			}
 		}
 	}
 }

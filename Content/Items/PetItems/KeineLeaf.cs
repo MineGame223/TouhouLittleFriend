@@ -1,13 +1,12 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class AyaCamera : ModItem
+    public class KeineLeaf : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -15,8 +14,8 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void SetDefaults()
         {
-            Item.DefaultToVanitypet(ProjectileType<Aya>(), BuffType<AyaBuff>());
-            Item.DefaultToVanitypetExtra(30, 24);
+            Item.DefaultToVanitypet(ProjectileType<Keine>(), BuffType<KeineBuff>());
+            Item.DefaultToVanitypetExtra(24, 30);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

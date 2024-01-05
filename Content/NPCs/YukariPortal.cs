@@ -164,7 +164,7 @@ namespace TouhouPets.Content.NPCs
                 topic = 0;
             }
         }
-        private void Chat_ConsumpCount()
+        private static void Chat_ConsumpCount()
         {
             TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (mp.totalPurchaseValueCount <= 0)
@@ -172,57 +172,13 @@ namespace TouhouPets.Content.NPCs
             else
                 Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));
         }
-        private void Chat_QQGroup()
+        private static void Chat_QQGroup()
         {
             Main.npcChatText = ModUtils.GetChatText("Portal", "8");
         }
-        private void Chat_GoodsShop()
+        private static void Chat_GoodsShop()
         {
             Main.npcChatText = ModUtils.GetChatText("Portal", "9");
-        }
-        private void AddShopItem_Legacy()
-        {
-            NPCShop shop = new(Type);
-            shop.Add(ItemType<DaiyouseiBomb>());
-            shop.Add(ItemType<KoakumaPower>());
-            shop.Add(ItemType<KogasaUmbrella>(), Condition.DownedEyeOfCthulhu);
-            shop.Add(ItemType<RumiaRibbon>(), Condition.DownedEyeOfCthulhu);
-            shop.Add(ItemType<KaguyaBranch>(), Condition.DownedEyeOfCthulhu);
-            shop.Add(ItemType<RemiliaRedTea>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<SakuyaWatch>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<MystiaFeather>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<HinaDoll>(), Condition.DownedSkeletron);
-            shop.Add(ItemType<AliceDoll>(), Condition.DownedSkeletron);
-            shop.Add(ItemType<RinSkull>(), Condition.Hardmode);
-            shop.Add(ItemType<RaikoDrum>(), Condition.Hardmode);
-            shop.Add(ItemType<AyaCamera>(), Condition.DownedSkeletron);
-            shop.Add(ItemType<KoishiTelephone>(), Condition.DownedTwins);
-            shop.Add(ItemType<NitoriCucumber>(), Condition.DownedSkeletronPrime);
-            shop.Add(ItemType<YukaSunflower>(), Condition.DownedPlantera);
-            shop.Add(ItemType<YuyukoFan>(), Condition.DownedPlantera);
-            shop.Add(ItemType<SekibankiBow>(), Condition.DownedGolem);
-            shop.Add(ItemType<TenshiKeyStone>(), Condition.DownedEmpressOfLight);
-            shop.Add(ItemType<ReimuYinyangOrb>(), Condition.DownedCultist);
-            shop.Add(ItemType<HecatiaPlanet>(), Condition.DownedMoonLord);
-            shop.Register();
-
-            shop = new(Type, "Shop2");
-            shop.Add(ItemType<LilyOneUp>());
-            shop.Add(ItemType<FlandrePudding>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<MeirinPanda>(), Condition.DownedEowOrBoc);
-            shop.Add(ItemType<WriggleInAJar>(), Condition.DownedQueenBee);
-            shop.Add(ItemType<WakasagihimeFishingRod>(), Condition.DownedQueenBee);
-            shop.Add(ItemType<CirnoIceShard>(), Condition.DownedDeerclops);
-            shop.Add(ItemType<UtsuhoEye>(), Condition.Hardmode);
-            shop.Add(ItemType<MokuMatch>(), Condition.Hardmode);
-            shop.Add(ItemType<PatchouliMoon>(), Condition.DownedQueenSlime);
-            shop.Add(ItemType<SatoriSlippers>(), Condition.DownedTwins);
-            shop.Add(ItemType<YoumuKatana>(), Condition.DownedPlantera);
-            shop.Add(ItemType<IkuOarfish>(), Condition.DownedDukeFishron);
-            shop.Add(ItemType<MarisaHakkero>(), Condition.DownedCultist);
-            shop.Add(ItemType<SanaeCoin>(), Condition.DownedCultist);
-            shop.Add(ItemType<JunkoMooncake>(), Condition.DownedMoonLord);
-            shop.Register();
         }
         private void AddShopItem()
         {
@@ -231,6 +187,8 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<KoakumaPower>());
             shop.Add(ItemType<KogasaUmbrella>());
             shop.Add(ItemType<RumiaRibbon>());
+            shop.Add(ItemType<KaguyaBranch>());
+            shop.Add(ItemType<KeineLeaf>());
             shop.Add(ItemType<RemiliaRedTea>());
             shop.Add(ItemType<SakuyaWatch>());
             shop.Add(ItemType<MystiaFeather>());
@@ -238,7 +196,6 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<AliceDoll>());
             shop.Add(ItemType<RinSkull>());
             shop.Add(ItemType<RaikoDrum>());
-            shop.Add(ItemType<KaguyaBranch>());
             shop.Add(ItemType<AyaCamera>());
             shop.Add(ItemType<KoishiTelephone>());
             shop.Add(ItemType<NitoriCucumber>());
@@ -270,14 +227,7 @@ namespace TouhouPets.Content.NPCs
         }
         public override void AddShops()
         {
-            if (GetInstance<PetObtainConfig>().PetSoldAtAnyTime)
-            {
-                AddShopItem();
-            }
-            else
-            {
-                AddShopItem_Legacy();
-            }
+            AddShopItem();
         }
         public override void ModifyActiveShop(string shopName, Item[] items)
         {
