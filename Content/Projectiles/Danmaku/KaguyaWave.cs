@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.Drawing;
 
 namespace TouhouPets.Content.Projectiles.Danmaku
 {
@@ -43,20 +44,6 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
-        public int DustType
-        {
-            get
-            {
-                return Projectile.frame switch
-                {
-                    1 => MyDustId.RedTrans,
-                    2 => MyDustId.BlueTrans,
-                    3 => MyDustId.GreenTrans,
-                    4 => MyDustId.TransparentPurple,
-                    _ => MyDustId.YellowTrans,
-                };
-            }
-        }
         public override void AI()
         {
             Projectile.HandleDanmakuCollide();
@@ -85,12 +72,30 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Projectile.scale = Projectile.localAI[0] / 20;
             Projectile.rotation -= 1.104719758f;
             Projectile.localAI[0] += 1f;
-            if (Main.rand.NextBool(5))
+            if (Main.rand.NextBool(3))
             {
-                int d = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustType, Projectile.velocity.X, Projectile.velocity.Y, 50, default(Color), 1.2f);
+                int dustType = Main.rand.Next(5) switch
+                {
+                    1 => MyDustId.RedTrans,
+                    2 => MyDustId.BlueTrans,
+                    3 => MyDustId.GreenTrans,
+                    4 => MyDustId.TransparentPurple,
+                    _ => MyDustId.YellowTrans,
+                };
+                int d = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType, Projectile.velocity.X, Projectile.velocity.Y, 50, default(Color), 1.2f);
                 Main.dust[d].noGravity = true;
                 Dust dust = Main.dust[d];
                 dust.velocity *= 0.3f;
+
+                if (Main.rand.NextBool(2))
+                {
+                    ParticleOrchestraSettings settings = new ParticleOrchestraSettings
+                    {
+                        PositionInWorld = Projectile.Center + new Vector2(Main.rand.Next(0, Projectile.height / 2), 0).RotatedByRandom(MathHelper.ToRadians(360)),
+                        MovementVector = Vector2.Zero,
+                    };
+                    ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.PrincessWeapon, settings);
+                }
             }
         }
         public override Color? GetAlpha(Color lightColor)

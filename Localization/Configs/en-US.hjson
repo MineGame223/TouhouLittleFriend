@@ -19,13 +19,8 @@ Mods: {
 				DisplayName: Pet's Obtain Config
 
 				PetCanDropFromBoss: {
-					Label: Pets can drop from bosses
-					Tooltip: Whether pets can drop from every bosses
-				}
-
-				PetSoldAtAnyTime: {
-					Label: Pets can be sold at anytime
-					Tooltip: Whether the Mysterious Gap can sell all pets without any conditions
+					Label: Pets can drop from monsters
+					Tooltip: Whether pets can drop from every monsters
 				}
 			}
 		}

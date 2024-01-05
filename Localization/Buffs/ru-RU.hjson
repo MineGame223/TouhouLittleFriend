@@ -190,6 +190,17 @@ Mods: {
 				// DisplayName: The Maid
 				// Description: "'What can I do for you?'"
 			}
+
+			RaikoBuff: {
+				// DisplayName: Drum's Ghost
+				// Description: "'Let's PLAY!'"
+			}
+
+			KeineBuff: {
+				// DisplayName: Half Shirasawa
+				// Description: "'Creator of the History'"
+				// Description_2: "'Devourer of the History'"
+			}
 		}
 	}
 }

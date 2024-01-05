@@ -10,13 +10,24 @@ namespace TouhouPets.Common
     {
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
+            if (attempt.inLava || attempt.inHoney)
+                return;
+
             if (Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish
-                || attempt.veryrare)
+                || attempt.rare)
             {
                 if (Main.rand.NextBool(7))
                     itemDrop = ItemType<UselessBook>();
-                if (Main.rand.NextBool(7))
+            }
+            if (attempt.rare)
+            {
+                if (Main.rand.NextBool(3))
                     itemDrop = ItemType<WakasagihimeFishingRod>();
+            }
+            if (attempt.legendary)
+            {
+                if (Main.rand.NextBool(3))
+                    itemDrop = ItemType<IkuOarfish>();
             }
         }
     }

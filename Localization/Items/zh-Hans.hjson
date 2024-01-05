@@ -208,6 +208,16 @@ Mods: {
 				DisplayName: 月时计
 				Tooltip: "'指针永远停留在了四点十六分'"
 			}
+
+			RaikoDrum: {
+				DisplayName: 玩具鼓
+				Tooltip: "'咚咚、锵~'"
+			}
+
+			KeineLeaf: {
+				DisplayName: 银杏叶
+				Tooltip: "'承载文化，流传千年'"
+			}
 		}
 	}
 }

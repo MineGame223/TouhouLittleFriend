@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 
 namespace TouhouPets
@@ -44,11 +45,11 @@ namespace TouhouPets
         }
         public static void FailEffect(this Projectile projectile)
         {
-            int circle = 50;
+            int circle = 30;
             for (int i = 0; i < circle; i++)
             {
-                Dust d = Dust.NewDustPerfect(projectile.Center, MyDustId.TrailingRed1, null, 100, default, Main.rand.NextFloat(0.7f, 1.7f));
-                d.velocity = new Vector2(0, -Main.rand.NextFloat(3, 8)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
+                Dust d = Dust.NewDustPerfect(projectile.Center, MyDustId.TrailingRed1, null, 100, default, Main.rand.NextFloat(1f, 1.7f));
+                d.velocity = new Vector2(0, -Main.rand.NextFloat(2, 5)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
             }
         }
         public static void DrawIndividualSource(this Projectile projectile, int source, int offsetY = 36)
@@ -157,12 +158,18 @@ namespace TouhouPets
                                 3 => MyDustId.TrailingBlue,
                                 _ => MyDustId.TrailingRed1,
                             };
-                            int circle = 6;
+                            int circle = Main.rand.Next(2, 5);
                             for (int i = 0; i < circle; i++)
                             {
                                 Dust d = Dust.NewDustPerfect(p.Center, dustType, null, 100, default, Main.rand.NextFloat(0.7f, 1.7f));
                                 d.velocity = new Vector2(0, -Main.rand.NextFloat(2, 4)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
                             }
+                            ParticleOrchestraSettings settings = new ParticleOrchestraSettings
+                            {
+                                PositionInWorld = p.Center,
+                                MovementVector = Vector2.Zero
+                            };
+                            ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.ShimmerArrow, settings);
                         }
                     }
                 }

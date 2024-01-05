@@ -23,15 +23,5 @@ namespace TouhouPets.Content.Items.PetItems
             player.AddBuff(Item.buffType, 2);
             return false;
         }
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-            .AddIngredient(ItemID.BlackLens, 1)
-            .AddRecipeGroup(RecipeGroupID.IronBar, 5)
-            .AddIngredient(ItemID.Wire, 7)
-            .AddTile(TileID.Anvils)
-            .DisableDecraft()
-            .Register();
-        }
     }
 }

@@ -158,6 +158,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         int blinkFrame, blinkFrameCounter;
         int clothFrame, clothFrameCounter;
         int annoyingFrame, annoyingFrameCounter;
+        int killCD;
         private void UpdateClothFrame()
         {
             int count = 4;
@@ -273,11 +274,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (Projectile.owner == Main.myPlayer)
                     {
                         player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
-                        extraAI[2] = 0;
-                        extraAI[0] = 0;
-                        PetState = 0;
+                        extraAI[0]++;
+                        killCD = 3600;
                         Projectile.netUpdate = true;
                     }
+                }
+            }
+            else if (extraAI[0] == 3)
+            {
+                Projectile.frame = 13;
+                if (!player.dead)
+                {
+                    extraAI[2] = 0;
+                    extraAI[0] = 0;
+                    PetState = 0;
+                    Projectile.netUpdate = true;
                 }
             }
             if (Projectile.owner == Main.myPlayer)
@@ -323,7 +334,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (!player.dead && player.statLife < player.statLifeMax2 / 10
                 && !player.HasBuff<SatoriBuff>() && !player.HasBuff<KomeijiBuff>())
             {
-                if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(3) && PetState == 0 && ChatCD <= 0)
+                if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(3)
+                    && PetState == 0 && ChatCD <= 0 && killCD == 0)
                 {
                     PetState = State_Kill;
                     extraAI[0] = 0;
@@ -427,6 +439,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (PetState == State_Kill)
             {
                 KillingPhoneCall();
+            }
+            if (killCD > 0)
+            {
+                killCD--;
             }
         }
     }
