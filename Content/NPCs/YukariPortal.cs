@@ -197,8 +197,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<RinSkull>());
             shop.Add(ItemType<RaikoDrum>());
             shop.Add(ItemType<AyaCamera>());
-            shop.Add(ItemType<KoishiTelephone>());
-            shop.Add(ItemType<NitoriCucumber>());
+            shop.Add(ItemType<KoishiTelephone>());            
             shop.Add(ItemType<YukaSunflower>());
             shop.Add(ItemType<YuyukoFan>());
             shop.Add(ItemType<SekibankiBow>());
@@ -218,6 +217,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<MokuMatch>());
             shop.Add(ItemType<PatchouliMoon>());
             shop.Add(ItemType<SatoriSlippers>());
+            shop.Add(ItemType<NitoriCucumber>());
             shop.Add(ItemType<YoumuKatana>());
             shop.Add(ItemType<IkuOarfish>());
             shop.Add(ItemType<MarisaHakkero>());

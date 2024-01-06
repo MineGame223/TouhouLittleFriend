@@ -114,6 +114,11 @@ Mods: {
 			Chat1: Как ты сегодня?
 			Chat2: Да не встретится тебе неудача никогда...
 			Chat3: Кружится и кружится...
+			// Chat4: You know what Nitori? I have a wish
+			// Chat5: I wish, I can purify this world's all bad luck
+			// Chat6: Ha ha, so I say that's just a wish
+			// Chat7: We are...
+			// Chat8: Ha hahaha!...
 		}
 
 		Chat_Iku: {
@@ -177,6 +182,11 @@ Mods: {
 			Chat1: Технологии капп номер один в мире!
 			Chat2: Съесть ли мне огурчик?...
 			Chat3: Хочешь присоединиться к бирже капп?
+			// Chat4: Eh? What wish?
+			// Chat5: That's your ability isn't it? But the whole world is still too big...
+			// Chat6: Maybe it will come true in the future!
+			// Chat7: '''"Spining Kapa" company!'''
+			// Chat8: Ha hahaha!...
 		}
 
 		Chat_Sanae: {

@@ -92,7 +92,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Meow()
         {
-            if (++Projectile.frameCounter > 7)
+            int count = 7;
+            if (Projectile.frame == 6)
+                count = 18;
+
+            if (++Projectile.frameCounter > count)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;

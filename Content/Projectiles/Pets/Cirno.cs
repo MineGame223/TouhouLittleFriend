@@ -189,7 +189,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (FindChatIndex(out Projectile p, type1, 4))
             {
-                //同时给对方与自己设置ChatCD以确保对话不会“走神”
+                //同时给对方与自己设置ChatCD以确保对方不会“走神”
                 SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0);//作为收尾的对话，ChatIndex通常为0
                 p.localAI[2] = 0;//作为收尾的对话，将对方的ChatIndex设为0，防止重复检测并接话
             }

@@ -17,6 +17,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));

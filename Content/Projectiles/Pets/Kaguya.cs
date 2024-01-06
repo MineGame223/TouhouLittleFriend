@@ -534,6 +534,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
             abilityCD = new int[2];
         }
         public override void AI()

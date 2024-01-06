@@ -13,10 +13,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 16;
             Main.projPet[Type] = true;
+            ProjectileID.Sets.LightPet[Type] = true;
         }
         public override bool PreDraw(ref Color lightColor)
         {
             DrawNitori(backFrame, lightColor, 1);
+            DrawNitori(backFrame, Color.White * 0.7f, 1, AltVanillaFunction.GetGlowTexture("NitoriGlow"));
             DrawNitori(backFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Nitori_Cloth"), true);
             Projectile.DrawStateNormalizeForPet();
             DrawNitori(Projectile.frame, lightColor);
@@ -240,7 +242,34 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && PetState != 2)
+            int type1 = ProjectileType<Hina>();
+            if (FindChatIndex(out Projectile _, type1, 4, default, 0)
+                || FindChatIndex(out Projectile _, type1, 7, default, 0))
+            {
+                ChatCD = 1;
+            }
+            if (FindChatIndex(out Projectile p, type1, 4))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "4"), myColor, 4);
+            }
+            else if (FindChatIndex(out p, type1, 5, ignoreCD: true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "5"), myColor, 5);
+            }
+            else if (FindChatIndex(out p, type1, 6, ignoreCD: true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "6"), myColor, 0);
+                p.localAI[2] = 0;
+            }
+            else if (FindChatIndex(out p, type1, 7))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "7"), myColor, 7);
+            }
+            else if (FindChainedChat(7))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "8"), myColor, 0);
+            }
+            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && PetState != 2)
             {
                 SetChat(myColor);
             }
@@ -257,11 +286,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
+            if (backFrame != 8)
+            {
+                Lighting.AddLight(Projectile.Center + new Vector2(0, 20), 1.95f, 1.64f, 0.67f);
+            }
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<NitoriBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(-60 * player.direction, -40 + player.gfxOffY);
+            Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;
             if (PetState == 2 && extraAI[0] == 2)

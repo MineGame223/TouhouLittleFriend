@@ -19,10 +19,17 @@ namespace TouhouPets.Common
                 if (Main.rand.NextBool(7))
                     itemDrop = ItemType<UselessBook>();
             }
+
+            if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
+                return;
+
             if (attempt.rare)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(5))
                     itemDrop = ItemType<WakasagihimeFishingRod>();
+
+                if (Main.rand.NextBool(5))
+                    itemDrop = ItemType<HinaDoll>();
             }
             if (attempt.legendary)
             {

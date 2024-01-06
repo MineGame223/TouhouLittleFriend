@@ -106,9 +106,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(70, 226, 164);
         public override string GetChatText(out string[] text)
         {
+            Player player = Main.player[Projectile.owner];
             text = new string[21];
             text[1] = ModUtils.GetChatText("Hina", "1");
             text[2] = ModUtils.GetChatText("Hina", "2");
+            if (player.HasBuff<NitoriBuff>())
+            {
+                text[4] = ModUtils.GetChatText("Hina", "4");
+                text[7] = ModUtils.GetChatText("Hina", "7");
+            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -116,6 +122,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
+                        if (i >= 4)
+                        {
+                            weight = 10;
+                        }
                         chat.Add(text[i], weight);
                     }
                 }
@@ -124,7 +134,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(9))
+            int type1 = ProjectileType<Nitori>();
+            if (FindChatIndex(out Projectile p, type1, 4, ignoreCD: true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Hina", "5"), myColor, 5);
+            }
+            else if (FindChatIndex(out p, type1, 5, ignoreCD: true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Hina", "6"), myColor, 6);
+            }
+            else if (FindChatIndex(out p, type1, 7, ignoreCD: true))
+            {
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Hina", "8"), myColor, 0);
+            }
+            else if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
             {
                 SetChat(myColor);
             }
@@ -162,7 +185,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;
-                        if (Main.rand.NextBool(3))
+                        if (Main.rand.NextBool(3) && ChatCD <= 0)
                             SetChat(myColor, ModUtils.GetChatText("Hina", "3"), 3, 60, 30);
                     }
                 }
