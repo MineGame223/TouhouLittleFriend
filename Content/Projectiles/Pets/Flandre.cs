@@ -304,8 +304,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<FlandreBuff>());
             Projectile.SetPetActive(player, BuffType<ScarletBuff>());
 
-            if (!Main.dayTime)
-                UpdateTalking();
+            UpdateTalking();
             ControlMovement(player);
 
             if (Remilia.HateSunlight(Projectile))

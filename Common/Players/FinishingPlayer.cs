@@ -13,16 +13,14 @@ namespace TouhouPets.Common
             if (attempt.inLava || attempt.inHoney)
                 return;
 
+            if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
+                return;
             if (Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish
                 || attempt.rare)
             {
                 if (Main.rand.NextBool(7))
                     itemDrop = ItemType<UselessBook>();
             }
-
-            if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
-                return;
-
             if (attempt.rare)
             {
                 if (Main.rand.NextBool(5))

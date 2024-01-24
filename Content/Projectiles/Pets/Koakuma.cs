@@ -183,10 +183,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             float speed = 9f;
             if (FindPet(out Projectile master, ProjectileType<Patchouli>()) && player.HasBuff<ScarletBuff>())
             {
-                speed += master.velocity.Length() * 4;
-                center = master.Center;
-                point = new Vector2(-50 * master.spriteDirection, player.gfxOffY);
+                point = new Vector2(-50 * master.spriteDirection, player.gfxOffY - 120);
                 Projectile.spriteDirection = master.spriteDirection;
+                speed = 4.5f;
             }
             else
             {

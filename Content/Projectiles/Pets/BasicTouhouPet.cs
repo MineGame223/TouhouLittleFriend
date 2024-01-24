@@ -302,7 +302,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 for (int i = 1; i < text.Length; i++)
                 {
-                    if (GetChatText(out text) != null && text[i] != null && text[i].Equals(dialog))
+                    if (!string.IsNullOrWhiteSpace(text[i]) && text[i].Equals(dialog))
                     {
                         index = i;
                     }
@@ -332,6 +332,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 color = Lighting.GetColor((int)((Projectile.position.X + Projectile.width / 2f) / 16f), (int)((Projectile.position.Y + Projectile.height / 2f) / 16f));
             }
             string chat = GetChatAndSetIndex(out int index);
+
+            if (string.IsNullOrWhiteSpace(chat))
+                return;
+
             int _index;
             if (altText != null)
             {
@@ -353,18 +357,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 typerTime = Math.Clamp(chat.Length * 5, 0, 150);
             }
-            if (chat != null && chat != string.Empty)
-            {
-                ChatIndex = _index;
-                chatBaseY = -24;
-                chatScale = 0f;
-                chatText = chat;
-                ChatTimeLeft = Math.Clamp(chat.Length * timeLeftPreWord, 0, 420);
-                timeToType = 0;
-                totalTimeToType = typerTime;
-                chatColor = color;
-                chatLag = lag;
-            }
+            ChatIndex = _index;
+            chatBaseY = -24;
+            chatScale = 0f;
+            chatText = chat;
+            ChatTimeLeft = Math.Clamp(chat.Length * timeLeftPreWord, 0, 420);
+            timeToType = 0;
+            totalTimeToType = typerTime;
+            chatColor = color;
+            chatLag = lag;
         }
         /// <summary>
         /// 设置与其他宠物的对话
@@ -670,14 +671,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 VisualEffectForPreview();
             }
-            else
-            {
-                bool drawingForTest = false;
-                DrawStatePanelForTesting(drawingForTest, ChatCD + "," + ChatIndex + "," + chatLag + "," + ChatTimeLeft + "," + talkInterval, new Vector2(0, 0));
-                DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
-                DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
-                DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
-            }
+            bool drawingForTest = false;
+            DrawStatePanelForTesting(drawingForTest, ChatCD + "," + ChatIndex + "," + chatLag + "," + ChatTimeLeft + "," + talkInterval, new Vector2(0, 0));
+            DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
+            DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
+            DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

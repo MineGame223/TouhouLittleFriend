@@ -262,21 +262,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindPet(out Projectile master, ProjectileType<Remilia>()))
             {
                 Projectile.spriteDirection = master.spriteDirection;
-                if (PetState >= 2 && PetState <= 3)
+                if (PetState == 3 || PetState == 2)
                 {
-                    speed += master.velocity.Length() * 4;
-                    center = master.Center;
-                }
-                if (PetState == 3)
-                {
-                    point = new Vector2(-20 * master.spriteDirection, player.gfxOffY);
-                }
-                else if (PetState == 2)
-                {
-                    point = new Vector2(-40 * master.spriteDirection, player.gfxOffY);
+                    point = new Vector2(((PetState == 2 ? -20 : -40) + 60) * master.spriteDirection, player.gfxOffY - 20);
+                    speed = 19f;
                 }
             }
-
             MoveToPoint(point, speed, center);
         }
         public override void AI()

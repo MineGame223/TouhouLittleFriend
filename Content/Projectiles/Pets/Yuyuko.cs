@@ -236,7 +236,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Eat()
         {
-            if (food.IsAir)
+            if (food == null || food.IsAir)
             {
                 Projectile.frame = 0;
                 extraAI[0] = 60;

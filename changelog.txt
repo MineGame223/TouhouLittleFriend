@@ -6,14 +6,10 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-新增：
-加入了一片银杏叶
-
 修改：
-更换了模组图标
-移除了“宠物出售时期限制”机制，为部分敌怪添加了宠物战利品
-斯卡蕾特姐妹的召唤物现在由恐惧鹦鹉螺以20%的概率掉落
-传奇带鱼可以额外通过钓鱼以极小概率获得
-移除闪亮羽毛合成配方，改为由鸟妖以5%的概率掉落
-移除老旧相机合成配方，改为由大风气球或愤怒蒲公英以5%的概率掉落
-无用魔法书与玩具钓竿不再能从岩浆中钓到
+加入了控制钓鱼获得宠物的Config
+雏人偶现在亦可通过钓鱼获得
+将河城荷取改为照明宠物
+
+修复：
+修复了慧音在白天也有可能变身的问题

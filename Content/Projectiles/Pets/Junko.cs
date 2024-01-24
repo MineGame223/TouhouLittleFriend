@@ -166,6 +166,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
+                        if (i == 1)
+                            weight = 10;
                         chat.Add(text[i], weight);
                     }
                 }

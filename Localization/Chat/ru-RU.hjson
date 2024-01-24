@@ -138,6 +138,9 @@ Mods: {
 			Chat14: Сильнейший щторм обрушивается на землю
 			Chat15: Бог-Дракон, должно быть, в ярости...
 			Chat16: Пожалуйста, успокойтесь, Тенши-сама...
+			// Chat17: Weird breath invades the moon and the spirits of harvest are brewing a brawl
+			// Chat18: Frost magic fully covered the moon, the time of carnival is coming
+			// Chat19: The invaders not belonging to this land have arrived...
 		}
 
 		Chat_Tenshin: {
