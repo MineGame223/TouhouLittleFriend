@@ -194,6 +194,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         /// <summary>
         /// 参数初始化
+        /// ！仅在本地端执行
         /// </summary>
         private void Initialize()
         {
@@ -201,7 +202,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChatIndex = 0;
             talkInterval = 0;
             ChatCD = 0;
-            extraAI = new int[3];
         }
         /// <summary>
         /// 更新对话系统
