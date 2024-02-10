@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 
 namespace TouhouPets.Content.Projectiles.Pets
@@ -168,11 +169,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        /// <summary>
-        /// 用于测试的文本绘制，在宠物正下方
-        /// </summary>
-        /// <param name="visible">可见性</param>
-        /// <param name="text">文本</param>
         internal void DrawStatePanelForTesting(bool visible, string text, Vector2 posAdj)
         {
             Vector2 pos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, 70) + posAdj;
@@ -196,14 +192,32 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
+        /// <summary>
+        /// 参数初始化
+        /// ！仅在本地端执行
+        /// </summary>
         private void Initialize()
         {
             chatFuncIsOccupied = false;
             ChatIndex = 0;
             talkInterval = 0;
             ChatCD = 0;
-            extraAI = new int[3];
         }
+        /// <summary>
+        /// 更新对话系统
+        /// <br>对话系统原理如下：</br>
+        /// <br>由一个宠物发起首句对话，同时另一个宠物在自身的AI中反复调用 FindChatIndex 检测是否出现相应对话，
+        /// 若出现，则将自身的 ChatCD 始终设为1，以避免自身出现对话导致接话失败。</br>
+        /// <br>检测对方的对话主要使用 FindChatIndex，在响应对方第一句的反复检测中使用的 FindChatIndex 
+        /// 需要将 timeLeft 参数设置为0以达到只要出现对话就视为检测成功的效果。</br>
+        /// <br>设置交互主要使用 SetChatWithOtherOne，由于 FindChatIndex 往往只在对方的 ChatTimeLeft 归零前的
+        /// 最后一刻生效，该方法会同时为自身和对方设置 ChatCD。一来让自己在说完话后不会立刻出现额外对话，
+        /// 二来让对方在“聆听”时同样不会在中途出现额外对话。</br>
+        /// <br>若出现了第三句对话，则 FindChatIndex 的 ignoreCD 参数应当为true，因为此前由自己发起的
+        /// SetChatWithOtherOne 方法给对方设置了超量的CD，只有无视其CD才能进行检测。</br>
+        /// <br>后续的对话如此反复使用 FindChatIndex 与 SetChatWithOtherOne 即可。</br>
+        /// <br>当一句对话来到结尾时，结尾对话的ChatIndex需要设置为0，同时还需要将对方的ChatIndex设置为0以彻底关闭对话。</br>
+        /// </summary>
         private void UpdateChat()
         {
             if (chatLag > 0)
@@ -288,7 +302,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 for (int i = 1; i < text.Length; i++)
                 {
-                    if (GetChatText(out text) != null && text[i] != null && text[i].Equals(dialog))
+                    if (!string.IsNullOrWhiteSpace(text[i]) && text[i].Equals(dialog))
                     {
                         index = i;
                     }
@@ -306,7 +320,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="lag">说话前的延时</param>
         /// <param name="timeLeftPreWord">每个字符的剩余时间值；文本持续时间为该变量 * 字符数</param>
         /// <param name="breakTimeLimit">打破字符剩余时间的限制，默认情况下，当字符长度超过10个时，timeLeftPreWord上限为10</param>
-        /// /// <param name="typerTime">打字机模式打印文本所需总时长，默认为字符数 * 5且默认上限为150</param>
+        /// <param name="typerTime">打字机模式打印文本所需总时长，默认为字符数 * 5且默认上限为150</param>
         internal void SetChat(Color color = default, string altText = default, int altIndex = 0, int lag = 0, int timeLeftPreWord = 20, bool breakTimeLimit = false, float typerTime = -1)
         {
             if (Projectile.owner != Main.myPlayer || ChatTimeLeft > 0 || ChatCD > 0)
@@ -318,6 +332,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 color = Lighting.GetColor((int)((Projectile.position.X + Projectile.width / 2f) / 16f), (int)((Projectile.position.Y + Projectile.height / 2f) / 16f));
             }
             string chat = GetChatAndSetIndex(out int index);
+
+            if (string.IsNullOrWhiteSpace(chat))
+                return;
+
             int _index;
             if (altText != null)
             {
@@ -339,18 +357,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 typerTime = Math.Clamp(chat.Length * 5, 0, 150);
             }
-            if (chat != null && chat != string.Empty)
-            {
-                ChatIndex = _index;
-                chatBaseY = -24;
-                chatScale = 0f;
-                chatText = chat;
-                ChatTimeLeft = Math.Clamp(chat.Length * timeLeftPreWord, 0, 420);
-                timeToType = 0;
-                totalTimeToType = typerTime;
-                chatColor = color;
-                chatLag = lag;
-            }
+            ChatIndex = _index;
+            chatBaseY = -24;
+            chatScale = 0f;
+            chatText = chat;
+            ChatTimeLeft = Math.Clamp(chat.Length * timeLeftPreWord, 0, 420);
+            timeToType = 0;
+            totalTimeToType = typerTime;
+            chatColor = color;
+            chatLag = lag;
         }
         /// <summary>
         /// 设置与其他宠物的对话
@@ -370,24 +385,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (cd == default)
                 cd = 600;
 
-            if (ChatCD > 0)
-            {
-                ChatCD = 0;
-            }
+            ChatCD = 0;
             SetChat(color, text, index, lag, timeleft, breakLimit, typerTime);
             ChatCD = cd;
             if (otherP != null)
                 otherP.localAI[1] = (cd2 == -1 || cd2 == default) ? cd : cd2;
         }
         /// <summary>
-        /// 查找对应宠物的对话索引值
+        /// 查找其他宠物的对话索引值
         /// </summary>
         /// <param name="target">被查找的对象</param>
-        /// <param name="type">宠物ID</param>
+        /// <param name="type">被查找宠物的Type</param>
         /// <param name="minIndex">最小索引值</param>
         /// <param name="maxIndex">最大索引值，默认等于最小索引值</param>
-        /// <param name="timeLeft">指定小于的剩余时间，设置为0时直接返回 true</param>
-        /// <param name="ignoreCD">是否忽略对象的 <see cref="ChatCD"/></param>
+        /// <param name="timeLeft">指定小于的剩余时间，设置为0时直接返回 true（往往用于检测开头的对话）</param>
+        /// <param name="ignoreCD">是否忽略对象的 <see cref="ChatCD"/>，用于第三句对话及之后的检测</param>
         /// <returns>当target的 <see cref="ChatCD"/> 大于0 且ignoreCD为 false 时总是返回 false</returns>
         internal bool FindChatIndex(out Projectile target, int type, int minIndex, int maxIndex = 0, int timeLeft = 1, bool ignoreCD = false)
         {
@@ -396,15 +408,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 maxIndex = minIndex;
             }
+            if (timeLeft == default)
+            {
+                timeLeft = 1;
+            }
             foreach (Projectile p in Main.projectile)
             {
                 if (p != null && p.active && p.owner == Projectile.owner)
                 {
-                    if (p.localAI[1] <= 0 && !ignoreCD || ignoreCD)
+                    if (p.localAI[1] <= 0 || ignoreCD)
                     {
                         if (p.type == type && p.localAI[2] >= minIndex && p.localAI[2] <= maxIndex)
                         {
-                            if (timeLeft <= 0 || timeLeft > 0 && p.localAI[0] <= timeLeft)
+                            if (timeLeft <= 0 || p.localAI[0] <= timeLeft)
                             {
                                 target = p;
                             }
@@ -419,26 +435,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         /// <param name="minIndex">最小索引值</param>
         /// <param name="maxIndex">最大索引值，默认等于最小索引值</param>
-        /// <param name="timeLeft">指定小于的剩余时间，设置为0时直接返回 true</param>
-        /// <param name="alphaLeft">指定小于的剩余对话剩余透明度，最大为1</param>
-        /// <param name="ignoreCD">是否忽略 ChatCD</param>
-        /// <returns>当 <see cref="ChatCD"/> 大于0且 ignoreCD 为 false 时总是返回 false</returns>
-        internal bool FindChainedChat(int minIndex, int maxIndex = 0, int timeLeft = 1, float alphaLeft = 0, bool ignoreCD = true)
+        /// <returns>当 <see cref="ChatCD"/> 大于0时总是返回 false</returns>
+        internal bool FindChainedChat(int minIndex, int maxIndex = 0)
         {
             if (maxIndex <= minIndex)
             {
                 maxIndex = minIndex;
             }
-            if (ChatCD <= 0 && !ignoreCD || ignoreCD)
+            if (ChatIndex >= minIndex && ChatIndex <= maxIndex)
             {
-                if (ChatIndex >= minIndex && ChatIndex <= maxIndex)
+                if (ChatTimeLeft <= 1)
                 {
-                    if (timeLeft <= 0 || timeLeft > 0 && ChatTimeLeft <= timeLeft)
+                    if (chatAlpha <= 0)
                     {
-                        if (chatAlpha <= alphaLeft)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
@@ -616,16 +626,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 5;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            Initialize();
+        }
         public override bool PreAI()
         {
-            if (mainTimer == 0)
+            if (++mainTimer > 4800)
             {
-                Initialize();
-                mainTimer = 1;
-            }
-            if (++mainTimer >= 4800)
-            {
-                mainTimer = 1;
+                mainTimer = 0;
             }
             UpdateChat();
             return base.PreAI();
@@ -662,14 +671,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 VisualEffectForPreview();
             }
-            else
-            {
-                bool drawingForTest = false;
-                DrawStatePanelForTesting(drawingForTest, ChatCD + "," + ChatIndex + "," + chatLag + "," + ChatTimeLeft + "," + talkInterval, new Vector2(0, 0));
-                DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
-                DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
-                DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
-            }
+            bool drawingForTest = false;
+            DrawStatePanelForTesting(drawingForTest, ChatCD + "," + ChatIndex + "," + chatLag + "," + ChatTimeLeft + "," + talkInterval, new Vector2(0, 0));
+            DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
+            DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
+            DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

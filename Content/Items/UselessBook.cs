@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets.Content.Items

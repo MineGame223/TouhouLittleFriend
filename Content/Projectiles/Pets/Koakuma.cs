@@ -17,6 +17,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
@@ -182,10 +183,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             float speed = 9f;
             if (FindPet(out Projectile master, ProjectileType<Patchouli>()) && player.HasBuff<ScarletBuff>())
             {
-                speed += master.velocity.Length() * 4;
-                center = master.Center;
-                point = new Vector2(-50 * master.spriteDirection, player.gfxOffY);
+                point = new Vector2(-50 * master.spriteDirection, player.gfxOffY - 120);
                 Projectile.spriteDirection = master.spriteDirection;
+                speed = 4.5f;
             }
             else
             {

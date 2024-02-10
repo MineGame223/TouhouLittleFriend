@@ -167,7 +167,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        internal static bool UseAlternatePhase => Main.bloodMoon || Main.moonPhase == (int)MoonPhase.Full;
+        internal static bool UseAlternatePhase => Main.bloodMoon || (Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime);
         private void ControlMovement(Player player)
         {
             Projectile.tileCollide = false;

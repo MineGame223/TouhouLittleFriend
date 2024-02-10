@@ -487,6 +487,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 extraY = 2;
             }
             ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * (Fighting ? 1 : -1), 0, 1);
+
+            if (Projectile.owner != Main.myPlayer)
+                return;
+
             if (!Fighting)
             {
                 abilityCD[0] = 0;
@@ -502,6 +506,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
             abilityCD = new int[2];
         }
         public override void AI()

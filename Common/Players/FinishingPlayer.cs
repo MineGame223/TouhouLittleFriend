@@ -13,6 +13,8 @@ namespace TouhouPets.Common
             if (attempt.inLava || attempt.inHoney)
                 return;
 
+            if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
+                return;
             if (Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish
                 || attempt.rare)
             {
@@ -21,8 +23,11 @@ namespace TouhouPets.Common
             }
             if (attempt.rare)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(5))
                     itemDrop = ItemType<WakasagihimeFishingRod>();
+
+                if (Main.rand.NextBool(5))
+                    itemDrop = ItemType<HinaDoll>();
             }
             if (attempt.legendary)
             {

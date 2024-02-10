@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Globalization;
+using System;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -18,7 +18,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Texture2D cloth = AltVanillaFunction.GetExtraTexture("Reimu_Cloth");
             Texture2D cloth_NewYear = AltVanillaFunction.GetExtraTexture("Reimu_Cloth_NewYear");
-            if (TimeTable.DuringNewYear)
+            if (DateTime.Now.Month == 2)
             {
                 cloth = cloth_NewYear;
             }

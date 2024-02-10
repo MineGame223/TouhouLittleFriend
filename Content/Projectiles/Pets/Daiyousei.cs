@@ -111,16 +111,16 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (FindChatIndex(out Projectile p, type1, 4))
             {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Daiyousei", "7"), myColor, 0, 360);
+                SetChatWithOtherOne(p, ModUtils.GetChatText("Daiyousei", "7"), myColor, 0);
                 p.localAI[2] = 0;
             }
             else if (FindChatIndex(out Projectile p1, type1, 7))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Daiyousei", "6"), myColor, 6, 600);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Daiyousei", "6"), myColor, 6);
             }
             else if (FindChatIndex(out Projectile p2, type1, 9, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Daiyousei", "8"), myColor, 0, 360);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Daiyousei", "8"), myColor, 0);
                 p2.localAI[2] = 0;
             }
             if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0)

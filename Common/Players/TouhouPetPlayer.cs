@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
-using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items.PetItems;
 using TouhouPets.Content.NPCs;
 
