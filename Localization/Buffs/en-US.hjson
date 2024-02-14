@@ -7,37 +7,37 @@ Mods: {
 			}
 
 			UtsuhoBuff: {
-				DisplayName: Hellcrow
-				Description: "'I'm the sun of the hell!'"
+				DisplayName: Hell Raven
+				Description: "'I'm hell's Subterranean Sun!'"
 			}
 
 			HinaBuff: {
-				DisplayName: Godness of Doom
+				DisplayName: Godess of Misfortune
 				Description: "'Turn and turn...'"
 			}
 
 			DaiyouseiBuff: {
 				DisplayName: Daiyousei
-				Description: "'Who is Daiyousei?'"
+				Description: "'Who's Daiyousei?'"
 			}
 
 			PatchouliBuff: {
 				DisplayName: The Mage
-				Description: "'The little unmovable library...?'"
+				Description: "'The little, unmoving library...?'"
 			}
 
 			SekibankiBuff: {
 				DisplayName: Dullahan
-				Description: "'Please don't play my head'"
+				Description: "'Please don't play with my head'"
 			}
 
 			MarisaBuff: {
 				DisplayName: Human Mage
-				Description: "'She can no longer steal stuffs'"
+				Description: "'She can no longer steal things'"
 			}
 
 			ReimuBuff: {
-				DisplayName: Hakurei's Sorceress
+				DisplayName: Hakurei's Shrine Maiden
 				Description: "'...'"
 			}
 
@@ -57,12 +57,12 @@ Mods: {
 			}
 
 			JunkoBuff: {
-				DisplayName: The pure god
+				DisplayName: The Pure Spirit
 				Description: "'Whereabouts of the heart'"
 			}
 
 			HecatiaBuff: {
-				DisplayName: Goddess of the hell
+				DisplayName: Goddess of Hell
 				Description: "'Welcome ♥ Hell'"
 			}
 
@@ -73,7 +73,7 @@ Mods: {
 
 			TenshiBuff: {
 				DisplayName: The Celestial
-				Description: "'A bad girl from the sky'"
+				Description: "'A delinquent from the sky'"
 			}
 
 			SatoriBuff: {
@@ -93,11 +93,11 @@ Mods: {
 
 			SanaeBuff: {
 				DisplayName: Wind Sorceress
-				Description: "'Watching for the miracle!'"
+				Description: "'Watching for miracles!'"
 			}
 
 			KogasaBuff: {
-				DisplayName: Youkai of Umbrella
+				DisplayName: Umbrella Tsukumogami
 				Description: "'BOO!'"
 			}
 
@@ -112,8 +112,8 @@ Mods: {
 			}
 
 			LilyBuff: {
-				DisplayName: Yousei of the Spring
-				Description: "'The spring is coming!'"
+				DisplayName: Fairy of Spring
+				Description: "'Spring is coming!'"
 			}
 
 			MystiaBuff: {
@@ -122,22 +122,22 @@ Mods: {
 			}
 
 			WriggleBuff: {
-				DisplayName: Youkai of Firefly
+				DisplayName: Firefly Youkai
 				Description: "'Twinkle twinkle little bug'"
 			}
 
 			YuyukoBuff: {
-				DisplayName: Ghost of Cherry
+				DisplayName: Ghost of the Cherry Blossoms
 				Description: "'Border of Life'"
 			}
 
 			AyaBuff: {
-				DisplayName: Aya Buff
+				DisplayName: Crow Tengu
 				Description: "'LORD OF SPEED!'"
 			}
 
 			YoumuBuff: {
-				DisplayName: Little plantsman
+				DisplayName: Little Gardener
 				Description: "'WHO'S THERE ?!'"
 			}
 
@@ -157,12 +157,12 @@ Mods: {
 			}
 
 			WakasagihimeBuff: {
-				DisplayName: Mermaid Hime
+				DisplayName: Mermaid-Hime
 				Description: "'purr purr .oO'"
 			}
 
 			YukaBuff: {
-				DisplayName: Lord of flowers
+				DisplayName: Guardian of Flowers
 				Description: "'Please don't pick that flower'"
 			}
 
@@ -172,8 +172,8 @@ Mods: {
 			}
 
 			KaguyaBuff: {
-				DisplayName: Luna Princess
-				Description: Sorry but I'm too lazy to desigh orz
+				DisplayName: Lunar Princess
+				Description: "'Exiled Princess of The Lunatic Kingdom'"
 			}
 
 			MokuBuff: {
@@ -183,7 +183,7 @@ Mods: {
 
 			MeirinBuff: {
 				DisplayName: The Gatekeeper
-				Description: "'I'm guarding here!'"
+				Description: "'Hey, I'm guarding here!'"
 			}
 
 			SakuyaBuff: {
@@ -197,7 +197,7 @@ Mods: {
 			}
 
 			KeineBuff: {
-				DisplayName: Half Shirasawa
+				DisplayName: Were-Hakutaku
 				Description: "'Creator of the History'"
 				Description_2: "'Devourer of the History'"
 			}
