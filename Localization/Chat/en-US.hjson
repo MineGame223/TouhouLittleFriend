@@ -9,7 +9,7 @@ Mods: {
 			Chat1: What should I freeze today...
 			Chat2: Cirno is invincible!
 			Chat3: I'm the strongest!
-			Chat4: Like Dai-chan most!
+			Chat4: I like Dai-chan most!
 			Chat6: 1+1=... What, ⑨?
 			Chat7: It's so hot... I'm gonna start melting...
 			Chat8: So many frogs!
@@ -482,19 +482,19 @@ Mods: {
 		}
 
 		Chat_Portal: {
-			Chat1: Hey, if you find this, why don't you buy something? All for the Gensokyo
-			Chat2: Leave some coin here and take your favorite gift. Just do something for Gensokyo's exist
-			Chat3: Want to have a cute partner? Why don't look here!
-			Chat4: Your later life may have no relationship with the Gensokyo, but what you do now will influence Gensokyo's fate...I mean, buy something?
-			Chat5: Thank your support for the Gensokyo so long! This is what you should own.
+			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all
+			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence
+			Chat3: Want to have a cute partner? Why not look here!
+			Chat4: Your later life may have no relationship with Gensokyo, but what you do now will influence it's fate...I mean, buy something?
+			Chat5: Thank you for supporting Gensokyo for so long! This is what you've earned.
 			Chat6:
 				'''
-				You have provided {0}, may the Gensokyo be with you.
+				You have provided {0}, may Gensokyo be with you.
 				By the way, selling items here will reduce the wealth count.
 				'''
 			Chat7:
 				'''
-				You haven't buy anything here, it's never too late to do.
+				You haven't bought anything here, but it's never too late to do.
 				By the way, selling items here will reduce the wealth count.
 				'''
 			Chat8: Wait, you can see THIS? you have found a bug!
