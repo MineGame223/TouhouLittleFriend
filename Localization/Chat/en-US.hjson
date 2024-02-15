@@ -9,7 +9,7 @@ Mods: {
 			Chat1: What should I freeze today...
 			Chat2: Cirno is invincible!
 			Chat3: I'm the strongest!
-			Chat4: Like Dai-chan most!
+			Chat4: I like Dai-chan most!
 			Chat6: 1+1=... What, ⑨?
 			Chat7: It's so hot... I'm gonna start melting...
 			Chat8: So many frogs!
@@ -146,7 +146,7 @@ Mods: {
 		Chat_Tenshin: {
 			Chat1: I'm gonna to prove to you all that I'm the most powerful!
 			Chat2: Let's make a big bang today!
-			Chat3: Heaven is too boring...So, So, I, the greatest celestial went down here to give you some care!
+			Chat3: Heaven is too boring...So, So, I, the greatest celestial came down here to give you some care!
 		}
 
 		Chat_Junko.Chat1: Are you watching, Chang'e?...
@@ -195,7 +195,7 @@ Mods: {
 		Chat_Sanae: {
 			Chat1: I'll follow the two dear gods forever...
 			Chat2: You shouldn't just stick on common sense here!
-			Chat3: Sometimes I'll miss the old days...Ah, but what's important is the present!
+			Chat3: Sometimes I miss the old days...Ah, but what's important is the present!
 			Chat4: Join the Moriya Shrine, and believe in Kanako-sama and Suwako-sama!
 			Chat5: Feel the wind!
 		}
@@ -268,7 +268,7 @@ Mods: {
 			Chat5: (She is singing a song that you don't understand, but it seems holy)
 			Chat6: (She is singing a song that you don't understand, but it seems frisky)
 			Chat7: (She is singing a song that you don't understand, but it seems leisurely)
-			Chat8: (She is singing a song that you don't understand, but it seems sorrow)
+			Chat8: (She is singing a song that you don't understand, but it seems sorrowful)
 			Chat9: Up above the world so high~ Like a diamond in... Wait bugs don't look like diamonds!
 		}
 
@@ -282,131 +282,131 @@ Mods: {
 			Chat7: Wanna enjoy 'Bug Service'?
 			Chat8: Spiders aren't insects, scorpions and centipedes aren't, either. Remember?
 			Chat9: Can you identify bees, wasps and hornets?
-			Chat10: Do you know that fireflies only appear in clean places?
+			Chat10: Did you know that fireflies only appear in clean places?
 		}
 
 		Chat_Aya: {
 			Chat1: Today's wind is so noisy!
 			Chat2: Can you reach my speed?
-			Chat3: material...Where is today's material...
-			Chat4: I'm not a 'fake news maker', I just make it a little bit 'exaggerate'
-			Chat5: Make s BIG news!
-			Chat6: What an excellent news material!
+			Chat3: Material...Where is today's story material...
+			Chat4: I'm not a 'Fake news reporter', I just 'exaggerate' it a bit, to make it more interesting!
+			Chat5: This'll make for some BIG news!
+			Chat6: Such excellent news material!
 			Chat7: Today's report gocha!
 			Chat8: Perfect!
 		}
 
 		Chat_Yuyuko: {
-			Chat1: Whether is die or live, it is just a cycle, but it is not related to me...
-			Chat2: It would be nice to exist simply and happily despite dead or alive
-			Chat3: When the Sakura blooming, then it will happen...What 'it' is?
-			Chat4: What to eat later?
-			Chat5: The food!
+			Chat1: Whether it's life or death, it's just a cycle, a cycle not related to me...
+			Chat2: It would be nice to exist simply and happily, in spite of life and death
+			Chat3: When the Sakura starts blooming, then it will happen...What is 'it', though?
+			Chat4: What should I eat later?
+			Chat5: Thanks for the food!
 			Chat6: Delicious!
 			Chat7: Thank you!
 			Chat5-1: Hungry...
-			Chat6-1: Ghost need food too, just take it quickly!
+			Chat6-1: Ghosts need food too, so I'll just take it quickly!
 			Chat7-1: When is dinner time?
-			Chat8: Youmu-chan, what we eat tonight?
-			Chat9: Have Youmu-chan make any plan about the future?
-			Chat10: Youmu-chan is as simple as I thought, just talk this later
+			Chat8: Youmu-chan, what're we eating tonight?
+			Chat9: Has Youmu-chan made any plans for the future?
+			Chat10: Youmu-chan is as simple as I thought, we'll just talk this over later
 		}
 
 		Chat_Youmu: {
-			Chat1: Manage the yard and drive out invaders, There are just my daily work...
-			Chat2: Wish Yuyuko sama eats enough every time
+			Chat1: Manage the yard and drive out invaders, that's just my daily work...
+			Chat2: I hope Yuyuko-sama's eating enough with each meal
 			Chat3: ENEMY FOUND!
-			Chat4: Here...so scary...
+			Chat4: Here...it's so scary...
 			Chat5: ...IS THERE A GHOST?!
-			Chat6: Eh? Just take good care of Yuyuko sama is enough...
+			Chat6: Eh? Just taking good care of Yuyuko-sama is enough...
 			Chat7: Ah...I can't understand...
-			Chat8: You just ate a meal before 5 minutes, Yuyuko sama
-			Chat9: But you are already dead, Yuyuko sama! You can't reborn too
-			Chat10: I'm content that I can stay with Yuyuko sama
+			Chat8: Your last meal was less than 5 minutes ago, Yuyuko sama
+			Chat9: But you are already dead, Yuyuko-sama! You can't just reincarnate!
+			Chat10: I'm content with staying by Yuyuko-sama
 		}
 
 		Chat_Alice: {
-			Chat1: Recently puppets are easily to worn out...
-			Chat2: Should I make some puppets more?
-			Chat3: I just can't give up old time's habits even I'm already a mage
-			Chat4: Marisa, when can you give me my mushroom that you stole from me?
-			Chat5: Stop joking and give me a clear deadline
-			Chat6: ...You better not do so...There is no next time!
+			Chat1: Puppets have been wearing down easily...
+			Chat2: Should I make some more puppets?
+			Chat3: I just can't give up old habits, even if I'm already a mage
+			Chat4: Marisa, when can you give me the mushroom that you stole from me?
+			Chat5: Stop joking and just give me a clear deadline
+			Chat6: ...You better not try that...There is no next time!
 			Chat7: YOU!......
-			Chat8: God she just stole one of my potions last time
+			Chat8: God, she just stole one of my potions last time
 			Chat9: ...We have to give her a lesson!
-			Chat10: ...? Just let me to find her, you don't need to trouble yourself...
+			Chat10: ...? Just let me go find her, you don't need to trouble yourself...
 		}
 
 		Chat_Rumia: {
-			Chat1: So~ nanoka?
-			Chat2: Dark, like! Light, hate!
-			Chat3: Can I bite you? Only this time
-			Chat4: Am I looks like a saint on the cross?
-			Chat5: Where are you? it is so dake...
+			Chat1: So~ nano ka?
+			Chat2: Love the dark! Hate the light!
+			Chat3: Can I bite you? Just this once!
+			Chat4: Do I look like a saint on the cross?
+			Chat5: Where are you? It's so dark...
 			Chat6: Too sunny...
 		}
 
 		Chat_Koakuma: {
 			Chat1: Koakuma No.{0}, at your service!
-			Chat2: Are my fellows fine?...
-			Chat3: Any thing I can do?
-			Chat4: Time to do exercise, Patchouli sama!
-			Chat5: It is necessary for your health!
-			Chat6: What are you reading Patchouli sama?
+			Chat2: Are my friends alright?...
+			Chat3: Anything I can do for you?
+			Chat4: Time to get some exercise, Patchouli-sama!
+			Chat5: It's necessary for your health!
+			Chat6: What are you reading Patchouli-sama?
 			Chat7: Sounds interesting!
 		}
 
 		Chat_Wakasagihime: {
-			Chat1: Although I'm a fish, I can leave water as well
+			Chat1: Although I'm a fish, I can leave the water if I want
 			Chat2: I'm a freshwater fish!
-			Chat3: I'm not a 'fish memory'!...
+			Chat3: I don't have a 'fish memory'!...
 			Chat4: *purr purr~
 		}
 
 		Chat_Yuka: {
-			Chat1: The most beautiful time always is the time when all flowers blossom
+			Chat1: The most beautiful time is always the time where the flowers are in full bloom
 			Chat2: Another peaceful and boring day...
 			Chat3: Every flower has a short and colorful life, you'd better don't bother them
 		}
 
 		Chat_Yukari: {
-			Chat1: As a sage, protect the barrier is my forever duty...
-			Chat2: Is that old friend currently fine?...
-			Chat3: Reimu, she should be more diligent
-			Chat4: You wanna know my age? Of course is 17 year's old~... You should say no more
-			Chat5: If you miss her, I allow you to take a temporary leave
+			Chat1: As a sage, it's my eternal duty to protect the barrier...
+			Chat2: Is that old friend of mine doing alright?...
+			Chat3: That Reimu, she should really be more diligent
+			Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more
+			Chat5: If you miss her, I'll allow you to take a temporary leave
 			Chat6: Nothing, Maybe I don't need to worry about her appetite
 		}
 
 		Chat_Ran: {
-			Chat1: There are something wrong about the sun's position and the time...
-			Chat2: How could gold harder than iron?
-			Chat3: Is youma still living in the animal world?...
-			Chat4: Don't leave me too far, CHen!
+			Chat1: There's something wrong about the sun's position and the time...
+			Chat2: How could gold be stronger than iron?
+			Chat3: Is Yuuma still living in the Animal Realm?...
+			Chat4: Don't leave me too far, Chen!
 			Chat5: You mean?
-			Chat6: Maybe I know who she is...
+			Chat6: I might know who she is...
 			Chat7: I, I'm NOT! Yukari sama!
 		}
 
 		Chat_Chen: {
 			Chat1: Meow!
-			Chat2: want some fish...
+			Chat2: I want some fish...
 			Chat3: I know, Ran sama!
 		}
 
 		Chat_Kaguya: {
 			Chat-1: This turn, I win!
-			Chat-2: Practice make perfect, understand?
+			Chat-2: Practice makes perfect, you understand?
 			Chat-3: Ah hahaha!
 			Chat-4: DAMN!!!
 			Chat-5: You must cheated!
-			Chat-6: I'll achieve your wish in the next round-- DIE!
+			Chat-6: I'll grant your wish in the next round-- DIE!
 			Chat1: It's not very "dirty" on the ground...
-			Chat2: Can't help to memory the old days since I come to the ground so long
+			Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
 			Chat3: ...I have to win this time!
-			Chat4: hold on, hold on...
-			Chat5: Practice make perfect
+			Chat4: Hold on, hold on...
+			Chat5: Practice makes perfect
 			Chat6: Not your business!
 			Chat7: Hey, how long have we been fighting each other?
 			Chat8: Wanna do something new today?
@@ -415,18 +415,18 @@ Mods: {
 
 		Chat_Moku: {
 			Chat-1: Just accept that I'm stronger!
-			Chat-2: You even want to defeat ME?
-			Chat-3: That's your all?
+			Chat-2: Do you even want to defeat ME?
+			Chat-3: That's all you got?
 			Chat-4: I won't lose in the next round!
 			Chat-5: I'm too careless...
-			Chat-6: It's your last time to be complacent...
-			Chat1: Living forever, is absolutely a sin than a blessing...
-			Chat2: ...How many years ago from that time?
-			Chat3: How could I know, about thousand of years?
+			Chat-6: This'll be the last time you'll be this complacent...
+			Chat1: Living forever, is absolutely a greater curse than a blessing...
+			Chat2: ...How many years ago was that time?
+			Chat3: How could I know, about a thousand years?
 			Chat4: ...What you want to do?
-			Chat5: No and never!...well I know a place can go...
-			Chat6: Can you just be QUIET for a time?
-			Chat7: I'm fine, maybe. Just as usual
+			Chat5: No, never!...Well, I know a place we can go...
+			Chat6: Can you just be QUIET for once?
+			Chat7: I'm fine, maybe. Just the usual
 			Chat8: Nope, I'm trying to forget them...
 			Chat9: You will become this form every full moon, that's pretty scary!
 		}
@@ -434,19 +434,19 @@ Mods: {
 		Chat_Meirin: {
 			Chat1: Today is another boring...no no no, hardworking day!
 			Chat2: My name is "Meirin Hong", not "China"!
-			Chat3: It's really idle to be a gatekeeper here...
-			Chat4: My homeland is in the eastern, where above the Yangtze River!
+			Chat3: It's really boring to be a gatekeeper here...
+			Chat4: My homeland is in the East, right above the Yangtze River!
 			//Don't translate this
 			Chat5: 易有太极，是生两仪...
-			Chat6: It is my home language, Flandre sama
-			Chat7: It called "Tai ji", Flandre sama
-			Chat8: Mmm...Maybe need Remilia sama's agreement
+			Chat6: It's my home language, Flandre sama
+			Chat7: It's called "Tai ji", Flandre sama
+			Chat8: Mmm...Maybe need Remilia-sama's agreement
 			Chat9: I'm NOT!
-			Chat10: Ms.Sakuya is so busy, do you have any vacation?
-			Chat11: This job is as same as vacation...
+			Chat10: Ms.Sakuya is so busy, do you ever get a vacation?
+			Chat11: This job is the same as vacation...
 			Chat12: NOTHING!...
-			Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid fall in love
-			Chat14: Ah! I shoulden't say this...
+			Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love
+			Chat14: Ah! I shouldn't have said anything...
 			Chat15: Too bad...Wait what?
 		}
 
@@ -459,42 +459,42 @@ Mods: {
 			Chat6: The day with Remilia sama is my vacation, and you also don't have vacation right?
 			Chat7: What?
 			Chat8: You read comic during your work time?
-			Chat9: I'll give you a big punish at night!...Also let me see the comic...
-			Chat10: My life already restarted since I meet you, there is no past
+			Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
+			Chat10: My life already restarted since I met you, there is no past
 		}
 
 		Chat_Raiko: {
 			Chat1: Badum, psh~
-			Chat2: I have heard that oni can play drums too, even can defeat the monsters by it?
-			Chat3: Life is a drum set, the loudest is the perfect!
+			Chat2: I have heard that oni can play drums too, but can they even defeat monsters like that?
+			Chat3: Life is a drum set, the louder, the better!
 		}
 
 		Chat_Keine: {
-			Chat1: Recently, village's people don't like to say hello...How could them be so rude?
-			Chat2: This paper filled with 9...Must be Cirno
-			Chat3: Only the thing that being recorded is the history
+			Chat1: Recently, the village's people don't like saying hello...How could they be so rude?
+			Chat2: This paper is filled with 9's...Must be Cirno
+			Chat3: Only the thing that's always being recorded is history
 			Chat4: Tonight will be a busy night...
 			Chat5: Create the history, keep the history
-			Chat6: Let me see is who haven't finished her homework...
-			Chat7: How are you recently?
+			Chat6: Let me see who hasn't finished their homework...
+			Chat7: How've you been recently?
 			Chat8: Still entangled with the past things?
-			Chat9: This is both my nature and my duty
+			Chat9: This is both my nature, and my duty
 		}
 
 		Chat_Portal: {
-			Chat1: Hey, if you find this, why don't you buy something? All for the Gensokyo
-			Chat2: Leave some coin here and take your favorite gift. Just do something for Gensokyo's exist
-			Chat3: Want to have a cute partner? Why don't look here!
-			Chat4: Your later life may have no relationship with the Gensokyo, but what you do now will influence Gensokyo's fate...I mean, buy something?
-			Chat5: Thank your support for the Gensokyo so long! This is what you should own.
+			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all
+			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence
+			Chat3: Want to have a cute partner? Why not look here!
+			Chat4: Your later life may have no relationship with Gensokyo, but what you do now will influence it's fate...I mean, buy something?
+			Chat5: Thank you for supporting Gensokyo for so long! This is what you've earned.
 			Chat6:
 				'''
-				You have provided {0}, may the Gensokyo be with you.
+				You have provided {0}, may Gensokyo be with you.
 				By the way, selling items here will reduce the wealth count.
 				'''
 			Chat7:
 				'''
-				You haven't buy anything here, it's never too late to do.
+				You haven't bought anything here, but it's never too late to do.
 				By the way, selling items here will reduce the wealth count.
 				'''
 			Chat8: Wait, you can see THIS? you have found a bug!

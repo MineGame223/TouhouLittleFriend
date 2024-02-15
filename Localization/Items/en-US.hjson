@@ -2,18 +2,18 @@ Mods: {
 	TouhouPets: {
 		Items: {
 			CirnoIceShard: {
-				DisplayName: Ice Shard that full of wisdom
-				Tooltip: "'Looks like filled with wisdom!'"
+				DisplayName: Ice Shard Full of Wisdom
+				Tooltip: "'Looks like it's filled with wisdom!'"
 			}
 
 			UtsuhoEye: {
 				DisplayName: Crimson Eye
-				Tooltip: "'Hot to touch'"
+				Tooltip: "'Hot to the touch'"
 			}
 
 			HinaDoll: {
 				DisplayName: Hina Doll
-				Tooltip: "'They say it can take the doom away...or bring it instead?'"
+				Tooltip: "'They say it can take bad luck away...or does it bring it instead?'"
 			}
 
 			DaiyouseiBomb: {
@@ -28,22 +28,22 @@ Mods: {
 
 			SekibankiBow: {
 				DisplayName: Blue Bow
-				Tooltip: "'This is the ninth'"
+				Tooltip: "'This is the ninth bow'"
 			}
 
 			MarisaHakkero: {
 				DisplayName: Mini-Hakkero
-				Tooltip: "'Burning gently'"
+				Tooltip: "'It burns gently'"
 			}
 
 			ReimuYinyangOrb: {
-				DisplayName: Yin-yang Orb
-				Tooltip: "'Full of aura...and pretty heavy'"
+				DisplayName: Yin-Yang Orb
+				Tooltip: "'Full of energy...and it's pretty heavy'"
 			}
 
 			RemiliaRedTea: {
 				DisplayName: A cup of Red Tea
-				Tooltip: "'A good enjoy in afternoon'"
+				Tooltip: "'A good drink to enjoy in the afternoon'"
 			}
 
 			FlandrePudding: {
@@ -53,36 +53,36 @@ Mods: {
 
 			CakeOfScarlet: {
 				DisplayName: Cake of Scarlet
-				Tooltip: "'The afternoon teatime that only belongs to the Scarlet Mansion'"
+				Tooltip: "'The afternoon teatime, belonging only to the Scarlet Mansion'"
 			}
 
 			JunkoMooncake: {
 				DisplayName: Pure Mooncake
-				Tooltip: "'Pure olive nut'"
+				Tooltip: "'Pure Olive Nut'"
 			}
 
 			HecatiaPlanet: {
 				DisplayName: Strange Red Planet
-				Tooltip: "'Otherworldly thing'"
+				Tooltip: "'Otherworldly... Thing'"
 			}
 
 			IkuOarfish: {
-				DisplayName: The Legendary fish
+				DisplayName: The Legendary Fish
 				Tooltip: "'Rare and beautiful'"
 			}
 
 			TenshiKeyStone: {
-				DisplayName: Key Stone
-				Tooltip: "'Neither a top nor a pickles stone!'"
+				DisplayName: Keystone
+				Tooltip: "'Neither a gyro nor a pickle stone!'"
 			}
 
 			SatoriSlippers: {
-				DisplayName: A pair of Pink Slippers
-				Tooltip: "'Must be very warm'"
+				DisplayName: A Pair of Pink Slippers
+				Tooltip: "'Must be very cozy'"
 			}
 
 			KoishiTelephone: {
-				DisplayName: Purple telephone
+				DisplayName: Purple Telephone
 				Tooltip:
 					'''
 					'Moshi moshi?'
@@ -92,17 +92,17 @@ Mods: {
 
 			TheThirdEye: {
 				DisplayName: The 3rd Eye
-				Tooltip: "'Spying your inside...'"
+				Tooltip: "' Staring into your mind...'"
 			}
 
 			SanaeCoin: {
-				DisplayName: Silver Coin of Frog
-				Tooltip: "'Maybe cause something interesting when saved an enough amount?'"
+				DisplayName: Silver Frog Coin
+				Tooltip: "'Maybe something interesting will happen if you save enough?'"
 			}
 
 			KogasaUmbrella: {
 				DisplayName: Odd Umbrella
-				Tooltip: "'Is there an EYE on it ?!'"
+				Tooltip: "'Is that an EYE on it ?!'"
 			}
 
 			NitoriCucumber: {
@@ -111,18 +111,18 @@ Mods: {
 			}
 
 			UselessBook: {
-				DisplayName: A Magic Book without any functions
+				DisplayName: A Magic Book With No Function
 				Tooltip:
 					'''
-					A very worn book that has been waterproof treated
-					It's full of obscurities that can't even be a weapon
-					Maybe throw it into a sparkling pool will refresh it?
+					A very worn book that's been waterproof treated
+					It's full of obscurities that can't even be used as a weapon
+					Perhaps tossing it into a sparkling pool will refresh it?
 					'''
 			}
 
 			RinSkull: {
 				DisplayName: Possessed Skull
-				Tooltip: "'May not a fit toy for a cat...?'"
+				Tooltip: "'May this... isn't a fit toy for a cat...?'"
 			}
 
 			LilyOneUp: {
@@ -137,19 +137,19 @@ Mods: {
 
 			WriggleInAJar: {
 				DisplayName: Nightbug in a Jar
-				Tooltip: "'A light from long-long ago memory'"
+				Tooltip: "'A light from a long-lost memory'"
 			}
 
 			AyaCamera: {
 				DisplayName: Old style Camera
-				Tooltip: "'There is a maple leaf on behind'"
+				Tooltip: "'There is a maple leaf on the back'"
 			}
 
 			YuyukoFan: {
 				DisplayName: Cherry Fan
 				Tooltip:
 					'''
-					"Still has a scent of spring on it"
+					"Still has the scent of spring on it"
 					Please take care of any FOOD in your inventory!
 					'''
 			}
@@ -161,7 +161,7 @@ Mods: {
 
 			AliceDoll: {
 				DisplayName: Exquisite Puppet
-				Tooltip: "'Vivied and lively'"
+				Tooltip: "'Vivid and lively'"
 			}
 
 			RumiaRibbon: {
@@ -171,42 +171,42 @@ Mods: {
 
 			KoakumaPower: {
 				DisplayName: POWER
-				Tooltip: "'Actually a dyed BOMB...?'"
+				Tooltip: "'It's... actually a dyed BOMB?'"
 			}
 
 			WakasagihimeFishingRod: {
 				DisplayName: Toy Fishing Rod
-				Tooltip: "'Can catch... something'"
+				Tooltip: "'It can catch... something'"
 			}
 
 			YukaSunflower: {
 				DisplayName: Potted Sunflower
-				Tooltip: "'What ??'"
+				Tooltip: "'What??'"
 			}
 
 			YukarisItem: {
 				DisplayName: Sage's license
-				Tooltip: "'This is my approvement to you, just take it'"
+				Tooltip: "'This is my sign of approval, just take it'"
 			}
 
 			KaguyaBranch: {
-				DisplayName: Penglai Jade Branch
-				Tooltip: "'A ordinary branch with colorful jewels'"
+				DisplayName: Jeweled Branch of Hourai
+				Tooltip: "'A seemingly ordinary branch with colorful jewels'"
 			}
 
 			MokuMatch: {
-				DisplayName: match that never put out
-				Tooltip: "'No matter rainning or blowing'"
+				DisplayName: Everlasting Match
+				Tooltip: "'Raining or blowing, the flame never dies'"
 			}
 
 			MeirinPanda: {
 				DisplayName: Panda Pendant
-				Tooltip: "'From the mysterious eastern land'"
+				Tooltip: "'From the mysterious Eastern land'"
 			}
 
 			SakuyaWatch: {
 				DisplayName: Luna Dial
-				Tooltip: "'The pointer remained at 4:16 forever'"
+				Tooltip: "'The hands forever stay at 4:16'"
 			}
 
 			RaikoDrum: {
@@ -216,7 +216,7 @@ Mods: {
 
 			KeineLeaf: {
 				DisplayName: Ginkgo Leaf
-				Tooltip: "'Load the culture and hold it forever'"
+				Tooltip: "'Carrying culture for over a thousand years'"
 			}
 		}
 	}
