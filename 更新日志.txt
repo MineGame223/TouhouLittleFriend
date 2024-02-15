@@ -4,7 +4,7 @@ v1.1.2.6：
 无
 
 修改：
-无
+优化了英文对话翻译/Optimized the English Chat's translation, thanks for @Kyuumulonimbus
 
 修复：
 无
