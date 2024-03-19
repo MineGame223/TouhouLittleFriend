@@ -16,7 +16,7 @@ Mods: {
 			Chat9: Не бойся, Дэй-чан. Я рядом!
 			Chat10: Куда Дэй-чан - туда и я!
 			Chat11: Я в норме... наверное...
-			// Chat12: ("Oh god! Keini senise will find me...")
+			// Chat12: ("Oh god! Keine-sensei will find me...")
 		}
 
 		Chat_Daiyousei: {
@@ -41,7 +41,7 @@ Mods: {
 			Chat8: Ты всегда так говоришь...
 			// Chat9: What are you saying, Meirin?
 			// Chat10: Is Meirin doing some kind of weird dance?
-			// Chat11: Looks awsome...Can you teach me?
+			// Chat11: It looks awsome...Can you teach me?
 		}
 
 		Chat_Remilia: {
@@ -57,7 +57,7 @@ Mods: {
 			Chat10: В чём дело, Пачи?
 			Chat11: Ха-ха, это просто ложь. Боязнь вампиров к крестам - просто человеческая выдумка.
 			Chat12: Конечно, Пачи. Тебе действительно стоит почаще выходить на улицу.
-			// Chat13: Sometimes sakuya should care yourself
+			// Chat13: Sometimes Sakuya should take better care of herself
 			// Chat14: Does Sakuya still remember the past?
 		}
 
@@ -115,8 +115,8 @@ Mods: {
 			Chat2: Да не встретится тебе неудача никогда...
 			Chat3: Кружится и кружится...
 			// Chat4: You know what Nitori? I have a wish
-			// Chat5: I wish, I can purify this world's all bad luck
-			// Chat6: Ha ha, so I say that's just a wish
+			// Chat5: I wish, I can purify all this world's bad luck
+			// Chat6: Ha ha, as I said, that's just a wish
 			// Chat7: We are...
 			// Chat8: Ha hahaha!...
 		}
@@ -138,9 +138,9 @@ Mods: {
 			Chat14: Сильнейший щторм обрушивается на землю
 			Chat15: Бог-Дракон, должно быть, в ярости...
 			Chat16: Пожалуйста, успокойтесь, Тенши-сама...
-			// Chat17: Weird breath invades the moon and the spirits of harvest are brewing a brawl
-			// Chat18: Frost magic fully covered the moon, the time of carnival is coming
-			// Chat19: The invaders not belonging to this land have arrived...
+			// Chat17: A strange fog covers the moon, and the spirits of the Harvest are brewing a brawl
+			// Chat18: Frost magic fully covered the moon, the time of revelry is coming
+			// Chat19: The Invaders of a foreign land have arrived...
 		}
 
 		Chat_Tenshin: {
@@ -187,8 +187,8 @@ Mods: {
 			Chat3: Хочешь присоединиться к бирже капп?
 			// Chat4: Eh? What wish?
 			// Chat5: That's your ability isn't it? But the whole world is still too big...
-			// Chat6: Maybe it will come true in the future!
-			// Chat7: '''"Spining Kapa" company!'''
+			// Chat6: Maybe it'll come true in the future!
+			// Chat7: '''"Spinning Kappa" company!'''
 			// Chat8: Ha hahaha!...
 		}
 
@@ -257,7 +257,7 @@ Mods: {
 			Chat1: Везде куда я пойду начнётся весна!
 			Chat2: Лили разносит весну!
 			Chat3: Весная - лучшее время для игр!
-			// Chat4: 春天在哪里呀，春天在哪里？~
+			// Chat4: Where's spring, where's spring？~
 		}
 
 		Chat_Mystia: {

@@ -7,7 +7,7 @@ v1.1.2.6：
 优化了英文对话翻译/Optimized the English Chat's translation, thanks for @Kyuumulonimbus
 
 修复：
-无
+修复了红魔馆组合状态下咲夜和美铃打伞位置出现偏差的问题
 
 ----------
 v1.1.2.5：

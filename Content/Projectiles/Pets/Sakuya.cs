@@ -264,7 +264,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.spriteDirection = master.spriteDirection;
                 if (PetState == 3 || PetState == 2)
                 {
-                    point = new Vector2(((PetState == 2 ? -20 : -40) + 60) * master.spriteDirection, player.gfxOffY - 20);
+                    point = new Vector2(((PetState == 2 ? -40 : -20) + 60) * master.spriteDirection, player.gfxOffY - 20);
                     speed = 19f;
                 }
             }
