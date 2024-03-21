@@ -218,6 +218,11 @@ Mods: {
 				DisplayName: Ginkgo Leaf
 				Tooltip: "'Carrying culture for over a thousand years'"
 			}
+
+			LunaMoon: {
+				DisplayName: Sleeping Moon
+				Tooltip: "'Have a nice dream'"
+			}
 		}
 	}
 }

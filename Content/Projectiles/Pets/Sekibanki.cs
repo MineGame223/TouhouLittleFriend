@@ -130,6 +130,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.frame = 0;
                     PetState = 0;
+                    extraAI[2] = 480;
                 }
             }
         }
@@ -290,7 +291,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.owner == Main.myPlayer)
             {
-                if (mainTimer % 270 == 0 && PetState == 0)
+                if (mainTimer % 270 == 0 && PetState == 0 && extraAI[2] <= 0)
                 {
                     PetState = 1;
                     Projectile.netUpdate = true;
@@ -306,11 +307,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (PetState <= 1)
             {
-                if (extraAI[2] > 0)
-                {
-                    PetState = 0;
-                    extraAI[2]--;
-                }
                 if (PetState == 1)
                 {
                     Blink();
@@ -331,6 +327,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (extraAI[2] > 0)
             {
                 blinkFrame = 12;
+                extraAI[2]--;
             }
             UpdateHeadPosition();
         }

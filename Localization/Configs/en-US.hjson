@@ -31,6 +31,11 @@ Mods: {
 						They include: {$Mods.TouhouPets.Items.HinaDoll.DisplayName}、{$Mods.TouhouPets.Items.WakasagihimeFishingRod.DisplayName}、{$Mods.TouhouPets.Items.IkuOarfish.DisplayName}、{$Mods.TouhouPets.Items.UselessBook.DisplayName}
 						'''
 				}
+
+				AllowGapToSpawn: {
+					Label: Allow the Mysterious Gap to spawn at night
+					Tooltip: Toggle whether or not the Mysterious Gap can spawn at night
+				}
 			}
 		}
 	}

@@ -92,7 +92,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Nap()
         {
-            chatFuncIsOccupied = true;
             if (Projectile.frame < 1)
             {
                 Projectile.frame = 1;
@@ -109,7 +108,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.owner == Main.myPlayer)
                 {
                     extraAI[1]++;
-                    if (extraAI[1] > Main.rand.Next(60, 180))
+                    if (extraAI[1] > Main.rand.Next(180, 320))
                     {
                         extraAI[1] = 0;
                         extraAI[0] = 1;
@@ -259,6 +258,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if(PetState == 2)
+            {
+                return;
+            }
             int type2 = ProjectileType<Marisa>();
             int type3 = ProjectileType<Sanae>();
             if (FindChatIndex(out Projectile _, type2, 6, default, 0)
@@ -354,7 +357,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                     if (mainTimer % 120 == 0 && Main.rand.NextBool(chance) && extraAI[0] <= 0 && player.velocity.Length() == 0 && ChatCD <= 0)
                     {
-                        SetChat(myColor, "好困...", 3);
+                        SetChat(myColor, ModUtils.GetChatText("Reimu", "11"), 3);
                         PetState = 2;
                         Projectile.netUpdate = true;
                     }

@@ -201,6 +201,11 @@ Mods: {
 				Description: "'历史的创造者'"
 				Description_2: "'历史的吞噬者'"
 			}
+
+			LunaBuff: {
+				DisplayName: 月亮之女
+				Description: "'她代表月之光'"
+			}
 		}
 	}
 }

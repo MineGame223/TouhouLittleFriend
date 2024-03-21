@@ -92,7 +92,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 1;
             }
-            if (++Projectile.frameCounter > 10)
+            int count = 10;
+            if (Projectile.frame == 6)
+                count = 24;
+
+            if (++Projectile.frameCounter > count)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;

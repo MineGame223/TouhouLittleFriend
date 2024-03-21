@@ -179,6 +179,7 @@ Mods: {
 			Chat8: Не думаю, тебе просто снова скучно...
 			Chat9: ПРЕКРАТИ УЖЕ!
 			Chat10: Это 'заражение'...
+			// Chat11: So sleepy...
 		}
 
 		Chat_Nitori: {
@@ -371,42 +372,42 @@ Mods: {
 		}
 
 		Chat_Yukari: {
-			// Chat1: As a sage, protect the barrier is my forever duty...
-			// Chat2: Is that old friend currently fine?...
-			// Chat3: Reimu, she should be more diligent
-			// Chat4: You wanna know my age? Of course is 17 year's old~... You should say no more
-			// Chat5: If you miss her, I allow you to take a temporary leave
+			// Chat1: As a sage, it's my eternal duty to protect the barrier...
+			// Chat2: Is that old friend of mine doing alright?...
+			// Chat3: That Reimu, she should really be more diligent
+			// Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more
+			// Chat5: If you miss her, I'll allow you to take a temporary leave
 			// Chat6: Nothing, Maybe I don't need to worry about her appetite
 		}
 
 		Chat_Ran: {
-			// Chat1: There are something wrong about the sun's position and the time...
-			// Chat2: How could gold harder than iron?
-			// Chat3: Is youma still living in the animal world?...
-			// Chat4: Don't leave me too far, CHen!
+			// Chat1: There's something wrong about the sun's position and the time...
+			// Chat2: How could gold be stronger than iron?
+			// Chat3: Is Yuuma still living in the Animal Realm?...
+			// Chat4: Don't leave me too far, Chen!
 			// Chat5: You mean?
-			// Chat6: Maybe I know who she is...
+			// Chat6: I might know who she is...
 			// Chat7: I, I'm NOT! Yukari sama!
 		}
 
 		Chat_Chen: {
 			// Chat1: Meow!
-			// Chat2: want some fish...
+			// Chat2: I want some fish...
 			// Chat3: I know, Ran sama!
 		}
 
 		Chat_Kaguya: {
 			// Chat-1: This turn, I win!
-			// Chat-2: Practice make perfect, understand?
+			// Chat-2: Practice makes perfect, you understand?
 			// Chat-3: Ah hahaha!
 			// Chat-4: DAMN!!!
 			// Chat-5: You must cheated!
-			// Chat-6: I'll achieve your wish in the next round-- DIE!
+			// Chat-6: I'll grant your wish in the next round-- DIE!
 			// Chat1: It's not very "dirty" on the ground...
-			// Chat2: Can't help to memory the old days since I come to the ground so long
+			// Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
 			// Chat3: ...I have to win this time!
-			// Chat4: hold on, hold on...
-			// Chat5: Practice make perfect
+			// Chat4: Hold on, hold on...
+			// Chat5: Practice makes perfect
 			// Chat6: Not your business!
 			// Chat7: Hey, how long have we been fighting each other?
 			// Chat8: Wanna do something new today?
@@ -415,18 +416,18 @@ Mods: {
 
 		Chat_Moku: {
 			// Chat-1: Just accept that I'm stronger!
-			// Chat-2: You even want to defeat ME?
-			// Chat-3: That's your all?
+			// Chat-2: Do you even want to defeat ME?
+			// Chat-3: That's all you got?
 			// Chat-4: I won't lose in the next round!
 			// Chat-5: I'm too careless...
-			// Chat-6: It's your last time to be complacent...
-			// Chat1: Living forever, is absolutely a sin than a blessing...
-			// Chat2: ...How many years ago from that time?
-			// Chat3: How could I know, about thousand of years?
+			// Chat-6: This'll be the last time you'll be this complacent...
+			// Chat1: Living forever, is absolutely a greater curse than a blessing...
+			// Chat2: ...How many years ago was that time?
+			// Chat3: How could I know, about a thousand years?
 			// Chat4: ...What you want to do?
-			// Chat5: No and never!...well I know a place can go...
-			// Chat6: Can you just be QUIET for a time?
-			// Chat7: I'm fine, maybe. Just as usual
+			// Chat5: No, never!...Well, I know a place we can go...
+			// Chat6: Can you just be QUIET for once?
+			// Chat7: I'm fine, maybe. Just the usual
 			// Chat8: Nope, I'm trying to forget them...
 			// Chat9: You will become this form every full moon, that's pretty scary!
 		}
@@ -434,19 +435,19 @@ Mods: {
 		Chat_Meirin: {
 			// Chat1: Today is another boring...no no no, hardworking day!
 			// Chat2: My name is "Meirin Hong", not "China"!
-			// Chat3: It's really idle to be a gatekeeper here...
-			// Chat4: My homeland is in the eastern, where above the Yangtze River!
+			// Chat3: It's really boring to be a gatekeeper here...
+			// Chat4: My homeland is in the East, right above the Yangtze River!
 			//Don't translate this
 			// Chat5: 易有太极，是生两仪...
-			// Chat6: It is my home language, Flandre sama
-			// Chat7: It called "Tai ji", Flandre sama
-			// Chat8: Mmm...Maybe need Remilia sama's agreement
+			// Chat6: It's my home language, Flandre sama
+			// Chat7: It's called "Tai ji", Flandre sama
+			// Chat8: Mmm...Maybe need Remilia-sama's agreement
 			// Chat9: I'm NOT!
-			// Chat10: Ms.Sakuya is so busy, do you have any vacation?
-			// Chat11: This job is as same as vacation...
+			// Chat10: Ms.Sakuya is so busy, do you ever get a vacation?
+			// Chat11: This job is the same as vacation...
 			// Chat12: NOTHING!...
-			// Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid fall in love
-			// Chat14: Ah! I shoulden't say this...
+			// Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love
+			// Chat14: Ah! I shouldn't have said anything...
 			// Chat15: Too bad...Wait what?
 		}
 
@@ -459,26 +460,36 @@ Mods: {
 			// Chat6: The day with Remilia sama is my vacation, and you also don't have vacation right?
 			// Chat7: What?
 			// Chat8: You read comic during your work time?
-			// Chat9: I'll give you a big punish at night!...Also let me see the comic...
-			// Chat10: My life already restarted since I meet you, there is no past
+			// Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
+			// Chat10: My life already restarted since I met you, there is no past
 		}
 
 		Chat_Raiko: {
 			// Chat1: Badum, psh~
-			// Chat2: I have heard that oni can play drums too, even can defeat the monsters by it?
-			// Chat3: Life is a drum set, the loudest is the perfect!
+			// Chat2: I have heard that oni can play drums too, but can they even defeat monsters like that?
+			// Chat3: Life is a drum set, the louder, the better!
 		}
 
 		Chat_Keine: {
-			// Chat1: Recently, village's people don't like to say hello...How could them be so rude?
-			// Chat2: This paper filled with 9...Must be Cirno
-			// Chat3: Only the thing that being recorded is the history
+			// Chat1: Recently, the village's people don't like saying hello...How could they be so rude?
+			// Chat2: This paper is filled with 9's...Must be Cirno
+			// Chat3: Only the thing that's always being recorded is history
 			// Chat4: Tonight will be a busy night...
 			// Chat5: Create the history, keep the history
-			// Chat6: Let me see is who haven't finished her homework...
-			// Chat7: How are you recently?
+			// Chat6: Let me see who hasn't finished their homework...
+			// Chat7: How've you been recently?
 			// Chat8: Still entangled with the past things?
-			// Chat9: This is both my nature and my duty
+			// Chat9: This is both my nature, and my duty
+		}
+
+		Chat_Luna: {
+			// Chat1: 最近有没有什么月亮上的东西掉下来呢？...
+			// Chat2: 希望世界上的一切都可以变得好吃！
+			// Chat3: 你知道“水底捞月”吗？
+			// Chat4: 好困啊...
+			// Chat5: 哈啊——唔呣呣...
+			// Chat6: 最近发生的事还挺有意思的...
+			// Chat7: 人类的报纸还怪好看呢...
 		}
 
 		Chat_Portal: {
@@ -486,15 +497,15 @@ Mods: {
 			Chat2: Оставь здесь немного монет и возьми то, что нравится. Просто сделай что-нибудь ради существования Генсокё
 			Chat3: Хочешь милого партнёра? Почему бы тебе не заглянуть сюда!
 			Chat4: Может твоё будущее и не связано с Генсокё, но твои действия сейчас могут хорошо сказаться на судьбе оного... Я имею ввыиду, не хотите ли купить что-нибудь?
-			// Chat5: Thank your support for the Gensokyo so long! This is what you should own.
+			// Chat5: Thank you for supporting Gensokyo for so long! This is what you've earned.
 			/* Chat6:
 				'''
-				You have provided {0}, may the Gensokyo be with you.
+				You have provided {0}, may Gensokyo be with you.
 				By the way, selling items here will reduce the wealth count.
 				''' */
 			/* Chat7:
 				'''
-				You haven't buy anything here, it's never too late to do.
+				You haven't bought anything here, but it's never too late to do.
 				By the way, selling items here will reduce the wealth count.
 				''' */
 			// Chat8: Wait, you can see THIS? you have found a bug!

@@ -93,7 +93,7 @@ Mods: {
 
 			SanaeBuff: {
 				// DisplayName: Wind Sorceress
-				// Description: "'Watching for the miracle!'"
+				// Description: "'Watching for miracles!'"
 			}
 
 			KogasaBuff: {
@@ -172,8 +172,8 @@ Mods: {
 			}
 
 			KaguyaBuff: {
-				// DisplayName: Luna Princess
-				// Description: Sorry but I'm too lazy to desigh orz
+				// DisplayName: Lunar Princess
+				// Description: "'Exiled Princess of The Lunatic Kingdom'"
 			}
 
 			MokuBuff: {
@@ -183,7 +183,7 @@ Mods: {
 
 			MeirinBuff: {
 				// DisplayName: The Gatekeeper
-				// Description: "'I'm guarding here!'"
+				// Description: "'Hey, I'm guarding here!'"
 			}
 
 			SakuyaBuff: {
@@ -197,9 +197,14 @@ Mods: {
 			}
 
 			KeineBuff: {
-				// DisplayName: Half Shirasawa
+				// DisplayName: Were-Hakutaku
 				// Description: "'Creator of the History'"
 				// Description_2: "'Devourer of the History'"
+			}
+
+			LunaBuff: {
+				// DisplayName: Luna Child
+				// Description: "'She represents the Moonlight'"
 			}
 		}
 	}

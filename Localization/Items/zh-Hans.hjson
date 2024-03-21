@@ -218,6 +218,11 @@ Mods: {
 				DisplayName: 银杏叶
 				Tooltip: "'承载文化，流传千年'"
 			}
+
+			LunaMoon: {
+				DisplayName: 安眠月亮
+				Tooltip: "'做一个好梦'"
+			}
 		}
 	}
 }

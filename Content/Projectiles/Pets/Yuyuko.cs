@@ -160,7 +160,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     fd = foodList.First(food => food.type == dumpling.Type);
                 }
                 else
-                    fd = foodList[Main.rand.Next(foodList.Count)];
+                    fd = foodList[Main.rand.Next(foodList.Count - 1)];
                 food = new Item(fd.type);
                 fd.stack--;
                 if (fd.stack <= 0)

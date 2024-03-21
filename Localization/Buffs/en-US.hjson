@@ -201,6 +201,11 @@ Mods: {
 				Description: "'Creator of the History'"
 				Description_2: "'Devourer of the History'"
 			}
+
+			LunaBuff: {
+				DisplayName: Luna Child
+				Description: "'She represents the Moonlight'"
+			}
 		}
 	}
 }

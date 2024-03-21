@@ -49,6 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// 先检查一次talkInterval是否为0，随后发起交互。在属于交互发起者的最后一句结束时设置talkInterval，以防止宠物在短时间内
         /// 重复该交互
         /// <br/>!--该属性不会自动设置与检测，需要手动执行
+        /// <br/>现在只有赤蛮奇在使用
         /// </summary>
         internal int talkInterval;
         /// <summary>
