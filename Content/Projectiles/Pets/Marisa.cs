@@ -145,10 +145,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             text[1] = ModUtils.GetChatText("Marisa", "1");
             text[2] = ModUtils.GetChatText("Marisa", "2");
             text[3] = ModUtils.GetChatText("Marisa", "3");
-            if (player.ZoneForest && Main.dayTime && Main.cloudAlpha == 0)
-                text[4] = ModUtils.GetChatText("Marisa", "4");
-            if (player.ZoneForest && !Main.dayTime && Main.cloudAlpha == 0)
-                text[5] = ModUtils.GetChatText("Marisa", "5");
+            if (player.ZoneForest && Main.cloudAlpha == 0 && !Main.bloodMoon)
+                if (Main.dayTime)
+                    text[4] = ModUtils.GetChatText("Marisa", "4");
+                else
+                    text[5] = ModUtils.GetChatText("Marisa", "5");
+
             if ((FindPetState(out Projectile _, ProjectileType<Reimu>(), 0, 1)
                 || FindPetState(out Projectile _, ProjectileType<Reimu>(), 3, 4)))
             {
@@ -163,10 +165,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
-                        if (i == 10)
-                        {
-                            weight = 10;
-                        }
                         chat.Add(text[i], weight);
                     }
                 }
@@ -244,7 +242,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PetState = 1;
                     Projectile.netUpdate = true;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && Projectile.frame == 3)
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0 && Projectile.frame == 3)
                 {
                     if (mainTimer % 120 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
                     {

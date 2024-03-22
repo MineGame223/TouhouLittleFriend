@@ -204,7 +204,12 @@ Mods: {
 
 			LunaBuff: {
 				// DisplayName: Luna Child
-				// Description: "'She represents the Moonlight'"
+				// Description: "'The quiet moonlight'"
+			}
+
+			StarBuff: {
+				// DisplayName: Star Sapphire
+				// Description: "'The pouring starlight'"
 			}
 		}
 	}

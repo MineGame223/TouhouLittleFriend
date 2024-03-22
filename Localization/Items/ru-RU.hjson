@@ -221,7 +221,12 @@ Mods: {
 
 			LunaMoon: {
 				// DisplayName: Sleeping Moon
-				// Tooltip: "'Have a nice dream'"
+				// Tooltip: "'If you sleep with it, you won't hear any noise'"
+			}
+
+			StarSapphire: {
+				// DisplayName: Starry Sapphire
+				// Tooltip: "'You feel you are feeling everything while holding it'"
 			}
 		}
 	}

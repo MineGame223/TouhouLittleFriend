@@ -203,8 +203,13 @@ Mods: {
 			}
 
 			LunaBuff: {
-				DisplayName: 月亮之女
-				Description: "'她代表月之光'"
+				DisplayName: 月之幼女
+				Description: "'静谧的月之光'"
+			}
+
+			StarBuff: {
+				DisplayName: 星之蓝玉
+				Description: "'倾泻而下的星之光'"
 			}
 		}
 	}

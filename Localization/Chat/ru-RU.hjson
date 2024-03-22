@@ -57,7 +57,7 @@ Mods: {
 			Chat10: В чём дело, Пачи?
 			Chat11: Ха-ха, это просто ложь. Боязнь вампиров к крестам - просто человеческая выдумка.
 			Chat12: Конечно, Пачи. Тебе действительно стоит почаще выходить на улицу.
-			// Chat13: Sometimes Sakuya should take better care of herself
+			// Chat13: Sometimes you should take better care of yourselves, Sakuya.
 			// Chat14: Does Sakuya still remember the past?
 		}
 
@@ -114,9 +114,9 @@ Mods: {
 			Chat1: Как ты сегодня?
 			Chat2: Да не встретится тебе неудача никогда...
 			Chat3: Кружится и кружится...
-			// Chat4: You know what Nitori? I have a wish
-			// Chat5: I wish, I can purify all this world's bad luck
-			// Chat6: Ha ha, as I said, that's just a wish
+			// Chat4: You know what Nitori? I have a wish.
+			// Chat5: I wish, I can purify all this world's bad luck.
+			// Chat6: Ha ha, as I said, that's just a wish.
 			// Chat7: We are...
 			// Chat8: Ha hahaha!...
 		}
@@ -138,8 +138,8 @@ Mods: {
 			Chat14: Сильнейший щторм обрушивается на землю
 			Chat15: Бог-Дракон, должно быть, в ярости...
 			Chat16: Пожалуйста, успокойтесь, Тенши-сама...
-			// Chat17: A strange fog covers the moon, and the spirits of the Harvest are brewing a brawl
-			// Chat18: Frost magic fully covered the moon, the time of revelry is coming
+			// Chat17: A strange fog covers the moon, and the spirits of the Harvest are brewing a brawl.
+			// Chat18: Frost magic fully covered the moon, the time of revelry is coming.
 			// Chat19: The Invaders of a foreign land have arrived...
 		}
 
@@ -258,7 +258,7 @@ Mods: {
 			Chat1: Везде куда я пойду начнётся весна!
 			Chat2: Лили разносит весну!
 			Chat3: Весная - лучшее время для игр!
-			// Chat4: Where's spring, where's spring？~
+			// Chat4: Where's spring, where's spring?~
 		}
 
 		Chat_Mystia: {
@@ -374,10 +374,10 @@ Mods: {
 		Chat_Yukari: {
 			// Chat1: As a sage, it's my eternal duty to protect the barrier...
 			// Chat2: Is that old friend of mine doing alright?...
-			// Chat3: That Reimu, she should really be more diligent
-			// Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more
-			// Chat5: If you miss her, I'll allow you to take a temporary leave
-			// Chat6: Nothing, Maybe I don't need to worry about her appetite
+			// Chat3: That Reimu, she should really be more diligent.
+			// Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
+			// Chat5: If you miss her, I'll allow you to take a temporary leave.
+			// Chat6: Nothing, Maybe I don't need to worry about her appetite.
 		}
 
 		Chat_Ran: {
@@ -407,7 +407,7 @@ Mods: {
 			// Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
 			// Chat3: ...I have to win this time!
 			// Chat4: Hold on, hold on...
-			// Chat5: Practice makes perfect
+			// Chat5: Practice makes perfect.
 			// Chat6: Not your business!
 			// Chat7: Hey, how long have we been fighting each other?
 			// Chat8: Wanna do something new today?
@@ -427,7 +427,7 @@ Mods: {
 			// Chat4: ...What you want to do?
 			// Chat5: No, never!...Well, I know a place we can go...
 			// Chat6: Can you just be QUIET for once?
-			// Chat7: I'm fine, maybe. Just the usual
+			// Chat7: I'm fine, maybe. Just the usual.
 			// Chat8: Nope, I'm trying to forget them...
 			// Chat9: You will become this form every full moon, that's pretty scary!
 		}
@@ -439,29 +439,29 @@ Mods: {
 			// Chat4: My homeland is in the East, right above the Yangtze River!
 			//Don't translate this
 			// Chat5: 易有太极，是生两仪...
-			// Chat6: It's my home language, Flandre sama
-			// Chat7: It's called "Tai ji", Flandre sama
-			// Chat8: Mmm...Maybe need Remilia-sama's agreement
+			// Chat6: It's my home language, Flandre sama.
+			// Chat7: It's called "Tai ji", Flandre sama.
+			// Chat8: Mmm...Maybe need Remilia-sama's agreement?
 			// Chat9: I'm NOT!
 			// Chat10: Ms.Sakuya is so busy, do you ever get a vacation?
 			// Chat11: This job is the same as vacation...
 			// Chat12: NOTHING!...
-			// Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love
+			// Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love!
 			// Chat14: Ah! I shouldn't have said anything...
 			// Chat15: Too bad...Wait what?
 		}
 
 		Chat_Sakuya: {
-			// Chat1: Past is past, now I only need to serve Remilia sama
+			// Chat1: Past is past, now I only need to serve Remilia sama.
 			// Chat2: The storage of alcohol in the mansion is not enough...
-			// Chat3: I'll be fine if Remilia sama is fine
-			// Chat4: Is Meirin swinging the lead now...
+			// Chat3: I'll be fine if Remilia sama is fine.
+			// Chat4: Is Meirin swinging the lead now?...
 			// Chat5: Enjoy the tea, Remilia sama...
-			// Chat6: The day with Remilia sama is my vacation, and you also don't have vacation right?
+			// Chat6: The day with Remilia sama is my vacation, and you also don't have "vacation" right?
 			// Chat7: What?
 			// Chat8: You read comic during your work time?
 			// Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
-			// Chat10: My life already restarted since I met you, there is no past
+			// Chat10: My life already restarted since I met you, there is no past.
 		}
 
 		Chat_Raiko: {
@@ -472,14 +472,14 @@ Mods: {
 
 		Chat_Keine: {
 			// Chat1: Recently, the village's people don't like saying hello...How could they be so rude?
-			// Chat2: This paper is filled with 9's...Must be Cirno
-			// Chat3: Only the thing that's always being recorded is history
+			// Chat2: This paper is filled with 9's...Must be Cirno.
+			// Chat3: Only the thing that's always being recorded is history.
 			// Chat4: Tonight will be a busy night...
-			// Chat5: Create the history, keep the history
+			// Chat5: Create the history, keep the history.
 			// Chat6: Let me see who hasn't finished their homework...
 			// Chat7: How've you been recently?
 			// Chat8: Still entangled with the past things?
-			// Chat9: This is both my nature, and my duty
+			// Chat9: This is both my nature, and my duty.
 		}
 
 		Chat_Luna: {
@@ -490,6 +490,15 @@ Mods: {
 			// Chat5: 哈啊——唔呣呣...
 			// Chat6: 最近发生的事还挺有意思的...
 			// Chat7: 人类的报纸还怪好看呢...
+			// Chat8: 月圆之夜，总是引起人们的幻想哦。
+		}
+
+		Chat_Star: {
+			// Chat1: 感受世上一切美好！
+			// Chat2: 星星是这世上最美的东西了！
+			// Chat3: 无论天气如何，对我都没有什么影响哦。
+			// Chat4: 白天就看不见星星了欸...
+			// Chat5: 抬头看看今晚的星星吧！
 		}
 
 		Chat_Portal: {

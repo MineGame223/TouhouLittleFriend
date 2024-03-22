@@ -47,7 +47,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void DrawWing(Color lightColor)
         {
             Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            Texture2D t2 = AltVanillaFunction.GetGlowTexture("FlandreGlow");
+            Texture2D t2 = AltVanillaFunction.GetGlowTexture("Flandre_Glow");
             int height = t.Height / Main.projFrames[Type];
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7 * Main.essScale);
             Rectangle rect2 = new Rectangle(0, wingFrame * height, t.Width, height);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -17,7 +18,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawLuna(wingsFrame, lightColor);
+            DrawLuna(wingsFrame, lightColor * 0.7f);
 
             DrawLuna(12, lightColor);
             DrawLuna(12, lightColor, 0, AltVanillaFunction.GetExtraTexture("Luna_Cloth"), true);
@@ -208,7 +209,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override string GetChatText(out string[] text)
         {
             text = new string[21];
-            if(PetState <= 1)
+            if (PetState <= 1)
             {
                 text[1] = ModUtils.GetChatText("Luna", "1");
                 text[2] = ModUtils.GetChatText("Luna", "2");
@@ -219,6 +220,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 text[6] = ModUtils.GetChatText("Luna", "6");
                 text[7] = ModUtils.GetChatText("Luna", "7");
             }
+            if(Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime)
+            {
+                text[8] = ModUtils.GetChatText("Luna", "8");
+            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)
@@ -226,10 +231,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (text[i] != null)
                     {
                         int weight = 1;
-                        if (i == 10)
-                        {
-                            weight = 10;
-                        }
                         chat.Add(text[i], weight);
                     }
                 }
@@ -238,7 +239,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if(PetState == 4)
+            if (PetState == 4)
             {
                 return;
             }
@@ -290,20 +291,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        public override void AI()
+        private void GenDust()
         {
-            Lighting.AddLight(Projectile.Center, 1.52f, 1.50f, 1.15f);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<LunaBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.02f;
-
-            ChangeDir(player);
-            MoveToPoint(point, 7.5f);
-
             int dustID = MyDustId.WhiteTransparent;
             if (Main.rand.NextBool(10))
             {
@@ -319,6 +308,22 @@ namespace TouhouPets.Content.Projectiles.Pets
                     , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(0.8f, 1.2f)), 100, Color.LightGoldenrodYellow
                     , Main.rand.NextFloat(0.5f, 0.9f)).noGravity = true;
             }
+        }
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.Center, 1.52f, 1.50f, 1.15f);
+            Player player = Main.player[Projectile.owner];
+            Projectile.SetPetActive(player, BuffType<LunaBuff>());
+
+            UpdateTalking();
+            Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.02f;
+
+            ChangeDir(player);
+            MoveToPoint(point, 7.5f);
+
+            GenDust();
 
             if (Projectile.owner == Main.myPlayer)
             {

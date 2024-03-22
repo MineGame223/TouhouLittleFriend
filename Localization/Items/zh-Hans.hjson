@@ -221,7 +221,12 @@ Mods: {
 
 			LunaMoon: {
 				DisplayName: 安眠月亮
-				Tooltip: "'做一个好梦'"
+				Tooltip: "'带着它睡觉就听不见杂音了'"
+			}
+
+			StarSapphire: {
+				DisplayName: 星耀蓝宝石
+				Tooltip: "'握着它时仿佛能感受到万物'"
 			}
 		}
 	}

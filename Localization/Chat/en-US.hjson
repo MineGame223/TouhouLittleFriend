@@ -57,7 +57,7 @@ Mods: {
 			Chat10: What's the matter, Patchi?
 			Chat11: Haha, that's all lies. The myth of vampires fearing the cross is just a human's imagination.
 			Chat12: Of course, Patchi. You really should go out more.
-			Chat13: Sometimes Sakuya should take better care of herself
+			Chat13: Sometimes you should take better care of yourselves, Sakuya.
 			Chat14: Does Sakuya still remember the past?
 		}
 
@@ -114,9 +114,9 @@ Mods: {
 			Chat1: How do you do today?
 			Chat2: May the misfortune never appear...
 			Chat3: Turn and turn...
-			Chat4: You know what Nitori? I have a wish
-			Chat5: I wish, I can purify all this world's bad luck
-			Chat6: Ha ha, as I said, that's just a wish
+			Chat4: You know what Nitori? I have a wish.
+			Chat5: I wish, I can purify all this world's bad luck.
+			Chat6: Ha ha, as I said, that's just a wish.
 			Chat7: We are...
 			Chat8: Ha hahaha!...
 		}
@@ -125,21 +125,21 @@ Mods: {
 			Chat1: The moon is bloodied, and the land is cursed...
 			Chat2: The sun's been eclipsed by the moon, now monsters are everywhere...
 			Chat3: The sandstorm is raging...
-			Chat4: Slimey creatures are dropping from the sky!..
+			Chat4: Slimey creatures are dropping from the sky!
 			Chat5: Wish today would be peaceful.
 			Chat6: Looks like the whole world is happy.
 			Chat7: Lights of peace are rising from all around...
 			Chat8: The climate is... stable.
 			Chat9: A warm breeze crosses over the lands.
-			Chat10: Today's wind is so clean
-			Chat11: The wind is flushing
-			Chat12: Cool rain is cleaning the dirt
+			Chat10: Today's wind is so clean.
+			Chat11: The wind is flushing.
+			Chat12: Cool rain is cleaning the dirt.
 			Chat13: The storm is approaching...
-			Chat14: A violent storm is crashing down on the earth
+			Chat14: A violent storm is crashing down on the earth.
 			Chat15: The dragon god must be infuriated...
 			Chat16: Please be quiet, Tenshi-sama...
-			Chat17: A strange fog covers the moon, and the spirits of the Harvest are brewing a brawl
-			Chat18: Frost magic fully covered the moon, the time of revelry is coming
+			Chat17: A strange fog covers the moon, and the spirits of the Harvest are brewing a brawl.
+			Chat18: Frost magic fully covered the moon, the time of revelry is coming.
 			Chat19: The Invaders of a foreign land have arrived...
 		}
 
@@ -205,13 +205,13 @@ Mods: {
 			Chat1: Being alone...
 			Chat2: Please don't constantly talk to me...
 			Chat3: I wear this cape all long,
-			Chat4: Because I don't want to look like a youkai
+			Chat4: Because I don't want to look like a youkai.
 			Chat5: Humans don't like youkai, and I don't want to get close to them too...
-			Chat6: ...Well, except you
+			Chat6: ...Well, except you.
 			Chat7: ...I'll get over them all!
 			Chat8: CHO——HEN——SHIN——! ! !
 			Chat9: ......
-			Chat10: ...Eh, you heard nothing
+			Chat10: ...Eh, you heard nothing.
 		}
 
 		Chat_Koishi: {
@@ -230,9 +230,9 @@ Mods: {
 			Chat2: I had an interesting thought...
 			Chat3: Your mind is so simple, besides battling, there's only robbing...
 			Chat4: I'm watching you now...
-			Chat5: Rin is my favorite cat too
-			Chat6: Utsuho is my favorite crow too
-			Chat7: Don't worry about me
+			Chat5: Rin is my favorite cat too.
+			Chat6: Utsuho is my favorite crow too.
+			Chat7: Don't worry about me.
 		}
 
 		Chat_Rin: {
@@ -258,7 +258,7 @@ Mods: {
 			Chat1: If winter comes, can spring be far behind?
 			Chat2: Lily is the bringer of spring!
 			Chat3: Spring is the best time to play!
-			Chat4: Where's spring, where's spring？~
+			Chat4: Where's spring, where's spring?~
 		}
 
 		Chat_Mystia: {
@@ -278,7 +278,7 @@ Mods: {
 			Chat2: Bugs were horrifying beings in the past!
 			Chat3: The great bugs are falling now... That's unacceptable!
 			Chat4: Only in here can you see the firefly...
-			Chat5: Happy bugs day to you~ Happy bugs day to you~...Ugh, forget it
+			Chat5: Happy bugs day to you~ Happy bugs day to you~...Ugh, forget it...
 			Chat6: ...TOO COLD!...
 			Chat7: Wanna enjoy 'Bug Service'?
 			Chat8: Spiders aren't insects, scorpions and centipedes aren't, either. Remember?
@@ -299,14 +299,14 @@ Mods: {
 
 		Chat_Yuyuko: {
 			Chat1: Whether it's life or death, it's just a cycle, a cycle not related to me...
-			Chat2: It would be nice to exist simply and happily, in spite of life and death
+			Chat2: It would be nice to exist simply and happily, in spite of life and death.
 			Chat3: When the Sakura starts blooming, then it will happen...What is 'it', though?
 			Chat4: What should I eat later?
 			Chat5: Thanks for the food!
 			Chat6: Delicious!
 			Chat7: Thank you!
 			Chat5-1: Hungry...
-			Chat6-1: Ghosts need food too, so I'll just take it quickly!
+			Chat6-1: Ghosts need food too, so you just take it quickly please!
 			Chat7-1: When is dinner time?
 			Chat8: Youmu-chan, what're we eating tonight?
 			Chat9: Has Youmu-chan made any plans for the future?
@@ -315,26 +315,26 @@ Mods: {
 
 		Chat_Youmu: {
 			Chat1: Manage the yard and drive out invaders, that's just my daily work...
-			Chat2: I hope Yuyuko-sama's eating enough with each meal
+			Chat2: I hope Yuyuko-sama's eating enough with each meal.
 			Chat3: ENEMY FOUND!
 			Chat4: Here...it's so scary...
 			Chat5: ...IS THERE A GHOST?!
 			Chat6: Eh? Just taking good care of Yuyuko-sama is enough...
 			Chat7: Ah...I can't understand...
-			Chat8: Your last meal was less than 5 minutes ago, Yuyuko sama
+			Chat8: Your last meal was less than 5 minutes ago, Yuyuko sama.
 			Chat9: But you are already dead, Yuyuko-sama! You can't just reincarnate!
-			Chat10: I'm content with staying by Yuyuko-sama
+			Chat10: I'm content with staying by Yuyuko-sama.
 		}
 
 		Chat_Alice: {
 			Chat1: Puppets have been wearing down easily...
 			Chat2: Should I make some more puppets?
-			Chat3: I just can't give up old habits, even if I'm already a mage
+			Chat3: I just can't give up old habits, even if I'm already a mage.
 			Chat4: Marisa, when can you give me the mushroom that you stole from me?
-			Chat5: Stop joking and just give me a clear deadline
+			Chat5: Stop joking and just give me a clear deadline!
 			Chat6: ...You better not try that...There is no next time!
 			Chat7: YOU!......
-			Chat8: God, she just stole one of my potions last time
+			Chat8: God, she just stole one of my potions last time.
 			Chat9: ...We have to give her a lesson!
 			Chat10: ...? Just let me go find her, you don't need to trouble yourself...
 		}
@@ -359,25 +359,25 @@ Mods: {
 		}
 
 		Chat_Wakasagihime: {
-			Chat1: Although I'm a fish, I can leave the water if I want
+			Chat1: Although I'm a fish, I can leave the water if I want.
 			Chat2: I'm a freshwater fish!
 			Chat3: I don't have a 'fish memory'!...
 			Chat4: *purr purr~
 		}
 
 		Chat_Yuka: {
-			Chat1: The most beautiful time is always the time where the flowers are in full bloom
+			Chat1: The most beautiful time is always the time where the flowers are in full bloom.
 			Chat2: Another peaceful and boring day...
-			Chat3: Every flower has a short and colorful life, you'd better don't bother them
+			Chat3: Every flower has a short and colorful life, you'd better don't bother them.
 		}
 
 		Chat_Yukari: {
 			Chat1: As a sage, it's my eternal duty to protect the barrier...
 			Chat2: Is that old friend of mine doing alright?...
-			Chat3: That Reimu, she should really be more diligent
-			Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more
-			Chat5: If you miss her, I'll allow you to take a temporary leave
-			Chat6: Nothing, Maybe I don't need to worry about her appetite
+			Chat3: That Reimu, she should really be more diligent.
+			Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
+			Chat5: If you miss her, I'll allow you to take a temporary leave.
+			Chat6: Nothing, Maybe I don't need to worry about her appetite.
 		}
 
 		Chat_Ran: {
@@ -407,7 +407,7 @@ Mods: {
 			Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
 			Chat3: ...I have to win this time!
 			Chat4: Hold on, hold on...
-			Chat5: Practice makes perfect
+			Chat5: Practice makes perfect.
 			Chat6: Not your business!
 			Chat7: Hey, how long have we been fighting each other?
 			Chat8: Wanna do something new today?
@@ -427,7 +427,7 @@ Mods: {
 			Chat4: ...What you want to do?
 			Chat5: No, never!...Well, I know a place we can go...
 			Chat6: Can you just be QUIET for once?
-			Chat7: I'm fine, maybe. Just the usual
+			Chat7: I'm fine, maybe. Just the usual.
 			Chat8: Nope, I'm trying to forget them...
 			Chat9: You will become this form every full moon, that's pretty scary!
 		}
@@ -439,29 +439,29 @@ Mods: {
 			Chat4: My homeland is in the East, right above the Yangtze River!
 			//Don't translate this
 			Chat5: 易有太极，是生两仪...
-			Chat6: It's my home language, Flandre sama
-			Chat7: It's called "Tai ji", Flandre sama
-			Chat8: Mmm...Maybe need Remilia-sama's agreement
+			Chat6: It's my home language, Flandre sama.
+			Chat7: It's called "Tai ji", Flandre sama.
+			Chat8: Mmm...Maybe need Remilia-sama's agreement?
 			Chat9: I'm NOT!
 			Chat10: Ms.Sakuya is so busy, do you ever get a vacation?
 			Chat11: This job is the same as vacation...
 			Chat12: NOTHING!...
-			Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love
+			Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love!
 			Chat14: Ah! I shouldn't have said anything...
 			Chat15: Too bad...Wait what?
 		}
 
 		Chat_Sakuya: {
-			Chat1: Past is past, now I only need to serve Remilia sama
+			Chat1: Past is past, now I only need to serve Remilia sama.
 			Chat2: The storage of alcohol in the mansion is not enough...
-			Chat3: I'll be fine if Remilia sama is fine
-			Chat4: Is Meirin swinging the lead now...
+			Chat3: I'll be fine if Remilia sama is fine.
+			Chat4: Is Meirin swinging the lead now?...
 			Chat5: Enjoy the tea, Remilia sama...
-			Chat6: The day with Remilia sama is my vacation, and you also don't have vacation right?
+			Chat6: The day with Remilia sama is my vacation, and you also don't have "vacation" right?
 			Chat7: What?
 			Chat8: You read comic during your work time?
 			Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
-			Chat10: My life already restarted since I met you, there is no past
+			Chat10: My life already restarted since I met you, there is no past.
 		}
 
 		Chat_Raiko: {
@@ -472,14 +472,14 @@ Mods: {
 
 		Chat_Keine: {
 			Chat1: Recently, the village's people don't like saying hello...How could they be so rude?
-			Chat2: This paper is filled with 9's...Must be Cirno
-			Chat3: Only the thing that's always being recorded is history
+			Chat2: This paper is filled with 9's...Must be Cirno.
+			Chat3: Only the thing that's always being recorded is history.
 			Chat4: Tonight will be a busy night...
-			Chat5: Create the history, keep the history
+			Chat5: Create the history, keep the history.
 			Chat6: Let me see who hasn't finished their homework...
 			Chat7: How've you been recently?
 			Chat8: Still entangled with the past things?
-			Chat9: This is both my nature, and my duty
+			Chat9: This is both my nature, and my duty.
 		}
 
 		Chat_Luna: {
@@ -490,11 +490,20 @@ Mods: {
 			Chat5: 哈啊——唔呣呣...
 			Chat6: 最近发生的事还挺有意思的...
 			Chat7: 人类的报纸还怪好看呢...
+			Chat8: 月圆之夜，总是引起人们的幻想哦。
+		}
+
+		Chat_Star: {
+			Chat1: 感受世上一切美好！
+			Chat2: 星星是这世上最美的东西了！
+			Chat3: 无论天气如何，对我都没有什么影响哦。
+			Chat4: 白天就看不见星星了欸...
+			Chat5: 抬头看看今晚的星星吧！
 		}
 
 		Chat_Portal: {
-			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all
-			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence
+			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all.
+			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence.
 			Chat3: Want to have a cute partner? Why not look here!
 			Chat4: Your later life may have no relationship with Gensokyo, but what you do now will influence it's fate...I mean, buy something?
 			Chat5: Thank you for supporting Gensokyo for so long! This is what you've earned.
