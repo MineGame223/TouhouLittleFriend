@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
@@ -25,21 +24,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState == 1)
                 DrawStar(blinkFrame, lightColor);
             DrawStar(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Star_Cloth"), true);
-            DrawStar(clothFrame, lightColor, 1, new Vector2(extraX, extraY));
-
-            /*for (int i = 1; i <= 10; i++)
-            {
-                Color clr = Color.AliceBlue;
-                clr.R *= (byte)i;
-                clr.G *= (byte)i;
-                clr.B *= (byte)i;
-                int step = 20 * i;
-                float rot_speed = 1.5f - i / 6;
-                DrawStarTrack(clr, 40, 30 * i, 45 + step, rot_speed);
-                DrawStarTrack(clr, 20, 30 * i, 120 + step, rot_speed);
-                DrawStarTrack(clr, 40, 30 * i, 180 + step, rot_speed);
-                DrawStarTrack(clr, 80, 30 * i, 270 + step, rot_speed);
-            }*/
+            DrawStar(clothFrame, lightColor, 1, new Vector2(extraX, extraY), null, true);
             return false;
         }
         private void DrawStar(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
@@ -58,24 +43,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
             else
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-        }
-        private void DrawStarTrack(Color color = default, int arcLength = 360, float distanceFromCenter = 100, float rotationAdjust = 0, float rotationSpeedRate = 1)
-        {
-            if (color == default)
-            {
-                color = Color.White;
-            }
-            int rate = 1;
-            for (int i = 0; i < arcLength; i++)
-            {
-                Texture2D line = AltVanillaFunction.ExtraTexture(ExtrasID.StardustTowerMark);
-                Vector2 pos = Projectile.Center + new Vector2(0, -distanceFromCenter).RotatedBy(MathHelper.ToRadians(rate * i) + Main.GlobalTimeWrappedHourly * rotationSpeedRate + MathHelper.ToRadians(rotationAdjust));
-                int singleLineLength = (int)(distanceFromCenter * 2 * MathHelper.Pi * 1.1f) / (360 / rate);
-                Rectangle rect = new Rectangle(0, 0, line.Width, singleLineLength);
-                Vector2 orig = new Vector2(line.Width / 2, 0);
-                float rot = pos.DirectionTo(Projectile.Center).ToRotation();
-                Main.spriteBatch.TeaNPCDraw(line, pos - Main.screenPosition, rect, color, rot, orig, 1f, SpriteEffects.None, 0);
-            }
         }
         private void Blink()
         {
@@ -113,18 +80,19 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 3;
                     extraAI[1]++;
                 }
-                if (Main.rand.NextBool(2))
+
+                if (extraAI[1] % 2 == 0)
                 {
-                    ParticleOrchestraSettings settings = new ParticleOrchestraSettings
-                    {
-                        PositionInWorld = Projectile.Center + new Vector2(Main.rand.Next(-120, 120), Main.rand.Next(-160, -120)),
-                        MovementVector = new Vector2(0, Main.rand.Next(1, 3)),
-                    };
-                    ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.ShimmerBlock, settings);
+                    Projectile starTrail = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.position,
+                        Vector2.Zero, ProjectileType<StarTrail>(), 0, 0, Projectile.owner
+                        , Main.rand.Next(30, 60), Main.rand.Next(50, 100 + extraAI[1]), Main.rand.Next(0, 360));
+                    starTrail.localAI[2] = Projectile.whoAmI;
+                    starTrail.netUpdate = true;
                 }
+
                 if (Projectile.owner == Main.myPlayer)
                 {
-                    if (extraAI[1] > Main.rand.Next(40, 80))
+                    if (extraAI[1] > Main.rand.Next(120, 180))
                     {
                         extraAI[1] = 0;
                         extraAI[0] = 1;
@@ -223,42 +191,24 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            int type = ProjectileType<Alice>();
-            int type2 = ProjectileType<Reimu>();
-            if (FindChatIndex(out Projectile _, type, 4, default, 0))
+            int type = ProjectileType<Sunny>();
+            int type2 = ProjectileType<Luna>();
+            if (FindChatIndex(out Projectile _, type, 12, 14, 0)
+                || FindChatIndex(out Projectile _, type2, 9, 10, 0))
             {
                 ChatCD = 1;
             }
-            if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
+            if (FindChatIndex(out Projectile p1, type, 12, default, 1, true))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Marisa", "8"), myColor, 8, 600, -1, 9);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Star", "6"), myColor, 6);
+                p1.localAI[2] = 0;
+                p1.localAI[1] = 4800;
             }
-            else if (FindChatIndex(out Projectile p2, type2, 6, default, 1, true))
+            else if (FindChatIndex(out Projectile p2, type, 14, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Marisa", "9"), myColor, 9, 600, -1, 9);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Star", "7"), myColor, 7);
             }
-            else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Marisa", "10"), myColor, 10, 360, -1, 9);
-            }
-            else if (FindChatIndex(out Projectile p4, type2, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
-                p4.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p5, type, 4, default, 1, true))
-            {
-                SetChatWithOtherOne(p5, ModUtils.GetChatText("Marisa", "12"), myColor, 12, 600, -1);
-            }
-            else if (FindChatIndex(out Projectile p6, type, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Marisa", "13"), myColor, 13, 600, -1);
-            }
-            else if (FindChatIndex(out Projectile p7, type, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p7, ModUtils.GetChatText("Marisa", "14"), myColor, 14, 600, -1);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(5) && PetState != 2)
+            else if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && PetState != 2)
             {
                 SetChat(myColor);
             }
@@ -288,25 +238,43 @@ namespace TouhouPets.Content.Projectiles.Pets
                     , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(0.8f, 1.2f)), 100, default
                     , Main.rand.NextFloat(1f, 2f)).noGravity = true;
             }
-            if (Projectile.velocity.Length() > 4 && Main.rand.NextBool(6))
+            if (Projectile.velocity.Length() > 4)
             {
-                Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)), Vector2.Normalize(Projectile.velocity) * -2, Main.rand.Next(16, 18), Main.rand.NextFloat(0.9f, 1.1f));
+                ParticleOrchestraSettings settings = new ParticleOrchestraSettings
+                {
+                    PositionInWorld = Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)),
+                    MovementVector = Vector2.Zero,
+                };
+                if (Main.rand.NextBool(3))
+                    ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.StardustPunch, settings);
+                //if (Main.rand.NextBool(6))
+                //Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)), Vector2.Normalize(Projectile.velocity) * -2, Main.rand.Next(16, 18), Main.rand.NextFloat(0.9f, 1.1f));
             }
+        }
+        private void ControlMovement(Player player)
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.02f;
+
+            ChangeDir(player, true, 200);
+
+            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
+            if (player.HasBuff<TheThreeFairiesBuff>())
+            {
+                point = new Vector2(60 * player.direction, -70 + player.gfxOffY);
+                point += new Vector2(0, -40).RotatedBy(MathHelper.ToRadians(360 / 3 * 1) + Main.GlobalTimeWrappedHourly);
+            }
+            MoveToPoint(point, 7.5f);
         }
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 1.35f, 1.43f, 2.37f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<StarBuff>());
+            Projectile.SetPetActive(player, BuffType<TheThreeFairiesBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.02f;
-
-            ChangeDir(player);
-            MoveToPoint(point, 7.5f);
-
+            ControlMovement(player);
             GenDust();
 
             if (Projectile.owner == Main.myPlayer)
@@ -318,7 +286,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer >= 600 && mainTimer < 3600 && PetState == 0)
                 {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0 && !Main.dayTime)
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && !Main.dayTime
+                        && (player.ZoneOverworldHeight || player.ZoneSkyHeight) && Main.cloudAlpha == 0 && !Main.bloodMoon)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;

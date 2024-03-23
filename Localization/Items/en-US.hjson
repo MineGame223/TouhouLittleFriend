@@ -228,6 +228,11 @@ Mods: {
 				DisplayName: Starry Sapphire
 				Tooltip: "'You feel you are feeling everything while holding it'"
 			}
+
+			SunnyMilk: {
+				DisplayName: Sunshine Milk
+				Tooltip: "'The whole world becomes more sunny after you drunk it'"
+			}
 		}
 	}
 }

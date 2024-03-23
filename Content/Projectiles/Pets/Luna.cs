@@ -220,7 +220,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 text[6] = ModUtils.GetChatText("Luna", "6");
                 text[7] = ModUtils.GetChatText("Luna", "7");
             }
-            if(Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime)
+            if (Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime)
             {
                 text[8] = ModUtils.GetChatText("Luna", "8");
             }
@@ -243,42 +243,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 return;
             }
-            int type = ProjectileType<Alice>();
-            int type2 = ProjectileType<Reimu>();
-            if (FindChatIndex(out Projectile _, type, 4, default, 0))
+            int type = ProjectileType<Sunny>();
+            int type2 = ProjectileType<Star>();
+            if (FindChatIndex(out Projectile _, type2, 6, 7, 0))
             {
                 ChatCD = 1;
             }
-            if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
+            if (FindChatIndex(out Projectile p1, type2, 6, default, 1, true))
             {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Marisa", "8"), myColor, 8, 600, -1, 9);
+                SetChatWithOtherOne(p1, ModUtils.GetChatText("Luna", "9"), myColor, 9);
+                p1.localAI[2] = 0;
+                p1.localAI[1] = 4800;
             }
-            else if (FindChatIndex(out Projectile p2, type2, 6, default, 1, true))
+            else if (FindChatIndex(out Projectile p2, type, 13, default, 1, true))
             {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Marisa", "9"), myColor, 9, 600, -1, 9);
+                SetChatWithOtherOne(p2, ModUtils.GetChatText("Luna", "10"), myColor, 10);
             }
             else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
             {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Marisa", "10"), myColor, 10, 360, -1, 9);
+                SetChatWithOtherOne(p3, ModUtils.GetChatText("Luna", "11"), myColor, 0);
+                p3.localAI[2] = 0;
             }
-            else if (FindChatIndex(out Projectile p4, type2, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
-                p4.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p5, type, 4, default, 1, true))
-            {
-                SetChatWithOtherOne(p5, ModUtils.GetChatText("Marisa", "12"), myColor, 12, 600, -1);
-            }
-            else if (FindChatIndex(out Projectile p6, type, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Marisa", "13"), myColor, 13, 600, -1);
-            }
-            else if (FindChatIndex(out Projectile p7, type, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p7, ModUtils.GetChatText("Marisa", "14"), myColor, 14, 600, -1);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(5))
+            else if (mainTimer % 960 == 0 && Main.rand.NextBool(8))
             {
                 SetChat(myColor);
             }
@@ -309,20 +295,30 @@ namespace TouhouPets.Content.Projectiles.Pets
                     , Main.rand.NextFloat(0.5f, 0.9f)).noGravity = true;
             }
         }
+        private void ControlMovement(Player player)
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.02f;
+
+            ChangeDir(player, true, 200);
+
+            Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
+            if (player.HasBuff<TheThreeFairiesBuff>())
+            {
+                point = new Vector2(60 * player.direction, -70 + player.gfxOffY);
+                point += new Vector2(0, -40).RotatedBy(MathHelper.ToRadians(360 / 3 * 2) + Main.GlobalTimeWrappedHourly);
+            }
+            MoveToPoint(point, 7.5f);
+        }
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 1.52f, 1.50f, 1.15f);
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<LunaBuff>());
+            Projectile.SetPetActive(player, BuffType<TheThreeFairiesBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.02f;
-
-            ChangeDir(player);
-            MoveToPoint(point, 7.5f);
-
+            ControlMovement(player);
             GenDust();
 
             if (Projectile.owner == Main.myPlayer)
@@ -343,7 +339,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.dayTime)
                     {
-                        if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
+                        if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && ChatTimeLeft <= 0)
                         {
                             PetState = 4;
                             int chance = Main.rand.Next(2);

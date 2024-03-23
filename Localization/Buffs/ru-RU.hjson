@@ -211,6 +211,16 @@ Mods: {
 				// DisplayName: Star Sapphire
 				// Description: "'The pouring starlight'"
 			}
+
+			SunnyBuff: {
+				// DisplayName: Sunny Milk
+				// Description: "'The shinning sunlight'"
+			}
+
+			TheThreeFairiesBuff: {
+				// DisplayName: The Three Light Fairies
+				// Description: "'Bet the life on tricking!...Wait, fairy won't die'"
+			}
 		}
 	}
 }

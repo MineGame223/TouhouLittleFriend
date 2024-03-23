@@ -228,6 +228,11 @@ Mods: {
 				DisplayName: 星耀蓝宝石
 				Tooltip: "'握着它时仿佛能感受到万物'"
 			}
+
+			SunnyMilk: {
+				DisplayName: 阳光牌牛奶
+				Tooltip: "'喝下它后，你感觉整个世界都更灿烂了'"
+			}
 		}
 	}
 }

@@ -227,7 +227,9 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<MarisaHakkero>());
             shop.Add(ItemType<SanaeCoin>());
             shop.Add(ItemType<JunkoMooncake>());
+            shop.Add(ItemType<SunnyMilk>());
             shop.Add(ItemType<LunaMoon>());
+            shop.Add(ItemType<StarSapphire>());
             shop.Register();
         }
         public override void AddShops()

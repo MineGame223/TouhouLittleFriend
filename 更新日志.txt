@@ -1,7 +1,8 @@
 ----------
 v1.1.2.6：
 新增：
-加入月亮凯米
+加入了月亮凯米
+加入了一颗星耀蓝宝石
 
 修改：
 优化了英文对话翻译/Optimized the English Chat's translation, thanks for @Kyuumulonimbus
