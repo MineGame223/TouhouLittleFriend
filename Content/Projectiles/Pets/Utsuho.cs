@@ -19,7 +19,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             DrawSun();
             DrawUtsuho(wingFrame, Projectile.GetAlpha(lightColor), null, true);
-            DrawUtsuho(wingFrame, Projectile.GetAlpha(Color.White * 0.7f), AltVanillaFunction.GetGlowTexture("UtsuhoGlow"), true);
+            DrawUtsuho(wingFrame, Projectile.GetAlpha(Color.White * 0.7f), AltVanillaFunction.GetGlowTexture("Utsuho_Glow"), true);
             Projectile.DrawStateNormalizeForPet();
             DrawUtsuho(Projectile.frame, Projectile.GetAlpha(lightColor));
             DrawUtsuho(Projectile.frame, Projectile.GetAlpha(lightColor), AltVanillaFunction.GetExtraTexture("Utsuho_Cloth"), true);
@@ -29,7 +29,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawEye()
         {
-            Texture2D t = AltVanillaFunction.GetGlowTexture("UtsuhoGlow_Eye");
+            Texture2D t = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
             int height = t.Height / Main.projFrames[Type];
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new Rectangle(0, Projectile.frame * height, t.Width, height);

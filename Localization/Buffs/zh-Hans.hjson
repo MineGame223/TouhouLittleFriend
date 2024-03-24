@@ -201,6 +201,26 @@ Mods: {
 				Description: "'历史的创造者'"
 				Description_2: "'历史的吞噬者'"
 			}
+
+			LunaBuff: {
+				DisplayName: 月之幼女
+				Description: "'静谧的月之光'"
+			}
+
+			StarBuff: {
+				DisplayName: 星之蓝玉
+				Description: "'倾泻而下的星之光'"
+			}
+
+			SunnyBuff: {
+				DisplayName: 日之鲜奶
+				Description: "'闪耀的日之光'"
+			}
+
+			TheThreeFairiesBuff: {
+				DisplayName: 光之三妖精
+				Description: "'赌上性命去恶作剧吧！...不对，妖精不会死'"
+			}
 		}
 	}
 }

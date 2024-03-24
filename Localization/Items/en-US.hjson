@@ -218,6 +218,26 @@ Mods: {
 				DisplayName: Ginkgo Leaf
 				Tooltip: "'Carrying culture for over a thousand years'"
 			}
+
+			LunaMoon: {
+				DisplayName: Sleeping Moon
+				Tooltip: "'If you sleep with it, you won't hear any noise'"
+			}
+
+			StarSapphire: {
+				DisplayName: Starry Sapphire
+				Tooltip: "'You feel you are feeling everything while holding it'"
+			}
+
+			SunnyMilk: {
+				DisplayName: Sunshine Milk
+				Tooltip: "'The whole world becomes more sunny after you drunk it'"
+			}
+
+			LightsJewels: {
+				DisplayName: Light's Jewels
+				Tooltip: "'A necklace load of sapphire, rutile, and a cheese'"
+			}
 		}
 	}
 }

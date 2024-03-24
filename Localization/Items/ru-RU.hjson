@@ -186,27 +186,27 @@ Mods: {
 
 			YukarisItem: {
 				// DisplayName: Sage's license
-				// Tooltip: "'This is my approvement to you, just take it'"
+				// Tooltip: "'This is my sign of approval, just take it'"
 			}
 
 			KaguyaBranch: {
-				// DisplayName: Penglai Jade Branch
-				// Tooltip: "'A ordinary branch with colorful jewels'"
+				// DisplayName: Jeweled Branch of Hourai
+				// Tooltip: "'A seemingly ordinary branch with colorful jewels'"
 			}
 
 			MokuMatch: {
-				// DisplayName: match that never put out
-				// Tooltip: "'No matter rainning or blowing'"
+				// DisplayName: Everlasting Match
+				// Tooltip: "'Raining or blowing, the flame never dies'"
 			}
 
 			MeirinPanda: {
 				// DisplayName: Panda Pendant
-				// Tooltip: "'From the mysterious eastern land'"
+				// Tooltip: "'From the mysterious Eastern land'"
 			}
 
 			SakuyaWatch: {
 				// DisplayName: Luna Dial
-				// Tooltip: "'The pointer remained at 4:16 forever'"
+				// Tooltip: "'The hands forever stay at 4:16'"
 			}
 
 			RaikoDrum: {
@@ -216,7 +216,27 @@ Mods: {
 
 			KeineLeaf: {
 				// DisplayName: Ginkgo Leaf
-				// Tooltip: "'Load the culture and hold it forever'"
+				// Tooltip: "'Carrying culture for over a thousand years'"
+			}
+
+			LunaMoon: {
+				// DisplayName: Sleeping Moon
+				// Tooltip: "'If you sleep with it, you won't hear any noise'"
+			}
+
+			StarSapphire: {
+				// DisplayName: Starry Sapphire
+				// Tooltip: "'You feel you are feeling everything while holding it'"
+			}
+
+			SunnyMilk: {
+				// DisplayName: Sunshine Milk
+				// Tooltip: "'The whole world becomes more sunny after you drunk it'"
+			}
+
+			LightsJewels: {
+				// DisplayName: Light's Jewels
+				// Tooltip: "'A necklace load of sapphire, rutile, and a cheese'"
 			}
 		}
 	}

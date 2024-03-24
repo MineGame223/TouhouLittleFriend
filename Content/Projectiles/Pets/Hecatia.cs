@@ -62,6 +62,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateWorldState()
         {
+            //懒得改
             float xSpeed = 1.5f;
             if (PlanteState > 2)
             {
@@ -237,10 +238,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                 SetChat(myColor);
             }
         }
+        int dummyTimer = 0;
         public override void VisualEffectForPreview()
         {
             UpdateWorldState();
             Idle();
+            
+            if (Projectile.isAPreviewDummy)
+            {
+                dummyTimer++;
+                if (dummyTimer >= 120)
+                {
+                    dummyTimer = 0;
+                    PlanteState++;
+                }
+            }
         }
         public override void AI()
         {
@@ -264,7 +276,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PetState = 1;
                     Projectile.netUpdate = true;
                 }
-                if (mainTimer == 4798)
+                if (mainTimer == 4798 && !Projectile.isAPreviewDummy)
                 {
                     PlanteState++;
                     Projectile.netUpdate = true;

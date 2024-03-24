@@ -13,5 +13,8 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool ObtainPetByFishing;
+
+        [DefaultValue(true)]
+        public bool AllowGapToSpawn;
     }
 }

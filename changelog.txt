@@ -6,8 +6,19 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-神秘隙间广告位招租辣！如果你有什么想要推广的东方社团，可以于交流群与我联系，名额有限先到先得
+神秘隙间广告位招租辣！如果你有什么想要推广的东方社团，可以于交流群与我联系，名额有限先到先得（请不要直接加Steam好友因为我不知道你加我到底要干啥）
+
+新增：
+加入了月亮凯米
+加入了一颗星耀蓝宝石
+加入了一盒光明牛奶
+加入了一串星之珠宝
+加入了控制神秘隙间生成的Config
+
+修改：
+优化了英文对话翻译/Optimized the English Chat's translation, thanks for @Kyuumulonimbus
+现在赫卡提娅在玩家选择界面会以一个更快的速度转变自身状态
 
 修复：
-修复了辉夜与妹红在多人模式下只有召唤者本人可见的问题以及其他玩家同时持有辉夜或妹红时可能导致游戏出错的问题
-灵梦现在应该换上新年的衣服了
+修复了红魔馆组合状态下咲夜和美铃打伞位置出现偏差的问题
+修复了灵梦在犯困状态下缺少一句对话的问题

@@ -18,7 +18,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override bool PreDraw(ref Color lightColor)
         {
             DrawNitori(backFrame, lightColor, 1);
-            DrawNitori(backFrame, Color.White * 0.7f, 1, AltVanillaFunction.GetGlowTexture("NitoriGlow"));
+            DrawNitori(backFrame, Color.White * 0.7f, 1, AltVanillaFunction.GetGlowTexture("Nitori_Glow"));
             DrawNitori(backFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Nitori_Cloth"), true);
             Projectile.DrawStateNormalizeForPet();
             DrawNitori(Projectile.frame, lightColor);

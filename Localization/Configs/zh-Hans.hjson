@@ -31,6 +31,11 @@ Mods: {
 						受影响的物品有：{$Mods.TouhouPets.Items.HinaDoll.DisplayName}、{$Mods.TouhouPets.Items.WakasagihimeFishingRod.DisplayName}、{$Mods.TouhouPets.Items.IkuOarfish.DisplayName}、{$Mods.TouhouPets.Items.UselessBook.DisplayName}
 						'''
 				}
+
+				AllowGapToSpawn: {
+					Label: 允许神秘隙间生成
+					Tooltip: 神秘隙间是否可以在夜晚时生成
+				}
 			}
 		}
 	}

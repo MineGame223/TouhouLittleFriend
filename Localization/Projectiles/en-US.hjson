@@ -51,6 +51,10 @@ Mods: {
 			SakuyaKnife.DisplayName: Knife
 			Raiko.DisplayName: Raiko Horikawa
 			Keine.DisplayName: Keine Kamishirasawa
+			Luna.DisplayName: Luna Child
+			Star.DisplayName: Star Sapphire
+			StarTrail.DisplayName: Star Trail
+			Sunny.DisplayName: Sunny Milk
 		}
 	}
 }

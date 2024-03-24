@@ -59,6 +59,10 @@ namespace TouhouPets.Content.NPCs
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
+            if (!GetInstance<PetObtainConfig>().AllowGapToSpawn)
+            {
+                return 0f;
+            }
             bool zoneOverworld = Main.remixWorld ?
                 spawnInfo.Player.ZoneUnderworldHeight : spawnInfo.Player.ZoneOverworldHeight;
             if (!Main.dayTime && zoneOverworld && !NPC.AnyNPCs(Type)
@@ -223,6 +227,9 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<MarisaHakkero>());
             shop.Add(ItemType<SanaeCoin>());
             shop.Add(ItemType<JunkoMooncake>());
+            shop.Add(ItemType<SunnyMilk>());
+            shop.Add(ItemType<LunaMoon>());
+            shop.Add(ItemType<StarSapphire>());
             shop.Register();
         }
         public override void AddShops()
