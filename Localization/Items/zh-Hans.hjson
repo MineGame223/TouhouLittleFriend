@@ -233,6 +233,11 @@ Mods: {
 				DisplayName: 阳光牌牛奶
 				Tooltip: "'喝下它后，你感觉整个世界都更灿烂了'"
 			}
+
+			LightsJewels: {
+				DisplayName: 光之珠宝
+				Tooltip: "'由蓝宝石、金红石、和一块芝士串起来的项链'"
+			}
 		}
 	}
 }

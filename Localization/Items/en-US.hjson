@@ -233,6 +233,11 @@ Mods: {
 				DisplayName: Sunshine Milk
 				Tooltip: "'The whole world becomes more sunny after you drunk it'"
 			}
+
+			LightsJewels: {
+				DisplayName: Light's Jewels
+				Tooltip: "'A necklace load of sapphire, rutile, and a cheese'"
+			}
 		}
 	}
 }
