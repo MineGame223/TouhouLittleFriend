@@ -226,17 +226,17 @@ Mods: {
 
 			StarSapphire: {
 				DisplayName: Starry Sapphire
-				Tooltip: "'You feel you are feeling everything while holding it'"
+				Tooltip: "'You feel as if you're feeling everything as you hold it'"
 			}
 
 			SunnyMilk: {
 				DisplayName: Sunshine Milk
-				Tooltip: "'The whole world becomes more sunny after you drunk it'"
+				Tooltip: "'The whole world becomes more sunny after you drink it'"
 			}
 
 			LightsJewels: {
 				DisplayName: Light's Jewels
-				Tooltip: "'A necklace load of sapphire, rutile, and a cheese'"
+				Tooltip: "'A necklace loaded with sapphires, rutile, and a bit of cheese'"
 			}
 		}
 	}
