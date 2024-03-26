@@ -214,12 +214,12 @@ Mods: {
 
 			SunnyBuff: {
 				// DisplayName: Sunny Milk
-				// Description: "'The shinning sunlight'"
+				// Description: "'The shining sunlight'"
 			}
 
 			TheThreeFairiesBuff: {
 				// DisplayName: The Three Light Fairies
-				// Description: "'Bet the life on tricking!...Wait, fairy won't die'"
+				// Description: "'Staking their lives on a prank!...Wait, fairies can't die'"
 			}
 		}
 	}
