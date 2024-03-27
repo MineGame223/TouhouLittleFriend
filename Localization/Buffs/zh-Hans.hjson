@@ -221,6 +221,11 @@ Mods: {
 				DisplayName: 光之三妖精
 				Description: "'赌上性命去恶作剧吧！...不对，妖精不会死'"
 			}
+
+			ReisenBuff: {
+				DisplayName: 月兔
+				Description: "'她比较容易紧张...'"
+			}
 		}
 	}
 }

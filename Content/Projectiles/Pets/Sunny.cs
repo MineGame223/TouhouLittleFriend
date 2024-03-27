@@ -19,7 +19,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             DrawSunny_Full(lightColor);
 
-            if (phantomDist >= 0)
+            if (phantomTime >= 0)
             {
                 for (int i = -1; i <= 1; i++)
                 {
@@ -27,7 +27,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         Vector2 dist = Main.player[Projectile.owner].Center - Projectile.Center;
                         Vector2 drift = new Vector2(dist.X * i * 2, dist.Y * 2).RotatedBy(Main.GlobalTimeWrappedHourly);
-                        Color clr = lightColor * 0.4f * phantomDist;
+                        Color clr = lightColor * 0.4f * phantomTime;
                         DrawSunny_Full(clr, drift);
                         DrawSunny_Full(clr, -drift);
                     }
@@ -96,7 +96,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         int wingsFrame, wingsFrameCounter;
         int clothFrame, clothFrameCounter;
         int hairFrame, hairFrameCounter;
-        float extraX, extraY, phantomDist;
+        float extraX, extraY, phantomTime;
         private void Happy()
         {
             if (++Projectile.frameCounter > 8)
@@ -146,13 +146,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (PetState == 2)
             {
-                phantomDist += 0.1f;
+                phantomTime += 0.1f;
             }
             else
             {
-                phantomDist -= 0.1f;
+                phantomTime -= 0.1f;
             }
-            phantomDist = MathHelper.Clamp(phantomDist, 0, 1);
+            phantomTime = MathHelper.Clamp(phantomTime, 0, 1);
         }
         private void UpdateMiscFrame()
         {

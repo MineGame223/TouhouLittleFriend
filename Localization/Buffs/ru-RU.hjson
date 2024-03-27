@@ -221,6 +221,11 @@ Mods: {
 				// DisplayName: The Three Light Fairies
 				// Description: "'Staking their lives on a prank!...Wait, fairies can't die'"
 			}
+
+			ReisenBuff: {
+				// DisplayName: Rabbit from the Moon
+				// Description: "'She is a little easy to be nerves...'"
+			}
 		}
 	}
 }
