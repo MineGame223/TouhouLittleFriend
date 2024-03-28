@@ -208,6 +208,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<TenshiKeyStone>());
             shop.Add(ItemType<ReimuYinyangOrb>());
             shop.Add(ItemType<HecatiaPlanet>());
+            shop.Add(ItemType<ReisenGun>());
             shop.Register();
 
             shop = new(Type, "Shop2");
