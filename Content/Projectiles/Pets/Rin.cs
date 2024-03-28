@@ -158,6 +158,19 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
+        private void GenDust()
+        {
+            int dustID = MyDustId.CyanBubble;
+            Dust.NewDustPerfect(Projectile.Center + new Vector2(-28, 8), dustID
+                , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
+                , Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
+            Dust.NewDustPerfect(Projectile.Center + new Vector2(28, 8), dustID
+                , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
+                , Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
+            Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
+                , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
+                , Main.rand.NextFloat(0.5f, 0.75f)).noGravity = true;
+        }
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -174,16 +187,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             MoveToPoint(point, 12.5f);
 
-            int dustID = MyDustId.CyanBubble;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(-28, 8), dustID
-                , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
-                , Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(28, 8), dustID
-                , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
-                , Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
-                , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
-                , Main.rand.NextFloat(0.5f, 0.75f)).noGravity = true;
+            GenDust();
 
             if (Projectile.owner == Main.myPlayer)
             {

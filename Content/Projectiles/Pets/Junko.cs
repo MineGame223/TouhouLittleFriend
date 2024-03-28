@@ -155,10 +155,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(254, 159, 75);
         public override string GetChatText(out string[] text)
         {
+            Player player = Main.player[Projectile.owner];
             text = new string[11];
             if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
+            {
                 text[1] = ModUtils.GetChatText("Junko", "1");
-            text[2] = "......";
+            }
+            if (player.ownedProjectileCounts[ProjectileType<Reisen>()] > 0)
+            {
+                text[2] = ModUtils.GetChatText("Junko", "2");
+            }
+            text[3] = "......";
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 for (int i = 1; i < text.Length; i++)

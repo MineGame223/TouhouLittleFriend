@@ -149,7 +149,10 @@ Mods: {
 			Chat3: Heaven is too boring...So, So, I, the greatest celestial came down here to give you some care!
 		}
 
-		Chat_Junko.Chat1: Are you watching, Chang'e?...
+		Chat_Junko: {
+			Chat1: Are you watching, Chang'e?...
+			Chat2: Udon-chan~ How're you doing?
+		}
 
 		Chat_Marisa: {
 			Chat1: What kind of magic should I try today?...
@@ -522,6 +525,20 @@ Mods: {
 			Chat13: That's not a problem! You just need to bring up the rear, Luna-chan!
 			Chat14: Oh no! Your ability is essential for our plan!
 			Chat15: NEVER!!!
+		}
+
+		Chat_Reisen: {
+			Chat1: Maybe it's impossible to go back...I'd better live in here...
+			Chat2: Could master taught that usagi a lesson?
+			Chat3: I can't sleep well currently...
+			Chat4: I wonder how my buddy on the moon are doing?
+			Chat5: Surely, I'm a traitor just like the princess...
+			Chat6: I REALLY don't want to get on with human!
+			Chat7: I'd advise you not to play gazing game with me.
+			Chat8: Wish master won't let me to be her drug test subject again, please...
+			Chat9: I have NO relationship with udon noodles!...Also please don't eat that in front of me.
+			Chat10: You'd better not gazing the moon in such a night or you'll be crazy...of course, you only, not me.
+			Chat11: Eh eh...I, I'm fine...
 		}
 
 		Chat_Portal: {

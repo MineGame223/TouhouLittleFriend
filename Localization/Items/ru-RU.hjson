@@ -238,6 +238,11 @@ Mods: {
 				// DisplayName: Light's Jewels
 				// Tooltip: "'A necklace loaded with sapphires, rutile, and a bit of cheese'"
 			}
+
+			ReisenGun: {
+				// DisplayName: Rabbit Ears Gun
+				// Tooltip: "'Is it a gun or a megaphone?'"
+			}
 		}
 	}
 }

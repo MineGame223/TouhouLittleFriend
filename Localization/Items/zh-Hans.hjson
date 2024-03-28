@@ -238,6 +238,11 @@ Mods: {
 				DisplayName: 光之珠宝
 				Tooltip: "'由蓝宝石、金红石、和一块芝士串起来的项链'"
 			}
+
+			ReisenGun: {
+				DisplayName: 兔耳枪
+				Tooltip: "'这究竟是把枪，还是个喇叭？'"
+			}
 		}
 	}
 }
