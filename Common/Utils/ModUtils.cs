@@ -15,6 +15,28 @@ namespace TouhouPets
     internal static class ModUtils
     {
         /// <summary>
+        /// 绘制宠物的基本方法
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="frame">当前帧</param>
+        /// <param name="lightColor">颜色</param>
+        /// <param name="config">DrawPetConfig</param>
+        /// <param name="currentRow">当前贴图应当采用哪一列</param>
+        public static void DrawPet(this Projectile projectile, int frame, Color lightColor, DrawPetConfig config, int currentRow = 0)
+        {
+            Texture2D t = config.AltTexture ?? AltVanillaFunction.ProjectileTexture(projectile.type);
+            int height = t.Height / Main.projFrames[projectile.type];
+            Vector2 pos = projectile.Center - Main.screenPosition + config.PositionOffset + new Vector2(0, 7f * Main.essScale);
+            Rectangle rect = new Rectangle(t.Width / config.TextureRow * currentRow, frame * height, t.Width / config.TextureRow, height);
+            Vector2 orig = rect.Size() / 2;
+            float scale = config.Scale;
+            SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            if (config.ShouldUseEntitySpriteDraw)
+                Main.EntitySpriteDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
+            else
+                Main.spriteBatch.TeaNPCDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
+        }
+        /// <summary>
         /// 将输入价格转换为货币单位价格的文本
         /// </summary>
         /// <param name="value"></param>
