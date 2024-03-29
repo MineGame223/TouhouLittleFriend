@@ -15,30 +15,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Nitori_Cloth");
+        readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Nitori_Glow");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawNitori(backFrame, lightColor, 1);
-            DrawNitori(backFrame, Color.White * 0.7f, 1, AltVanillaFunction.GetGlowTexture("Nitori_Glow"));
-            DrawNitori(backFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Nitori_Cloth"), true);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+                AltTexture = clothTex,
+            };
+
+            Projectile.DrawPet(backFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(backFrame, Color.White * 0.7f, 
+                drawConfig with
+                {
+                    AltTexture = glowTex,
+                }, 1);
+
+            Projectile.DrawPet(backFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
-            DrawNitori(Projectile.frame, lightColor);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawNitori(blinkFrame, lightColor);
-            DrawNitori(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Nitori_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
-        }
-        private void DrawNitori(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

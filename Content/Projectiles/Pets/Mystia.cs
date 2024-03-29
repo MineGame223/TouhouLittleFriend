@@ -16,30 +16,44 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Mystia_Cloth");
+        readonly Texture2D patchTex = AltVanillaFunction.GetExtraTexture("Mystia_EyePatch");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawMystia(wingFrame, lightColor, 1, new Vector2(extraAdjX, extraAdjY));
-            DrawMystia(Projectile.frame, lightColor);
+            bool blackDye = Main.LocalPlayer.miscDyes[0].type == ItemID.BlackDye;
+            DrawPetConfig config = drawConfig with
+            {
+                PositionOffset = new Vector2(extraAdjX, extraAdjY),
+            };
+
+            Projectile.DrawPet(wingFrame, lightColor, config, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawMystia(blinkFrame, lightColor);
-            DrawMystia(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Mystia_Cloth"), true);
-            DrawMystia(clothFrame, lightColor, 0, new Vector2(extraAdjX, extraAdjY), null, true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+               drawConfig with
+               {
+                   ShouldUseEntitySpriteDraw = true,
+                   AltTexture = clothTex,
+               });
+            Projectile.DrawPet(clothFrame, lightColor, 
+                config with
+                {
+                    ShouldUseEntitySpriteDraw = true,
+                });
+            Projectile.DrawStateNormalizeForPet();
+
+            if (blackDye)
+                Projectile.DrawPet(clothFrame, lightColor,
+                    config with
+                    {
+                        AltTexture = patchTex,
+                    });
             return false;
-        }
-        private void DrawMystia(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
-                extraPos = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

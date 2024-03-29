@@ -223,8 +223,8 @@ Mods: {
 			}
 
 			ReisenBuff: {
-				// DisplayName: Rabbit from the Moon
-				// Description: "'She is a little easy to be nerves...'"
+				// DisplayName: Rabbit of the Moon
+				// Description: "'She's a little easy to get nervous...'"
 			}
 		}
 	}

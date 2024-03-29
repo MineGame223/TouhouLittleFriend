@@ -14,36 +14,35 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 25;
             Main.projPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Raiko_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawRaiko(backFrame, lightColor, 1, null, true);
-            DrawRaiko(drumFrame, lightColor, 1, null, true);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+            DrawPetConfig config2 = config with
+            {
+                AltTexture = clothTex,
+            };
+
+            Projectile.DrawPet(backFrame, lightColor, config, 1);
+            Projectile.DrawPet(drumFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            DrawRaiko(legFrame, lightColor, 1);
-            DrawRaiko(legFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Raiko_Cloth"), true);
+            Projectile.DrawPet(legFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(legFrame, lightColor, config2, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            DrawRaiko(Projectile.frame, lightColor);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawRaiko(blinkFrame, lightColor, 1);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
 
-            DrawRaiko(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Raiko_Cloth"), true);
-            DrawRaiko(skritFrame, lightColor, 1, null, true);
+            Projectile.DrawPet(Projectile.frame, lightColor, config2);
+            Projectile.DrawPet(skritFrame, lightColor, config, 1);
             return false;
-        }
-        private void DrawRaiko(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

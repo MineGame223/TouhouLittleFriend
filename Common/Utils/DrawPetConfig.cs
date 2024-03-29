@@ -5,7 +5,7 @@ namespace TouhouPets
 {
     public struct DrawPetConfig
     {
-        public DrawPetConfig(int rowCount = 1)
+        public DrawPetConfig(int rowCount)
         {
             TextureRow = rowCount;
         }
