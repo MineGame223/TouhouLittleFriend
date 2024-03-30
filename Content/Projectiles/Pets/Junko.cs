@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
@@ -16,61 +17,39 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        #region 绘制，太繁杂了所以隐藏
         float auraValue;
-        private void DrawAuraSingle(Texture2D t, Vector2 pos, Rectangle rect, Color color, float rot, Vector2 orig, SpriteEffects effect)
+        private void DrawTail()
         {
-            for (int i = 0; i < 4; i++)
-            {
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.1f * auraValue, Projectile.rotation + rot, orig, Projectile.scale * 1.75f * auraValue * new Vector2(1, 1 + 1.1f * Main.essScale * auraValue), effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.25f * auraValue, Projectile.rotation + rot, orig, Projectile.scale * 1.5f * auraValue * new Vector2(1, 1 + 1.1f * Main.essScale * auraValue), effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.5f, Projectile.rotation + rot, orig, Projectile.scale * 1.25f * new Vector2(1, 1 + 1.1f * Main.essScale * auraValue), effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.75f, Projectile.rotation + rot, orig, Projectile.scale * 0.75f * new Vector2(1, 1 + 1.1f * Main.essScale * auraValue), effect, 0f);
-            }
-        }
-        private void DrawAuraSingle2(Texture2D t, Vector2 pos, Rectangle rect, Color color, float rot, Vector2 orig, SpriteEffects effect)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.1f * auraValue, Projectile.rotation + rot, orig, Projectile.scale * 1.75f * auraValue * new Vector2(2f, 0.75f + 1.1f * Main.essScale * auraValue), effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.25f * auraValue, Projectile.rotation + rot, orig, Projectile.scale * 1.5f * auraValue * new Vector2(2f, 0.75f + 1.1f * Main.essScale * auraValue), effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.5f, Projectile.rotation + rot, orig, Projectile.scale * 1.25f * new Vector2(2f, 0.75f + 1.1f * Main.essScale * auraValue), effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(-4 * Projectile.spriteDirection, -6) + new Vector2(0, 3f * Main.essScale) + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), rect, color * 0.75f, Projectile.rotation + rot, orig, Projectile.scale * 0.75f * new Vector2(2f, 0.75f + 1.1f * Main.essScale * auraValue), effect, 0f);
-            }
-        }
-        private void DrawAura(Texture2D t, Vector2 pos, Rectangle rect, Vector2 orig, SpriteEffects effect)
-        {
-            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
-            float rot2 = 20;
-            DrawAuraSingle(t, pos, rect, Projectile.GetAlpha(Color.White), 0, orig, effect);
-            DrawAuraSingle2(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(10) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(25) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle2(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(55) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle(t, pos + new Vector2(0, 16), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(60) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle2(t, pos + new Vector2(-4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(110) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle(t, pos + new Vector2(-4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(120) + MathHelper.ToRadians(rot2) * Main.essScale, orig, effect);
+            Texture2D tex = tailTex;
+            int width = tex.Width / drawConfig.TextureRow;
+            int height = tex.Height / 4;
+            Rectangle rect = new Rectangle(0, tailFrame * height, width, height);
 
-            DrawAuraSingle2(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(-10) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(-25) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle2(t, pos + new Vector2(0, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(-55) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle(t, pos + new Vector2(0, 16), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(-60) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle2(t, pos + new Vector2(4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White) * 0.5f, MathHelper.ToRadians(-110) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
-            DrawAuraSingle(t, pos + new Vector2(4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(-120) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
+            Vector2 extraPos = new Vector2(-4 * Projectile.spriteDirection, 20).RotatedBy(Projectile.rotation);
+            Vector2 pos = Projectile.DefaultDrawPetPosition() + extraPos;
+            Vector2 orig = new Vector2(rect.Width / 2, rect.Height);
+
+            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
+            for (int i = -4; i <= 4; i++)
+            {
+                Color clr = Projectile.GetAlpha(Color.White * (1 - Math.Abs(i * 0.12f)));
+                float rotOffset = MathHelper.ToRadians(3 * i * (float)Math.Sin(Main.GlobalTimeWrappedHourly));
+                float rot = MathHelper.ToRadians(30 * i) + rotOffset;
+                float rot2 = MathHelper.ToRadians(20 * i * 1.1f) + rotOffset;
+                Vector2 scale = new Vector2(Projectile.scale * 0.7f, (Projectile.scale * (1f - Math.Abs(i * 0.2f))) + (auraValue * 0.7f));
+
+                Main.EntitySpriteDraw(tex, pos, rect, clr * 0.5f, Projectile.rotation + rot2, orig, scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(tex, pos, rect, clr, Projectile.rotation + rot, orig, scale, SpriteEffects.None);
+            }
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
-        
-        DrawPetConfig drawConfig = new(2);
+
+        DrawPetConfig drawConfig = new(1);
         readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Junko_Cloth");
+        readonly Texture2D tailTex = AltVanillaFunction.GetExtraTexture("Junko_Tail");
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, Projectile.frame * height, t.Width / 2, height);
-            Rectangle rect2 = new Rectangle(t.Width / 2, 1 * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            DrawAura(t, pos, rect2, orig, effect);
+            DrawTail();
 
             Projectile.DrawStateNormalizeForPet();
 
@@ -87,7 +66,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        #endregion
         private void Blink()
         {
             if (blinkFrame < 9)
@@ -106,6 +84,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
         }
         int blinkFrame, blinkFrameCounter;
+        int tailFrame, tailFrameCounter;
         private void Wrath()
         {
             if (Projectile.frame < 4)
@@ -147,6 +126,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 2400;
                     PetState = 0;
                 }
+            }
+        }
+        private void UpdateTailFrame()
+        {
+            if (++tailFrameCounter > 6)
+            {
+                tailFrameCounter = 0;
+                tailFrame++;
+            }
+            if (tailFrame > 3)
+            {
+                tailFrame = 0;
             }
         }
         private void Idel()
@@ -199,6 +190,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void VisualEffectForPreview()
         {
+            UpdateTailFrame();
             if (PetState != 2)
                 Idel();
         }
