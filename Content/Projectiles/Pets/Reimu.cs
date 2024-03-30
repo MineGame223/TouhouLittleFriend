@@ -14,38 +14,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Reimu_Cloth");
+        readonly Texture2D newYearClothTex = AltVanillaFunction.GetExtraTexture("Reimu_Cloth_NewYear");
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D cloth = AltVanillaFunction.GetExtraTexture("Reimu_Cloth");
-            Texture2D cloth_NewYear = AltVanillaFunction.GetExtraTexture("Reimu_Cloth_NewYear");
-            if (DateTime.Now.Month == 2)
+            bool isFebrary = DateTime.Now.Month == 2;
+            Texture2D cloth = isFebrary ? newYearClothTex : clothTex;
+
+            DrawPetConfig config = drawConfig with
             {
-                cloth = cloth_NewYear;
-            }
-            DrawReimu(Projectile.frame, lightColor);
+                ShouldUseEntitySpriteDraw = true,
+                AltTexture = cloth,
+            };
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1 || PetState == 4)
-                DrawReimu(blinkFrame, lightColor);
-            DrawReimu(Projectile.frame, lightColor, cloth, true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.DrawStateNormalizeForPet();
+
             if (PetState < 3)
             {
-                DrawReimu(clothFrame, lightColor);
-                DrawReimu(clothFrame, lightColor, cloth, true);
+                Projectile.DrawPet(clothFrame, lightColor, drawConfig);
+                Projectile.DrawPet(clothFrame, lightColor, config);
             }
             return false;
-        }
-        private void DrawReimu(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {
@@ -258,7 +254,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if(PetState == 2)
+            if (PetState == 2)
             {
                 return;
             }

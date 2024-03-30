@@ -15,37 +15,50 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Wakasagihime_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             int extraHeight = Projectile.frame == 2 ? -2 : 0;
-            DrawWakasagihime(tailFrame, lightColor, 1);
-            DrawWakasagihime(Projectile.frame, lightColor, 0);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+            DrawPetConfig config2 = config with
+            {
+                AltTexture = clothTex,
+            };
+
+            Projectile.DrawPet(tailFrame, lightColor, drawConfig, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawWakasagihime(blinkFrame, lightColor, 0);
-            DrawWakasagihime(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Wakasagihime_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config2);
+
             for (int i = 0; i < 7; i++)
             {
-                DrawWakasagihime(9, Color.White * 0.5f, 0
-                    , new Vector2(0, extraHeight) + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f), null, true);
+                Projectile.DrawPet(9, Color.White * 0.5f,
+                    config with
+                    {
+                        PositionOffset = new Vector2(0, extraHeight) + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f),
+                    });
             }
-            DrawWakasagihime(8, lightColor, 0, new Vector2(0, extraHeight), null, true);
-            DrawWakasagihime(8, lightColor, 0, new Vector2(0, extraHeight), AltVanillaFunction.GetExtraTexture("Wakasagihime_Cloth"), true);
+            Projectile.DrawStateNormalizeForPet();
+
+            Projectile.DrawPet(8, lightColor,
+                    drawConfig with
+                    {
+                        PositionOffset = new Vector2(0, extraHeight),
+                    });
+            Projectile.DrawPet(8, lightColor,
+                    config2 with
+                    {
+                        PositionOffset = new Vector2(0, extraHeight),
+                    });
             return false;
-        }
-        private void DrawWakasagihime(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
-                extraPos = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + extraPos + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

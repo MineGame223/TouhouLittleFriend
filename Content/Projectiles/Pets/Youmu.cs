@@ -16,45 +16,49 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Youmu_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+            DrawPetConfig config2 = config with
+            {
+                AltTexture = clothTex,
+            };
+
             for (int i = 0; i < 4; i++)
             {
-                DrawYoumu(8, Color.White * 0.5f, 1, null, true
-                    , new Vector2(Main.rand.Next(-10, 11) * 0.15f, Main.rand.Next(-10, 11) * 0.15f));
+                Projectile.DrawPet(8, Color.White * 0.5f,
+                    drawConfig with
+                    {
+                        PositionOffset = new Vector2(Main.rand.Next(-10, 11) * 0.15f, Main.rand.Next(-10, 11) * 0.15f),
+                        ShouldUseEntitySpriteDraw = true,
+                    }, 1);
             }
             Projectile.DrawStateNormalizeForPet();
-            if (Projectile.frame != 4)
-                DrawYoumu(10, lightColor);
-            DrawYoumu(Projectile.frame, lightColor);
-            if (PetState == 1 || PetState == 4)
-                DrawYoumu(blinkFrame, lightColor);
 
-            DrawYoumu(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Youmu_Cloth"), true);
-            DrawYoumu(clothFrame, lightColor, 1, null, true);
-            DrawYoumu(clothFrame + 4, lightColor, 1, null, true);
+            if (Projectile.frame != 4)
+                Projectile.DrawPet(10, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if (PetState == 1 || PetState == 4)
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config2);
+            Projectile.DrawPet(clothFrame, lightColor, config, 1);
+            Projectile.DrawPet(clothFrame + 4, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
+
             if (Projectile.frame >= 1 && Projectile.frame <= 4)
             {
-                DrawYoumu(handFrame, lightColor);
-                DrawYoumu(handFrame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Youmu_Cloth"), true);
+                Projectile.DrawPet(handFrame, lightColor, drawConfig);
+                Projectile.DrawPet(handFrame, lightColor, config2);
             }
             return false;
-        }
-        private void DrawYoumu(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false, Vector2 posAdjForGhost = default)
-        {
-            if (posAdjForGhost == default)
-                posAdjForGhost = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + shake + posAdjForGhost;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

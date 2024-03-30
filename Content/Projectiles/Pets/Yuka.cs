@@ -17,35 +17,37 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(2)
+        {
+            PositionOffset = new Vector2(0, -10),
+        };
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuka_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawYuka(Projectile.frame, lightColor);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawYuka(blinkFrame, lightColor, 1);
-            DrawYuka(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Yuka_Cloth"), true);
-            DrawYuka(clothFrame, lightColor, 1, null, true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawPet(clothFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
+
             if (Projectile.frame == 8)
             {
                 DrawHand(lightColor, null);
                 DrawHand(lightColor, AltVanillaFunction.GetExtraTexture("Yuka_Cloth"), true);
             }
-            Projectile.DrawStateNormalizeForPet();
             return false;
-        }
-        private void DrawYuka(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int width = t.Width / 2;
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center + new Vector2(0, -10) - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new(width * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void DrawHand(Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
         {

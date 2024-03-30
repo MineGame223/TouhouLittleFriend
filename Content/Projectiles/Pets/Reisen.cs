@@ -18,7 +18,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         DrawPetConfig drawConfig = new(3);
         readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Reisen_Glow");
         readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth");
-        readonly Texture2D clothTexAlt = AltVanillaFunction.GetExtraTexture("Reisen_Cloth_Alt");
+        readonly Texture2D altClothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth_Alt");
         public override bool PreDraw(ref Color lightColor)
         {
             if (eyeScale > 0)
@@ -60,7 +60,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
             DrawPetConfig config2 = config with
             {
-                AltTexture = blackDye ? clothTexAlt : clothTex,
+                AltTexture = blackDye ? altClothTex : clothTex,
                 ShouldUseEntitySpriteDraw = !blackDye,
             };
 

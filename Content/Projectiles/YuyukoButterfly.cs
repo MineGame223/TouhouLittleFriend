@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
+using Terraria.ID;
 
 namespace TouhouPets.Content.Projectiles
 {
@@ -31,7 +34,16 @@ namespace TouhouPets.Content.Projectiles
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
             Color clr = Projectile.GetAlpha(Color.White);
             Vector2 orig = rect.Size() / 2;
-            Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, 0f, orig, 1f, SpriteEffects.None, 0);
+
+            Player player = Main.player[Projectile.owner];
+
+            Main.spriteBatch.QuickToggleAdditiveMode(true, false, BlendState.AlphaBlend);
+
+            DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig, 1f, SpriteEffects.None, 0);
+            GameShaders.Armor.Apply(player.cPet, Projectile, data);
+            data.Draw(Main.spriteBatch);
+
+            Main.spriteBatch.QuickToggleAdditiveMode(false);
             return false;
         }
         public override void AI()

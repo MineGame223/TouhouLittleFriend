@@ -16,16 +16,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 headPosAdj = new Vector2(0, -2 * headBaseY) + new Vector2(headAdjX, headAdjY);
-            DrawSekibanki(headFrame, lightColor, 1, headPosAdj);
-            DrawSekibanki(headFrame, lightColor, 1, headPosAdj, AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth"), true);
+            DrawPetConfig config = drawConfig with
+            {
+                AltTexture = clothTex,
+                ShouldUseEntitySpriteDraw = true,
+            };
+            DrawPetConfig config2 = drawConfig with
+            {
+                PositionOffset = headPosAdj,
+            };
+
+            Projectile.DrawPet(headFrame, lightColor, config2, 1);
+            Projectile.DrawPet(headFrame, lightColor, 
+                config with
+                {
+                    PositionOffset = headPosAdj,
+                }, 1);
             Projectile.DrawStateNormalizeForPet();
+
             if (PetState == 1 || extraAI[2] > 0)
-                DrawSekibanki(blinkFrame, lightColor, 1, headPosAdj);
-            DrawSekibanki(Projectile.frame, lightColor, 0);
-            DrawSekibanki(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, config2, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
         private void DrawSekibanki(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
