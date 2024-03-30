@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -15,33 +16,32 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(3);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rin_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawRin(swingFrame + 8, lightColor, 1);
-            DrawRin(swingFrame + 4, lightColor, 1);
-            DrawRin(Projectile.frame, lightColor);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+                AltTexture = clothTex,
+            };
+
+            Projectile.DrawPet(swingFrame + 8, lightColor, drawConfig, 1);
+            Projectile.DrawPet(swingFrame + 4, lightColor, drawConfig, 1);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawRin(blinkFrame, lightColor);
-            DrawRin(swingFrame, lightColor, 1);
-            DrawRin(swingFrame + 4, lightColor, 1, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
-            DrawRin(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
-            DrawRin(swingFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Rin_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(swingFrame, lightColor, drawConfig, 1);
+
+            Projectile.DrawPet(swingFrame + 4, lightColor, config, 1);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
+            Projectile.DrawPet(swingFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
-            DrawRin(Projectile.frame, Color.White * 0.8f, 2);
+
+            Projectile.DrawPet(Projectile.frame, Color.White * 0.8f, drawConfig, 2);
             return false;
-        }
-        private void DrawRin(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 3 * columns, frame * height, t.Width / 3, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {
@@ -158,18 +158,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        private void GenDust()
+        private void GenDust(Player player)
         {
             int dustID = MyDustId.CyanBubble;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(-28, 8), dustID
+
+            Dust d = Dust.NewDustPerfect(Projectile.Center + new Vector2(-28, 8), dustID
                 , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
-                , Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(28, 8), dustID
+                , Main.rand.NextFloat(0.5f, 1.5f));
+            d.noGravity = true;
+            d.shader = GameShaders.Armor.GetSecondaryShader(player.cPet, player);
+
+            d = Dust.NewDustPerfect(Projectile.Center + new Vector2(28, 8), dustID
                 , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-2.5f, -1.2f)), 100, default
-                , Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
-                , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
-                , Main.rand.NextFloat(0.5f, 0.75f)).noGravity = true;
+                , Main.rand.NextFloat(0.5f, 1.5f));
+            d.noGravity = true;
+            d.shader = GameShaders.Armor.GetSecondaryShader(player.cPet, player);
         }
         public override void AI()
         {
@@ -187,7 +190,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir(player, true);
             MoveToPoint(point, 12.5f);
 
-            GenDust();
+            GenDust(player);
 
             if (Projectile.owner == Main.myPlayer)
             {

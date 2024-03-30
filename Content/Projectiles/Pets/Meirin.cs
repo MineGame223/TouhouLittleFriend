@@ -15,34 +15,45 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Meirin_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawMeirin(auraFrame, Color.White, 1, default, null, true);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
+            Projectile.DrawPet(auraFrame, Color.White, config, 1);
             Projectile.DrawStateNormalizeForPet();
-            DrawMeirin(hairFrame, lightColor, 1, hairPosOffset);
-            DrawMeirin(Projectile.frame, lightColor);
+
+            Projectile.DrawPet(hairFrame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = hairPosOffset,
+                }, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1 || PetState == 4)
-                DrawMeirin(blinkFrame, lightColor, 1);
-            DrawMeirin(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Meirin_Cloth"), true);
-            DrawMeirin(clothFrame, lightColor, 1, clothPosOffset, null, true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawPet(clothFrame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = clothPosOffset,
+                }, 1);
+
             if (PetState == 3 || PetState == 4)
             {
                 DrawUmbrella(lightColor);
             }
             return false;
-        }
-        private void DrawMeirin(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void DrawUmbrella(Color lightColor)
         {

@@ -15,50 +15,60 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Patchouli_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                AltTexture = clothTex,
+            };
             DrawAura();
-            DrawPatchouli(clothFrame, lightColor, 0, null, true);
+
+            Projectile.DrawPet(clothFrame, lightColor,
+                drawConfig with
+                {
+                    ShouldUseEntitySpriteDraw = true,
+                });
             Projectile.DrawStateNormalizeForPet();
-            DrawPatchouli(clothFrame, lightColor, 1, null);
-            DrawPatchouli(clothFrame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Patchouli_Cloth"));
-            DrawPatchouli(Projectile.frame, lightColor);
+
+            Projectile.DrawPet(clothFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(clothFrame, lightColor, config);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1 || PetState == 3)
-                DrawPatchouli(blinkFrame, lightColor);
-            DrawPatchouli(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Patchouli_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, 
+                config with
+                {
+                    ShouldUseEntitySpriteDraw = true,
+                });
             return false;
-        }
-        private void DrawPatchouli(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void DrawAura()
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect4 = new Rectangle(t.Width / 2, auraFrame * height, t.Width / 2, height);
-            Vector2 orig = rect4.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
             Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 8; i++)
             {
                 Vector2 spinningpoint = new Vector2(0f, -1f);
-                Main.EntitySpriteDraw(t, pos + spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly + MathHelper.TwoPi / 8 * i * 0.6f), rect4, Projectile.GetAlpha(Color.White) * 0.4f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
+                Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.4f,
+                    config with
+                    {
+                        PositionOffset = spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly
+                        + MathHelper.TwoPi / 8 * i * 0.6f)
+                    }
+                    , 1);
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
             Projectile.DrawStateNormalizeForPet();
-            Main.EntitySpriteDraw(t, pos, rect4, Projectile.GetAlpha(Color.White) * 0.8f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
+
+            Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.4f, config, 1);
         }
         private void Reading()
         {

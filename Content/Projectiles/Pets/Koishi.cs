@@ -18,8 +18,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
             float t2 = Main.GlobalTimeWrappedHourly * 2f;
             Vector2 eyeAdj = new Vector2(1.2f * (float)Math.Cos(t2), 0.35f * (float)Math.Sin(t2)) * 26f;
             Vector2 eyePos = Projectile.Center - Main.screenPosition + eyeAdj + new Vector2(0, 8);
@@ -27,33 +34,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (eyeAdj.Y <= 0)
                 DrawEye(eyePos, lightColor);
 
-            DrawKoishi(Projectile.frame, lightColor);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawKoishi(blinkFrame, lightColor, 1);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
 
-            DrawKoishi(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Koishi_Cloth"), true);
-            DrawKoishi(clothFrame, lightColor, 1, null, true);
-
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawPet(clothFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
+
             if (PetState == 3)
-                DrawKoishi(annoyingFrame, lightColor, 1);
+                Projectile.DrawPet(annoyingFrame, lightColor, drawConfig, 1);
 
             if (eyeAdj.Y > 0)
                 DrawEye(eyePos, lightColor);
             return false;
-        }
-        private void DrawKoishi(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void DrawEye(Vector2 eyePos, Color lightColor)
         {

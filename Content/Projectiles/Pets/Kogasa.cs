@@ -14,40 +14,41 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 20;
             Main.projPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Kogasa_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                AltTexture = clothTex,
+                ShouldUseEntitySpriteDraw = true,
+            };
             int eyeFramePlus = Projectile.spriteDirection == -1 ? 0 : 3;
-            DrawKogasa(umbrellaFrame, lightColor, 1);
-            DrawKogasa(umbrellaFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Kogasa_Cloth"), true);
+
+            Projectile.DrawPet(umbrellaFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(umbrellaFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
-            DrawKogasa(Projectile.frame, lightColor);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
             if (PetState == 1 || PetState == 4)
-                DrawKogasa(blinkFrame, lightColor);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
             if (PetState == 0 || PetState == 3)
-                DrawKogasa(14 + eyeFramePlus, lightColor);
+                Projectile.DrawPet(14 + eyeFramePlus, lightColor, drawConfig);
             if (Projectile.frame == 1 || Projectile.frame == 4)
-                DrawKogasa(15 + eyeFramePlus, lightColor);
+                Projectile.DrawPet(15 + eyeFramePlus, lightColor, drawConfig);
 
-            DrawKogasa(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Kogasa_Cloth"), true);
-            DrawKogasa(clothFrame, lightColor, 0, null, true);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
+            Projectile.DrawPet(clothFrame, lightColor,
+                drawConfig with
+                {
+                    ShouldUseEntitySpriteDraw = true,
+                });
             Projectile.DrawStateNormalizeForPet();
-            DrawKogasa(handFrame, lightColor);
-            DrawKogasa(handFrame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Kogasa_Cloth"), true);
+
+            Projectile.DrawPet(handFrame, lightColor, drawConfig);
+            Projectile.DrawPet(handFrame, lightColor, config);
             return false;
-        }
-        private void DrawKogasa(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {
@@ -100,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
             else
-            {                
+            {
                 if (umbrellaFrame < 7)
                 {
                     umbrellaFrame = 7;

@@ -15,26 +15,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(3);
+        readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Reisen_Glow");
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth");
+        readonly Texture2D altClothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth_Alt");
         public override bool PreDraw(ref Color lightColor)
         {
-            if (PetState == 2)
+            if (eyeScale > 0)
             {
                 Color clr = Projectile.GetAlpha(Color.Red * (1 - eyeScale) * 0.3f);
                 clr.A *= 0;
                 DrawReisen(clr, 1 + eyeScale * 1.1f);
-                clr = Projectile.GetAlpha(Color.Red * 0.4f * eyeScale);
-                clr.A *= 0;
-                DrawReisen(clr, 1.2f);
+                for (int i = -1; i <= 1; i++)
+                {
+                    if (i == 0)
+                        continue;
+                    DrawReisen(clr, 1f, new Vector2(4 * i, 0));
+                    DrawReisen(clr, 1f, new Vector2(0, 4 * i));
+                }
             }
 
             DrawReisen(lightColor);
 
-            if (PetState == 2)
+            if (eyeScale > 0)
             {
-                DrawPetConfig config = new(3)
+                DrawPetConfig config = drawConfig with
                 {
                     Scale = 1 + eyeScale * 2,
-                    AltTexture = AltVanillaFunction.GetGlowTexture("Reisen_Glow"),
+                    AltTexture = eyeTex,
                 };
                 Color clr = Projectile.GetAlpha(Color.White * (0.9f - eyeScale));
                 clr.A *= 0;
@@ -42,20 +50,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return false;
         }
-        private void DrawReisen(Color lightColor, float scale = 1)
+        private void DrawReisen(Color lightColor, float scale = 1, Vector2? posOffset = default)
         {
-            Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth");
-            Texture2D clothTexAlt = AltVanillaFunction.GetExtraTexture("Reisen_Cloth_Alt");
-            Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Reisen_Glow");
-
             bool blackDye = Main.LocalPlayer.miscDyes[0].type == ItemID.BlackDye;
-            DrawPetConfig config = new(3)
+            DrawPetConfig config = drawConfig with
             {
                 Scale = scale,
+                PositionOffset = posOffset ?? Vector2.Zero,
             };
             DrawPetConfig config2 = config with
             {
-                AltTexture = blackDye ? clothTexAlt : clothTex,
+                AltTexture = blackDye ? altClothTex : clothTex,
                 ShouldUseEntitySpriteDraw = !blackDye,
             };
 
@@ -100,7 +105,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         int clothFrame, clothFrameCounter;
         int hairFrame, hairFrameCounter;
         int legFrame, legFrameCounter;
-        float eyeScale;
+        float eyeScale = 1;
         private void UpdateMiscFrame()
         {
             if (clothFrame < 3)
@@ -200,8 +205,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                if (eyeScale > 0)
-                    eyeScale -= 0.01f;
+                if (eyeScale < 1)
+                    eyeScale += 0.1f;
                 if (Projectile.frame > 4)
                 {
                     Projectile.frame = 0;
@@ -319,7 +324,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     extraAI[0]--;
                 }
-                eyeScale = 0;
+                eyeScale = 1;
             }
             else if (PetState == 1)
             {

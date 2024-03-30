@@ -20,24 +20,52 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Moku_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                AltTexture = clothTex,
+                ShouldUseEntitySpriteDraw = true,
+            };
+
             if (Fighting)
             {
                 DrawDanmakuRing();
             }
-            DrawWings(Projectile.GetAlpha(Color.White) * 0.3f);
+
+            for (int i = 0; i < 7; i++)
+            {
+                Projectile.DrawPet(wingFrame, Color.White * 0.3f,
+                    drawConfig with
+                    {
+                        ShouldUseEntitySpriteDraw = true,
+                        PositionOffset = new Vector2(Main.rand.NextFloat(-1f, 1f)) + new Vector2(extraX, extraY),
+                    }, 1);
+            }
             Projectile.DrawStateNormalizeForPet();
 
-            DrawMoku(hairFrame, lightColor, 1, new Vector2(extraX, extraY));
-            DrawMoku(hairFrame, lightColor, 1, new Vector2(extraX, extraY), AltVanillaFunction.GetExtraTexture("Moku_Cloth"), true);
+            Projectile.DrawPet(hairFrame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = new Vector2(extraX, extraY),
+                }, 1);
+            Projectile.DrawPet(hairFrame, lightColor,
+               config with
+               {
+                   PositionOffset = new Vector2(extraX, extraY),
+               }, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            DrawMoku(Projectile.frame, lightColor);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1 || PetState == 3)
-                DrawMoku(blinkFrame, lightColor, 1);
-            DrawMoku(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Moku_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.DrawStateNormalizeForPet();
+
             if (Projectile.owner == Main.myPlayer && PetState < 0)
             {
                 DrawFightState();
@@ -56,13 +84,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.DrawIndividualSource(PlayerB_Source);
             }
         }
-        private void DrawWings(Color lightColor)
-        {
-            for (int i = 0; i < 7; i++)
-            {
-                DrawMoku(wingFrame, lightColor, 1, new Vector2(Main.rand.NextFloat(-1f, 1f)) + new Vector2(extraX, extraY), null, true);
-            }
-        }
         private void DrawDanmakuRing()
         {
             Main.spriteBatch.QuickToggleAdditiveMode(true);
@@ -79,21 +100,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.EntitySpriteDraw(t, pos + new Vector2(Main.rand.NextFloat(-1.3f, 1.3f)), rect, clr * 0.3f, -Main.GlobalTimeWrappedHourly, orig, scale * 0.5f, SpriteEffects.FlipHorizontally, 0f);
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false);
-        }
-        private void DrawMoku(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
-                extraPos = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

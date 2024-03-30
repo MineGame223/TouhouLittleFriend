@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -30,34 +29,32 @@ namespace TouhouPets.Content.Projectiles.Pets
             //月球 -2
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[2].X * -Projectile.spriteDirection, plantePos[2].Y).RotatedBy(Projectile.rotation), rect5, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
         }
+
+        DrawPetConfig drawConfig = new(3);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hecatia_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0 * t.Width / 3, Projectile.frame * height, t.Width / 3, height);
-            Rectangle rect2 = new Rectangle(1 * t.Width / 3, Projectile.frame * height, t.Width / 3, height);
-            Rectangle rect3 = new Rectangle(2 * t.Width / 3, Projectile.frame * height, t.Width / 3, height);
-            Rectangle rect4 = new Rectangle(0 * t.Width / 3, blinkFrame * height, t.Width / 3, height);
-            Rectangle rect5 = new Rectangle(1 * t.Width / 3, blinkFrame * height, t.Width / 3, height);
-            Rectangle rect6 = new Rectangle(2 * t.Width / 3, blinkFrame * height, t.Width / 3, height);
-            Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             DrawPlantes(pos + new Vector2(0, 4 * Main.essScale), Projectile.GetAlpha(lightColor), effect);
 
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor) * bodyAlpha[0], Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect2, Projectile.GetAlpha(lightColor) * bodyAlpha[1], Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect3, Projectile.GetAlpha(lightColor) * bodyAlpha[2], Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[0], drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[1], drawConfig, 1);
+            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[2], drawConfig, 2);
             if (PetState == 1)
             {
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect4, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect4, Projectile.GetAlpha(lightColor) * bodyAlpha[0], Projectile.rotation, orig, Projectile.scale, effect, 0f);
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect5, Projectile.GetAlpha(lightColor) * bodyAlpha[1], Projectile.rotation, orig, Projectile.scale, effect, 0f);
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect6, Projectile.GetAlpha(lightColor) * bodyAlpha[2], Projectile.rotation, orig, Projectile.scale, effect, 0f);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[0], drawConfig);
+                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[1], drawConfig, 1);
+                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[2], drawConfig, 2);
             }
-            Main.EntitySpriteDraw(AltVanillaFunction.GetExtraTexture("Hecatia_Cloth"), pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig with
+            {
+                AltTexture = clothTex,
+                ShouldUseEntitySpriteDraw = true,
+            });
             return false;
         }
         private void UpdateWorldState()
@@ -174,6 +171,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
+
         float[] bodyAlpha = new float[3];
         Vector2[] plantePos = new Vector2[3];
         private int PlanteState
@@ -243,7 +241,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateWorldState();
             Idle();
-            
+
             if (Projectile.isAPreviewDummy)
             {
                 dummyTimer++;

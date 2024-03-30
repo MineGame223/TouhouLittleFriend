@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -16,34 +15,35 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Lily_Cloth");
+        readonly Texture2D clothTexAlt = AltVanillaFunction.GetExtraTexture("Lily_Cloth_Alt");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawLily(wingFrame, Color.White, 0.6f);
-            DrawLily(Projectile.frame, lightColor);
-            DrawLily(blinkFrame, lightColor);
-            Texture2D tex = AltVanillaFunction.GetExtraTexture("Lily_Cloth");
+            Projectile.DrawPet(wingFrame, Color.White * 0.6f, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if(PetState == 1)
+            {
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+            }
+
+            Texture2D tex = clothTex;
             int clothFrame = Projectile.frame;
             if (!Main.LocalPlayer.miscDyes[1].IsAir)
             {
                 if (Main.LocalPlayer.miscDyes[1].type == ItemID.BlackDye)
                     clothFrame += 4;
-                tex = AltVanillaFunction.GetExtraTexture("Lily_Cloth_Alt");
+                tex = clothTexAlt;
             }
-            DrawLily(clothFrame, lightColor, 1f, tex, true);
+            Projectile.DrawPet(clothFrame, lightColor, 
+                drawConfig with
+                {
+                    AltTexture = tex,
+                    ShouldUseEntitySpriteDraw = true,
+                });
             return false;
-        }
-        private void DrawLily(int frame, Color lightColor, float alpha = 1f, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor) * alpha, Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor) * alpha, Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

@@ -15,31 +15,42 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Remilia_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawRemilia(wingFrame, lightColor, new Vector2(extraAdjX, extraAdjY));
-            DrawRemilia(Projectile.frame, lightColor);
+            Vector2 extraOffset = new Vector2(extraAdjX, extraAdjY);
+            Vector2 shake = new Vector2(Main.rand.Next(-1, 1), Main.rand.Next(-1, 1));
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
+            Projectile.DrawPet(wingFrame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = extraOffset,
+                });
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawRemilia(blinkFrame, lightColor);
-            DrawRemilia(Projectile.frame, lightColor, default, AltVanillaFunction.GetExtraTexture("Remilia_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                    PositionOffset = HateSunlight(Projectile) ? shake : Vector2.Zero,
+                });
+
             if (!HateSunlight(Projectile))
-                DrawRemilia(clothFrame, lightColor, new Vector2(extraAdjX, extraAdjY), null, true);
+                Projectile.DrawPet(clothFrame, lightColor,
+                config with
+                {
+                    PositionOffset = extraOffset,
+                });
             return false;
-        }
-        private void DrawRemilia(int frame, Color lightColor, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
-                extraPos = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(0, frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         public static bool HateSunlight(Projectile projectile)
         {

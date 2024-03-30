@@ -16,28 +16,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rumia_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawRumia(Projectile.frame, lightColor);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawRumia(blinkFrame, lightColor);
-            DrawRumia(Projectile.frame, lightColor, AltVanillaFunction.GetExtraTexture("Rumia_Cloth"), true);
-            DrawRumia(clothFrame, lightColor, null, true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawPet(clothFrame, lightColor, config);
+
             DrawDark();
             return false;
-        }
-        private void DrawRumia(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void DrawDark()
         {

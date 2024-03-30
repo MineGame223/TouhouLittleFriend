@@ -16,33 +16,37 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Star_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawStar(wingsFrame, lightColor * 0.7f, 1, new Vector2(extraX, extraY));
-            DrawStar(hairFrame, lightColor, 1, new Vector2(extraX, extraY));
-            DrawStar(Projectile.frame, lightColor);
-            if (PetState == 1)
-                DrawStar(blinkFrame, lightColor);
-            DrawStar(Projectile.frame, lightColor, 0, default, AltVanillaFunction.GetExtraTexture("Star_Cloth"), true);
-            DrawStar(clothFrame, lightColor, 1, new Vector2(extraX, extraY), null, true);
-            return false;
-        }
-        private void DrawStar(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
+            Vector2 extraPos = new Vector2(extraX, extraY);
+            DrawPetConfig config = drawConfig with
             {
-                extraPos = Vector2.Zero;
-            }
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+                PositionOffset = extraPos,
+            };
+
+            Projectile.DrawPet(wingsFrame, lightColor * 0.7f, config, 1);
+
+            Projectile.DrawPet(hairFrame, lightColor, config, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if (PetState == 1)
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                drawConfig with
+                {
+                    AltTexture = clothTex,
+                    ShouldUseEntitySpriteDraw = true,
+                });
+            Projectile.DrawPet(clothFrame, lightColor,
+                config with
+                {
+                    ShouldUseEntitySpriteDraw = true,
+                }, 1);
+            return false;
         }
         private void Blink()
         {
@@ -105,7 +109,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.frame > 5)
                 {
                     Projectile.frame = 0;
-                    extraAI[0] = 3600;
+                    extraAI[0] = 10800;
                     PetState = 0;
                 }
             }

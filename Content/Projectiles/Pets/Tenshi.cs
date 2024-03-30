@@ -15,33 +15,36 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Tenshi_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawTenshi(stoneFrame, lightColor, 1);
-            DrawTenshi(stoneFrame, lightColor, 1, AltVanillaFunction.GetExtraTexture("Tenshi_Cloth"), true);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+                AltTexture = clothTex,
+            };
+
+            Projectile.DrawPet(stoneFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(stoneFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
-            DrawTenshi(clothFrame + 4, lightColor, 1);
-            DrawTenshi(clothFrame + 4, lightColor, 1, AltVanillaFunction.GetExtraTexture("Tenshi_Cloth"), true);
+
+            Projectile.DrawPet(clothFrame + 4, lightColor, drawConfig, 1);
+            Projectile.DrawPet(clothFrame + 4, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
-            DrawTenshi(Projectile.frame, lightColor);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawTenshi(blinkFrame, lightColor);
-            DrawTenshi(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Tenshi_Cloth"), true);
-            DrawTenshi(clothFrame, lightColor, 1, null, true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
+            Projectile.DrawPet(clothFrame, lightColor, 
+                drawConfig with
+                {
+                    ShouldUseEntitySpriteDraw= true,
+                }, 1);
             return false;
-        }
-        private void DrawTenshi(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink()
         {

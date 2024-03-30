@@ -16,60 +16,79 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sanae_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, Projectile.frame * height, t.Width / 2, height);
-            Rectangle rect2 = new Rectangle(0, blinkFrame * height, t.Width / 2, height);
-            Rectangle rect3 = new Rectangle(0, clothFrame * height, t.Width / 2, height);
-            Rectangle rect4 = new Rectangle(t.Width / 2, hairFrame * height, t.Width / 2, height);
-            Rectangle rect5 = new Rectangle(t.Width / 2, itemFrame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
             if (PetState == 2)
             {
-                float t2 = Main.GlobalTimeWrappedHourly * 6f;
+                float time = Main.GlobalTimeWrappedHourly * 6f;
                 Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
                 for (int o = 0; o < 8; o++)
                 {
-                    for (int i = -1; i < 2; i++)
+                    for (int i = -1; i <= 1; i++)
                     {
-                        DrawSanaeAura(Projectile.GetAlpha(Color.SeaGreen) * 0.4f,
-                                pos + new Vector2(0, 2 * auraScale * i * (float)Math.Sin(t2)),
-                                orig, effect, rect4, rect, rect3);
-                        DrawSanaeAura(Projectile.GetAlpha(Color.SeaGreen) * 0.4f,
-                            pos + new Vector2(2 * auraScale * i * (float)Math.Sin(t2), 0),
-                            orig, effect, rect4, rect, rect3);
+                        Vector2 auraPos = new Vector2(0, 2 * auraScale * i * (float)Math.Sin(time)).RotatedBy(MathHelper.PiOver2 * i);
+                        DrawSanaeAura(Color.SeaGreen * 0.4f, auraPos);
                     }
                 }
                 Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
             }
             Projectile.DrawStateNormalizeForPet();
 
-            if (PetState < 3)
-                Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(0, extraAdjY), rect4, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            if (PetState == 1 || PetState == 4)
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect2, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.EntitySpriteDraw(AltVanillaFunction.GetExtraTexture("Sanae_Cloth"), pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Projectile.DrawStateNormalizeForPet();
-            if (PetState < 3)
-            {
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect5, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(0, extraAdjY), rect3, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            }
+            DrawSanae(lightColor);
             return false;
         }
-        private void DrawSanaeAura(Color lightColor, Vector2 pos, Vector2 orig, SpriteEffects effect, Rectangle rect1, Rectangle rect2, Rectangle rect3)
+        private void DrawSanae(Color lightColor)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(0, extraAdjY), rect1, lightColor, Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect2, lightColor, Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(0, extraAdjY), rect3, lightColor, Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
+            if (PetState < 3)
+                Projectile.DrawPet(hairFrame, lightColor,
+                    drawConfig with
+                    {
+                        PositionOffset = new Vector2(0, extraAdjY),
+                    }, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if (PetState == 1 || PetState == 4)
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawStateNormalizeForPet();
+
+            if (PetState < 3)
+            {
+                Projectile.DrawPet(itemFrame, lightColor, drawConfig, 1);
+                Projectile.DrawPet(clothFrame, lightColor,
+                    config with
+                    {
+                        PositionOffset = new Vector2(0, extraAdjY),
+                    });
+            }
+        }
+        private void DrawSanaeAura(Color lightColor, Vector2? posOffset = default)
+        {
+            Vector2 offset = posOffset ?? Vector2.Zero;
+            DrawPetConfig config = drawConfig with
+            {
+                PositionOffset = new Vector2(0, extraAdjY) + offset,
+            };
+            Projectile.DrawPet(hairFrame, lightColor, config, 1);
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = offset,
+                });
+            Projectile.DrawPet(clothFrame, lightColor, config);
         }
         private void Blink()
         {

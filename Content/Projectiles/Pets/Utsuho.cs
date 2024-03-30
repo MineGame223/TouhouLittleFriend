@@ -15,55 +15,64 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Utsuho_Cloth");
+        readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow");
+        readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
+        readonly Texture2D sunTex = AltVanillaFunction.GetExtraTexture("UtsuhoSun");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
             DrawSun();
-            DrawUtsuho(wingFrame, Projectile.GetAlpha(lightColor), null, true);
-            DrawUtsuho(wingFrame, Projectile.GetAlpha(Color.White * 0.7f), AltVanillaFunction.GetGlowTexture("Utsuho_Glow"), true);
+
+            Projectile.DrawPet(wingFrame, lightColor, config);
+            Projectile.DrawPet(wingFrame, Color.White * 0.7f,
+                config with
+                {
+                    AltTexture = glowTex,
+                });
             Projectile.DrawStateNormalizeForPet();
-            DrawUtsuho(Projectile.frame, Projectile.GetAlpha(lightColor));
-            DrawUtsuho(Projectile.frame, Projectile.GetAlpha(lightColor), AltVanillaFunction.GetExtraTexture("Utsuho_Cloth"), true);
-            //Projectile.DrawStateNormalizeForPet();
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawStateNormalizeForPet();
+
             DrawEye();
             return false;
         }
         private void DrawEye()
         {
-            Texture2D t = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, Projectile.frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            for (int i = 0; i < 12; i++)
+            DrawPetConfig config = drawConfig with
             {
-                Vector2 spinningpoint = new Vector2(0f, -2f);
-                Main.spriteBatch.TeaNPCDraw(t, pos + spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly + MathHelper.TwoPi / 6 * i * 0.6f), rect, Projectile.GetAlpha(Color.White) * 0.3f, Projectile.rotation, orig, Projectile.scale * 1.02f, effect, 0f);
+                AltTexture = eyeTex,
+            };
+            for (int i = -1; i <= 1; i++)
+            {
+                Vector2 eyePos = new Vector2(0f, 2 * i).RotatedBy(MathHelper.PiOver2 * i);
+                Projectile.DrawPet(Projectile.frame, Color.White * 0.3f,
+                    config with
+                    {
+                        PositionOffset = eyePos.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly),
+                    });
             }
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(Color.White), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(Projectile.frame, Color.White, config);
         }
         private void DrawSun()
         {
-            Texture2D t3 = AltVanillaFunction.GetExtraTexture("UtsuhoSun");
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             for (int i = 0; i < 5; i++)
             {
-                Main.EntitySpriteDraw(t3, pos + sunPos + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f), null, Projectile.GetAlpha(Color.White) * 0.5f, -mainTimer * 0.09f, t3.Size() / 2, Projectile.scale * 1.02f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(sunTex, pos + sunPos + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f), null, Projectile.GetAlpha(Color.White) * 0.5f, -mainTimer * 0.09f, sunTex.Size() / 2, Projectile.scale * 1.02f, SpriteEffects.None, 0f);
             }
-            Main.EntitySpriteDraw(t3, pos + sunPos, null, Projectile.GetAlpha(Color.White), mainTimer * 0.05f, t3.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
-        }
-        private void DrawUtsuho(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Main.EntitySpriteDraw(sunTex, pos + sunPos, null, Projectile.GetAlpha(Color.White), mainTimer * 0.05f, sunTex.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
         }
         private void Blink()
         {

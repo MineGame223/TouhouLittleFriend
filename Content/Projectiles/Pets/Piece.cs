@@ -16,36 +16,40 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Piece_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(0, Projectile.frame * height, t.Width, height);
-            Rectangle rect2 = new Rectangle(0, wingFrame * height, t.Width, height);
-            Rectangle rect4 = new Rectangle(0, blinkFrame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect2, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            if (PetState == 1)
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect4, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(wingFrame, lightColor * 0.7f, drawConfig);
 
-            Main.EntitySpriteDraw(AltVanillaFunction.GetExtraTexture("Piece_Cloth"), pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if (PetState == 1)
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                drawConfig with
+                {
+                    AltTexture = clothTex,
+                    ShouldUseEntitySpriteDraw = true,
+                });
             Projectile.DrawStateNormalizeForPet();
 
-            DrawTorch(t, pos, Projectile.GetAlpha(lightColor), orig, effect);
+            DrawTorch(lightColor);
             return false;
         }
-        private void DrawTorch(Texture2D t, Vector2 pos, Color color, Vector2 orig, SpriteEffects effect)
+        private void DrawTorch(Color lightColor)
         {
-            int height = t.Height / Main.projFrames[Type];
-            Main.spriteBatch.TeaNPCDraw(t, pos, new Rectangle(0, 11 * height, t.Width, height), color, Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(11, lightColor, drawConfig);
 
             Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             for (int i = 0; i < 7; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f), new Rectangle(0, 12 * height, t.Width, height), Projectile.GetAlpha(Color.White) * 0.5f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
+                Projectile.DrawPet(11, Color.White * 0.5f,
+                    drawConfig with
+                    {
+                        PositionOffset = new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f),
+                    });
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }

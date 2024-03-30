@@ -58,6 +58,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawAuraSingle(t, pos + new Vector2(4 * -Projectile.spriteDirection, 6), rect, Projectile.GetAlpha(Color.White), MathHelper.ToRadians(-120) + MathHelper.ToRadians(-rot2) * Main.essScale, orig, effect);
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
+        
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Junko_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
@@ -65,17 +68,23 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new Rectangle(0, Projectile.frame * height, t.Width / 2, height);
             Rectangle rect2 = new Rectangle(t.Width / 2, 1 * height, t.Width / 2, height);
-            Rectangle rect4 = new Rectangle(0, blinkFrame * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
             DrawAura(t, pos, rect2, orig, effect);
-            Projectile.DrawStateNormalizeForPet();
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            if (PetState == 1)
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect4, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
 
-            Main.EntitySpriteDraw(AltVanillaFunction.GetExtraTexture("Junko_Cloth"), pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawStateNormalizeForPet();
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if (PetState == 1)
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                drawConfig with
+                {
+                    AltTexture = clothTex,
+                    ShouldUseEntitySpriteDraw = true,
+                });
             return false;
         }
         #endregion

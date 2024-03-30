@@ -15,29 +15,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Ran_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawRan(tailFrame, lightColor, 1);
-            DrawRan(Projectile.frame, lightColor);
-            if (PetState == 1)
-                DrawRan(blinkFrame, lightColor);
-            DrawRan(Projectile.frame, lightColor, 0, AltVanillaFunction.GetExtraTexture("Ran_Cloth"), true);
-            DrawRan(clothFrame, lightColor, 1, null, true);
-            return false;
-        }
-        private void DrawRan(int frame, Color lightColor, int columns = 0, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+            Projectile.DrawPet(tailFrame, lightColor, drawConfig, 1);
 
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
+            if (PetState == 1)
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, 
+                config with
+                {
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawPet(clothFrame, lightColor, config, 1);
+            return false;
         }
         private void Blink()
         {

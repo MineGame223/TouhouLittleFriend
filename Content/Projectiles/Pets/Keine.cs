@@ -14,16 +14,27 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 16;
             Main.projPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Keine_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawKeine(auraFrame, Color.White, null, true);
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+            int currentRow = UseAlternatePhase ? 1 : 0;
+            Projectile.DrawPet(auraFrame, Color.White, config, currentRow);
             Projectile.DrawStateNormalizeForPet();
 
-            DrawKeine(hairFrame, lightColor);
-            DrawKeine(Projectile.frame, lightColor);
+            Projectile.DrawPet(hairFrame, lightColor, drawConfig, currentRow);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig, currentRow);
 
-            DrawKeine(Projectile.frame, lightColor, AltVanillaFunction.GetExtraTexture("Keine_Cloth"), true);
-            DrawKeine(clothFrame, lightColor, null, true);
+            Projectile.DrawPet(Projectile.frame, lightColor, 
+                config with
+                {
+                    AltTexture = clothTex,
+                }, currentRow);
+            Projectile.DrawPet(clothFrame, lightColor, config, currentRow);
             return false;
         }
         private void DrawKeine(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)

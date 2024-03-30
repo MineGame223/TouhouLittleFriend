@@ -15,9 +15,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(2);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sunny_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            DrawSunny_Full(lightColor);
+            DrawSunny(lightColor);
 
             if (phantomTime >= 0)
             {
@@ -28,51 +30,68 @@ namespace TouhouPets.Content.Projectiles.Pets
                         Vector2 dist = Main.player[Projectile.owner].Center - Projectile.Center;
                         Vector2 drift = new Vector2(dist.X * i * 2, dist.Y * 2).RotatedBy(Main.GlobalTimeWrappedHourly);
                         Color clr = lightColor * 0.4f * phantomTime;
-                        DrawSunny_Full(clr, drift);
-                        DrawSunny_Full(clr, -drift);
+                        DrawSunny(clr, drift);
+                        DrawSunny(clr, -drift);
                     }
                 }
             }
 
             return false;
         }
-        private void DrawSunny_Full(Color lightColor, Vector2 extraPos = default)
+        private void DrawSunny(Color lightColor, Vector2? posOffset = default)
         {
-            if (extraPos == default)
-            {
-                extraPos = Vector2.Zero;
-            }
-            DrawSunny(wingsFrame, lightColor * 0.7f, 1, new Vector2(extraX, extraY) + extraPos);
-            DrawSunny(hairFrame, lightColor, 1, new Vector2(extraX, extraY) + extraPos);
-            DrawSunny(Projectile.frame, lightColor, 0, extraPos);
-            if (PetState == 1 || PetState == 4)
-                DrawSunny(blinkFrame, lightColor, 0, new Vector2(extraX, extraY) + extraPos);
-            DrawSunny(Projectile.frame, lightColor, 0, extraPos, AltVanillaFunction.GetExtraTexture("Sunny_Cloth"), true);
-            DrawSunny(clothFrame, lightColor, 1, new Vector2(extraX, extraY) + extraPos, null, true);
+            Vector2 extraPos = new Vector2(extraX, extraY);
+            Vector2 offset = posOffset ?? Vector2.Zero;
 
+            DrawPetConfig config = drawConfig with
+            {
+                PositionOffset = extraPos + offset,
+            };
+            DrawPetConfig config2 = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+            };
+
+            Projectile.DrawPet(wingsFrame, lightColor * 0.7f, config, 1);
+
+            Projectile.DrawPet(hairFrame, lightColor, config, 1);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = offset,
+                });
+
+            if (PetState == 1 || PetState == 4)
+                Projectile.DrawPet(blinkFrame, lightColor, config);
+
+            Projectile.DrawPet(Projectile.frame, lightColor,
+                config2 with
+                {
+                    PositionOffset = offset,
+                    AltTexture = clothTex,
+                });
+            Projectile.DrawPet(clothFrame, lightColor,
+                config with
+                {
+                    ShouldUseEntitySpriteDraw = true,
+                }, 1);
             Projectile.DrawStateNormalizeForPet();
+
             if (Projectile.frame == 4)
             {
-                DrawSunny(5, lightColor, 0, extraPos);
-                DrawSunny(5, lightColor, 0, extraPos, AltVanillaFunction.GetExtraTexture("Sunny_Cloth"), true);
+                Projectile.DrawPet(5, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = offset,
+                });
+                Projectile.DrawPet(5, lightColor,
+                config2 with
+                {
+                    PositionOffset = offset,
+                    AltTexture = clothTex,
+                });
             }
-        }
-        private void DrawSunny(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
-            {
-                extraPos = Vector2.Zero;
-            }
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
         }
         private void Blink(bool alt = false)
         {
@@ -204,6 +223,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         Color myColor = new Color(240, 196, 48);
         public override string GetChatText(out string[] text)
         {
+            Player player = Main.player[Projectile.owner];
             text = new string[21];
             if (RainWet)
             {
@@ -222,7 +242,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     text[5] = ModUtils.GetChatText("Sunny", "5");
                     text[9] = ModUtils.GetChatText("Sunny", "9");
                 }
-                text[12] = ModUtils.GetChatText("Sunny", "12");
+                if (player.HasBuff<ReimuBuff>())
+                    text[12] = ModUtils.GetChatText("Sunny", "12");
             }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

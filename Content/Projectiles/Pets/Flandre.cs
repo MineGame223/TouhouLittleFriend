@@ -15,55 +15,76 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        DrawPetConfig drawConfig = new(1);
+        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Flandre_Cloth");
+        readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Flandre_Glow");
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawPetConfig config = drawConfig with
+            {
+                ShouldUseEntitySpriteDraw = true,
+                AltTexture = clothTex,
+            };
+
             DrawWing(lightColor);
             Projectile.DrawStateNormalizeForPet();
-            DrawFlandre(Projectile.frame, lightColor);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+
             if (PetState == 1)
-                DrawFlandre(blinkFrame, lightColor);
-            DrawFlandre(Projectile.frame, lightColor, default, AltVanillaFunction.GetExtraTexture("Flandre_Cloth"), true);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
+
             if (!Remilia.HateSunlight(Projectile))
             {
-                DrawFlandre(clothFrame, lightColor, new Vector2(extraAdjX, extraAdjY), null, true);
+                Projectile.DrawPet(clothFrame, lightColor,
+                    drawConfig with
+                    {
+                        ShouldUseEntitySpriteDraw = true
+                    });
             }
             return false;
         }
-        private void DrawFlandre(int frame, Color lightColor, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            if (extraPos == default)
-                extraPos = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(0, frame * height, t.Width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-        }
         private void DrawWing(Color lightColor)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
-            Texture2D t2 = AltVanillaFunction.GetGlowTexture("Flandre_Glow");
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7 * Main.essScale);
-            Rectangle rect2 = new Rectangle(0, wingFrame * height, t.Width, height);
-            Vector2 orig = rect2.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
-            Main.spriteBatch.TeaNPCDraw(t, pos + new Vector2(extraAdjX, extraAdjY), rect2, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            DrawPetConfig config = drawConfig with
+            {
+                PositionOffset = new Vector2(extraAdjX, extraAdjY),
+            };
+            Projectile.DrawPet(wingFrame, lightColor, config);
 
             Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
-            for (int i = 0; i < 8; i++)
+            for (int i = -1; i <= 1; i++)
             {
-                Vector2 spinningpoint = new Vector2(0f, -2f);
-                Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(extraAdjX, extraAdjY) + spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly + MathHelper.TwoPi / 8 * i * 0.6f), rect2, Projectile.GetAlpha(Color.White) * 0.4f, Projectile.rotation, orig, Projectile.scale * 0.95f, effect, 0f);
+                if (i == 0)
+                    continue;
+
+                Vector2 offset = new Vector2(extraAdjX, extraAdjY);
+                DrawPetConfig config2 = config with
+                {
+                    AltTexture = glowTex,
+                    Scale = 0.95f,
+                    PositionOffset = offset,
+                };
+                Projectile.DrawPet(wingFrame, Color.White * 0.4f,
+                    config2 with
+                    {
+                        PositionOffset = offset + new Vector2(0, i).RotatedBy(Main.GlobalTimeWrappedHourly),
+                    });
+                Projectile.DrawPet(wingFrame, Color.White * 0.4f,
+                    config2 with
+                    {
+                        PositionOffset = offset + new Vector2(i, 0).RotatedBy(Main.GlobalTimeWrappedHourly),
+                    });
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
-            Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(extraAdjX, extraAdjY), rect2, Projectile.GetAlpha(Color.White) * 0.6f, Projectile.rotation, orig, Projectile.scale, effect, 0f);
+
+            Projectile.DrawPet(wingFrame, Color.White * 0.6f,
+                    config with
+                    {
+                        AltTexture = glowTex,
+                    });
         }
         private void Blink()
         {
