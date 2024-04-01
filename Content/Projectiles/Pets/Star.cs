@@ -8,8 +8,10 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Star : BasicTouhouPet
+    public class Star : BasicTouhouPetNeo
     {
+        private bool CanSeeStar => Main.cloudAlpha <= 0 && !Main.dayTime && !Main.bloodMoon
+            && (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
@@ -167,55 +169,31 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        Color myColor = new Color(135, 143, 237);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(135, 143, 237);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Star", "1");
-            text[2] = ModUtils.GetChatText("Star", "2");
-            text[3] = ModUtils.GetChatText("Star", "3");
-            if (Main.dayTime)
-                text[4] = ModUtils.GetChatText("Star", "4");
-            else if (player.ZoneForest && Main.cloudAlpha == 0 && !Main.bloodMoon)
-                text[5] = ModUtils.GetChatText("Star", "5");
-
+            name = "Star";
+            indexRange = new Vector2(1, 7);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 7;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (Main.dayTime)
+                    chat.Add(ChatDictionary[4]);
+                else if (CanSeeStar)
+                    chat.Add(ChatDictionary[5]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type = ProjectileType<Sunny>();
-            int type2 = ProjectileType<Luna>();
-            if (FindChatIndex(out Projectile _, type, 12, 14, 0)
-                || FindChatIndex(out Projectile _, type2, 9, 10, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type, 12, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Star", "6"), myColor, 6);
-                p1.localAI[2] = 0;
-                p1.localAI[1] = 4800;
-            }
-            else if (FindChatIndex(out Projectile p2, type, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Star", "7"), myColor, 7);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -224,6 +202,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 0;
             }
+        }
+        private void UpdateTalking()
+        {
         }
         private void GenDust()
         {
@@ -260,7 +241,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
-            ChangeDir(player, true, 200);
+            ChangeDir(true, 200);
 
             Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
             if (player.HasBuff<TheThreeFairiesBuff>())
@@ -273,7 +254,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 1.35f, 1.43f, 2.37f);
-            Player player = Main.player[Projectile.owner];
+            Player player = Owner;
             Projectile.SetPetActive(player, BuffType<StarBuff>());
             Projectile.SetPetActive(player, BuffType<TheThreeFairiesBuff>());
 
