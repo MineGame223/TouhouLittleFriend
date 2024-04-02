@@ -14,53 +14,99 @@ namespace TouhouPets.Content.Projectiles.Pets
     /// </summary>
     public abstract class BasicTouhouPetNeo : ModProjectile
     {
-        #region 变量与参数
+        #region 字段与属性
         /// <summary>
-        /// 对话文本
+        /// 对话文本不透明度
         /// </summary>
         internal float chatOpacity;
+
+        /// <summary>
+        /// 对话文本所用颜色
+        /// </summary>
         internal Color chatColor;
+
+        /// <summary>
+        /// 对话字体大小
+        /// </summary>
         internal float chatScale;
+
+        /// <summary>
+        /// 整段对话文本的底部坐标
+        /// </summary>
         internal float chatBaseY = 0;
+
+        /// <summary>
+        /// 对话的持续剩余时间
+        /// </summary>
+        internal int chatTimeLeft;
+
+        /// <summary>
+        /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
+        /// <br/>用途：说完一句话以后一段时间内不会再进行其他对话
+        /// <br>现在暂未被使用</br>
+        /// </summary>
+        internal int chatCD;
+
+        /// <summary>
+        /// 对话文本对应的索引值
+        /// </summary>
+        internal int chatIndex;
+
         /// <summary>
         /// 对话文本
         /// </summary>
         internal string chatText;
+
         /// <summary>
         /// 说话前的延时
         /// </summary>
         internal int chatLag;
+
         /// <summary>
         /// 打字机式文本显示状态下，打印文本总共需要的时间
         /// </summary>
         internal float totalTimeToType;
+
         /// <summary>
         /// 打字机式文本显示状态下，打印单个字符所需的时间
         /// </summary>
         internal float timeToType;
+
         /// <summary>
         /// 主要计时器，从0增加至4800再重置并循环
         /// <br/>由于该计时器并不接受同步，故最好只在本地客户端执行与其相关的操作
         /// </summary>
         internal int mainTimer;
+
         /// <summary>
         /// 额外的本地AI（等同于localAI），长度为3
         /// </summary>
         internal int[] extraAI = new int[3];
+
         /// <summary>
         /// 是否开启对话文字震动
         /// <br/>恋恋专用
         /// <br/>!--该属性会反复重置
         /// </summary>
         internal bool textShaking;
+
         /// <summary>
         /// 对话字典
         /// </summary>
         internal Dictionary<int, string> ChatDictionary = new Dictionary<int, string>();
+
         /// <summary>
         /// 当前聊天室
         /// </summary>
         internal PetChatRoom currentChatRoom;
+
+        /// <summary>
+        /// 对话属性配置
+        /// </summary>
+        public static ChatSettingConfig ChatSettingConfig
+        {
+            get => new();
+        }
         /// <summary>
         /// 宠物的状态值（Projectile.ai[1]）
         /// </summary>
@@ -68,38 +114,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             get => (int)Projectile.ai[1];
             set => Projectile.ai[1] = value;
-        }
-        /// <summary>
-        /// 对话的持续剩余时间（Projectile.localAI[0]）
-        /// </summary>
-        public int ChatTimeLeft
-        {
-            get => (int)Projectile.localAI[0];
-            set => Projectile.localAI[0] = value;
-        }
-        /// <summary>
-        /// 完成一次对话后的间隔（Projectile.localAI[1]），在大于0且 <see cref="ChatTimeLeft"/> 小于等于0时会一直减少至0
-        /// <br/>用途：说完一句话以后一段时间内不会再进行其他对话
-        /// </summary>
-        public int ChatCD
-        {
-            get => (int)Projectile.localAI[1];
-            set => Projectile.localAI[1] = value;
-        }
-        /// <summary>
-        /// 对话文本对应的索引值（Projectile.localAI[2]）
-        /// </summary>
-        public int ChatIndex
-        {
-            get => (int)Projectile.localAI[2];
-            set => Projectile.localAI[2] = value;
-        }
-        /// <summary>
-        /// 对话属性配置
-        /// </summary>
-        public static ChatSettingConfig ChatSettingConfig
-        {
-            get => new();
         }
         /// <summary>
         /// 宠物的所属玩家
@@ -119,7 +133,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
 
-            DrawStatePanelForTesting(drawingForTest, ChatCD + "," + ChatIndex + "," + chatLag + "," + ChatTimeLeft + "," + chatTurn, new Vector2(0, 0));
+            DrawStatePanelForTesting(drawingForTest, chatCD + "," + chatIndex + "," + chatLag + "," + chatTimeLeft + "," + chatTurn, new Vector2(0, 0));
             DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
             DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
             DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
@@ -235,7 +249,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chatLag = 0;
             }
-            if (ChatTimeLeft > 0)
+            if (chatTimeLeft > 0)
             {
                 if (chatLag <= 0)
                 {
@@ -243,23 +257,23 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chatScale += 0.05f;
                     chatOpacity += 0.1f;
                     if (timeToType >= totalTimeToType)
-                        ChatTimeLeft--;
+                        chatTimeLeft--;
                 }
             }
             else
             {
                 chatBaseY = 0;
                 chatScale = 1;
-                ChatTimeLeft = 0;
+                chatTimeLeft = 0;
                 chatOpacity -= 0.05f;
 
-                if (ChatCD > 0)
+                if (chatCD > 0)
                 {
-                    ChatCD--;
+                    chatCD--;
                 }
                 else
                 {
-                    ChatCD = 0;
+                    chatCD = 0;
                 }
             }
 
@@ -298,7 +312,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         #region 查找方法
         /// <summary>
-        /// 查找自身的<see cref="ChatIndex"/>
+        /// 查找自身的<see cref="chatIndex"/>
         /// </summary>
         /// <param name="minIndex">最小索引值</param>
         /// <param name="maxIndex">最大索引值，默认等于最小索引值</param>
@@ -309,7 +323,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 maxIndex = minIndex;
             }
-            if (ChatIndex >= minIndex && ChatIndex <= maxIndex)
+            if (chatIndex >= minIndex && chatIndex <= maxIndex)
             {
                 return true;
             }
@@ -324,9 +338,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal bool FindPet(out Projectile target, int type)
         {
             target = null;
-            foreach (Projectile p in Main.projectile)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
-                if (p != null && p.active && p.owner == Projectile.owner)
+                if (p.owner == Projectile.owner)
                 {
                     if (p.type == type)
                     {
@@ -343,9 +357,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <returns></returns>
         internal bool FindPet(int type)
         {
-            foreach (Projectile p in Main.projectile)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
-                if (p != null && p.active && p.owner == Projectile.owner)
+                if (p.owner == Projectile.owner)
                 {
                     if (p.type == type)
                     {
@@ -371,9 +385,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 maxState = minState;
             }
-            foreach (Projectile p in Main.projectile)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
-                if (p != null && p.active && p.owner == Projectile.owner)
+                if (p.owner == Projectile.owner)
                 {
                     if (p.type == type && p.ai[1] >= minState && p.ai[1] <= maxState)
                     {
@@ -398,9 +412,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 maxState = minState;
             }
-            foreach (Projectile p in Main.projectile)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
-                if (p != null && p.active && p.owner == Projectile.owner)
+                if (p.owner == Projectile.owner)
                 {
                     if (p.type == type && p.ai[1] >= minState && p.ai[1] <= maxState)
                     {

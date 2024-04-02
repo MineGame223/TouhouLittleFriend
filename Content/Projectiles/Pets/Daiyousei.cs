@@ -66,23 +66,26 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 960;
-            chance = 1;
+            chance = 9;
             whenShouldStop = false;
         }
         public override string GetRegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                chat.Add(ChatDictionary[1]);
-                chat.Add(ChatDictionary[2]);
-
-                if (FindPet(ProjectileType<Cirno>()))
-                {
-                    chat.Add(ChatDictionary[3], 5);
-                    chat.Add(ChatDictionary[4], 5);
-                }
                 if (Owner.ZoneGraveyard)
-                    chat.Add(ChatDictionary[5], 5);
+                    chat.Add(ChatDictionary[5]);
+                else
+                {
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+
+                    if (FindPet(ProjectileType<Cirno>()))
+                    {
+                        chat.Add(ChatDictionary[3]);
+                        chat.Add(ChatDictionary[4]);
+                    }
+                }
             }
             return chat;
         }
@@ -92,9 +95,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (FindChatIndex(4, 5))
+            if (FindChatIndex(4, 6))
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), ChatIndex);
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
             }
         }
         private void Chatting1(PetChatRoom chatRoom, int index)
@@ -115,7 +118,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (index == 4)
             {
-                if (turn == 0)
+                if (turn == -1)
+                {
+                    cirno.CloseCurrentDialog();
+
+                    if (daiyousei.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
                 {
                     cirno.SetChat(ChatSettingConfig, 10, 20);
 
@@ -127,9 +137,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chatRoom.CloseChatRoom();
                 }
             }
-            else if (index == 5)
+            else if (index == 5 || index == 6)
             {
-                if (turn == 0)
+                if (turn == -1)
+                {
+                    cirno.CloseCurrentDialog();
+
+                    if (daiyousei.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
                 {
                     cirno.SetChat(ChatSettingConfig, 9, 20);
 
@@ -138,9 +155,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
-                    daiyousei.SetChat(ChatSettingConfig, 8, 20);
-                    
-                    if(daiyousei.CurrentDialogFinished())
+                    daiyousei.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (daiyousei.CurrentDialogFinished())
                         chatRoom.chatTurn++;
                 }
                 else

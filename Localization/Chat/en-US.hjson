@@ -24,10 +24,10 @@ Mods: {
 			Chat2: Where should we play today?
 			Chat3: ...I like Cirno!
 			Chat4: Where will we go today Cirno-chan?
-			Chat5: What... what a horrible place!
+			Chat5: Eh...I, I'm not afraid of that!
 			Chat6: Are you OK Cirno-chan?...
 			Chat7: Me too!
-			Chat8: Eh...I, I'm not afraid of that!
+			Chat8: What... what a horrible place!
 		}
 
 		Chat_Flandre: {
@@ -160,8 +160,8 @@ Mods: {
 			Chat3: Do you like stars?
 			Chat4: What a nice day Da⭐ze!
 			Chat5: So many stars in the sky!
-			Chat6: Hey, hey. Reimu?
-			Chat7: Today isn't normal...
+			Chat6: Today isn't normal...
+			Chat7: Hey, hey. Reimu?
 			Chat8: I just found something interesting!
 			Chat9: No no...It's a fallen star! A REAL star!
 			Chat10: But it shines brighter, doesn't it?
@@ -387,10 +387,10 @@ Mods: {
 			Chat1: There's something wrong about the sun's position and the time...
 			Chat2: How could gold be stronger than iron?
 			Chat3: Is Yuuma still living in the Animal Realm?...
-			Chat4: Don't leave me too far, Chen!
+			Chat4: I, I'm NOT! Yukari sama!
 			Chat5: You mean?
 			Chat6: I might know who she is...
-			Chat7: I, I'm NOT! Yukari sama!
+			Chat7: Don't leave me too far, Chen!
 		}
 
 		Chat_Chen: {
@@ -495,7 +495,7 @@ Mods: {
 			Chat7: Human newspapers aren't that bad...
 			Chat8: People are always dreaming under the full moon.
 			Chat9: Leaving aside what would happen if we were caught...We're gonna steal a thief?
-			Chat10: Why is it always me that picks up the pieces every time?! Only you two this time, I won't go!
+			Chat10: Why is it always ME that picks up the pieces every time?! Only you two this time, I won't go!
 			Chat11: NEVER!!!
 		}
 

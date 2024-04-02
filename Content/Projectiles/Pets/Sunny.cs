@@ -234,7 +234,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 640;
-            chance = 1;
+            chance = 6;
             whenShouldStop = PetState == 2;
         }
         public override string GetRegularDialogText()
@@ -286,15 +286,24 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Chatting1(PetChatRoom chatRoom)
         {
             int turn = chatRoom.chatTurn;
-            if (turn == 0)
+            if (turn == -1)
+            {
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
             {
                 Projectile.SetChat(ChatSettingConfig, 10, 20);
-                chatRoom.chatTurn++;
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
             }
             else if (turn == 1)
             {
                 Projectile.SetChat(ChatSettingConfig, 11, 20);
-                chatRoom.chatTurn++;
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
             }
             else
             {
@@ -323,7 +332,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile luna = chatRoom.member[0];
             Projectile star = chatRoom.member[1];
             int turn = chatRoom.chatTurn;
-            if (turn == 0)
+            if (turn == -1)
+            {
+                if (sunny.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
             {
                 star.SetChat(ChatSettingConfig, 6, 20);
 
@@ -453,7 +467,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (mainTimer >= 600 && mainTimer < 3600 && PetState == 0)
                 {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && UnderSunShine && ChatTimeLeft <= 0)
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && UnderSunShine && chatTimeLeft <= 0)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;

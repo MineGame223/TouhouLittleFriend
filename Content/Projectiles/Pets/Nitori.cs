@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Nitori : BasicTouhouPet
+    public class Nitori : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -27,7 +27,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
 
             Projectile.DrawPet(backFrame, lightColor, drawConfig, 1);
-            Projectile.DrawPet(backFrame, Color.White * 0.7f, 
+            Projectile.DrawPet(backFrame, Color.White * 0.7f,
                 drawConfig with
                 {
                     AltTexture = glowTex,
@@ -224,59 +224,27 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        Color myColor = new Color(74, 165, 255);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(74, 165, 255);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Nitori", "1");
-            text[2] = ModUtils.GetChatText("Nitori", "2");
-            text[3] = ModUtils.GetChatText("Nitori", "3");
+            name = "Nitori";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 9;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Hina>();
-            if (FindChatIndex(out Projectile _, type1, 4, default, 0)
-                || FindChatIndex(out Projectile _, type1, 7, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, type1, 4))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "4"), myColor, 4);
-            }
-            else if (FindChatIndex(out p, type1, 5, ignoreCD: true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "5"), myColor, 5);
-            }
-            else if (FindChatIndex(out p, type1, 6, ignoreCD: true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "6"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, type1, 7))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "7"), myColor, 7);
-            }
-            else if (FindChainedChat(7))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Nitori", "8"), myColor, 0);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -287,6 +255,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (extraAI[0] == 0)
                 Idel();
+        }
+        private void UpdateTalking()
+        {
         }
         public override void AI()
         {
@@ -306,7 +277,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.rotation = 0;
             }
 
-            ChangeDir(player, true);
+            ChangeDir(true);
             MoveToPoint(point, 12.5f);
 
             if (Projectile.owner == Main.myPlayer)
@@ -318,7 +289,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer >= 1200 && mainTimer < 3600 && PetState < 1)
                 {
-                    if (mainTimer % 900 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
+                    if (mainTimer % 900 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0 && chatTimeLeft <= 0)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;

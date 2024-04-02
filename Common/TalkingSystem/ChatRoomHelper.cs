@@ -7,6 +7,9 @@ using System;
 
 namespace TouhouPets
 {
+    /// <summary>
+    /// 聊天室相关静态拓展方法
+    /// </summary>
     public static class ChatRoomHelper
     {
         /// <summary>
@@ -19,19 +22,20 @@ namespace TouhouPets
             return Main.projectile[projectile.whoAmI].ModProjectile as BasicTouhouPetNeo;
         }
         /// <summary>
-        /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空
+        /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空、chatIndex归零
         /// </summary>
         /// <param name="chatRoom"></param>
         public static void CloseChatRoom(this PetChatRoom chatRoom)
         {
             BasicTouhouPetNeo owner = ToPetClass(chatRoom.initiator);
             owner.currentChatRoom = null;
-            owner.ChatIndex = 0;
+            owner.chatIndex = 0;
             foreach (Projectile m in chatRoom.member)
             {
                 if (m != null && m.active)
                 {
                     ToPetClass(m).currentChatRoom = null;
+                    ToPetClass(m).chatIndex = 0;
                 }
             }
             chatRoom.active = false;
@@ -60,6 +64,7 @@ namespace TouhouPets
                 ChatRoom[i] = new PetChatRoom();
                 ChatRoom[i].active = true;
                 ChatRoom[i].initiator = initiator;
+                ChatRoom[i].chatTurn = -1;
 
                 initiator.ToPetClass().currentChatRoom = ChatRoom[i];
 
@@ -84,7 +89,16 @@ namespace TouhouPets
         /// <returns></returns>
         public static bool CurrentDialogFinished(this Projectile projectile)
         {
-            return projectile.ToPetClass().ChatTimeLeft <= 1;
+            return projectile.ToPetClass().chatTimeLeft <= 1;
+        }
+        /// <summary>
+        /// 关闭当前宠物的对话（将chatTimeLeft设为0）
+        /// </summary>
+        /// <param name="projectile"></param>
+        public static void CloseCurrentDialog(this Projectile projectile)
+        {
+            BasicTouhouPetNeo pet = projectile.ToPetClass();
+            pet.chatTimeLeft = 0;
         }
         /// <summary>
         /// 设置宠物要说的话
@@ -97,7 +111,7 @@ namespace TouhouPets
         public static void SetChat(this Projectile projectile, ChatSettingConfig config, int index, int lag = 0, Color color = default)
         {
             BasicTouhouPetNeo pet = projectile.ToPetClass();
-            if (projectile.owner != Main.myPlayer || pet.ChatTimeLeft > 0 || pet.ChatCD > 0)
+            if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0 || pet.chatCD > 0)
             {
                 return;
             }
@@ -117,11 +131,11 @@ namespace TouhouPets
             {
                 config.TyperModeUseTime = Math.Clamp(chat.Length * 5, 0, 150);
             }
-            pet.ChatIndex = index;
+            pet.chatIndex = index;
             pet.chatBaseY = -24;
             pet.chatScale = 0f;
             pet.chatText = chat;
-            pet.ChatTimeLeft = Math.Clamp(chat.Length * config.TimeLeftPerWord, 0, 420);
+            pet.chatTimeLeft = Math.Clamp(chat.Length * config.TimeLeftPerWord, 0, 420);
             pet.timeToType = 0;
             pet.totalTimeToType = config.TyperModeUseTime;
             pet.chatColor = color;

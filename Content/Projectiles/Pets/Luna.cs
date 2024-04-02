@@ -313,7 +313,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.dayTime)
                     {
-                        if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && ChatTimeLeft <= 0)
+                        if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && chatTimeLeft <= 0)
                         {
                             PetState = 4;
                             int chance = Main.rand.Next(2);

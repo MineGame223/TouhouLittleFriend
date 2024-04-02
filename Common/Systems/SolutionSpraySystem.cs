@@ -8,33 +8,62 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 using TouhouPets.Content.Projectiles.Pets;
-using static TouhouPets.Content.Projectiles.Pets.Yuka;
 
 namespace TouhouPets
 {
     public class SolutionSpraySystem : ModSystem
     {
-        private static int _sprayMode;
+        private static int sprayMode;
         private static Projectile yuka;
-        public static Item _solution;
-        public static int SprayState;
+        private static Item solution;
+        private static int sprayState;
+
+        public const int Phase_Spray_Mode1 = 3;
+        public const int Phase_Spray_Mode2 = 4;
+        public const int Phase_StopSpray = 5;
         public static Item Sprayer => new(ItemID.Clentaminator2);
         public static bool InSprayMode => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
-        private static float PetState
+        private static float PetState { get => yuka.ai[1]; }
+        public static int SprayState { get => sprayState; set => sprayState = value; }
+        public static Item Solution { get => solution; set => solution = value; }
+        public static int SolutionSprayType(int type)
         {
-            get
+            return type switch
             {
-                return yuka.ai[1];
-            }
+                ItemID.GreenSolution => ProjectileID.PureSpray,
+                ItemID.BlueSolution => ProjectileID.HallowSpray,
+                ItemID.DarkBlueSolution => ProjectileID.MushroomSpray,
+                ItemID.DirtSolution => ProjectileID.DirtSpray,
+                ItemID.PurpleSolution => ProjectileID.CorruptSpray,
+                ItemID.RedSolution => ProjectileID.CrimsonSpray,
+                ItemID.SandSolution => ProjectileID.SandSpray,
+                ItemID.SnowSolution => ProjectileID.SnowSpray,
+                _ => SolutionSpraySystem.Sprayer.shoot,
+            };
+        }
+        public static int SolutionSprayDust(int type)
+        {
+            return type switch
+            {
+                ProjectileID.PureSpray => MyDustId.GreenBubble,
+                ProjectileID.HallowSpray => MyDustId.CyanBubble,
+                ProjectileID.MushroomSpray => MyDustId.BlueIce,
+                ProjectileID.DirtSpray => MyDustId.BrownBubble,
+                ProjectileID.CorruptSpray => MyDustId.PinkBubble,
+                ProjectileID.CrimsonSpray => MyDustId.PinkYellowBubble,
+                ProjectileID.SandSpray => MyDustId.YellowBubble,
+                ProjectileID.SnowSpray => MyDustId.WhiteBubble,
+                _ => MyDustId.RedBubble,
+            };
         }
         public override void PostUpdateProjectiles()
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
 
-            if (_sprayMode > 1 || _sprayMode < 0)
+            if (sprayMode > 1 || sprayMode < 0)
             {
-                _sprayMode = 0;
+                sprayMode = 0;
             }
             yuka = null;
             foreach (Projectile p in Main.projectile)
@@ -73,7 +102,7 @@ namespace TouhouPets
                 return;
 
             if (!InSprayMode)
-                _solution = new Item();
+                Solution = new Item();
 
             bool request = false;
             Player player = Main.player[yuka.owner];
@@ -85,12 +114,12 @@ namespace TouhouPets
                 {
                     player.mouseInterface = true;
                     request = true;
-                    _solution = player.ChooseAmmo(Sprayer);
-                    if (yukaRect.Contains(new Point(Main.mouseX, Main.mouseY)) && _solution != null && !_solution.IsAir)
+                    Solution = player.ChooseAmmo(Sprayer);
+                    if (yukaRect.Contains(new Point(Main.mouseX, Main.mouseY)) && Solution != null && !Solution.IsAir)
                     {
                         if (Main.mouseRight && Main.mouseRightRelease)
                         {
-                            int targetMode = _sprayMode == 0 ? Phase_Spray_Mode1 : Phase_Spray_Mode2;
+                            int targetMode = sprayMode == 0 ? Phase_Spray_Mode1 : Phase_Spray_Mode2;
                             if (PetState != targetMode)
                             {
                                 SprayState = targetMode;
@@ -107,7 +136,7 @@ namespace TouhouPets
                             if (!InSprayMode)
                             {
                                 AltVanillaFunction.PlaySound(SoundID.MenuTick, yuka.position);
-                                _sprayMode++;
+                                sprayMode++;
                             }
                         }
                     }
@@ -117,22 +146,22 @@ namespace TouhouPets
         }
         private static void DrawLeftSolution(bool drawRequestText)
         {
-            if (_solution == null || _solution.IsAir)
+            if (Solution == null || Solution.IsAir)
             {
                 return;
             }
-            Main.instance.LoadItem(_solution.type);
-            Texture2D t = AltVanillaFunction.ItemTexture(_solution.type);
+            Main.instance.LoadItem(Solution.type);
+            Texture2D t = AltVanillaFunction.ItemTexture(Solution.type);
             Vector2 pos = yuka.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale)
                 + new Vector2(-20, -50);
             Rectangle rect = new(0, 0, t.Width, t.Height);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = SpriteEffects.None;
-            if (_solution.ammo != AmmoID.None)
+            if (Solution.ammo != AmmoID.None)
             {
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, 1.3f, effect, 0f);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
-                                , ": " + _solution.stack.ToString(), pos.X + 20
+                                , ": " + Solution.stack.ToString(), pos.X + 20
                                 , pos.Y - 4
                                 , Color.White, Color.Black
                                 , orig, 1f);
@@ -141,7 +170,7 @@ namespace TouhouPets
             if (drawRequestText)
             {
                 if (!InSprayMode && PetState != Phase_StopSpray)
-                    DrawSprayModeSign(_sprayMode == 0 ? 9 : 8);
+                    DrawSprayModeSign(sprayMode == 0 ? 9 : 8);
 
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
                                 , Language.GetTextValue($"Mods.TouhouPets.Yuka{modeText}"), Main.MouseScreen.X + TextureAssets.Cursors[2].Width()

@@ -126,7 +126,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 480;
-            chance = 6;
+            chance = 9;
             whenShouldStop = PetState == 2;
         }
         public override string GetRegularDialogText()
@@ -144,11 +144,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chat.Add(ChatDictionary[3]);
 
                     if (FindPet(ProjectileType<Daiyousei>()))//查找玩家是否同时携带了大妖精
-                        chat.Add(ChatDictionary[4], 5);//该文本的权重为5，即更大概率出现
+                        chat.Add(ChatDictionary[4]);
 
                     chat.Add(ChatDictionary[6]);
                     if (CanSeeFrogs)
-                        chat.Add(ChatDictionary[11], 3);
+                        chat.Add(ChatDictionary[11], 3);//该文本的权重为3，即更大概率出现
                 }
             }
             return chat;
@@ -157,12 +157,23 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateWingFrame();
         }
-        //执行对话过程
+        /// <summary>
+        /// 执行对话过程
+        /// <br>对话系统原理如下：</br>
+        /// <br>随时检测自身可以引起对话回合的对话索引，若成功检测到则立刻创建一个聊天室，并将其赋值给 currentChatRoom。</br>
+        /// <br>创建成功后，若检测到玩家携带有相关宠物，则该宠物会被拉入聊天室作为其中一员，其自身的 currentChatRoom也会被赋值；
+        /// 否则如果没有检测到（比如宠物中途消失），则聊天室将被立刻关闭。</br>
+        /// <br>同时，currentChatRoom 非空的情况下将不再更新常规对话，以确保对话回合不会被打扰。</br>
+        /// <br>聊天室依靠 chatTurn 变量进行对话回合的切换，每当当前回合内宠物的话说完后，chatTurn 应当+1以进入下一回合；
+        /// chatTurn的初始值为-1，该回合用于等待宠物说完第一句话。</br>
+        /// <br>若chatTrun已超过对话最终回合，则聊天室将被关闭。</br>
+        /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的chatIndex将归零、其 currentChatRoom也将设为空。</br>
+        /// </summary>
         private void UpdateTalking()
         {
-            if (FindChatIndex(4) || FindChatIndex(7, 8))
+            if (FindChatIndex(4) || FindChatIndex(7, 8))//请确保这里包含了所有该宠物在对话期间使用到的对话索引
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), ChatIndex);
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
             }
         }
         //由自己发起的对话过程（与大妖精）
@@ -183,9 +194,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile cirno = chatRoom.initiator;
             Projectile daiyousei = chatRoom.member[0];
             int turn = chatRoom.chatTurn;
-            if (index == 4)//对话1
+            if (index == 4)//对话1，关联索引为4
             {
-                if (turn == 0)
+                if (turn == -1)//起始回合
+                {
+                    daiyousei.CloseCurrentDialog();//将成员现有的对话关闭，以最大限度确保对话流畅性
+
+                    if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
                 {
                     daiyousei.SetChat(ChatSettingConfig, 7, 20);//令大妖精说话
 
@@ -197,13 +215,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chatRoom.CloseChatRoom();
                 }
             }
-            else if (index == 7 || index == 8)//对话2
+            else if (index == 7 || index == 8)//对话2，关联索引为7、8
             {
-                if (turn == 0)
+                if (turn == -1)//起始回合
                 {
-                    daiyousei.SetChat(ChatSettingConfig, 6, 20);//令大妖精说话
+                    daiyousei.CloseCurrentDialog();
 
-                    if (daiyousei.CurrentDialogFinished())//当大妖精的话说完时进入下一回合
+                    if (cirno.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    daiyousei.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (daiyousei.CurrentDialogFinished())
                         chatRoom.chatTurn++;
                 }
                 else if (turn == 1)
@@ -213,7 +238,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
                         chatRoom.chatTurn++;
                 }
-                else//对话回合完成后退出聊天室
+                else
                 {
                     chatRoom.CloseChatRoom();
                 }
@@ -240,9 +265,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PetState = 1;
                     Projectile.netUpdate = true;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
                 {
-                    if (mainTimer % 300 == 0 && Main.rand.NextBool(3) && extraAI[0] <= 0 && !InHotZone)
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && extraAI[0] <= 0 && !InHotZone)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;

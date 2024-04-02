@@ -24,10 +24,10 @@ Mods: {
 			Chat2: Где поиграем сегодня?
 			Chat3: ...Мне нравится Чирно!
 			Chat4: Куда мы сегодня пойдём, Чирно-чан?
-			Chat5: Какое... какое же жуткое место!
+			Chat5: Э... Я- я не боюсь!
 			Chat6: Ты в порядке, Чирно-чан?...
 			Chat7: Я тоже!
-			Chat8: Э... Я- я не боюсь!
+			Chat8: Какое... какое же жуткое место!
 		}
 
 		Chat_Flandre: {
@@ -160,8 +160,8 @@ Mods: {
 			Chat3: Тебе нравится звезда?
 			Chat4: Прекрасный денёк, да⭐зе!
 			Chat5: В небе так много звёзд!
-			Chat6: Хей, хей, Рейму?
-			Chat7: Сегодня необчый день...
+			Chat6: Сегодня необчый день...
+			Chat7: Хей, хей, Рейму?
 			Chat8: Я нашла кое-что интересное!
 			Chat9: Нет, нет... Это упавшая зведа! НАСТОЯЩАЯ звезда!
 			Chat10: Но она ярче, разве нет?
@@ -387,10 +387,10 @@ Mods: {
 			// Chat1: There's something wrong about the sun's position and the time...
 			// Chat2: How could gold be stronger than iron?
 			// Chat3: Is Yuuma still living in the Animal Realm?...
-			// Chat4: Don't leave me too far, Chen!
+			// Chat4: I, I'm NOT! Yukari sama!
 			// Chat5: You mean?
 			// Chat6: I might know who she is...
-			// Chat7: I, I'm NOT! Yukari sama!
+			// Chat7: Don't leave me too far, Chen!
 		}
 
 		Chat_Chen: {
@@ -495,7 +495,7 @@ Mods: {
 			// Chat7: Human newspapers aren't that bad...
 			// Chat8: People are always dreaming under the full moon.
 			// Chat9: Leaving aside what would happen if we were caught...We're gonna steal a thief?
-			// Chat10: Why is it always me that picks up the pieces every time?! Only you two this time, I won't go!
+			// Chat10: Why is it always ME that picks up the pieces every time?! Only you two this time, I won't go!
 			// Chat11: NEVER!!!
 		}
 
