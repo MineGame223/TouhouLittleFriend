@@ -228,12 +228,12 @@ Mods: {
 			}
 
 			SizuhaBuff: {
-				DisplayName: Godess of Red Leaves
+				DisplayName: Goddess of Red Leaves
 				Description: "'Falling leaves herald the arrival of autumn'"
 			}
 
 			MinorikoBuff: {
-				DisplayName: Godess of Harvest
+				DisplayName: Goddess of Harvest
 				Description: "'Autumn symbolizes the joy of harvest'"
 			}
 		}
