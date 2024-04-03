@@ -66,41 +66,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), rot, orig, Projectile.scale, effect, 0f);
             }
         }
-        #region 溶液喷洒设置
-        Item solution_Actually;
-        public const int Phase_Spray_Mode1 = 3;
-        public const int Phase_Spray_Mode2 = 4;
-        public const int Phase_StopSpray = 5;
-        private static int SolutionSprayType(int type)
-        {
-            return type switch
-            {
-                ItemID.GreenSolution => ProjectileID.PureSpray,
-                ItemID.BlueSolution => ProjectileID.HallowSpray,
-                ItemID.DarkBlueSolution => ProjectileID.MushroomSpray,
-                ItemID.DirtSolution => ProjectileID.DirtSpray,
-                ItemID.PurpleSolution => ProjectileID.CorruptSpray,
-                ItemID.RedSolution => ProjectileID.CrimsonSpray,
-                ItemID.SandSolution => ProjectileID.SandSpray,
-                ItemID.SnowSolution => ProjectileID.SnowSpray,
-                _ => SolutionSpraySystem.Sprayer.shoot,
-            };
-        }
-        private static int SolutionSprayDust(int type)
-        {
-            return type switch
-            {
-                ProjectileID.PureSpray => MyDustId.GreenBubble,
-                ProjectileID.HallowSpray => MyDustId.CyanBubble,
-                ProjectileID.MushroomSpray => MyDustId.BlueIce,
-                ProjectileID.DirtSpray => MyDustId.BrownBubble,
-                ProjectileID.CorruptSpray => MyDustId.PinkBubble,
-                ProjectileID.CrimsonSpray => MyDustId.PinkYellowBubble,
-                ProjectileID.SandSpray => MyDustId.YellowBubble,
-                ProjectileID.SnowSpray => MyDustId.WhiteBubble,
-                _ => MyDustId.RedBubble,
-            };
-        }
+        #region 溶液喷洒相关
+        private Item solutionClone;
         private void Spray(int mode)
         {
             Player player = Main.player[Projectile.owner];
@@ -113,8 +80,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            _solution = player.ChooseAmmo(Sprayer);
-            if (_solution == null || _solution.IsAir)
+            Solution = player.ChooseAmmo(Sprayer);
+            if (Solution == null || Solution.IsAir)
             {
                 PetState = Phase_StopSpray;
                 Projectile.netUpdate = true;
@@ -122,8 +89,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                solution_Actually = new(_solution.type);
-                solution_Actually.shoot = SolutionSprayType(_solution.type);
+                solutionClone = new(Solution.type);
+                solutionClone.shoot = SolutionSprayType(Solution.type);
             }
             if (Projectile.frame >= 8)
             {
@@ -133,8 +100,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[1] = 0;
                     if (Projectile.owner == Main.myPlayer)
                     {
-                        if (Main.rand.NextBool(2, 3) && _solution.consumable && _solution.ammo > AmmoID.None)
-                            _solution.stack--;
+                        if (Main.rand.NextBool(2, 3) && Solution.consumable && Solution.ammo > AmmoID.None)
+                            Solution.stack--;
                     }
                 }
 
@@ -156,7 +123,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
                     for (int i = 0; i < 5; i++)
                     {
-                        Dust.NewDustPerfect(pos, SolutionSprayDust(solution_Actually.shoot)
+                        Dust.NewDustPerfect(pos, SolutionSprayDust(solutionClone.shoot)
                         , new Vector2(0, Main.rand.NextFloat(2.4f, 4.8f)).RotatedByRandom(MathHelper.TwoPi), 100
                         , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
                     }
@@ -166,14 +133,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                         Projectile.NewProjectileDirect(Projectile.GetSource_FromThis()
                         , Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 12)
                         , new Vector2(0, -Sprayer.shootSpeed).RotatedBy(MathHelper.ToRadians(angle))
-                        , solution_Actually.shoot, Sprayer.damage, Sprayer.knockBack, player.whoAmI);
+                        , solutionClone.shoot, Sprayer.damage, Sprayer.knockBack, player.whoAmI);
                     }
                 }
             }
-            if (_solution.stack <= 0)
+            if (Solution.stack <= 0)
             {
-                _solution.TurnToAir();
-                solution_Actually.TurnToAir();
+                Solution.TurnToAir();
+                solutionClone.TurnToAir();
                 extraAI[1] = 0;
                 PetState = Phase_StopSpray;
                 Projectile.netUpdate = true;
@@ -273,7 +240,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[0] = 0;
                     Projectile.frame = 0;
                     PetState = 0;
-                    Projectile.netUpdate = true;
                 }
             }
         }

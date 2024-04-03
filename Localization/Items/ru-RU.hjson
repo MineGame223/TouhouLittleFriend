@@ -243,6 +243,16 @@ Mods: {
 				// DisplayName: Lunatic Gun
 				// Tooltip: "'Is it a gun or a megaphone?'"
 			}
+
+			SizuhaBrush: {
+				// DisplayName: Brush of the Autumn
+				// Tooltip: "'Is who dyed the leaves with autumn's color?'"
+			}
+
+			MinorikoSweetPotato: {
+				// DisplayName: Baked Sweet Potato
+				// Tooltip: "'Sweety and Tasty, it's full of autumn's flavor!'"
+			}
 		}
 	}
 }

@@ -12,10 +12,10 @@ Mods: {
 			Chat4: I like Dai-chan most!
 			Chat6: 1+1=... What, ⑨?
 			Chat7: It's so hot... I'm gonna start melting...
-			Chat8: So many frogs!
+			Chat8: I'm OK... maybe...
 			Chat9: Don't be afraid, Dai-chan. I'm here!
 			Chat10: Wherever Dai-chan goes, that's where I go!
-			Chat11: I'm OK... maybe...
+			Chat11: So many frogs!
 			Chat12: ("Oh god! Keine-sensei will find me...")
 		}
 
@@ -24,10 +24,10 @@ Mods: {
 			Chat2: Where should we play today?
 			Chat3: ...I like Cirno!
 			Chat4: Where will we go today Cirno-chan?
-			Chat5: What... what a horrible place!
+			Chat5: Eh...I, I'm not afraid of that!
 			Chat6: Are you OK Cirno-chan?...
 			Chat7: Me too!
-			Chat8: Eh...I, I'm not afraid of that!
+			Chat8: What... what a horrible place!
 		}
 
 		Chat_Flandre: {
@@ -160,8 +160,8 @@ Mods: {
 			Chat3: Do you like stars?
 			Chat4: What a nice day Da⭐ze!
 			Chat5: So many stars in the sky!
-			Chat6: Hey, hey. Reimu?
-			Chat7: Today isn't normal...
+			Chat6: Today isn't normal...
+			Chat7: Hey, hey. Reimu?
 			Chat8: I just found something interesting!
 			Chat9: No no...It's a fallen star! A REAL star!
 			Chat10: But it shines brighter, doesn't it?
@@ -387,10 +387,10 @@ Mods: {
 			Chat1: There's something wrong about the sun's position and the time...
 			Chat2: How could gold be stronger than iron?
 			Chat3: Is Yuuma still living in the Animal Realm?...
-			Chat4: Don't leave me too far, Chen!
+			Chat4: I, I'm NOT! Yukari sama!
 			Chat5: You mean?
 			Chat6: I might know who she is...
-			Chat7: I, I'm NOT! Yukari sama!
+			Chat7: Don't leave me too far, Chen!
 		}
 
 		Chat_Chen: {
@@ -495,7 +495,7 @@ Mods: {
 			Chat7: Human newspapers aren't that bad...
 			Chat8: People are always dreaming under the full moon.
 			Chat9: Leaving aside what would happen if we were caught...We're gonna steal a thief?
-			Chat10: Why is it always me that picks up the pieces every time?! Only you two this time, I won't go!
+			Chat10: Why is it always ME that picks up the pieces every time?! Only you two this time, I won't go!
 			Chat11: NEVER!!!
 		}
 
@@ -539,6 +539,29 @@ Mods: {
 			Chat9: I have NO connection to udon noodles! ...Also, please don't eat that in front of me.
 			Chat10: You'd better not be gazing at the moon on such a night, or else you might go crazy... Not me, of course, just you.
 			Chat11: Eh eh...I-I'm fine...
+		}
+
+		Chat_Sizuha: {
+			Chat1: *Sigh...The end of year is coming, and the winter comes too...
+			Chat2: Falling leaves herald autumn's arrival, it also means one year is closing to the end.
+			Chat3: Autumn always symbolize loneness since the ancient time...
+			Chat4: Should I use more yellow or more red this year?
+			Chat5: Nobody can block autumn's arrival, It is the willing of nature!
+			Chat6: I'm the elder sister, but why I'm not as famous as my younger sister...
+			Chat7: ...Of、of course! Falling leaves is also an important part of autumn!
+			Chat8: Alright!...I mean, OK.
+			Chat9: This place is so cold...Just like winter...
+		}
+
+		Chat_Minoriko: {
+			Chat1: Would you like some baked sweet potato?
+			Chat2: You say I smell like sweet potato? That's a sweet smell! isn't it?
+			Chat3: If you want a harvest, you should treat me better.
+			Chat4: Farming means obtaining from nature, so you must follow the rules of naturing farming.
+			Chat5: Do NOT waste food!
+			Chat6: Eating is the most important thing for human after all...But there are still many people like autumn's leaves!
+			Chat7: Then, would you like a baked sweet potato?
+			Chat8: Too cold...I'm lethargy...
 		}
 
 		Chat_Portal: {

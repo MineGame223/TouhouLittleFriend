@@ -14,6 +14,10 @@ namespace TouhouPets
     /// </summary>
     internal static class ModUtils
     {
+        public static Vector2 DefaultDrawPetPosition(this Projectile projectile)
+        {
+            return projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
+        }
         /// <summary>
         /// 绘制宠物的基本方法
         /// </summary>
@@ -26,7 +30,7 @@ namespace TouhouPets
         {
             Texture2D t = config.AltTexture ?? AltVanillaFunction.ProjectileTexture(projectile.type);
             int height = t.Height / Main.projFrames[projectile.type];
-            Vector2 pos = projectile.Center - Main.screenPosition + config.PositionOffset + new Vector2(0, 7f * Main.essScale);
+            Vector2 pos = projectile.DefaultDrawPetPosition() + config.PositionOffset;
             Rectangle rect = new Rectangle(t.Width / config.TextureRow * currentRow, frame * height, t.Width / config.TextureRow, height);
             Vector2 orig = rect.Size() / 2;
             float scale = config.Scale;

@@ -7,8 +7,13 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Sunny : BasicTouhouPet
+    public class Sunny : BasicTouhouPetNeo
     {
+        private bool RainWet => Main.raining &&
+            (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
+
+        private bool UnderSunShine => Main.cloudAlpha <= 0 && Main.dayTime &&
+            (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
@@ -27,7 +32,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (i != 0)
                     {
-                        Vector2 dist = Main.player[Projectile.owner].Center - Projectile.Center;
+                        Vector2 dist = Owner.Center - Projectile.Center;
                         Vector2 drift = new Vector2(dist.X * i * 2, dist.Y * 2).RotatedBy(Main.GlobalTimeWrappedHourly);
                         Color clr = lightColor * 0.4f * phantomTime;
                         DrawSunny(clr, drift);
@@ -131,7 +136,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     extraAI[1]++;
                 }
 
-                if (Projectile.owner == Main.myPlayer)
+                if (OwnerIsMyPlayer)
                 {
                     if (extraAI[1] > Main.rand.Next(6, 12))
                     {
@@ -220,79 +225,44 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        Color myColor = new Color(240, 196, 48);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(240, 196, 48);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            if (RainWet)
-            {
-                text[6] = ModUtils.GetChatText("Sunny", "6");
-                text[7] = ModUtils.GetChatText("Sunny", "7");
-                text[8] = ModUtils.GetChatText("Sunny", "8");
-            }
-            else
-            {
-                text[1] = ModUtils.GetChatText("Sunny", "1");
-                text[2] = ModUtils.GetChatText("Sunny", "2");
-                text[3] = ModUtils.GetChatText("Sunny", "3");
-                if (UnderSunShine)
-                {
-                    text[4] = ModUtils.GetChatText("Sunny", "4");
-                    text[5] = ModUtils.GetChatText("Sunny", "5");
-                    text[9] = ModUtils.GetChatText("Sunny", "9");
-                }
-                if (player.HasBuff<ReimuBuff>())
-                    text[12] = ModUtils.GetChatText("Sunny", "12");
-            }
+            name = "Sunny";
+            indexRange = new Vector2(1, 15);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 640;
+            chance = 6;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (RainWet)
                 {
-                    if (text[i] != null)
+                    chat.Add(ChatDictionary[6]);
+                    chat.Add(ChatDictionary[7]);
+                    chat.Add(ChatDictionary[8]);
+                }
+                else
+                {
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+                    chat.Add(ChatDictionary[3]);
+                    if (UnderSunShine)
                     {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
+                        chat.Add(ChatDictionary[4]);
+                        chat.Add(ChatDictionary[5]);
+                        chat.Add(ChatDictionary[9], 10);
                     }
+                    if (!Owner.HasBuff<ReimuBuff>())
+                        chat.Add(ChatDictionary[12], 10);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type = ProjectileType<Luna>();
-            int type2 = ProjectileType<Star>();
-            if (FindChatIndex(out Projectile _, type, 9, default, 0)
-                || FindChatIndex(out Projectile _, type2, 7, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type, 9, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Sunny", "13"), myColor, 13);
-            }
-            else if (FindChatIndex(out Projectile p2, type, 10, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Sunny", "14"), myColor, 14);
-                p2.localAI[2] = 0;
-                p2.localAI[1] = 4800;//给一个超长CD防止开小差
-            }
-            else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Sunny", "15"), myColor, 0);
-            }
-            else if (FindChainedChat(9))
-            {
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sunny", "10"), myColor, 10);
-            }
-            else if (FindChainedChat(10))
-            {
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sunny", "11"), myColor, 11);
-            }
-            else if (mainTimer % 640 == 0 && Main.rand.NextBool(6) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -302,16 +272,131 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        private bool RainWet => Main.raining &&
-            (Main.player[Projectile.owner].ZoneOverworldHeight || Main.player[Projectile.owner].ZoneSkyHeight);
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(9, 11))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+            if (FindChatIndex(12, 15))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                Projectile.SetChat(ChatSettingConfig, 10, 20);
 
-        private bool UnderSunShine => Main.cloudAlpha <= 0 && Main.dayTime &&
-            (Main.player[Projectile.owner].ZoneOverworldHeight || Main.player[Projectile.owner].ZoneSkyHeight);
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                Projectile.SetChat(ChatSettingConfig, 11, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Luna>();
+            int type2 = ProjectileType<Star>();
+            if (FindPet(out Projectile member, type) && FindPet(out Projectile member2, type2))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+
+                chatRoom.member[1] = member2;
+                member2.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+
+            Projectile sunny = chatRoom.initiator;
+            Projectile luna = chatRoom.member[0];
+            Projectile star = chatRoom.member[1];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                if (sunny.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                star.SetChat(ChatSettingConfig, 6, 20);
+
+                if (star.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                luna.SetChat(ChatSettingConfig, 9, 20);
+
+                if (luna.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                sunny.SetChat(ChatSettingConfig, 13, 20);
+
+                if (sunny.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 3)
+            {
+                luna.SetChat(ChatSettingConfig, 10, 20);
+
+                if (luna.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                sunny.SetChat(ChatSettingConfig, 14, 20);
+
+                if (sunny.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 5)
+            {
+                star.SetChat(ChatSettingConfig, 7, 20);
+
+                if (star.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 6)
+            {
+                sunny.SetChat(ChatSettingConfig, 15, 20);
+                luna.SetChat(ChatSettingConfig, 11, 20);
+
+                if (luna.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
         private void GenDust()
         {
             if (RainWet)
             {
-                if (Main.rand.NextBool(6) && !Main.player[Projectile.owner].behindBackWall)
+                if (Main.rand.NextBool(6) && !Owner.behindBackWall)
                 {
                     Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(10, Projectile.width - 10), Main.rand.Next(10, Projectile.height - 10)),
                             MyDustId.BlueThin, new Vector2(0, 0.1f), 100, Color.White).scale = Main.rand.NextFloat(0.5f, 1.2f);
@@ -340,7 +425,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
-            ChangeDir(player, true, 200);
+            ChangeDir(true, 200);
 
             Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
             if (player.HasBuff<TheThreeFairiesBuff>())
@@ -353,7 +438,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 2.40f, 1.96f, 0.84f);
-            Player player = Main.player[Projectile.owner];
+            Player player = Owner;
             Projectile.SetPetActive(player, BuffType<SunnyBuff>());
             Projectile.SetPetActive(player, BuffType<TheThreeFairiesBuff>());
 
@@ -361,7 +446,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             ControlMovement(player);
             GenDust();
 
-            if (Projectile.owner == Main.myPlayer)
+            if (OwnerIsMyPlayer)
             {
                 if (mainTimer % 270 == 0)
                 {
@@ -382,7 +467,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (mainTimer >= 600 && mainTimer < 3600 && PetState == 0)
                 {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && UnderSunShine && ChatTimeLeft <= 0)
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && UnderSunShine && chatTimeLeft <= 0)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;

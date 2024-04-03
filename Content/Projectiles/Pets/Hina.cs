@@ -6,7 +6,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Hina : BasicTouhouPet
+    public class Hina : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -97,59 +97,138 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        Color myColor = new Color(70, 226, 164);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(70, 226, 164);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Hina", "1");
-            text[2] = ModUtils.GetChatText("Hina", "2");
-            if (player.HasBuff<NitoriBuff>())
-            {
-                text[4] = ModUtils.GetChatText("Hina", "4");
-                text[7] = ModUtils.GetChatText("Hina", "7");
-            }
+            name = "Hina";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 7;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                if (FindPetState(ProjectileType<Nitori>(), 0, 1))
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i >= 4)
-                        {
-                            weight = 10;
-                        }
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[4]);
+                    chat.Add(ChatDictionary[7]);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Nitori>();
-            if (FindChatIndex(out Projectile p, type1, 4, ignoreCD: true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Hina", "5"), myColor, 5);
-            }
-            else if (FindChatIndex(out p, type1, 5, ignoreCD: true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Hina", "6"), myColor, 6);
-            }
-            else if (FindChatIndex(out p, type1, 7, ignoreCD: true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Hina", "8"), myColor, 0);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             if (PetState != 2)
                 Idle();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4, 8))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Nitori>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile hina = chatRoom.initiator;
+            Projectile nitori = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 4 && index <= 6)
+            {
+                if (turn == -1)
+                {
+                    nitori.CloseCurrentDialog();
+
+                    if (hina.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    nitori.SetChat(ChatSettingConfig, 4, 20);
+
+                    if (nitori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    hina.SetChat(ChatSettingConfig, 5, 20);
+
+                    if (hina.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    nitori.SetChat(ChatSettingConfig, 5, 20);
+
+                    if (nitori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 3)
+                {
+                    hina.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (hina.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 4)
+                {
+                    nitori.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (nitori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 7 || index == 8)
+            {
+                if (turn == -1)
+                {
+                    nitori.CloseCurrentDialog();
+
+                    if (hina.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    nitori.SetChat(ChatSettingConfig, 7, 20);
+
+                    if (nitori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    nitori.SetChat(ChatSettingConfig, 8, 20);
+                    hina.SetChat(ChatSettingConfig, 8, 20);
+
+                    if (hina.CurrentDialogFinished() || nitori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
         }
         public override void AI()
         {
@@ -161,7 +240,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.rotation = Projectile.velocity.X * 0.032f;
             if (PetState != 2)
             {
-                ChangeDir(player, true);
+                ChangeDir(true);
             }
 
             MoveToPoint(point, 13f);
@@ -179,8 +258,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;
-                        if (Main.rand.NextBool(3) && ChatCD <= 0)
-                            SetChat(myColor, ModUtils.GetChatText("Hina", "3"), 3, 60, 30);
+                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
+                            Projectile.SetChat(ChatSettingConfig, 3, 20);
                     }
                 }
             }

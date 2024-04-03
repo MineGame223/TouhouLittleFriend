@@ -243,6 +243,16 @@ Mods: {
 				DisplayName: 兔耳枪
 				Tooltip: "'这究竟是把枪，还是个喇叭？'"
 			}
+
+			SizuhaBrush: {
+				DisplayName: 秋色漆刷
+				Tooltip: "'是谁为树叶刷上了秋天的颜色呢？'"
+			}
+
+			MinorikoSweetPotato: {
+				DisplayName: 烤红薯
+				Tooltip: "'香香甜甜的，充满秋天的味道！'"
+			}
 		}
 	}
 }

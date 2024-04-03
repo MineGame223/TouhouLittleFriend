@@ -6,7 +6,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Daiyousei : BasicTouhouPet
+    public class Daiyousei : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -57,74 +57,114 @@ namespace TouhouPets.Content.Projectiles.Pets
                 wingFrame = 3;
             }
         }
-        Color myColor = new Color(71, 228, 63);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(71, 228, 63);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Daiyousei", "1");
-            text[2] = ModUtils.GetChatText("Daiyousei", "2");
-            if (player.ownedProjectileCounts[ProjectileType<Cirno>()] > 0)
-            {
-                text[3] = ModUtils.GetChatText("Daiyousei", "3");
-                text[4] = ModUtils.GetChatText("Daiyousei", "4");
-            }
-            if (player.ZoneGraveyard)
-            {
-                text[5] = ModUtils.GetChatText("Daiyousei", "5");
-            }
+            name = "Daiyousei";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 960;
+            chance = 9;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (Owner.ZoneGraveyard)
+                    chat.Add(ChatDictionary[5]);
+                else
                 {
-                    if (text[i] != null)
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+
+                    if (FindPet(ProjectileType<Cirno>()))
                     {
-                        int weight = 1;
-                        if (i == 5)
-                        {
-                            weight = 5;
-                        }
-                        if (i == 3 || i == 4)
-                        {
-                            weight = 5;
-                        }
-                        chat.Add(text[i], weight);
+                        chat.Add(ChatDictionary[3]);
+                        chat.Add(ChatDictionary[4]);
                     }
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Cirno>();
-            if (FindChatIndex(out Projectile _, type1, 4, default, 0)
-                || FindChatIndex(out Projectile _, type1, 7, default, 0))
-            {
-                ChatCD = 1;
-            }
-
-            if (FindChatIndex(out Projectile p, type1, 4))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Daiyousei", "7"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p1, type1, 7))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Daiyousei", "6"), myColor, 6);
-            }
-            else if (FindChatIndex(out Projectile p2, type1, 9, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Daiyousei", "8"), myColor, 0);
-                p2.localAI[2] = 0;
-            }
-            if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
-        }
         public override void VisualEffectForPreview()
         {
             UpdateWingFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4, 6))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Cirno>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile daiyousei = chatRoom.initiator;
+            Projectile cirno = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index == 4)
+            {
+                if (turn == -1)
+                {
+                    cirno.CloseCurrentDialog();
+
+                    if (daiyousei.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    cirno.SetChat(ChatSettingConfig, 10, 20);
+
+                    if (cirno.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 5 || index == 6)
+            {
+                if (turn == -1)
+                {
+                    cirno.CloseCurrentDialog();
+
+                    if (daiyousei.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    cirno.SetChat(ChatSettingConfig, 9, 20);
+
+                    if (cirno.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    daiyousei.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (daiyousei.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
         }
         public override void AI()
         {
@@ -133,14 +173,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             UpdateTalking();
             Vector2 point = new Vector2(-40 * player.direction, -30 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Cirno>()] > 0)
+            if (FindPet(ProjectileType<Cirno>()))
             {
                 point = new Vector2(80 * player.direction, -30 + player.gfxOffY);
             }
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.032f;
 
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Cirno>()] <= 0);
+            ChangeDir(!FindPet(ProjectileType<Cirno>()));
             MoveToPoint(point, 9f);
 
             if (Projectile.owner == Main.myPlayer)

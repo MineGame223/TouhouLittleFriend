@@ -6,16 +6,16 @@ using Terraria.Graphics.Shaders;
 
 namespace TouhouPets.Content.Projectiles
 {
-    public class YuyukoButterfly : ModProjectile
+    public class SizuhaLeaf : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 2;
+            Main.projFrames[Type] = 3;
         }
         public override void SetDefaults()
         {
-            Projectile.width = 8;
-            Projectile.height = 8;
+            Projectile.width = 14;
+            Projectile.height = 18;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
@@ -31,15 +31,15 @@ namespace TouhouPets.Content.Projectiles
             Vector2 pos = Projectile.Center - Main.screenPosition;
             int height = tex.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
-            Color clr = Projectile.GetAlpha(Color.White);
+            Color clr = Projectile.GetAlpha(lightColor);
             Vector2 orig = rect.Size() / 2;
 
             Player player = Main.player[Projectile.owner];
 
             Main.spriteBatch.QuickToggleAdditiveMode(true, false, BlendState.AlphaBlend);
 
-            DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig, 1f, SpriteEffects.None, 0);
-            GameShaders.Armor.Apply(player.cPet, Projectile, data);
+            DrawData data = new DrawData(tex, pos, rect, clr, Projectile.rotation, orig, 1f, SpriteEffects.None, 0);
+            GameShaders.Armor.Apply(player.cLight, Projectile, data);
             data.Draw(Main.spriteBatch);
 
             Main.spriteBatch.QuickToggleAdditiveMode(false);
@@ -47,19 +47,13 @@ namespace TouhouPets.Content.Projectiles
         }
         public override void AI()
         {
-            if (++Projectile.frameCounter > 4)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 1)
-            {
-                Projectile.frame = 0;
-            }
+            Projectile.frame = (int)Projectile.ai[0];
+            Projectile.velocity.X += Main.windSpeedCurrent * 0.1f;
+            Projectile.rotation += 0.05f * Projectile.direction;
 
             if (Projectile.ai[2] == 0)
             {
-                Projectile.Opacity += 0.2f;
+                Projectile.Opacity += 0.1f;
                 if (Projectile.Opacity >= 1)
                 {
                     Projectile.Opacity = 1;
@@ -68,7 +62,7 @@ namespace TouhouPets.Content.Projectiles
             }
             else
             {
-                if (++Projectile.localAI[0] > 30)
+                if (++Projectile.localAI[0] > 40)
                     Projectile.Opacity -= 0.1f;
 
                 if (Projectile.Opacity <= 0)
@@ -77,12 +71,6 @@ namespace TouhouPets.Content.Projectiles
                     Projectile.netUpdate = true;
                 }
             }
-
-            float r = 1.47f;
-            float g = 0.45f;
-            float b = 1.03f;
-            float brightness = Projectile.Opacity;
-            Lighting.AddLight(Projectile.Center, r * brightness, g * brightness, b * brightness);
         }
     }
 }

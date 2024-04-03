@@ -8,8 +8,10 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Luna : BasicTouhouPet
+    public class Luna : BasicTouhouPetNeo
     {
+        private static bool IsFullMoon => Main.GetMoonPhase() == MoonPhase.Full
+            && !Main.dayTime && !Main.bloodMoon;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
@@ -204,69 +206,39 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        Color myColor = new Color(255, 225, 110);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(255, 225, 110);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            if (PetState <= 1)
-            {
-                text[1] = ModUtils.GetChatText("Luna", "1");
-                text[2] = ModUtils.GetChatText("Luna", "2");
-                text[3] = ModUtils.GetChatText("Luna", "3");
-            }
-            else
-            {
-                text[6] = ModUtils.GetChatText("Luna", "6");
-                text[7] = ModUtils.GetChatText("Luna", "7");
-            }
-            if (Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime)
-            {
-                text[8] = ModUtils.GetChatText("Luna", "8");
-            }
+            name = "Luna";
+            indexRange = new Vector2(1, 11);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 960;
+            chance = 8;
+            whenShouldStop = PetState == 4;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (PetState <= 1)
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+                    chat.Add(ChatDictionary[3]);
+                }
+                else
+                {
+                    chat.Add(ChatDictionary[6]);
+                    chat.Add(ChatDictionary[7]);
+                }
+                if (IsFullMoon)
+                {
+                    chat.Add(ChatDictionary[8]);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (PetState == 4)
-            {
-                return;
-            }
-            int type = ProjectileType<Sunny>();
-            int type2 = ProjectileType<Star>();
-            if (FindChatIndex(out Projectile _, type2, 6, 7, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type2, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Luna", "9"), myColor, 9);
-                p1.localAI[2] = 0;
-                p1.localAI[1] = 4800;
-            }
-            else if (FindChatIndex(out Projectile p2, type, 13, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Luna", "10"), myColor, 10);
-            }
-            else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Luna", "11"), myColor, 0);
-                p3.localAI[2] = 0;
-            }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(8))
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -275,6 +247,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 0;
             }
+        }
+        private void UpdateTalking()
+        {
         }
         private void GenDust()
         {
@@ -299,7 +274,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
-            ChangeDir(player, true, 200);
+            ChangeDir(true, 200);
 
             Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
             if (player.HasBuff<TheThreeFairiesBuff>())
@@ -338,17 +313,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.dayTime)
                     {
-                        if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && ChatTimeLeft <= 0)
+                        if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && chatTimeLeft <= 0)
                         {
                             PetState = 4;
                             int chance = Main.rand.Next(2);
                             switch (chance)
                             {
                                 case 1:
-                                    SetChat(myColor, ModUtils.GetChatText("Luna", "4"), 4, 60, 30, true);
+                                    Projectile.SetChat(ChatSettingConfig, 4);
                                     break;
                                 default:
-                                    SetChat(myColor, ModUtils.GetChatText("Luna", "5"), 5, 60, 30, true);
+                                    Projectile.SetChat(ChatSettingConfig, 5);
                                     break;
                             }
                             Projectile.netUpdate = true;

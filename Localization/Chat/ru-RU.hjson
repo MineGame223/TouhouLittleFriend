@@ -12,10 +12,10 @@ Mods: {
 			Chat4: Больше всего мне нравится Дэй-чан!
 			Chat6: 1+1=... Вроде, ⑨?
 			Chat7: Так жарко... Я так растаю...
-			Chat8: Так много лягушек!
+			Chat8: Я в норме... наверное...
 			Chat9: Не бойся, Дэй-чан. Я рядом!
 			Chat10: Куда Дэй-чан - туда и я!
-			Chat11: Я в норме... наверное...
+			Chat11: Так много лягушек!
 			// Chat12: ("Oh god! Keine-sensei will find me...")
 		}
 
@@ -24,10 +24,10 @@ Mods: {
 			Chat2: Где поиграем сегодня?
 			Chat3: ...Мне нравится Чирно!
 			Chat4: Куда мы сегодня пойдём, Чирно-чан?
-			Chat5: Какое... какое же жуткое место!
+			Chat5: Э... Я- я не боюсь!
 			Chat6: Ты в порядке, Чирно-чан?...
 			Chat7: Я тоже!
-			Chat8: Э... Я- я не боюсь!
+			Chat8: Какое... какое же жуткое место!
 		}
 
 		Chat_Flandre: {
@@ -160,8 +160,8 @@ Mods: {
 			Chat3: Тебе нравится звезда?
 			Chat4: Прекрасный денёк, да⭐зе!
 			Chat5: В небе так много звёзд!
-			Chat6: Хей, хей, Рейму?
-			Chat7: Сегодня необчый день...
+			Chat6: Сегодня необчый день...
+			Chat7: Хей, хей, Рейму?
 			Chat8: Я нашла кое-что интересное!
 			Chat9: Нет, нет... Это упавшая зведа! НАСТОЯЩАЯ звезда!
 			Chat10: Но она ярче, разве нет?
@@ -387,10 +387,10 @@ Mods: {
 			// Chat1: There's something wrong about the sun's position and the time...
 			// Chat2: How could gold be stronger than iron?
 			// Chat3: Is Yuuma still living in the Animal Realm?...
-			// Chat4: Don't leave me too far, Chen!
+			// Chat4: I, I'm NOT! Yukari sama!
 			// Chat5: You mean?
 			// Chat6: I might know who she is...
-			// Chat7: I, I'm NOT! Yukari sama!
+			// Chat7: Don't leave me too far, Chen!
 		}
 
 		Chat_Chen: {
@@ -495,7 +495,7 @@ Mods: {
 			// Chat7: Human newspapers aren't that bad...
 			// Chat8: People are always dreaming under the full moon.
 			// Chat9: Leaving aside what would happen if we were caught...We're gonna steal a thief?
-			// Chat10: Why is it always me that picks up the pieces every time?! Only you two this time, I won't go!
+			// Chat10: Why is it always ME that picks up the pieces every time?! Only you two this time, I won't go!
 			// Chat11: NEVER!!!
 		}
 
@@ -539,6 +539,29 @@ Mods: {
 			// Chat9: I have NO connection to udon noodles! ...Also, please don't eat that in front of me.
 			// Chat10: You'd better not be gazing at the moon on such a night, or else you might go crazy... Not me, of course, just you.
 			// Chat11: Eh eh...I-I'm fine...
+		}
+
+		Chat_Sizuha: {
+			// Chat1: *Sigh...The end of year is coming, and the winter comes too...
+			// Chat2: Falling leaves herald autumn's arrival, it also means one year is closing to the end.
+			// Chat3: Autumn always symbolize loneness since the ancient time...
+			// Chat4: Should I use more yellow or more red this year?
+			// Chat5: Nobody can block autumn's arrival, It is the willing of nature!
+			// Chat6: I'm the elder sister, but why I'm not as famous as my younger sister...
+			// Chat7: ...Of、of course! Falling leaves is also an important part of autumn!
+			// Chat8: Alright!...I mean, OK.
+			// Chat9: This place is so cold...Just like winter...
+		}
+
+		Chat_Minoriko: {
+			// Chat1: Would you like some baked sweet potato?
+			// Chat2: You say I smell like sweet potato? That's a sweet smell! isn't it?
+			// Chat3: If you want a harvest, you should treat me better.
+			// Chat4: Farming means obtaining from nature, so you must follow the rules of naturing farming.
+			// Chat5: Do NOT waste food!
+			// Chat6: Eating is the most important thing for human after all...But there are still many people like autumn's leaves!
+			// Chat7: Then, would you like a baked sweet potato?
+			// Chat8: Too cold...I'm lethargy...
 		}
 
 		Chat_Portal: {

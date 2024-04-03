@@ -10,8 +10,11 @@ namespace TouhouPets.Content.Projectiles.Pets
     /// <summary>
     /// 示范好孩子琪露诺
     /// </summary>
-    public class Cirno : BasicTouhouPet
+    public class Cirno : BasicTouhouPetNeo
     {
+        private bool InHotZone => (Owner.ZoneDesert && Main.dayTime)
+            || Owner.ZoneUnderworldHeight || Owner.ZoneJungle;
+        private bool CanSeeFrogs => Owner.ZoneJungle && Owner.ZoneOverworldHeight;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
@@ -64,7 +67,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.frame = 4;
                     extraAI[1]++;
                 }
-                if (Projectile.owner == Main.myPlayer)//拥有随机数的操作需要在本端选择完成后同步到其他端
+                if (OwnerIsMyPlayer)//拥有随机数的操作需要在本端选择完成后同步到其他端
                 {
                     if (extraAI[1] > Main.rand.Next(10, 20))
                     {
@@ -86,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateWingFrame()
         {
-            if (!Main.player[Projectile.owner].ZoneUnderworldHeight)
+            if (!Owner.ZoneUnderworldHeight)
             {
                 if (wingFrame < 7 || wingFrame >= 10)
                 {
@@ -100,13 +103,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                     wingFrame = 7;
                 }
             }
-            int count = Main.player[Projectile.owner].ZoneUnderworldHeight ? 8 : 4;
+            int count = Owner.ZoneUnderworldHeight ? 8 : 4;
             if (++wingFrameCounter > count)
             {
                 wingFrameCounter = 0;
                 wingFrame++;
             }
-            if (Main.player[Projectile.owner].ZoneUnderworldHeight)
+            if (Owner.ZoneUnderworldHeight)
             {
                 if (wingFrame > 10)
                 {
@@ -114,107 +117,137 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        /// <summary>
-        /// 对话文本颜色
-        /// </summary>
-        Color myColor = new Color(76, 207, 239);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(76, 207, 239);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
-            if (!player.ZoneUnderworldHeight)
+            name = "Cirno";
+            indexRange = new Vector2(1, 12);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 480;
+            chance = 9;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                text[1] = ModUtils.GetChatText("Cirno", "1");
-                text[2] = ModUtils.GetChatText("Cirno", "2");
-                text[3] = ModUtils.GetChatText("Cirno", "3");
-                if (player.HasBuff<DaiyouseiBuff>())
+                if (Owner.ZoneUnderworldHeight)
                 {
-                    text[4] = ModUtils.GetChatText("Cirno", "4");//会被大妖精检测到的对话
-                }
-                text[6] = ModUtils.GetChatText("Cirno", "6");
-            }
-            if ((player.ZoneDesert && Main.dayTime) || player.ZoneUnderworldHeight || player.ZoneJungle)
-            {
-                if (player.ZoneJungle && player.ZoneOverworldHeight)
-                {
-                    text[8] = ModUtils.GetChatText("Cirno", "8");
+                    chat.Add(ChatDictionary[7]);
                 }
                 else
                 {
-                    text[7] = ModUtils.GetChatText("Cirno", "7");//会被大妖精检测到的对话
-                }
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 7 || i == 8)
-                        {
-                            weight = 3;//增加这些对话出现的权重
-                        }
-                        if (i == 4)
-                        {
-                            weight = 5;//增加这些对话出现的权重
-                        }
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+                    chat.Add(ChatDictionary[3]);
+
+                    if (FindPet(ProjectileType<Daiyousei>()))//查找玩家是否同时携带了大妖精
+                        chat.Add(ChatDictionary[4]);
+
+                    chat.Add(ChatDictionary[6]);
+                    if (CanSeeFrogs)
+                        chat.Add(ChatDictionary[11], 3);//该文本的权重为3，即更大概率出现
                 }
             }
             return chat;
-        }
-        /// <summary>
-        /// 更新对话文本，包含接应对话和常规讲话
-        /// </summary>
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Daiyousei>();
-            int type2 = ProjectileType<Keine>();
-            //为了尽可能确保对话接应成功，在检测到可接应对话的第一刻起就保持CD以避免出现其他对话
-            //只适用于最开始的对话，进入对话后无需继续检测
-            if (FindChatIndex(out Projectile _, type1, 4, default, 0)
-                || FindChatIndex(out Projectile _, type1, 5, default, 0)
-                || FindChatIndex(out Projectile _, type2, 6, default, 0))
-            {
-                ChatCD = 1;
-            }
-
-            if (FindChatIndex(out Projectile p, type1, 4))
-            {
-                //同时给对方与自己设置ChatCD以确保对方不会“走神”
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "10"), myColor, 0);//作为收尾的对话，ChatIndex通常为0
-                p.localAI[2] = 0;//作为收尾的对话，将对方的ChatIndex设为0，防止重复检测并接话
-            }
-            else if (FindChatIndex(out p, type1, 5))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "9"), myColor, 9);
-            }
-            //无视对方的ChatCD，避免对话被无视，常用于交互中的第三句话及以后
-            else if (FindChatIndex(out p, type1, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "11"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, type2, 6))//慧音的相关对话
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Cirno", "12"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (mainTimer % 480 == 0 && Main.rand.NextBool(6) && mainTimer > 0 && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateWingFrame();
         }
+        /// <summary>
+        /// 执行对话过程
+        /// <br>对话系统原理如下：</br>
+        /// <br>随时检测自身可以引起对话回合的对话索引，若成功检测到则立刻创建一个聊天室，并将其赋值给 currentChatRoom。</br>
+        /// <br>创建成功后，若检测到玩家携带有相关宠物，则该宠物会被拉入聊天室作为其中一员，其自身的 currentChatRoom也会被赋值；
+        /// 否则如果没有检测到（比如宠物中途消失），则聊天室将被立刻关闭。</br>
+        /// <br>同时，currentChatRoom 非空的情况下将不再更新常规对话，以确保对话回合不会被打扰。</br>
+        /// <br>聊天室依靠 chatTurn 变量进行对话回合的切换，每当当前回合内宠物的话说完后，chatTurn 应当+1以进入下一回合；
+        /// chatTurn的初始值为-1，该回合用于等待宠物说完第一句话。</br>
+        /// <br>若chatTrun已超过对话最终回合，则聊天室将被关闭。</br>
+        /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的chatIndex将归零、其 currentChatRoom也将设为空。</br>
+        /// </summary>
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4) || FindChatIndex(7, 8))//请确保这里包含了所有该宠物在对话期间使用到的对话索引
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        //由自己发起的对话过程（与大妖精）
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Daiyousei>();
+            if (FindPet(out Projectile member, type))//查找玩家是否携带大妖精
+            {
+                //将大妖精拉入聊天室
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else//否则立刻关闭聊天室
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile cirno = chatRoom.initiator;
+            Projectile daiyousei = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index == 4)//对话1，关联索引为4
+            {
+                if (turn == -1)//起始回合
+                {
+                    daiyousei.CloseCurrentDialog();//将成员现有的对话关闭，以最大限度确保对话流畅性
+
+                    if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    daiyousei.SetChat(ChatSettingConfig, 7, 20);//令大妖精说话
+
+                    if (daiyousei.CurrentDialogFinished())//当大妖精的话说完时进入下一回合
+                        chatRoom.chatTurn++;
+                }
+                else//对话回合完成后退出聊天室
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 7 || index == 8)//对话2，关联索引为7、8
+            {
+                if (turn == -1)//起始回合
+                {
+                    daiyousei.CloseCurrentDialog();
+
+                    if (cirno.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    daiyousei.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (daiyousei.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    cirno.SetChat(ChatSettingConfig, 8, 20);//令琪露诺说话
+
+                    if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
         public override void AI()
         {
             Lighting.AddLight(Projectile.Center, 0.57f, 1.61f, 1.84f);
-            Player player = Main.player[Projectile.owner];
+            Player player = Owner;
             Projectile.SetPetActive(player, BuffType<CirnoBuff>());
 
             UpdateTalking();
@@ -222,19 +255,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.032f;
 
-            ChangeDir(player);
+            ChangeDir();
             MoveToPoint(point, 9f);
 
-            if (Projectile.owner == Main.myPlayer)//仅当处于本端时进行状态更新并同步到其他客户端
+            if (OwnerIsMyPlayer)//仅当处于本端时进行状态更新并同步到其他客户端
             {
                 if (mainTimer % 270 == 0 && PetState != 2)
                 {
                     PetState = 1;
                     Projectile.netUpdate = true;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
                 {
-                    if (mainTimer % 300 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                    if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && extraAI[0] <= 0 && !InHotZone)
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;
@@ -258,7 +291,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Laugh();
             }
             //处于沙漠，地狱或丛林时琪露诺不会再大笑；处于地狱时琪露诺会半闭着眼且减少对话
-            if ((player.ZoneDesert && Main.dayTime) || player.ZoneUnderworldHeight || player.ZoneJungle)
+            if (InHotZone)
             {
                 if (PetState == 2)
                 {
