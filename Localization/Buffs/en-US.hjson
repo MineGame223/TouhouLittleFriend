@@ -226,6 +226,16 @@ Mods: {
 				DisplayName: Rabbit of the Moon
 				Description: "'She's a little easy to get nervous...'"
 			}
+
+			SizuhaBuff: {
+				DisplayName: Godess of Red Leaves
+				Description: "'Falling leaves herald the arrival of autumn'"
+			}
+
+			MinorikoBuff: {
+				DisplayName: Godess of Harvest
+				Description: "'Autumn symbolizes the joy of harvest'"
+			}
 		}
 	}
 }

@@ -226,6 +226,16 @@ Mods: {
 				DisplayName: 月兔
 				Description: "'她比较容易紧张...'"
 			}
+
+			SizuhaBuff: {
+				DisplayName: 红叶之神
+				Description: "'落叶预示着秋天的到来'"
+			}
+
+			MinorikoBuff: {
+				DisplayName: 丰收之神
+				Description: "'秋天象征着丰收的喜悦'"
+			}
 		}
 	}
 }

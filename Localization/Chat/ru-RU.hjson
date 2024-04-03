@@ -541,6 +541,29 @@ Mods: {
 			// Chat11: Eh eh...I-I'm fine...
 		}
 
+		Chat_Sizuha: {
+			// Chat1: *Sigh...The end of year is coming, and the winter comes too...
+			// Chat2: Falling leaves herald autumn's arrival, it also means one year is closing to the end.
+			// Chat3: Autumn always symbolize loneness since the ancient time...
+			// Chat4: Should I use more yellow or more red this year?
+			// Chat5: Nobody can block autumn's arrival, It is the willing of nature!
+			// Chat6: I'm the elder sister, but why I'm not as famous as my younger sister...
+			// Chat7: ...Of、of course! Falling leaves is also an important part of autumn!
+			// Chat8: Alright!...I mean, OK.
+			// Chat9: This place is so cold...Just like winter...
+		}
+
+		Chat_Minoriko: {
+			// Chat1: Would you like some baked sweet potato?
+			// Chat2: You say I smell like sweet potato? That's a sweet smell! isn't it?
+			// Chat3: If you want a harvest, you should treat me better.
+			// Chat4: Farming means obtaining from nature, so you must follow the rules of naturing farming.
+			// Chat5: Do NOT waste food!
+			// Chat6: Eating is the most important thing for human after all...But there are still many people like autumn's leaves!
+			// Chat7: Then, would you like a baked sweet potato?
+			// Chat8: Too cold...I'm lethargy...
+		}
+
 		Chat_Portal: {
 			Chat1: Эй, раз уж ты нашёл это, почему бы тебе не купить что-нибудь? Вся выручка идёт в генсокё
 			Chat2: Оставь здесь немного монет и возьми то, что нравится. Просто сделай что-нибудь ради существования Генсокё

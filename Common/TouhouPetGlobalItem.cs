@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
+using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets
@@ -9,6 +10,22 @@ namespace TouhouPets
     public class TouhouPetGlobalItem : GlobalItem
     {
         public override bool InstancePerEntity => true;
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (player.HasBuff<MinorikoBuff>())
+            {
+                if (ItemID.Sets.IsFood[item.type] && item.buffType > 0)
+                {
+                    int defaultTime = item.buffTime;
+                    item.buffTime += (int)(defaultTime * 0.1f);
+                }
+            }
+            return base.CanUseItem(item, player);
+        }
+        public override bool? UseItem(Item item, Player player)
+        {
+            return base.UseItem(item, player);
+        }
         public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
         {
             if (item.type == ItemID.Sapphire && !item.shimmered)
