@@ -9,12 +9,7 @@ namespace TouhouPets.Content.Buffs.PetBuffs
         public override void Update(Player player, ref int buffIndex)
         {
             base.Update(player, ref buffIndex);
-            player.spelunkerTimer++;
-            if (player.spelunkerTimer >= 10)
-            {
-                player.spelunkerTimer = 0;
-                Main.instance.SpelunkerProjectileHelper.AddSpotToCheck(player.Center);
-            }
+            player.GetModPlayer<TouhouPetPlayer>().treasureShine = true;
         }
     }
 }

@@ -245,13 +245,13 @@ Mods: {
 			}
 
 			SizuhaBrush: {
-				// DisplayName: Brush of the Autumn
-				// Tooltip: "'Is who dyed the leaves with autumn's color?'"
+				// DisplayName: Brush of Autumn
+				// Tooltip: "'Who dyed the leaves with autumn's color?'"
 			}
 
 			MinorikoSweetPotato: {
 				// DisplayName: Baked Sweet Potato
-				// Tooltip: "'Sweety and Tasty, it's full of autumn's flavor!'"
+				// Tooltip: "'Sweet and Tasty, it's full of autumn's flavor!'"
 			}
 		}
 	}
