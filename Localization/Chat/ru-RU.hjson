@@ -16,7 +16,7 @@ Mods: {
 			Chat9: Не бойся, Дэй-чан. Я рядом!
 			Chat10: Куда Дэй-чан - туда и я!
 			Chat11: Так много лягушек!
-			// Chat12: ("Oh god! Keine-sensei will find me...")
+			Chat12: ("БОЖЕ! Кейне-сенсей меня найдёт...")
 		}
 
 		Chat_Daiyousei: {
@@ -39,9 +39,9 @@ Mods: {
 			Chat6: Сестрёнка? В чём дело?
 			Chat7: ...Когда уже сестрёнка поиграет со мной...
 			Chat8: Ты всегда так говоришь...
-			// Chat9: What are you saying, Meirin?
-			// Chat10: Is Meirin doing some kind of weird dance?
-			// Chat11: It looks awsome...Can you teach me?
+			Chat9: Что говоришь, Мейлин?
+			Chat10: Это у Мейлин что, танец такой?
+			Chat11: Выглядит круто... Научишь?
 		}
 
 		Chat_Remilia: {
@@ -57,13 +57,13 @@ Mods: {
 			Chat10: В чём дело, Пачи?
 			Chat11: Ха-ха, это просто ложь. Боязнь вампиров к крестам - просто человеческая выдумка.
 			Chat12: Конечно, Пачи. Тебе действительно стоит почаще выходить на улицу.
-			// Chat13: Sometimes you should take better care of yourselves, Sakuya.
-			// Chat14: Does Sakuya still remember the past?
+			Chat13: Иногда тебе нужно думать и о себе, Сакуя.
+			Chat14: Сакуя всё ещё помнит о прошлом?
 		}
 
 		Chat_Patchouli: {
-			Chat1: Не хочк шевелиться...
-			Chat2: Этого я пока не читала...
+			Chat1: Не хочу никуда идти...
+			Chat2: Эти книги... Я не читала их?
 			Chat3: Вот... Похоже, это отличается от того что я знаю?
 			Chat4: Интересно...
 			Chat5: ...Правда?
@@ -114,11 +114,11 @@ Mods: {
 			Chat1: Как ты сегодня?
 			Chat2: Да не встретится тебе неудача никогда...
 			Chat3: Кружится и кружится...
-			// Chat4: You know what Nitori? I have a wish.
-			// Chat5: I wish, I can purify all this world's bad luck.
-			// Chat6: Ha ha, as I said, that's just a wish.
-			// Chat7: We are...
-			// Chat8: Ha hahaha!...
+			Chat4: Знаешь что, Нитори. У меня есть желание.
+			Chat5: Я хотела бы очистить весь этот мир от неудачи.
+			Chat6: Ха ха, как я и говорила, это лишь мечта.
+			Chat7: Мы...
+			Chat8: Ха-хахаха!...
 		}
 
 		Chat_Iku: {
@@ -138,9 +138,9 @@ Mods: {
 			Chat14: Сильнейший щторм обрушивается на землю
 			Chat15: Бог-Дракон, должно быть, в ярости...
 			Chat16: Пожалуйста, успокойтесь, Тенши-сама...
-			// Chat17: A strange fog covers the moon, and the spirits of the Harvest are brewing a brawl.
-			// Chat18: Frost magic fully covered the moon, the time of revelry is coming.
-			// Chat19: The Invaders of a foreign land have arrived...
+			Chat17: Странный туман накрыл луну и теперь пробуждаются.
+			Chat18: Ледяная магия полностью покрыла луну. Начинается празднование.
+			Chat19: Захватчики из дальних земель приближаются...
 		}
 
 		Chat_Tenshin: {
@@ -151,7 +151,7 @@ Mods: {
 
 		Chat_Junko: {
 			Chat1: Как тебе такое, Чанъе?...
-			// Chat2: Udon-chan~ How're you doing?
+			Chat2: Удон-чан~ Как дела? //cursed
 		}
 
 		Chat_Marisa: {
@@ -182,18 +182,18 @@ Mods: {
 			Chat8: Не думаю, тебе просто снова скучно...
 			Chat9: ПРЕКРАТИ УЖЕ!
 			Chat10: Это 'заражение'...
-			// Chat11: So sleepy...
+			Chat11: Спать хочется...
 		}
 
 		Chat_Nitori: {
 			Chat1: Технологии капп номер один в мире!
 			Chat2: Съесть ли мне огурчик?...
 			Chat3: Хочешь присоединиться к бирже капп?
-			// Chat4: Eh? What wish?
-			// Chat5: That's your ability isn't it? But the whole world is still too big...
-			// Chat6: Maybe it'll come true in the future!
-			// Chat7: '''"Spinning Kappa" company!'''
-			// Chat8: Ha hahaha!...
+			Chat4: Э? Что за желание?
+			Chat5: Это твоя способность да? Но мир слишком большой для тебя... 
+			Chat6: Быть может она сбудется в будущем!
+			Chat7: '''Компания "Spinning Kappa"!'''
+			Chat8: Ха-хахаха!...
 		}
 
 		Chat_Sanae: {
@@ -261,7 +261,7 @@ Mods: {
 			Chat1: Везде куда я пойду начнётся весна!
 			Chat2: Лили разносит весну!
 			Chat3: Весная - лучшее время для игр!
-			// Chat4: Where's spring, where's spring?~
+			Chat4: Когда весна, когда весна?~
 		}
 
 		Chat_Mystia: {
@@ -277,14 +277,14 @@ Mods: {
 		}
 
 		Chat_Wriggle: {
-			Chat1: Мерцай, мерцай малыш-жучок~ Как интересно мне что ты такое~
+			Chat1: Сияй, сияй маленький жучок~ Как интересно мне что ты такое~
 			Chat2: Раньше жуки были столь ужасны!
 			Chat3: Крупные жуки сейчас в упадке... Неприемлемо!
 			Chat4: Только здесь ты можешь увидеть светлячков...
 			Chat5: С днём жуков~ С днём жуков~... Угхм, забей
 			Chat6: ...СЛИШКОМ ХОЛОДНО...
-			Chat7: Хочешь насладиться 'Жучьими услугами'?
-			Chat8: Пауки, скорпионы и сороконжки - не насекомые. Помнишь?
+			Chat7: Хочешь насладиться 'Баг-сервисом'?
+			Chat8: Пауки, скорпионы и сороконжки - не насекомые. Помнишь ведь?
 			Chat9: Ты можешь отличить осу, пчелу и шершня?
 			Chat10: Ты знал что светляки встречаются только в чистых местах?
 		}
@@ -294,7 +294,7 @@ Mods: {
 			Chat2: Сможешь догнать меня?
 			Chat3: Материал... Где сегодняшний материал...
 			Chat4: Я тебе не 'жёлтая пресса', я просто самую малость 'приукрашиваю'
-			Chat5: Сделай мне БОЛЬШУЮ сенсацию!
+			Chat5: Дай мне материал для БОЛЬШОЙ сенсации!
 			Chat6: Прекрасный материал для новостей!
 			Chat7: Попалась, новость на сегодня!
 			Chat8: Идеально!
@@ -326,16 +326,16 @@ Mods: {
 			Chat7: А... Я не понимаю...
 			Chat8: Вы ели всего 5 минут назад, Ююко-сама
 			Chat9: Но вы уже мертвы, Ююко-сама! Вы тоже не можете переродиться
-			Chat10: IМне хватает оставаться с Ююко-самой
+			Chat10: Мне хватает оставаться с Ююко-самой
 		}
 
 		Chat_Alice: {
 			Chat1: Современные марионетки так быстро изнашиваются...
 			Chat2: Мне сделать ещё марионеток?
 			Chat3: Я не могу просто взять и оставить привычеки прошлого, даже несмотря на то что я маг!
-			Chat4: Мариса, когда ты наконец вернёшь тот гриб что украла у меня?
-			Chat5: Прекрати и дай мне крайний срок
-			Chat6: ...Лучше бы тебе так не делать... Чледующего раза не будет!
+			Chat4: Мариса, когда ты наконец вернёшь тот украденный тобой гриб?
+			Chat5: Просто скажи уже когда
+			Chat6: ...Лучше бы тебе так не делать... Следующего раза не будет!
 			Chat7: ТЫ!......
 			Chat8: Боже, она просто стащила одно из моих зелий в последний раз
 			Chat9: ...Пора бы нам её проучить!
@@ -346,7 +346,7 @@ Mods: {
 			Chat1: Воооот как?
 			Chat2: Темно, люблю! Светло, ненавижу!
 			Chat3: Можно сделать кусь? Всего разочек
-			Chat4: Я выгляжу как светая когда держу руки крестом?
+			Chat4: Я выгляжу как святая когда держу руки крестом?
 			Chat5: Где ты? Тут так темно...
 			Chat6: Слишком солнечно...
 		}
@@ -362,8 +362,8 @@ Mods: {
 		}
 
 		Chat_Wakasagihime: {
-			Chat1: Хотя я и ирыба, я могу покидать воду
-			Chat2: Я пресноводная рыба!
+			Chat1: Хотя я и рыба, я могу жить вне воды!
+			Chat2: Я речная рыба!
 			Chat3: У меня тебе не 'рыбья память'!...
 			Chat4: *бульк бульк~
 		}
@@ -375,213 +375,215 @@ Mods: {
 		}
 
 		Chat_Yukari: {
-			// Chat1: As a sage, it's my eternal duty to protect the barrier...
-			// Chat2: Is that old friend of mine doing alright?...
-			// Chat3: That Reimu, she should really be more diligent.
-			// Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
-			// Chat5: If you miss her, I'll allow you to take a temporary leave.
-			// Chat6: Nothing, Maybe I don't need to worry about her appetite.
+			Chat1: Вечно поддерживать Хакурейский Барьер это моя работа как мудреца...
+			Chat2: Моя старая подруга в порядке?...
+			Chat3: Рейму явно стоит быть прилежнее.
+			Chat4: Сколько мне лет? Мне 17... Больше не спрашивай
+			Chat5: Если ты так по ней скучаешь, то думаю, я могу дать тебе отпуск.
+			Chat6: Ладно, пожалуй мне не стоит так беспокоится о её аппетите.
 		}
 
 		Chat_Ran: {
-			// Chat1: There's something wrong about the sun's position and the time...
-			// Chat2: How could gold be stronger than iron?
-			// Chat3: Is Yuuma still living in the Animal Realm?...
-			// Chat4: I, I'm NOT! Yukari sama!
-			// Chat5: You mean?
-			// Chat6: I might know who she is...
-			// Chat7: Don't leave me too far, Chen!
+			Chat1: Что-то тут нечисто с положением солнца и временем на часах...
+			Chat2: Каким образом может золото быть прочнее железа?
+			Chat3: Юма всё ещё живёт в Царстве Зверей?...
+			Chat4: Я-я... НЕТ! Юкари-сама!
+			Chat5: Вы имеете ввиду...?
+			Chat6: Кажется, я знаю о ком речь...
+			Chat7: Не убегай слишком далеко, Чень!
 		}
 
 		Chat_Chen: {
-			// Chat1: Meow!
-			// Chat2: I want some fish...
-			// Chat3: I know, Ran sama!
+			Chat1: Мяу!
+			Chat2: Хочу рыбки...
+			Chat3: Да знаю я, Ран-сама!
 		}
 
 		Chat_Kaguya: {
-			// Chat-1: This turn, I win!
-			// Chat-2: Practice makes perfect, you understand?
-			// Chat-3: Ah hahaha!
-			// Chat-4: DAMN!!!
-			// Chat-5: You must cheated!
-			// Chat-6: I'll grant your wish in the next round-- DIE!
-			// Chat1: It's not very "dirty" on the ground...
-			// Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
-			// Chat3: ...I have to win this time!
-			// Chat4: Hold on, hold on...
-			// Chat5: Practice makes perfect.
-			// Chat6: Not your business!
-			// Chat7: Hey, how long have we been fighting each other?
-			// Chat8: Wanna do something new today?
-			// Chat9: How about...something EXCITING?
+			Chat-1: Победа в этом поединке моя!
+			Chat-2: Практика ведёт к идеалу, понимаешь?
+			Chat-3: Ах-хахаха!
+			Chat-4: БЛИН!!!
+			Chat-5: Ты жульничала!
+			Chat-6: Я исполню твоё желание в следующем поединке-- УМРИ!
+			Chat1: Не так уж на земле и "Скверно"...
+			Chat2: Не могу и вспомнить старых дней на земле. Это было так давно...
+			Chat3: ...Я должны выйграть в этот раз!
+			Chat4: Подожди, подожди...
+			Chat5: Практика ведёт к идеалу.
+			Chat6: Не твоё дело!
+			Chat7: Хей, как давно мы уже сражаемся?
+			Chat8: Не хочешь занатьсяч сегодня чем-нибудь новым?
+			Chat9: Как насчёт чего-то... ЗАХВАТЫВАЮЩЕГО?
 		}
 
 		Chat_Moku: {
-			// Chat-1: Just accept that I'm stronger!
-			// Chat-2: Do you even want to defeat ME?
-			// Chat-3: That's all you got?
-			// Chat-4: I won't lose in the next round!
-			// Chat-5: I'm too careless...
-			// Chat-6: This'll be the last time you'll be this complacent...
-			// Chat1: Living forever, is absolutely a greater curse than a blessing...
-			// Chat2: ...How many years ago was that time?
-			// Chat3: How could I know, about a thousand years?
-			// Chat4: ...What you want to do?
-			// Chat5: No, never!...Well, I know a place we can go...
-			// Chat6: Can you just be QUIET for once?
-			// Chat7: I'm fine, maybe. Just the usual.
-			// Chat8: Nope, I'm trying to forget them...
-			// Chat9: You will become this form every full moon, that's pretty scary!
+			Chat-1: Просто прими наконец что я сильнее!
+			Chat-2: Ты вообще хочешь меня победить?
+			Chat-3: Это всё на что ты способна?
+			Chat-4: Я не проиграю следующий поединок!
+			Chat-5: Я через чур беззаботна...
+			Chat-6: Это последний раз когда ты будешь столь самодовльной...
+			Chat1: Вечная жизнь куда ближе к проклятию, нежели дару...
+			Chat2: ...Как давно это было?
+			Chat3: Я почём знаю. Тысяча лет?
+			Chat4: ...Что ты хочешь сделать?
+			Chat5: Никогда!... Хотя я знаю куда мы могли бы сходить...
+			Chat6: Не могла бы ты ЗАТКНУТЬСЯ ненадолго?
+			Chat7: Я в порядке, наверное. Как обычно.
+			Chat8: Нет,я пытаюсь забыть об этом...
+			Chat9: Ты принимаешь эту форму каждое полнолуние. Это довольно жутко!
 		}
 
 		Chat_Meirin: {
-			// Chat1: Today is another boring...no no no, hardworking day!
-			// Chat2: My name is "Meirin Hong", not "China"!
-			// Chat3: It's really boring to be a gatekeeper here...
-			// Chat4: My homeland is in the East, right above the Yangtze River!
+			Chat1: Очередной скучный... Не-не-не день полный трудолюбия!
+			Chat2: Меня зовут "Хун Мейлин", не "Китай"!
+			Chat3: Здесь очень скучно быть привратником...
+			Chat4: Мой дом на востоке, прямо над рекой Янцзы!
 			//Don't translate this
-			// Chat5: 易有太极，是生两仪...
-			// Chat6: It's my home language, Flandre sama.
-			// Chat7: It's called "Tai ji", Flandre sama.
-			// Chat8: Mmm...Maybe need Remilia-sama's agreement?
-			// Chat9: I'm NOT!
-			// Chat10: Ms.Sakuya is so busy, do you ever get a vacation?
-			// Chat11: This job is the same as vacation...
-			// Chat12: NOTHING!...
-			// Chat13: Ms.Sakuya, I recently found a comic about a guard and a maid falling in love!
-			// Chat14: Ah! I shouldn't have said anything...
-			// Chat15: Too bad...Wait what?
+			//Okay
+			Chat5: 易有太极，是生两仪...
+			Chat6: Это моя родная речь, Фландр-сама.
+			Chat7: Это называется "Тай-цзы", Фландр-сама.
+			Chat8: Эмм... Мне наверное нужно разрешение от Ремилии-сама?
+			Chat9: НЕПРАВДА!
+			Chat10: Мисс Сакуя, вы так заняты... У вас вообще бывает отпуск?
+			Chat11: Эта работа сама по себе как отпуск...
+			Chat12: НИЧЕГО!...
+			Chat13: Мисс Сакуя, недавно я читала комикс, где горничная влюбилась в стража!
+			Chat14: А! Лучше бы молчала...
+			Chat15: Блин... Стоп, что?
 		}
 
 		Chat_Sakuya: {
-			// Chat1: Past is past, now I only need to serve Remilia sama.
-			// Chat2: The storage of alcohol in the mansion is not enough...
-			// Chat3: I'll be fine if Remilia sama is fine.
-			// Chat4: Is Meirin swinging the lead now?...
-			// Chat5: Enjoy the tea, Remilia sama...
-			// Chat6: The day with Remilia sama is my vacation, and you also don't have "vacation" right?
-			// Chat7: What?
-			// Chat8: You read comic during your work time?
-			// Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
-			// Chat10: My life already restarted since I met you, there is no past.
+			Chat1: Прошлое в прошлом, сейчас я лишь хочу служить Ремилии-сама.
+			Chat2: Алкогольного хранилища в Особняке не хватит...
+			Chat3: Я в порядке пока Ремилия-сама в порядке.
+			Chat4: Отлиниваешь, Мейлин?...
+			Chat5: Ваш чай, Ремилия-сама. Насладитесь им...
+			Chat6: День с Ремилией-сама - вот мой отпуск. ?
+			Chat7: Что?
+			Chat8: Ты читаешь комиксы во время смены?
+			Chat9: Тебя ждёт серьёзное наказние сегодня!... Кстати, одолжишь комикс?...
+			Chat10: После встречи с вами моя жизнь началась заново. У меня больше нет прошлого.
 		}
 
 		Chat_Raiko: {
-			// Chat1: Badum, psh~
-			// Chat2: I have heard that oni can play drums too, but can they even defeat monsters like that?
-			// Chat3: Life is a drum set, the louder, the better!
+			Chat1: Ба-дум-тц~
+			Chat2: Я слышала что даже они могут играть на барабанах, но могут ли они побеждать этим своих врагов?
+			Chat3: Жизнь как барабанная стойка: чем громче, тем лучше!
 		}
 
 		Chat_Keine: {
-			// Chat1: Recently, the village's people don't like saying hello...How could they be so rude?
-			// Chat2: This paper is filled with 9's...Must be Cirno.
-			// Chat3: Only the thing that's always being recorded is history.
-			// Chat4: Tonight will be a busy night...
-			// Chat5: Create the history, keep the history.
-			// Chat6: Let me see who hasn't finished their homework...
-			// Chat7: How've you been recently?
-			// Chat8: Still entangled with the past things?
-			// Chat9: This is both my nature, and my duty.
+			Chat1: В последнее время жители не очень любят здоровться... Как люди вообще могут быть столь грубыми?
+			Chat2: Эта бумажка исписана девятками... Должно быть, Чирно
+			Chat3: Только то, что всегда было в памяти истории.
+			Chat4: Сегодня будет полная дел ночь...
+			Chat5: Создай историю, храни историю.
+			Chat6: Давайте посмотрим кто не сделал свою домашнюю работу...
+			Chat7: Как ты?
+			Chat8: Всё пытаешься разобраться в прошлом?
+			Chat9: Это и моя природа и мой долг.
 		}
 
 		Chat_Luna: {
-			// Chat1: Has anything dropped from the moon recently?...
-			// Chat2: I wish every food in the world would become tasty!
-			// Chat3: Do you know about "The Moon and Sixpence"?
-			// Chat4: So sleepy...
-			// Chat5: Haa——Mmmm...
-			// Chat6: What's currently happening is pretty interesting...
-			// Chat7: Human newspapers aren't that bad...
-			// Chat8: People are always dreaming under the full moon.
-			// Chat9: Leaving aside what would happen if we were caught...We're gonna steal a thief?
-			// Chat10: Why is it always ME that picks up the pieces every time?! Only you two this time, I won't go!
-			// Chat11: NEVER!!!
+			Chat1: В последнее время с луны ничего не падало?...
+			Chat2: Я хочу чтобы вся еда в мире стала вкусной!
+			Chat3: Ты слышал про "Луну и Грош"?
+			Chat4: Хочу спать...
+			Chat5: Хаа--мммм...
+			Chat6: То, что сейчас происходит выглядит довольно интересно...
+			Chat7: Человеческие газеты не так уж и плохи...
+			Chat8: Люди всегда мечтали, глядя на полную луну.
+			Chat9: Даже если не брать что случиться если нас поёмают... Мы собираемся украсть у вора?
+			Chat10: Почему я единственная кто должна всё собирать всё по кусочкам?! В этот раз идите сами, я никуда не иду!
+			Chat11: НИКОГДА!!!
 		}
 
 		Chat_Star: {
-			// Chat1: Go and feel every wonder in this world!
-			// Chat2: Stars are the most beautiful thing ever!
-			// Chat3: The weather doesn't have any effects on me.
-			// Chat4: There's no stars during the daytime...
-			// Chat5: Put your head up, and see tonight's stars!
-			// Chat6: How about stealing that black-white witch's mushroom?
-			// Chat7: Ok, stop it! What about stealing that red-white shrine maiden's money box?
+			Chat1: Иди и насладись каждым чудом этого мира!
+			Chat2: Звёзды - это самая красивая вещь в мире!
+			Chat3: Погода никак на меня не влияет.
+			Chat4: Днём звёзд не видно...
+			Chat5: Подними голову и увидишь сегодняшние звёзды!
+			Chat6: Как насчёт украсть гриб у той чёрно-белой ведьмы?
+			Chat7: Ладно, хватит...? Тогда как насчёт украсть ящик для пожертвований у той красно-белой жрицы?
 		}
 
 		Chat_Sunny: {
-			// Chat1: Do you like sunbathing?
-			// Chat2: Sunlight is the most important thing!
-			// Chat3: Watch out ahead, because the great Sunny may trick you at anytime!
-			// Chat4: Sunbathing~ Growing~ Sunlight~ It's the best!
-			// Chat5: The Sun is the source of my strength!
-			// Chat6: Raining...No sun...I don't feel good...
-			// Chat7: Such humid weather, it even nerfed my ability!
-			// Chat8: Can I just skip this raining day?
-			// Chat9: Sunny fairy~ White body~
-			// Chat10: Sunny fairy~ Azure eyes~
-			// Chat11: Sunny fairy—— SUNNY! MILK!
-			// Chat12: Who should we prank next time?
-			// Chat13: That's not a problem! You just need to bring up the rear, Luna-chan!
-			// Chat14: Oh no! Your ability is essential for our plan!
-			// Chat15: NEVER!!!
+			Chat1: Ты любишь солнечнные ванны?
+			Chat2: Свет солнца - это самая важная вещь!
+			Chat3: Смотри, будь осторожен, ведь великая !
+			Chat4: Солнечная ванна~ Рост~ Солнечный свет~ Лучше всех!
+			Chat5: Солнце - источник моей силы!
+			Chat6: Дождь... Нет солнца... Мне нехорошо...
+			Chat7: Какая влажная погода - она даже ослабила мою способность!
+			Chat8: Можно я просто пропущу дождливый день?
+			Chat9: Солнечная фея~ Белое тело~
+			Chat10: Солнечная фея~ Лазурные глаза~
+			Chat11: Солнечная фея— САННИ! МИЛК!
+			Chat12: Кого разыграем в следующий раз?
+			Chat13: Не проблема! Тебе просто нужно прикрывать тыл, Луна-чан.
+			Chat14: О нет! Твоя способность это основа нашего плана!
+			Chat15: НИКОГДА!!!
 		}
 
 		Chat_Reisen: {
-			// Chat1: Maybe it's just not possible to go back... I'd be better off living here...
-			// Chat2: Could master have taught that rabbit a lesson?
-			// Chat3: I haven't been able to sleep well as of late...
-			// Chat4: I wonder how my buddy on the moon are doing?
-			// Chat5: Surely, I'm a traitor, just like the princess...
-			// Chat6: I REALLY don't want to get on with human!
-			// Chat7: I'd advise you don't have a staring contest with me.
-			// Chat8: I just wish master won't use me as a test subject again, please...
-			// Chat9: I have NO connection to udon noodles! ...Also, please don't eat that in front of me.
-			// Chat10: You'd better not be gazing at the moon on such a night, or else you might go crazy... Not me, of course, just you.
-			// Chat11: Eh eh...I-I'm fine...
+			Chat1: Вернуться назад, видимо, не получится... Мне будет лучше если я поживу здесь...
+			Chat2: Может хозяин преподаст урок этому кролику?
+			Chat3: В последнее время я плохо сплю...
+			Chat4: Интнересно, как там мой лунный приятель?
+			Chat5: Разумеется, я предатель, как и принцесса...
+			Chat6: Я действительно не хочу ладить с людьми!
+			Chat7: Я бы не советовала играть со мной в прятки.
+			Chat8: Надеюсь хозяин не использует меня как подопытного снова...
+			Chat9: Я НИКАК не связана с удоном! ... И ещё, хватит есть его передо мной.
+			Chat10: Лучше не смотри так долго на полную луну, или сойдёшь с ума... Разумеется, это не касается меня, только тебя.
+			Chat11: Э-э... У-у меня всё хорошо...
 		}
 
 		Chat_Sizuha: {
-			// Chat1: *Sigh...The end of year is coming, and the winter comes too...
-			// Chat2: Falling leaves herald autumn's arrival, it also means one year is closing to the end.
-			// Chat3: Autumn always symbolize loneness since the ancient time...
-			// Chat4: Should I use more yellow or more red this year?
-			// Chat5: Nobody can block autumn's arrival, It is the willing of nature!
-			// Chat6: I'm the elder sister, but why I'm not as famous as my younger sister...
-			// Chat7: ...Of、of course! Falling leaves is also an important part of autumn!
-			// Chat8: Alright!...I mean, OK.
-			// Chat9: This place is so cold...Just like winter...
+			Chat1: *Вздох*... С концом года близится и зима...
+			Chat2: Листопад провозглашает о начале осени, но с этим и о приближении конца года.
+			Chat3: Осень символизировала одиночество с древнейших времён...
+			Chat4: В этом году использовать ли мне побольше красного иль жёлтого?
+			Chat5: Никому не остановить приближение осени! На то воля природы!
+			Chat6: Пусть я и старше, но я не столь известна как моя младшая сестра...
+			Chat7: ...Конечно! Листопад - неотъемлемая часть осени!
+			Chat8: Прекрасно!... Всмысле, Окей.
+			Chat9: В этом месте столь холодно... Словно зима...
 		}
 
 		Chat_Minoriko: {
-			// Chat1: Would you like some baked sweet potato?
-			// Chat2: You say I smell like sweet potato? That's a sweet smell! isn't it?
-			// Chat3: If you want a harvest, you should treat me better.
-			// Chat4: Farming means obtaining from nature, so you must follow the rules of naturing farming.
-			// Chat5: Do NOT waste food!
-			// Chat6: Eating is the most important thing for human after all...But there are still many people like autumn's leaves!
-			// Chat7: Then, would you like a baked sweet potato?
-			// Chat8: Too cold...I'm lethargy...
+			Chat1: Хочешь запечённых бататов?
+			Chat2: Говоришь от меня пахнет бататом? Это прекрасный запах, не так ли?
+			Chat3: Тебе стоит лучше относиться ко мне, если ты хочешь хороший урожай.
+			Chat4: Фермерство подразумевает, что ты забираешь что-то у природы, а потому тебе стоит с уважением относиться к её правилам.  
+			//а потому поэтому типа фермерство означает что ты забираешь у природы, поэтому ты долженн её уважать. Относиться с уважением что-то такое
+			Chat5: НЕ выкидывай еду!
+			hat6: Еда это важнеёшая для людей вещь... Но многие люди по-прежнему любят листопад!
+			Chat7: Тогда как насчёт батата?
+			Chat8: Так холодно... Я впадаю в летаргию...
 		}
 
 		Chat_Portal: {
-			Chat1: Эй, раз уж ты нашёл это, почему бы тебе не купить что-нибудь? Вся выручка идёт в генсокё
-			Chat2: Оставь здесь немного монет и возьми то, что нравится. Просто сделай что-нибудь ради существования Генсокё
-			Chat3: Хочешь милого партнёра? Почему бы тебе не заглянуть сюда!
-			Chat4: Может твоё будущее и не связано с Генсокё, но твои действия сейчас могут хорошо сказаться на судьбе оного... Я имею ввыиду, не хотите ли купить что-нибудь?
-			// Chat5: Thank you for supporting Gensokyo for so long! This is what you've earned.
-			/* Chat6:
+			Chat1: Эй, раз уж ты нашёл это, почему бы тебе не купить что-нибудь? Вся выручка идёт в Генсокё!
+			Chat2: Оставь здесь немного монет и возьми то, что нравится. Просто сделай что-нибудь ради существования Генсокё!
+			Chat3: Хочешь милого спутника? Почему бы тебе не заглянуть сюда!
+			Chat4: Может твоё будущее и не связано с Генсокё, но твои действия сейчас могут хорошо сказаться на его судьбе... Я имею ввиду, не хотите купить что-нибудь?
+			Chat5: Спасибо за то что поддерживали Генсокё всё это время. Вот, вы заслужили это.
+			Chat6:
 				'''
-				You have provided {0}, may Gensokyo be with you.
-				By the way, selling items here will reduce the wealth count.
-				''' */
-			/* Chat7:
+				Вы ожертвовали {0}, да прибудет с вами Генсокё.
+				Как бы то ни было, продажа предметов здесь понизит выручку.
 				'''
-				You haven't bought anything here, but it's never too late to do.
-				By the way, selling items here will reduce the wealth count.
-				''' */
-			// Chat8: Wait, you can see THIS? you have found a bug!
-			// Chat9: Wait, you can see THIS? you have found a bug!
+			Chat7:
+				'''
+				Вы ничего ещё не купили, но никогда не поздно начать!
+				Как бы то ни было, продажа предметов здесь понизит выручку.
+				'''
+			Chat8: Погоди, ты видишь ЭТО? Ты нашёл баг!
+			Chat8: Погоди, ты видишь ЭТО? Ты нашёл баг!
 		}
 
 		Chat_Template: {

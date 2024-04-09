@@ -92,8 +92,8 @@ Mods: {
 			}
 
 			SanaeBuff: {
-				// DisplayName: Wind Sorceress
-				// Description: "'Watching for miracles!'"
+				DisplayName: Кудесница Ветров
+				Description: "'В ожидании чуда!'"
 			}
 
 			KogasaBuff: {
@@ -102,8 +102,8 @@ Mods: {
 			}
 
 			NitoriBuff: {
-				// DisplayName: Kappa Engineer
-				// Description: "'Kappa technology NO.1!'"
+				DisplayName: Каппа-Инженер
+				Description: "'Технология Капп лучшая в мире!'"
 			}
 
 			RinBuff: {
@@ -123,7 +123,7 @@ Mods: {
 
 			WriggleBuff: {
 				DisplayName: Ёкай-Светляк
-				Description: "'Мерцай, Мерцай, Маленький Жучок'"
+				Description: "'Сияй, сияй, маленький жучок'"
 			}
 
 			YuyukoBuff: {
@@ -167,74 +167,74 @@ Mods: {
 			}
 
 			YukariBuff: {
-				// DisplayName: Sage of the Gap
-				// Description: "'Thank your support for the Gensokyo!'"
+				DisplayName: Мудрец Разрывов
+				Description: "'Спасибо за поддержку Генсокё'"
 			}
 
 			KaguyaBuff: {
-				// DisplayName: Lunar Princess
-				// Description: "'Exiled Princess of The Lunatic Kingdom'"
+				DisplayName: Лунная Принцесса
+				Description: "'Изгнанная принцесса Лунного Королевства'"
 			}
 
 			MokuBuff: {
-				// DisplayName: Undying Phoenix
-				// Description: "'Burning forever!'"
+				DisplayName: Бессмертный Феникс
+				Description: "'Горит вечно!'"
 			}
 
 			MeirinBuff: {
-				// DisplayName: The Gatekeeper
-				// Description: "'Hey, I'm guarding here!'"
+				DisplayName: Привратник
+				Description: "'Хэй, я тут на страже!'"
 			}
 
 			SakuyaBuff: {
-				// DisplayName: The Maid
-				// Description: "'What can I do for you?'"
+				DisplayName: Горничная
+				Description: "'Что я могу для вас сделать?'"
 			}
 
 			RaikoBuff: {
-				// DisplayName: Drum's Ghost
-				// Description: "'Let's PLAY!'"
+				DisplayName: Призрак Барабана
+				Description: "'Давай СЫГРАЕМ!'"
 			}
 
 			KeineBuff: {
-				// DisplayName: Were-Hakutaku
-				// Description: "'Creator of the History'"
-				// Description_2: "'Devourer of the History'"
+				DisplayName: Полу-Хакутаку
+				Description: "'Творец истории'"
+				Description_2: "'Пожиратель истории'"
 			}
 
 			LunaBuff: {
-				// DisplayName: Luna Child
-				// Description: "'The quiet moonlight'"
+				DisplayName: Луна Чайлд
+				Description: "'Тихое лунное сияние'"
 			}
 
 			StarBuff: {
-				// DisplayName: Star Sapphire
-				// Description: "'The pouring starlight'"
+				DisplayName: Стар Сапфир 
+				Description: "'Разливающийся блеск звёзд'"
 			}
 
 			SunnyBuff: {
-				// DisplayName: Sunny Milk
-				// Description: "'The shining sunlight'"
+				DisplayName: Санни Милк
+				Description: "'Яркий свет солнца'"
 			}
 
 			TheThreeFairiesBuff: {
-				// DisplayName: The Three Light Fairies
-				// Description: "'Staking their lives on a prank!...Wait, fairies can't die'"
+				DisplayName: Трио Фей Света
+				Description: "'Рискуют жизнью ради розыграшей!... Стоп, феи же бессмертны!'"
 			}
 
 			ReisenBuff: {
-				// DisplayName: Rabbit of the Moon
-				// Description: "'She's a little easy to get nervous...'"
+				DisplayName: Лунный Кролик
+				Description: "'Её довольно просто разозлить...'"
 			}
 
 			SizuhaBuff: {
-				// DisplayName: Godess of Red Leaves
-				// Description: "'Falling leaves herald the arrival of autumn'"
+				DisplayName: Богиня Красных Листьев
+				Description: "'Опавшая листва провозоглашает начало осени'"
 			}
 
 			MinorikoBuff: {
-				// DisplayName: Godess of Harvest
-				// Description: "'Autumn symbolizes the joy of harvest'"
+				DisplayName: Богиня Урожая
+				Description: "'Осень символизирует радость жатвы'"
 			}
 		}
 	}

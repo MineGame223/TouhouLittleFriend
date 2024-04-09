@@ -185,73 +185,73 @@ Mods: {
 			}
 
 			YukarisItem: {
-				// DisplayName: Sage's license
-				// Tooltip: "'This is my sign of approval, just take it'"
+				DisplayName: Лицензия Мудреца
+				Tooltip: "'Возьми это в знак моего одоброения'"
 			}
 
 			KaguyaBranch: {
-				// DisplayName: Jeweled Branch of Hourai
-				// Tooltip: "'A seemingly ordinary branch with colorful jewels'"
+				DisplayName: Украшенная Хорайская Ветвь
+				Tooltip: "'Обычная на первый взгляд ветка, полная драгоценностей'"
 			}
 
 			MokuMatch: {
-				// DisplayName: Everlasting Match
-				// Tooltip: "'Raining or blowing, the flame never dies'"
+				DisplayName: Бесконечная Спичка
+				Tooltip: "'Ни дождь, ни ветер не способны затушить пламя'"
 			}
 
 			MeirinPanda: {
-				// DisplayName: Panda Pendant
-				// Tooltip: "'From the mysterious Eastern land'"
+				DisplayName: Клон Панды
+				Tooltip: "'Из загадочных восточных земель'"
 			}
 
 			SakuyaWatch: {
-				// DisplayName: Luna Dial
-				// Tooltip: "'The hands forever stay at 4:16'"
+				DisplayName: Лунные Часы
+				Tooltip: "'Стрелки навсегда застряли на 4:16'"
 			}
 
 			RaikoDrum: {
-				// DisplayName: Toy Drum
-				// Tooltip: "'Badum, psh~'"
+				DisplayName: Игрушечный Барабан
+				Tooltip: "'Бадум-тсс~'"
 			}
 
 			KeineLeaf: {
-				// DisplayName: Ginkgo Leaf
-				// Tooltip: "'Carrying culture for over a thousand years'"
+				DisplayName: Лист Гинкго
+				Tooltip: "'Проносит культуру сквозь тысячелетия'"
 			}
 
 			LunaMoon: {
-				// DisplayName: Sleeping Moon
-				// Tooltip: "'If you sleep with it, you won't hear any noise'"
+				DisplayName: Сонная Луна
+				Tooltip: "'Если спать с ней, то вы не услышите ни звука'"
 			}
 
 			StarSapphire: {
-				// DisplayName: Starry Sapphire
-				// Tooltip: "'You feel as if you're feeling everything as you hold it'"
+				DisplayName: Звёздный Сапфир
+				Tooltip: "'Вы словно чувствуете всё и сразу, пока держите его в руках'"
 			}
 
 			SunnyMilk: {
-				// DisplayName: Sunshine Milk
-				// Tooltip: "'The whole world becomes more sunny after you drink it'"
+				DisplayName: Молоко Солнечного Света
+				Tooltip: "'Мир становится солнечнее, стоит лишь выпить его'"
 			}
 
 			LightsJewels: {
-				// DisplayName: Light's Jewels
-				// Tooltip: "'A necklace loaded with sapphires, rutile, and a bit of cheese'"
+				DisplayName: Украшения Света
+				Tooltip: "'Ожерелье, украшенное сапфиром, рутилом и кусочком сыра'"
 			}
 
 			ReisenGun: {
-				// DisplayName: Lunatic Gun
-				// Tooltip: "'Is it a gun or a megaphone?'"
+				DisplayName: Лунная Пушка
+				Tooltip: "'Это пушка или мегафон?'"
 			}
 
 			SizuhaBrush: {
-				// DisplayName: Brush of the Autumn
-				// Tooltip: "'Is who dyed the leaves with autumn's color?'"
+				DisplayName: Кисть осени
+				Tooltip: "'Кто же красит листву в осенние цвета?'"
 			}
 
 			MinorikoSweetPotato: {
-				// DisplayName: Baked Sweet Potato
-				// Tooltip: "'Sweety and Tasty, it's full of autumn's flavor!'"
+				DisplayName: Запечённый Батат
+				Tooltip: "'Сладкий и насыщенный, полон вкуса осени!'"
 			}
 		}
 	}
