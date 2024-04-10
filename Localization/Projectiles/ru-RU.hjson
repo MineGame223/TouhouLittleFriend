@@ -59,6 +59,7 @@ Mods: {
 			Sizuha.DisplayName: Сидзуха Аки
 			SizuhaLeaf.DisplayName: Опавший Лист
 			Minoriko.DisplayName: Минорико Аки
+			// MokuFlame.DisplayName: Flame
 		}
 	}
 }
