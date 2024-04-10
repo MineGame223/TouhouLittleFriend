@@ -35,30 +35,30 @@ Mods: {
 			Rumia.DisplayName: Румия
 			Koakuma.DisplayName: Коакума номер {0}
 			Wakasagihime.DisplayName: Вакасагихиме
-			WakasagihimeBubble.DisplayName: Пузарь
+			WakasagihimeBubble.DisplayName: Пузырь
 			Yuka.DisplayName: Юка Кадзами
-			// Chen.DisplayName: Chen
-			// Ran.DisplayName: Ran Yakumo
-			// Yukari.DisplayName: Yukari Yakumo
-			// Kaguya.DisplayName: Kaguya Houraisan
-			// Moku.DisplayName: Fujiwara no Mokou
-			// KaguyaBullet.DisplayName: Bullet
-			// MokuBullet.DisplayName: Bullet
-			// MokuFireball.DisplayName: Fireball
-			// KaguyaWave.DisplayName: Fullmoon Wave
-			// Meirin.DisplayName: Meirin Hong
-			// Sakuya.DisplayName: Sakuya Izayoi
-			// SakuyaKnife.DisplayName: Knife
-			// Raiko.DisplayName: Raiko Horikawa
-			// Keine.DisplayName: Keine Kamishirasawa
-			// Luna.DisplayName: Luna Child
-			// Star.DisplayName: Star Sapphire
-			// StarTrail.DisplayName: Star Trail
-			// Sunny.DisplayName: Sunny Milk
-			// Reisen.DisplayName: Reisen Udongein Inaba
-			// Sizuha.DisplayName: Sizuha Aki
-			// SizuhaLeaf.DisplayName: Falling Leaf
-			// Minoriko.DisplayName: Minoriko Aki
+			Chen.DisplayName: Чень
+			Ran.DisplayName: Ран Якумо
+			Yukari.DisplayName: Юкари Якумо
+			Kaguya.DisplayName: Кагуя Хорайсан
+			Moku.DisplayName: Фудзивара-но Моко
+			KaguyaBullet.DisplayName: Пуля
+			MokuBullet.DisplayName: Пуля
+			MokuFireball.DisplayName: Огненный шар
+			KaguyaWave.DisplayName: Волна полной луны
+			Meirin.DisplayName: Хун Мейлин
+			Sakuya.DisplayName: Сакуя Изаёй
+			SakuyaKnife.DisplayName: Кинжал
+			Raiko.DisplayName: Райко Хорикава
+			Keine.DisplayName: Кейна Камиширасава
+			Luna.DisplayName: Луна Чайлд
+			Star.DisplayName: Стар Сапфир
+			StarTrail.DisplayName: Звёздный след
+			Sunny.DisplayName: Санни Милк
+			Reisen.DisplayName: Рейсен Удонгейн Инаба
+			Sizuha.DisplayName: Сидзуха Аки
+			SizuhaLeaf.DisplayName: Опавший Лист
+			Minoriko.DisplayName: Минорико Аки
 		}
 	}
 }
