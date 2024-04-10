@@ -7,13 +7,7 @@ namespace TouhouPets
 {
     internal class PetGlobalLoot : GlobalNPC
     {
-        public override bool InstancePerEntity
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool InstancePerEntity => true;
         private void AddHomewardJourneyLoot(NPC npc, NPCLoot npcLoot)
         {
             bool hasHJMod = ModLoader.TryGetMod("ContinentOfJourney", out Mod result);
@@ -44,6 +38,14 @@ namespace TouhouPets
             if (npc.type == NPCID.Harpy)
             {
                 npcLoot.Add(ItemType<MystiaFeather>(), enemiesDropRate);
+            }
+            if (npc.type == NPCID.Werewolf)
+            {
+                npcLoot.Add(ItemType<LunaMoon>(), enemiesDropRate);
+            }
+            if (npc.type == NPCID.Pixie)
+            {
+                npcLoot.Add(ItemType<SunnyMilk>(), enemiesDropRate);
             }
             if (npc.type == NPCID.WindyBalloon || npc.type == NPCID.Dandelion)
             {

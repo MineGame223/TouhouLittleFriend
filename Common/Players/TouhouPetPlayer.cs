@@ -11,6 +11,7 @@ namespace TouhouPets
         public int koakumaNumber;
         public int purchaseValueCount;
         public int totalPurchaseValueCount;
+        public bool treasureShine;
         private void ChangePurchaseCount(int amount)
         {
             totalPurchaseValueCount += amount;
@@ -18,11 +19,12 @@ namespace TouhouPets
         }
         private void CommonResetUpdate()
         {
+            treasureShine = false;
         }
         public override void ResetEffects()
         {
-            purchaseValueCount = (int)MathHelper.Clamp(purchaseValueCount, 0, int.MaxValue);
-            totalPurchaseValueCount = (int)MathHelper.Clamp(totalPurchaseValueCount, 0, int.MaxValue);
+            purchaseValueCount = (int)MathHelper.Clamp(purchaseValueCount, 0, int.MaxValue - 1);
+            totalPurchaseValueCount = (int)MathHelper.Clamp(totalPurchaseValueCount, 0, int.MaxValue - 1);
             CommonResetUpdate();
         }
         public override void UpdateDead()
@@ -68,13 +70,17 @@ namespace TouhouPets
                 }
             }
         }
-        public override void PreUpdateBuffs()
+        public override void PostUpdateBuffs()
         {
-            /*if (Player.miscEquips[0].type == ItemType<CakeOfScarlet>()
-                || Player.miscEquips[0].type == ItemType<TheThirdEye>())
+            if (treasureShine)
             {
-                Player.hideMisc[1] = true;
-            }*/
+                Player.spelunkerTimer++;
+                if (Player.spelunkerTimer >= 10)
+                {
+                    Player.spelunkerTimer = 0;
+                    Main.instance.SpelunkerProjectileHelper.AddSpotToCheck(Player.Center);
+                }
+            }
         }
         public override void SaveData(TagCompound tag)
         {

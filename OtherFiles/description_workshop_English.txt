@@ -6,3 +6,4 @@ The summon items are dropped from every boss with a 30% chance (or some enemies 
 You can also buy these items from the Mysterious Gap which spawns in nighttime.
 
 The Russian translation is made by @Typical Guy
+The English optimization is made by @Kyuumulonimbus
