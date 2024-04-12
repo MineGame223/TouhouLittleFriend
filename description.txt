@@ -1,13 +1,15 @@
-东方小伙伴 - Adventure with cute partners
-和幻想乡的各位一起冒险吧~
-
-模组交流群群号：753836414
-
-当外界的科技不断进步之时，想象力却被逐渐尘封。
+前言：
+世界正在飞速发展，想象力却被逐渐尘封。
 幻想乡的存在已然受到了严重威胁。
 身为守护幻想乡的贤者之一，八云紫想到了一个绝佳的方法。
 她制作了一些生动可爱的魔法娃娃，并通过隙间将它们散播到别的世界中，希望以此催生出新的、代表幻想乡存在的记忆。
 （以上内容没有任何考据可言仅作瞎扯用）
+
+
+东方小伙伴 - Adventure with cute partners
+和幻想乡的各位一起冒险吧~
+
+模组交流群群号：753836414
 
 这是一个以宠物为主的模组
 召唤物由各个Boss以30%的概率（或部分敌怪以5%的概率）掉落，且第一次击败Boss时必定掉落
@@ -17,3 +19,17 @@
 
 俄语翻译由@Typical Guy提供
 英语翻译由@Kyuumulonimbus进行优化
+
+
+Touhou Little Friends - Adventure with cute partners
+Adventure with partners from Gensokyo!
+
+NOTE: The author is a Chinese and his English sucks, so the next time when you want to submit some bug reports, please describe it with details as more as you can.
+
+This is a vanity pet mod
+The summon items are dropped from every boss with a 30% chance (or some enemies with a 5% chance), and it always drops the first time you defeat the Boss
+Some items can be obtained by crafting
+You can also buy these items from the Mysterious Gap which spawns in nighttime
+
+The Russian translation is made by @Typical Guy
+The English optimization is made by @Kyuumulonimbus
