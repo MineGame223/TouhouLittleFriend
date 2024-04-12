@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Marisa : BasicTouhouPet
+    public class Marisa : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -139,81 +139,43 @@ namespace TouhouPets.Content.Projectiles.Pets
                 lightFrame = 0;
             }
         }
-        Color myColor = new Color(255, 249, 137);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(255, 249, 137);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Marisa", "1");
-            text[2] = ModUtils.GetChatText("Marisa", "2");
-            text[3] = ModUtils.GetChatText("Marisa", "3");
-            if (player.ZoneForest && Main.cloudAlpha == 0 && !Main.bloodMoon)
-                if (Main.dayTime)
-                    text[4] = ModUtils.GetChatText("Marisa", "4");
-                else
-                    text[5] = ModUtils.GetChatText("Marisa", "5");
-
-            if ((FindPetState(out Projectile _, ProjectileType<Reimu>(), 0, 1)
-                || FindPetState(out Projectile _, ProjectileType<Reimu>(), 3, 4)))
-            {
-                text[6] = ModUtils.GetChatText("Marisa", "6");
-            }
-            if (Main.bloodMoon || Main.eclipse)
-                text[7] = ModUtils.GetChatText("Marisa", "7");
+            name = "Marisa";
+            indexRange = new Vector2(1, 14);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 5;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (Owner.ZoneForest && Main.cloudAlpha == 0 && !Main.bloodMoon)
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    if (Main.dayTime)
+                        chat.Add(ChatDictionary[4]);
+                    else
+                        chat.Add(ChatDictionary[5]);
+                }
+                if (Main.bloodMoon || Main.eclipse)
+                {
+                    chat.Add(ChatDictionary[6]);
+                }
+                if (FindPetState(ProjectileType<Reimu>(), 0, 1)
+                    || FindPetState(ProjectileType<Reimu>(), 3, 4))
+                {
+                    chat.Add(ChatDictionary[7]);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type = ProjectileType<Alice>();
-            int type2 = ProjectileType<Reimu>();
-            if (FindChatIndex(out Projectile _, type, 4, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Marisa", "8"), myColor, 8, 600, -1, 9);
-            }
-            else if (FindChatIndex(out Projectile p2, type2, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Marisa", "9"), myColor, 9, 600, -1, 9);
-            }
-            else if (FindChatIndex(out Projectile p3, type2, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Marisa", "10"), myColor, 10, 360, -1, 9);
-            }
-            else if (FindChatIndex(out Projectile p4, type2, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Marisa", "11"), myColor, 0, 360, -1);
-                p4.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p5, type, 4, default, 1, true))
-            {
-                SetChatWithOtherOne(p5, ModUtils.GetChatText("Marisa", "12"), myColor, 12, 600, -1);
-            }
-            else if (FindChatIndex(out Projectile p6, type, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Marisa", "13"), myColor, 13, 600, -1);
-            }
-            else if (FindChatIndex(out Projectile p7, type, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p7, ModUtils.GetChatText("Marisa", "14"), myColor, 14, 600, -1);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(5) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -221,6 +183,97 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState != 2)
             {
                 Idel();
+            }
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(7, 11))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Reimu>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile marisa = chatRoom.initiator;
+            Projectile reimu = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                reimu.CloseCurrentDialog();
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                reimu.SetChat(ChatSettingConfig, 5, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                marisa.SetChat(ChatSettingConfig, 8, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                reimu.SetChat(ChatSettingConfig, 6, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 3)
+            {
+                marisa.SetChat(ChatSettingConfig, 9, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                reimu.SetChat(ChatSettingConfig, 7, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 5)
+            {
+                marisa.SetChat(ChatSettingConfig, 10, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 6)
+            {
+                reimu.SetChat(ChatSettingConfig, 8, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 7)
+            {
+                marisa.SetChat(ChatSettingConfig, 11, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
             }
         }
         public override void AI()
@@ -234,7 +287,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;
 
-            ChangeDir(player);
+            ChangeDir();
             MoveToPoint(point, 12.5f);
 
             if (Projectile.owner == Main.myPlayer)

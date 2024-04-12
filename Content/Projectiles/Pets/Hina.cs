@@ -106,7 +106,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 720;
-            chance = 7;
+            chance = 6;
             whenShouldStop = false;
         }
         public override string GetRegularDialogText()
@@ -258,7 +258,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         PetState = 2;
                         Projectile.netUpdate = true;
-                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
+                        if (Main.rand.NextBool(3) && currentChatRoom == null && chatTimeLeft <= 0)
                             Projectile.SetChat(ChatSettingConfig, 3, 20);
                     }
                 }

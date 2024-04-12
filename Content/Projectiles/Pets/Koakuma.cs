@@ -8,7 +8,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Koakuma : BasicTouhouPet
+    public class Koakuma : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -17,10 +17,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
-            base.OnSpawn(source);
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
+            ChatDictionary[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
+
+            base.OnSpawn(source);
         }
         DrawPetConfig drawConfig = new(2);
         readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koakuma_Cloth");
@@ -116,53 +118,35 @@ namespace TouhouPets.Content.Projectiles.Pets
                 EarActive = false;
             }
         }
-        Color myColor = new Color(224, 78, 78);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(224, 78, 78);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            TouhouPetPlayer lp = Main.player[Projectile.owner].GetModPlayer<TouhouPetPlayer>();
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
-            text[2] = ModUtils.GetChatText("Koakuma", "2");
-            text[3] = ModUtils.GetChatText("Koakuma", "3");
-            if (FindPetState(out _, ProjectileType<Patchouli>(), 0, 1))
+            name = "Koakuma";
+            indexRange = new Vector2(2, 7);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 666;
+            chance = 6;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                text[4] = ModUtils.GetChatText("Koakuma", "4");
-            }
-            if (FindPetState(out _, ProjectileType<Patchouli>(), 2))
-            {
-                text[6] = ModUtils.GetChatText("Koakuma", "6");
-            }
-            WeightedRandom<string> chat = new();
-            {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (FindPetState(ProjectileType<Patchouli>(), 0, 1))
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 4 || i == 6)
-                            weight = 4;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[4], 4);
+                }
+                if (FindPetState(ProjectileType<Patchouli>(), 2))
+                {
+                    chat.Add(ChatDictionary[6], 4);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type = ProjectileType<Patchouli>();
-            if (FindChatIndex(out Projectile p1, type, 16, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Koakuma", "5"), myColor, 5);
-            }
-            else if (FindChatIndex(out Projectile p2, type, 19, 35, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Koakuma", "7"), myColor, 0);
-                p2.localAI[2] = 0;
-            }
-            else if (mainTimer % 666 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -170,12 +154,106 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateEarsFrame();
             UpdateHairFrame();
         }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4, 7))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Patchouli>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile koakuma = chatRoom.initiator;
+            Projectile patchouli = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 4 && index <= 5)
+            {
+                if (turn == -1)
+                {
+                    patchouli.CloseCurrentDialog();
+
+                    if (koakuma.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    patchouli.SetChat(ChatSettingConfig, 16, 20);
+
+                    if (patchouli.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    koakuma.SetChat(ChatSettingConfig, 5, 20);
+
+                    if (koakuma.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    patchouli.SetChat(ChatSettingConfig, 17, 20);
+
+                    if (patchouli.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 3)
+                {
+                    patchouli.SetChat(ChatSettingConfig, 18, 60);
+
+                    if (patchouli.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 6 || index == 7)
+            {
+                if (turn == -1)
+                {
+                    patchouli.CloseCurrentDialog();
+
+                    if (koakuma.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    patchouli.SetChat(ChatSettingConfig, Main.rand.Next(19, 36), 20);
+
+                    if (patchouli.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    koakuma.SetChat(ChatSettingConfig, 7, 20);
+
+                    if (koakuma.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
         private void ControlMovement(Player player)
         {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.022f;
 
-            ChangeDir(player, true);
+            ChangeDir(true);
 
             Vector2 point;
             Vector2 center = default;

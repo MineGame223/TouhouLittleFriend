@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -8,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Alice : BasicTouhouPet
+    public class Alice : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -191,73 +190,113 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        Color myColor = new Color(185, 228, 255);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(185, 228, 255);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Alice", "1");
-            text[2] = ModUtils.GetChatText("Alice", "2");
-            text[3] = ModUtils.GetChatText("Alice", "3");
-            if (FindPetState(out Projectile _, ProjectileType<Marisa>(), 0))
-            {
-                text[4] = ModUtils.GetChatText("Alice", "4");
-            }
+            name = "Alice";
+            indexRange = new Vector2(1, 10);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 1200;
+            chance = 4;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (FindPetState(ProjectileType<Marisa>(), 0, 1))
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[4]);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type = ProjectileType<Marisa>();
-            int type2 = ProjectileType<Patchouli>();
-            if (FindChatIndex(out Projectile _, type2, 12, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type, 12, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Alice", "5"), myColor, 5, 600);
-            }
-            else if (FindChatIndex(out Projectile p2, type, 13, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Alice", "6"), myColor, 6, 600);
-            }
-            else if (FindChatIndex(out Projectile p3, type, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Alice", "7"), myColor, 0, 360);
-                p3.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p4, type2, 12, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Alice", "8"), myColor, 8, 600, -1, 12);
-            }
-            else if (FindChatIndex(out Projectile p5, type2, 13, default, 1, true))
-            {
-                SetChatWithOtherOne(p5, ModUtils.GetChatText("Alice", "9"), myColor, 9, 600);
-            }
-            else if (FindChatIndex(out Projectile p6, type2, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Alice", "10"), myColor, 10, 360, -1, 20, false, 80);
-            }
-            if (mainTimer % 1200 == 0 && Main.rand.NextBool(4) && mainTimer > 0)
-            {
-                if (PetState <= 1)
-                    SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateAuraFrame();
             UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4, 7))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Marisa>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile alice = chatRoom.initiator;
+            Projectile marisa = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                marisa.CloseCurrentDialog();
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                marisa.SetChat(ChatSettingConfig, 12, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                alice.SetChat(ChatSettingConfig, 5, 20);
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                marisa.SetChat(ChatSettingConfig, 13, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 3)
+            {
+                alice.SetChat(ChatSettingConfig, 6, 20);
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                marisa.SetChat(ChatSettingConfig, 14, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 5)
+            {
+                alice.SetChat(ChatSettingConfig, 7, 20);
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         public override void AI()
         {
@@ -268,7 +307,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.006f;
 
-            ChangeDir(player, true);
+            ChangeDir(true);
             MoveToPoint(point, 12f);
             if (Projectile.owner == Main.myPlayer)
             {
