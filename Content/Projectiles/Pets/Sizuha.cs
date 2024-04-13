@@ -160,6 +160,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
                 minoriko.CloseCurrentDialog();
 
                 if (sizuha.CurrentDialogFinished())
@@ -167,6 +168,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 0)
             {
+                //穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
                 minoriko.SetChat(ChatSettingConfig, 6, 20);
 
                 if (minoriko.CurrentDialogFinished())
@@ -174,6 +176,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
                 sizuha.SetChat(ChatSettingConfig, 7, 20);
 
                 if (sizuha.CurrentDialogFinished())
@@ -181,6 +184,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //穰子：那姐姐要吃烤红薯吗？
                 minoriko.SetChat(ChatSettingConfig, 7, 20);
 
                 if (minoriko.CurrentDialogFinished())
@@ -188,6 +192,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //静叶：好欸！...我是说，好啊。
                 sizuha.SetChat(ChatSettingConfig, 8, 20);
 
                 if (sizuha.CurrentDialogFinished())

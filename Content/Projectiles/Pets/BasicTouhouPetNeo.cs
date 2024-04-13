@@ -16,6 +16,12 @@ namespace TouhouPets.Content.Projectiles.Pets
     {
         #region 字段与属性
         /// <summary>
+        /// 是否不应该说话
+        /// <br/>该属性并不会影响宠物更新常规对话，仅作为是否应当参与聊天的判断条件
+        /// <br/>!--该属性会反复重置
+        /// </summary>
+        internal bool shouldNotTalking;
+        /// <summary>
         /// 对话文本不透明度
         /// </summary>
         internal float chatOpacity;
@@ -43,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
         /// <br/>用途：说完一句话以后一段时间内不会再进行其他对话
-        /// <br>现在暂未被使用</br>
+        /// <br/>现在暂未被使用
         /// </summary>
         internal int chatCD;
 
@@ -286,6 +292,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             timeToType = Math.Clamp(timeToType, 0, totalTimeToType);
 
             textShaking = false;
+            shouldNotTalking = false;
         }
         private void UpdateRegularDialog()
         {
@@ -334,15 +341,25 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         /// <param name="target">被查找的对象</param>
         /// <param name="type">宠物ID</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
+        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPet(out Projectile target, int type)
+        internal bool FindPet(out Projectile target, int type, int minState = -1, int maxState = 0, bool checkTalkable = false)
         {
             target = null;
+            if (maxState <= minState && minState > 0
+                || maxState >= minState && minState < 0)
+            {
+                maxState = minState;
+            }
             foreach (Projectile p in Main.ActiveProjectiles)
             {
                 if (p.owner == Projectile.owner)
                 {
-                    if (p.type == type)
+                    if (p.type == type
+                       && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
+                       && (!checkTalkable || p.ShouldPetTalking()))
                     {
                         target = p;
                     }
@@ -354,58 +371,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// 查找对应宠物
         /// </summary>
         /// <param name="type">宠物ID</param>
-        /// <returns></returns>
-        internal bool FindPet(int type)
-        {
-            foreach (Projectile p in Main.ActiveProjectiles)
-            {
-                if (p.owner == Projectile.owner)
-                {
-                    if (p.type == type)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        /// <summary>
-        /// 查找对应宠物的状态（ai[1]）
-        /// </summary>
-        /// <param name="target">被查找的对象</param>
-        /// <param name="type">宠物ID</param>
-        /// <param name="minState">最小状态值</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPetState(out Projectile target, int type, int minState = 0, int maxState = 0)
-        {
-            target = null;
-            if (maxState <= minState && minState > 0
-                || maxState >= minState && minState < 0)
-            {
-                maxState = minState;
-            }
-            foreach (Projectile p in Main.ActiveProjectiles)
-            {
-                if (p.owner == Projectile.owner)
-                {
-                    if (p.type == type && p.ai[1] >= minState && p.ai[1] <= maxState)
-                    {
-                        target = p;
-                    }
-                }
-            }
-            return target != null;
-        }
-        /// <summary>
-        /// 查找对应宠物的状态（ai[1]）
-        /// </summary>
-        /// <param name="target">被查找的对象</param>
-        /// <param name="type">宠物ID</param>
-        /// <param name="minState">最小状态值</param>
-        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
-        /// <returns></returns>
-        internal bool FindPetState(int type, int minState = 0, int maxState = 0)
+        internal bool FindPet(int type, int minState = -1, int maxState = 0, bool checkTalkable = false)
         {
             if (maxState <= minState && minState > 0
                 || maxState >= minState && minState < 0)
@@ -416,7 +386,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (p.owner == Projectile.owner)
                 {
-                    if (p.type == type && p.ai[1] >= minState && p.ai[1] <= maxState)
+                    if (p.type == type
+                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
+                        && (!checkTalkable || p.ShouldPetTalking()))
                     {
                         return true;
                     }

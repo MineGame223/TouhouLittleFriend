@@ -209,7 +209,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                if (FindPetState(ProjectileType<Marisa>(), 0, 1))
+                if (FindPet(ProjectileType<Marisa>(), 0, 1, true))
                 {
                     chat.Add(ChatDictionary[4]);
                 }
@@ -246,6 +246,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //爱丽丝：我说，你上次偷走的我的蘑菇什么时候能还我？
                 marisa.CloseCurrentDialog();
 
                 if (alice.CurrentDialogFinished())
@@ -253,6 +254,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 0)
             {
+                //魔理沙：哎呀，人家的事情那能叫偷嘛？那叫借啦！
                 marisa.SetChat(ChatSettingConfig, 12, 20);
 
                 if (marisa.CurrentDialogFinished())
@@ -260,6 +262,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
                 alice.SetChat(ChatSettingConfig, 5, 20);
 
                 if (alice.CurrentDialogFinished())
@@ -267,6 +270,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //魔理沙：放心，死了以后保证还给你！
                 marisa.SetChat(ChatSettingConfig, 13, 20);
 
                 if (marisa.CurrentDialogFinished())
@@ -274,6 +278,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //爱丽丝：...你还是别还了...下次不许再偷了！
                 alice.SetChat(ChatSettingConfig, 6, 20);
 
                 if (alice.CurrentDialogFinished())
@@ -281,6 +286,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 4)
             {
+                //魔理沙：下次一定！
                 marisa.SetChat(ChatSettingConfig, 14, 20);
 
                 if (marisa.CurrentDialogFinished())
@@ -288,6 +294,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 5)
             {
+                //爱丽丝：你！......
                 alice.SetChat(ChatSettingConfig, 7, 20);
 
                 if (alice.CurrentDialogFinished())
@@ -309,7 +316,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir(true);
             MoveToPoint(point, 12f);
-            if (Projectile.owner == Main.myPlayer)
+            if (OwnerIsMyPlayer)
             {
                 if (mainTimer % 270 == 0 && PetState == 0)
                 {

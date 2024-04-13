@@ -207,7 +207,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chat.Add(ChatDictionary[3]);
                     chat.Add(ChatDictionary[4]);
                     chat.Add(ChatDictionary[5]);
-                    if (FindPetState(ProjectileType<Remilia>(), 0, 1) && !Main.dayTime)
+                    if (FindPet(ProjectileType<Remilia>(), 0, 1) && !Main.dayTime)
                     {
                         chat.Add(ChatDictionary[8]);
                     }
@@ -217,7 +217,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chat.Add(ChatDictionary[7]);
                 }
                 chat.Add(ChatDictionary[6]);
-                if (FindPetState(ProjectileType<Alice>()))
+                if (FindPet(ProjectileType<Alice>()))
                 {
                     chat.Add(ChatDictionary[12]);
                 }
@@ -258,6 +258,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //帕秋莉：唔...蕾咪？
                 remilia.CloseCurrentDialog();
 
                 if (patchouli.CurrentDialogFinished())
@@ -265,6 +266,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 0)
             {
+                //蕾米：嗯？帕琪？有啥事么？
                 remilia.SetChat(ChatSettingConfig, 10, 20);
 
                 if (remilia.CurrentDialogFinished())
@@ -272,6 +274,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //帕秋莉：你身为吸血鬼，为什么不像书里说的一样怕十字架？
                 patchouli.SetChat(ChatSettingConfig, 9, 20);
 
                 if (patchouli.CurrentDialogFinished())
@@ -279,6 +282,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //蕾米：哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰。
                 remilia.SetChat(ChatSettingConfig, 11, 20);
 
                 if (remilia.CurrentDialogFinished())
@@ -286,6 +290,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //帕秋莉：好吧...看来书里说的不全是正确的。
                 patchouli.SetChat(ChatSettingConfig, 10, 20);
 
                 if (patchouli.CurrentDialogFinished())
@@ -293,6 +298,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 4)
             {
+                //蕾米：当然了，帕琪你也要多出来走走嘛。
                 remilia.SetChat(ChatSettingConfig, 12, 20);
 
                 if (remilia.CurrentDialogFinished())
@@ -300,6 +306,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 5)
             {
+                //帕秋莉：不要...
                 patchouli.SetChat(ChatSettingConfig, 11, 20);
 
                 if (patchouli.CurrentDialogFinished())
@@ -328,6 +335,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //帕秋莉：最近魔理沙那家伙还安分么？
                 alice.CloseCurrentDialog();
 
                 if (patchouli.CurrentDialogFinished())
@@ -335,6 +343,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 0)
             {
+                //爱丽丝：别说了，上次刚顺走我一瓶魔药。
                 alice.SetChat(ChatSettingConfig, 8, 20);
 
                 if (alice.CurrentDialogFinished())
@@ -342,6 +351,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //帕秋莉：她偷走的那好几本书也一直没还...
                 patchouli.SetChat(ChatSettingConfig, 13, 20);
 
                 if (patchouli.CurrentDialogFinished())
@@ -349,6 +359,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //帕秋莉&爱丽丝：...一定要找她算账！
                 alice.SetChat(ChatSettingConfig, 9, 20);
                 patchouli.SetChat(ChatSettingConfig, 14, 20);
 
@@ -359,6 +370,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //爱丽丝：...？还是我去找她吧，就不麻烦你了...
                 patchouli.CloseCurrentDialog();
                 alice.SetChat(ChatSettingConfig, 10, 20);
 
@@ -367,6 +379,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 4)
             {
+                //帕秋莉：不不不，我去就行，我去就行...
                 patchouli.SetChat(ChatSettingConfig, 15, 20);
 
                 if (patchouli.CurrentDialogFinished())

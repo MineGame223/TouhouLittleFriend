@@ -137,11 +137,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                if (FindPetState(ProjectileType<Patchouli>(), 0, 1))
+                if (FindPet(ProjectileType<Patchouli>(), 0, 1))
                 {
                     chat.Add(ChatDictionary[4], 4);
                 }
-                if (FindPetState(ProjectileType<Patchouli>(), 2))
+                if (FindPet(ProjectileType<Patchouli>(), 2))
                 {
                     chat.Add(ChatDictionary[6], 4);
                 }
@@ -181,6 +181,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //小恶魔：帕秋莉大人！该锻炼身体啦！
                     patchouli.CloseCurrentDialog();
 
                     if (koakuma.CurrentDialogFinished())
@@ -188,6 +189,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //帕秋莉：不要！会累死人的...
                     patchouli.SetChat(ChatSettingConfig, 16, 20);
 
                     if (patchouli.CurrentDialogFinished())
@@ -195,6 +197,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //小恶魔：为了您的健康着想，这很必要的哦！
                     koakuma.SetChat(ChatSettingConfig, 5, 20);
 
                     if (koakuma.CurrentDialogFinished())
@@ -202,6 +205,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 2)
                 {
+                    //帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
                     patchouli.SetChat(ChatSettingConfig, 17, 20);
 
                     if (patchouli.CurrentDialogFinished())
@@ -209,7 +213,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 3)
                 {
-                    patchouli.SetChat(ChatSettingConfig, 18, 60);
+                    //帕秋莉：...我真的很好！
+                    patchouli.SetChat(ChatSettingConfig, 18, 20);
 
                     if (patchouli.CurrentDialogFinished())
                         chatRoom.chatTurn++;
@@ -223,6 +228,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //小恶魔：帕秋莉大人在看什么？
                     patchouli.CloseCurrentDialog();
 
                     if (koakuma.CurrentDialogFinished())
@@ -230,6 +236,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //帕秋莉：是关于xxxx的书...
                     patchouli.SetChat(ChatSettingConfig, Main.rand.Next(19, 36), 20);
 
                     if (patchouli.CurrentDialogFinished())
@@ -237,6 +244,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //小恶魔：好像很有趣啊！
                     koakuma.SetChat(ChatSettingConfig, 7, 20);
 
                     if (koakuma.CurrentDialogFinished())

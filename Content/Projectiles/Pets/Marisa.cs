@@ -169,8 +169,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[6]);
                 }
-                if (FindPetState(ProjectileType<Reimu>(), 0, 1)
-                    || FindPetState(ProjectileType<Reimu>(), 3, 4))
+                if (FindPet(ProjectileType<Reimu>(), 0, 1)
+                    || FindPet(ProjectileType<Reimu>(), 3, 4))
                 {
                     chat.Add(ChatDictionary[7]);
                 }
@@ -210,6 +210,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //魔理沙：嘿，嘿，灵梦！
                 reimu.CloseCurrentDialog();
 
                 if (marisa.CurrentDialogFinished())
@@ -217,6 +218,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 0)
             {
+                //灵梦：咋了？
                 reimu.SetChat(ChatSettingConfig, 5, 20);
 
                 if (reimu.CurrentDialogFinished())
@@ -224,6 +226,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //魔理沙：我今天找到了一个很有意思的东西！
                 marisa.SetChat(ChatSettingConfig, 8, 20);
 
                 if (marisa.CurrentDialogFinished())
@@ -231,6 +234,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //灵梦：是什么？不会又是从图书馆偷来的书吧...
                 reimu.SetChat(ChatSettingConfig, 6, 20);
 
                 if (reimu.CurrentDialogFinished())
@@ -238,6 +242,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //魔理沙：不是啦...是一颗落星！货真价实的星星欸！
                 marisa.SetChat(ChatSettingConfig, 9, 20);
 
                 if (marisa.CurrentDialogFinished())
@@ -245,6 +250,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 4)
             {
+                //灵梦：...那东西不是一到夜晚满地都是么？
                 reimu.SetChat(ChatSettingConfig, 7, 20);
 
                 if (reimu.CurrentDialogFinished())
@@ -252,6 +258,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 5)
             {
+                //魔理沙：但这颗星星要更闪亮一些啊，你不觉得吗？
                 marisa.SetChat(ChatSettingConfig, 10, 20);
 
                 if (marisa.CurrentDialogFinished())
@@ -259,6 +266,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 6)
             {
+                //灵梦：不觉得，一定是你又闲得慌了...
                 reimu.SetChat(ChatSettingConfig, 8, 20);
 
                 if (reimu.CurrentDialogFinished())
@@ -266,6 +274,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 7)
             {
+                //魔理沙：欸嘿嘿嘿...
                 marisa.SetChat(ChatSettingConfig, 11, 20);
 
                 if (marisa.CurrentDialogFinished())

@@ -120,6 +120,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //大妖精：琪露诺酱，今天去哪里玩？
                     cirno.CloseCurrentDialog();
 
                     if (daiyousei.CurrentDialogFinished())
@@ -127,6 +128,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //琪露诺：大酱去哪儿我就去哪儿！
                     cirno.SetChat(ChatSettingConfig, 10, 20);
 
                     if (cirno.CurrentDialogFinished())
@@ -141,6 +143,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //大妖精：好...好可怕的地方！
                     cirno.CloseCurrentDialog();
 
                     if (daiyousei.CurrentDialogFinished())
@@ -148,6 +151,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //琪露诺：大酱别怕，有我在！
                     cirno.SetChat(ChatSettingConfig, 9, 20);
 
                     if (cirno.CurrentDialogFinished())
@@ -155,6 +159,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //大妖精：嗯...我，我不怕！
                     daiyousei.SetChat(ChatSettingConfig, 6, 20);
 
                     if (daiyousei.CurrentDialogFinished())

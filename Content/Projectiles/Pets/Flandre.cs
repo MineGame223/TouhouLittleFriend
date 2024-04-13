@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Flandre : BasicTouhouPet
+    public class Flandre : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -136,10 +136,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                             switch (chance)
                             {
                                 case 1:
-                                    SetChat(myColor, ModUtils.GetChatText("Flandre", "4"), 4, 90, 30, true);
+                                    Projectile.SetChat(ChatSettingConfig, 4, 30);
                                     break;
                                 default:
-                                    SetChat(myColor, ModUtils.GetChatText("Flandre", "5"), 5, 90, 30, true);
+                                    Projectile.SetChat(ChatSettingConfig, 5, 30);
                                     break;
                             }
                             extraAI[2] = 1;
@@ -219,68 +219,90 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 11;
             }
         }
-        Color myColor = new Color(255, 10, 10);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(255, 10, 10);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Flandre", "1");
-            text[2] = ModUtils.GetChatText("Flandre", "2");
-            text[3] = ModUtils.GetChatText("Flandre", "3");
-            if (FindPetState(out _, ProjectileType<Meirin>(), 2))
-            {
-                text[10] = ModUtils.GetChatText("Flandre", "10");
-            }
+            name = "Flandre";
+            indexRange = new Vector2(1, 11);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 480;
+            chance = 12;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (FindPet(ProjectileType<Meirin>(), 2, 2))
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 10)
-                            weight = 10;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[10]);
                 }
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            if (Remilia.HateSunlight(Projectile))
+            if (FindChatIndex(10, 11))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Meirin>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
                 return;
+            }
+            Projectile flandre = chatRoom.initiator;
+            Projectile meirin = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //芙兰：美铃在跳什么奇怪的舞蹈吗？
+                meirin.CloseCurrentDialog();
 
-            int type1 = ProjectileType<Meirin>();
-            int type2 = ProjectileType<Remilia>();
-            if (FindChatIndex(out Projectile _, type2, 6, default, 0)
-                || FindChatIndex(out Projectile _, type1, 5, default, 0))
-            {
-                ChatCD = 1;
+                if (flandre.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
             }
-            if (FindChatIndex(out Projectile p, type2, 6))
+            else if (turn == 0)
             {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Flandre", "6"), myColor, 6);
+                //美铃：这叫"太极"哦，二小姐。
+                meirin.SetChat(ChatSettingConfig, 7, 20);
+
+                if (meirin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
             }
-            else if (FindChatIndex(out p, type2, 7, default, 1, true))
+            else if (turn == 1)
             {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Flandre", "7"), myColor, 7);
+                //芙兰：好像很厉害...可以教教芙兰吗？
+                flandre.SetChat(ChatSettingConfig, 11, 20);
+
+                if (flandre.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
             }
-            else if (FindChatIndex(out p, type2, 8, default, 1, true))
+            else if (turn == 2)
             {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Flandre", "8"), myColor, 0);
-                p.localAI[2] = 0;
+                //美铃：唔...可能需要大小姐的同意吧？
+                meirin.SetChat(ChatSettingConfig, 8, 20);
+
+                if (meirin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
             }
-            else if (FindChatIndex(out p, type1, 5) && ChatCD <= 0)
+            else
             {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Flandre", "9"), myColor, 9);
-            }
-            else if (FindChatIndex(out p, type1, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Flandre", "11"), myColor, 11);
-            }
-            else if (mainTimer % 480 == 0 && Main.rand.NextBool(12) && mainTimer > 0)
-            {
-                SetChat(myColor);
+                chatRoom.CloseChatRoom();
             }
         }
         public override void VisualEffectForPreview()
@@ -319,7 +341,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point = new Vector2(-60 * player.direction, -20 + player.gfxOffY);
             }
 
-            ChangeDir(player, hasRemilia);
+            ChangeDir(hasRemilia);
             MoveToPoint(point, 19);
         }
         public override void AI()
@@ -340,7 +362,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.rotation = 0f;
                 PetState = 0;
                 Projectile.frame = 10;
-                chatFuncIsOccupied = true;
                 return;
             }
             if (Projectile.owner == Main.myPlayer)

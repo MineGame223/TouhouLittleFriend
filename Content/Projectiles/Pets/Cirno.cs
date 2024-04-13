@@ -144,11 +144,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chat.Add(ChatDictionary[3]);
 
                     if (FindPet(ProjectileType<Daiyousei>()))//查找玩家是否同时携带了大妖精
+                    {
                         chat.Add(ChatDictionary[4]);
+                    }
 
                     chat.Add(ChatDictionary[6]);
                     if (CanSeeFrogs)
+                    {
                         chat.Add(ChatDictionary[11], 3);//该文本的权重为3，即更大概率出现
+                    }
                 }
             }
             return chat;
@@ -161,13 +165,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// 执行对话过程
         /// <br>对话系统原理如下：</br>
         /// <br>随时检测自身可以引起对话回合的对话索引，若成功检测到则立刻创建一个聊天室，并将其赋值给 currentChatRoom。</br>
-        /// <br>创建成功后，若检测到玩家携带有相关宠物，则该宠物会被拉入聊天室作为其中一员，其自身的 currentChatRoom也会被赋值；
+        /// <br>创建成功后，若检测到玩家携带有相关宠物，则该宠物会被拉入聊天室作为其中一员，其自身的 currentChatRoom 也会被赋值；
         /// 否则如果没有检测到（比如宠物中途消失），则聊天室将被立刻关闭。</br>
         /// <br>同时，currentChatRoom 非空的情况下将不再更新常规对话，以确保对话回合不会被打扰。</br>
         /// <br>聊天室依靠 chatTurn 变量进行对话回合的切换，每当当前回合内宠物的话说完后，chatTurn 应当+1以进入下一回合；
         /// chatTurn的初始值为-1，该回合用于等待宠物说完第一句话。</br>
         /// <br>若chatTrun已超过对话最终回合，则聊天室将被关闭。</br>
-        /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的chatIndex将归零、其 currentChatRoom也将设为空。</br>
+        /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的chatIndex将归零、其 currentChatRoom 也将设为空。</br>
         /// </summary>
         private void UpdateTalking()
         {
@@ -198,6 +202,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)//起始回合
                 {
+                    //琪露诺：最喜欢大酱了！
                     daiyousei.CloseCurrentDialog();//将成员现有的对话关闭，以最大限度确保对话流畅性
 
                     if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
@@ -205,6 +210,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //大妖精：我也最喜欢琪露诺酱！
                     daiyousei.SetChat(ChatSettingConfig, 7, 20);//令大妖精说话
 
                     if (daiyousei.CurrentDialogFinished())//当大妖精的话说完时进入下一回合
@@ -219,6 +225,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)//起始回合
                 {
+                    //琪露诺：热死了...要化了...
                     daiyousei.CloseCurrentDialog();
 
                     if (cirno.CurrentDialogFinished())
@@ -226,6 +233,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //大妖精：琪露诺酱你没事吧...
                     daiyousei.SetChat(ChatSettingConfig, 6, 20);
 
                     if (daiyousei.CurrentDialogFinished())
@@ -233,9 +241,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //琪露诺：我没事...大概...
                     cirno.SetChat(ChatSettingConfig, 8, 20);//令琪露诺说话
 
-                    if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
+                    if (cirno.CurrentDialogFinished())
                         chatRoom.chatTurn++;
                 }
                 else

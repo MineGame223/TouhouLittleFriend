@@ -115,7 +115,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
-                if (FindPetState(ProjectileType<Nitori>(), 0, 1))
+                if (FindPet(ProjectileType<Nitori>(), 0, 1))
                 {
                     chat.Add(ChatDictionary[4]);
                     chat.Add(ChatDictionary[7]);
@@ -155,6 +155,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //转转：荷取，你知道吗？我一直有一个愿望。
                     nitori.CloseCurrentDialog();
 
                     if (hina.CurrentDialogFinished())
@@ -162,6 +163,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //荷取：嗯？是什么愿望呢？
                     nitori.SetChat(ChatSettingConfig, 4, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -169,6 +171,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //转转：我希望，把这个世界彻底净化成没有厄运的世界。
                     hina.SetChat(ChatSettingConfig, 5, 20);
 
                     if (hina.CurrentDialogFinished())
@@ -176,6 +179,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 2)
                 {
+                    //荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
                     nitori.SetChat(ChatSettingConfig, 5, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -183,6 +187,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 3)
                 {
+                    //转转：哈哈，所以说只是一个愿望啊。
                     hina.SetChat(ChatSettingConfig, 6, 20);
 
                     if (hina.CurrentDialogFinished())
@@ -190,6 +195,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 4)
                 {
+                    //荷取：说不定哪一天真的可以实现哦！
                     nitori.SetChat(ChatSettingConfig, 6, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -204,6 +210,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //转转：我们是...
                     nitori.CloseCurrentDialog();
 
                     if (hina.CurrentDialogFinished())
@@ -211,6 +218,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //荷取：“旋转河童”组合！
                     nitori.SetChat(ChatSettingConfig, 7, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -218,6 +226,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //转转&荷取：哈哈哈哈！...
                     nitori.SetChat(ChatSettingConfig, 8, 20);
                     hina.SetChat(ChatSettingConfig, 8, 20);
 

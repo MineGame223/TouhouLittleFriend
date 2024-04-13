@@ -288,11 +288,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //桑尼：日光妖精~ 洁白身体~
                 if (Projectile.CurrentDialogFinished())
                     chatRoom.chatTurn++;
             }
             else if (turn == 0)
             {
+                //桑尼：日光妖精~ 碧蓝双眸~
                 Projectile.SetChat(ChatSettingConfig, 10, 20);
 
                 if (Projectile.CurrentDialogFinished())
@@ -300,6 +302,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //桑尼：日光妖精—— 桑尼！米尔克！
                 Projectile.SetChat(ChatSettingConfig, 11, 20);
 
                 if (Projectile.CurrentDialogFinished())
@@ -334,11 +337,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //桑尼：下一次该去哪里恶作剧呢？
                 if (sunny.CurrentDialogFinished())
                     chatRoom.chatTurn++;
             }
             else if (turn == 0)
             {
+                //斯塔：要不去偷那个黑白魔法使的蘑菇吧？
                 star.SetChat(ChatSettingConfig, 6, 20);
 
                 if (star.CurrentDialogFinished())
@@ -346,6 +351,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
                 luna.SetChat(ChatSettingConfig, 9, 20);
 
                 if (luna.CurrentDialogFinished())
@@ -353,6 +359,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //桑尼：没事的啦！露娜你只管殿后就好啦。
                 sunny.SetChat(ChatSettingConfig, 13, 20);
 
                 if (sunny.CurrentDialogFinished())
@@ -360,6 +367,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
                 luna.SetChat(ChatSettingConfig, 10, 20);
 
                 if (luna.CurrentDialogFinished())
@@ -367,6 +375,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 4)
             {
+                //桑尼：呜哇！偷东西的时候你的能力超重要的好吗？
                 sunny.SetChat(ChatSettingConfig, 14, 20);
 
                 if (sunny.CurrentDialogFinished())
@@ -374,6 +383,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 5)
             {
+                //斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
                 star.SetChat(ChatSettingConfig, 7, 20);
 
                 if (star.CurrentDialogFinished())
@@ -381,6 +391,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 6)
             {
+                //桑尼&露娜：不可以！！！
                 sunny.SetChat(ChatSettingConfig, 15, 20);
                 luna.SetChat(ChatSettingConfig, 11, 20);
 
