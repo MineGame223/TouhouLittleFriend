@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Tenshi : BasicTouhouPet
+    public class Tenshi : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -39,10 +39,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
-            Projectile.DrawPet(clothFrame, lightColor, 
+            Projectile.DrawPet(clothFrame, lightColor,
                 drawConfig with
                 {
-                    ShouldUseEntitySpriteDraw= true,
+                    ShouldUseEntitySpriteDraw = true,
                 }, 1);
             return false;
         }
@@ -169,37 +169,76 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        Color myColor = new Color(69, 170, 234);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(69, 170, 234);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Tenshin", "1");
-            text[2] = ModUtils.GetChatText("Tenshin", "2");
-            text[3] = ModUtils.GetChatText("Tenshin", "3");
+            name = "Tenshin";
+            indexRange = new Vector2(1, 3);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 740;
+            chance = 7;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateStoneFrame();
             UpdateClothAndHairFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(2))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Iku>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile tenshin = chatRoom.initiator;
+            Projectile iku = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //天子：今天也要大干一场！
+                iku.CloseCurrentDialog();
+
+                if (tenshin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //衣玖：天女大人您还是安分点吧...
+                iku.SetChat(ChatSettingConfig, 16, 20);
+
+                if (iku.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         public override void AI()
         {
@@ -215,7 +254,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Iku>()] <= 0);
+            ChangeDir();
             MoveToPoint(point, 15f);
             if (Projectile.owner == Main.myPlayer)
             {

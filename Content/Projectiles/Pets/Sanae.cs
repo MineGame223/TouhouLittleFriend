@@ -317,7 +317,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.rotation = Projectile.velocity.X * 0.012f;
             if (PetState != 2)
             {
-                ChangeDir(PetState < 3);
+                ChangeDir();
                 Lighting.AddLight(Projectile.Center, 0.62f, 1.02f, 0.95f);
             }
 

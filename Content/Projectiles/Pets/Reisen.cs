@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Reisen : BasicTouhouPet
+    public class Reisen : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -240,48 +240,36 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 5;
             }
         }
-        Color myColor = new Color(255, 10, 10);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(255, 10, 10);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[20];
-
-            for (int j = 1; j <= 9; j++)
-            {
-                text[j] = ModUtils.GetChatText("Reisen", j.ToString());
-            }
-            if (Main.bloodMoon)
-            {
-                text[10] = ModUtils.GetChatText("Reisen", "10");
-            }
+            name = "Reisen";
+            indexRange = new Vector2(1, 11);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 610;
+            chance = 8;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                for (int j = 1; j <= 9; j++)
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[j]);
+                }
+                if (Main.bloodMoon)
+                {
+                    chat.Add(ChatDictionary[10]);
                 }
             }
             return chat;
         }
+        Color myColor = new Color(255, 10, 10);
         private void UpdateTalking()
         {
-            int type1 = ProjectileType<Junko>();
-            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, type1, 2))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Reisen", "11"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (mainTimer % 600 == 0 && Main.rand.NextBool(8) && PetState <= 1)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -298,7 +286,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.014f;
 
-            ChangeDir(player, true);
+            ChangeDir();
             MoveToPoint(point, 13f);
 
             if (Projectile.owner == Main.myPlayer && PetState == 0)

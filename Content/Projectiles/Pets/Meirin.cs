@@ -468,7 +468,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;
 
-            ChangeDir(false, 120);
+            ChangeDir( 120);
 
             Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? -100 : 50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;

@@ -272,7 +272,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.rotation = Projectile.velocity.X * 0.012f;
             if (PetState != 2)
             {
-                ChangeDir(PetState < 3);
+                ChangeDir();
             }
 
             MoveToPoint(point, 22f);

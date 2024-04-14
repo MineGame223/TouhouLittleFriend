@@ -328,7 +328,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point = new Vector2(60 * player.direction, -20 + player.gfxOffY);
             }
 
-            ChangeDir(!hasFlandre);
+            ChangeDir();
             MoveToPoint(point, 19f);
         }
         public override void AI()

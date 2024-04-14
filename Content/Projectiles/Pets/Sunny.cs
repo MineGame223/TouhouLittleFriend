@@ -436,7 +436,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
-            ChangeDir(true, 200);
+            ChangeDir( 200);
 
             Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
             if (player.HasBuff<TheThreeFairiesBuff>())

@@ -8,7 +8,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Wriggle : BasicTouhouPet
+    public class Wriggle : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -219,46 +219,86 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
             }
         }
-        Color myColor = new Color(107, 252, 75);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(107, 252, 75);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Wriggle", "1");
-            text[2] = ModUtils.GetChatText("Wriggle", "2");
-            text[3] = ModUtils.GetChatText("Wriggle", "3");
-            text[4] = ModUtils.GetChatText("Wriggle", "4");
-            text[5] = ModUtils.GetChatText("Wriggle", "5");
-            text[7] = ModUtils.GetChatText("Wriggle", "7");
-            text[8] = ModUtils.GetChatText("Wriggle", "8");
-            text[9] = ModUtils.GetChatText("Wriggle", "9");
-            text[10] = ModUtils.GetChatText("Wriggle", "10");
+            name = "Wriggle";
+            indexRange = new Vector2(1, 10);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 910;
+            chance = 6;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (PetState == 3)
                 {
-                    if (text[i] != null)
+                    chat.Add(ChatDictionary[6]);
+                }
+                else
+                {
+                    for (int j = 1; j <= 10; j++)
                     {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
+                        if (j == 6)
+                            continue;
+                        chat.Add(ChatDictionary[j]);
                     }
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 900 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
-            {
-                if (PetState == 3)
-                    SetChat(myColor, ModUtils.GetChatText("Wriggle", "6"), 6);
-                else if (PetState <= 1)
-                    SetChat(myColor);
-            }
-        }
         public override void VisualEffectForPreview()
         {
             UpdateWingFrame();
             UpdateAntennaeFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(1))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Mystia>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile wriggle = chatRoom.initiator;
+            Projectile mystia = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //莉格露：一闪一闪亮晶晶~满天都是小蜻蜓~
+                mystia.CloseCurrentDialog();
+
+                if (wriggle.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
+                mystia.SetChat(ChatSettingConfig, 9, 20);
+
+                if (mystia.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         public override void AI()
         {
@@ -274,7 +314,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player);
+            ChangeDir();
             MoveToPoint(point, 14f);
             if (mainTimer % (PetState == 2 ? 15 : 30) == 0 && CanGenFireFly(player))
             {

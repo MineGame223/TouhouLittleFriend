@@ -151,7 +151,8 @@ Mods: {
 
 		Chat_Junko: {
 			Chat1: Are you watching, Chang'e?...
-			Chat2: Udon-chan~ How're you doing?
+			Chat2: ......
+			Chat3: Udon-chan~ How're you doing?
 		}
 
 		Chat_Marisa: {
@@ -315,12 +316,12 @@ Mods: {
 			Chat5: Thanks for the food!
 			Chat6: Delicious!
 			Chat7: Thank you!
-			Chat5-1: Hungry...
-			Chat6-1: Ghosts need food too, so you just take it quickly please!
-			Chat7-1: When is dinner time?
-			Chat8: Youmu-chan, what're we eating tonight?
-			Chat9: Has Youmu-chan made any plans for the future?
-			Chat10: Youmu-chan is as simple as I thought, we'll just talk this over later
+			Chat8: Hungry...
+			Chat9: Ghosts need food too, so you just take it quickly please!
+			Chat10: When is dinner time?
+			Chat11: Youmu-chan, what're we eating tonight?
+			Chat12: Has Youmu-chan made any plans for the future?
+			Chat13: Youmu-chan is as simple as I thought, we'll just talk this over later
 		}
 
 		Chat_Youmu: {
@@ -383,10 +384,10 @@ Mods: {
 
 		Chat_Yukari: {
 			Chat1: As a sage, it's my eternal duty to protect the barrier...
-			Chat2: Is that old friend of mine doing alright?...
+			Chat2: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
 			Chat3: That Reimu, she should really be more diligent.
-			Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
-			Chat5: If you miss her, I'll allow you to take a temporary leave.
+			Chat4: If you miss her, I'll allow you to take a temporary leave.
+			Chat5: Is that old friend of mine doing alright?...
 			Chat6: Nothing, Maybe I don't need to worry about her appetite.
 		}
 

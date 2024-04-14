@@ -315,6 +315,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 for (int i = 1; i < ChatDictionary.Count; i++)
                 {
+                    if (string.IsNullOrEmpty(GetRegularDialogText()))
+                        return;
+
                     if (GetRegularDialogText().Equals(ChatDictionary[i]))
                     {
                         Projectile.SetChat(ChatSettingConfig, i);
@@ -458,27 +461,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 设置转向
         /// </summary>
-        /// <param name="style2">用于处在玩家后方的宠物</param>
         /// <param name="dist">设置与玩家同向的最小距离</param>
-        internal void ChangeDir(bool style2 = false, float dist = 100)
+        internal void ChangeDir(float dist = 100)
         {
-            if (style2)
+            if (Projectile.Distance(Owner.Center) <= dist)
             {
-                if (Projectile.Distance(Owner.Center) <= dist)
-                {
-                    Projectile.spriteDirection = Owner.direction;
-                }
-                else
-                {
-                    if (Projectile.velocity.X > 0.25f)
-                    {
-                        Projectile.spriteDirection = 1;
-                    }
-                    else if (Projectile.velocity.X < -0.25f)
-                    {
-                        Projectile.spriteDirection = -1;
-                    }
-                }
+                Projectile.spriteDirection = Owner.direction;
             }
             else
             {
@@ -490,8 +478,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.spriteDirection = -1;
                 }
-                else
-                    Projectile.spriteDirection = Owner.direction;
             }
         }
         #endregion

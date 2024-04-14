@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -8,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Mystia : BasicTouhouPet
+    public class Mystia : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -40,7 +39,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                    ShouldUseEntitySpriteDraw = true,
                    AltTexture = clothTex,
                });
-            Projectile.DrawPet(clothFrame, lightColor, 
+            Projectile.DrawPet(clothFrame, lightColor,
                 config with
                 {
                     ShouldUseEntitySpriteDraw = true,
@@ -143,51 +142,36 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 6;
             }
         }
-        Color myColor = new Color(246, 110, 169);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(246, 110, 169);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Mystia", "1");
-            text[2] = ModUtils.GetChatText("Mystia", "2");
-            text[3] = ModUtils.GetChatText("Mystia", "3");
-            text[4] = ModUtils.GetChatText("Mystia", "4");
+            name = "Mystia";
+            indexRange = new Vector2(1, 9);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 840;
+            chance = 6;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Wriggle>();
-            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (PetState != 2)
-            {
-                if (FindChatIndex(out Projectile p, type1, 1))
-                {
-                    SetChatWithOtherOne(p, ModUtils.GetChatText("Mystia", "9"), myColor, 0, 360);
-                    p.localAI[2] = 0;
-                }
-                else if (mainTimer % 840 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
-                {
-                    SetChat(myColor);
-                }
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateWingFrame();
             UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
         }
         public override void AI()
         {
@@ -201,7 +185,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player, true);
+            ChangeDir();
             MoveToPoint(point, 14f);
             if (Projectile.owner == Main.myPlayer)
             {
@@ -221,16 +205,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                         switch (chance)
                         {
                             case 1:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "6"), 6, 90, 30, true);
+                                Projectile.SetChat(ChatSettingConfig, 5, 90);
                                 break;
                             case 2:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "7"), 7, 90, 30, true);
+                                Projectile.SetChat(ChatSettingConfig, 6, 90);
                                 break;
                             case 3:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "8"), 8, 90, 30, true);
+                                Projectile.SetChat(ChatSettingConfig, 7, 90);
                                 break;
                             default:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "5"), 5, 90, 30, true);
+                                Projectile.SetChat(ChatSettingConfig, 8, 90);
                                 break;
                         }
                     }

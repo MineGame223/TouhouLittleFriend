@@ -261,7 +261,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.022f;
 
-            ChangeDir(true);
+            ChangeDir();
 
             Vector2 point;
             Vector2 center = default;

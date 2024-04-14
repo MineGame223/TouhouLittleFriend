@@ -68,8 +68,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 720;
-            chance = 6;
-            whenShouldStop = false;
+            chance = 7;
+            whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
         {
@@ -238,7 +238,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.rotation = Projectile.velocity.X * 0.032f;
 
             if (IsIdleState)
-                ChangeDir(true);
+                ChangeDir();
 
             Vector2 point = new Vector2(-40 * Owner.direction, -30 + Owner.gfxOffY);
             MoveToPoint(point, 13f);
@@ -258,7 +258,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         RandomCount = Main.rand.Next(10, 20);
                         CurrentState = States.Turning;
 
-                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
+                        if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
                             Projectile.SetChat(ChatSettingConfig, 3, 20);
                     }
                 }

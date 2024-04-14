@@ -309,7 +309,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(true);
+            ChangeDir();
             MoveToPoint(point, 12f);
             if (Projectile.owner == Main.myPlayer)
             {

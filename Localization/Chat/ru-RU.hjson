@@ -151,7 +151,8 @@ Mods: {
 
 		Chat_Junko: {
 			Chat1: Как тебе такое, Чанъе?...
-			Chat2: Удон-чан~ Как дела? //cursed
+			Chat2: ......
+			Chat3: Удон-чан~ Как дела?
 		}
 
 		Chat_Marisa: {
@@ -216,12 +217,12 @@ Mods: {
 			Chat9: ......
 			Chat10: ...Ээ, ты ничего не слышал!
 			//Kamen Rider Build
-			//Chat11: Let we be the one!
+			// Chat11: Let we be the one!
 			//Kamen Rider Drive
-			//Chat12: Don't believe the "logic" blindly, believe your sense firmly.
+			// Chat12: Don't believe the "logic" blindly, believe your sense firmly.
 			//Kamen Rider Gotchard
-			//Chat13: Sympathy is a lie, romantic is the key.
-			//Chat14: When you're alive, you can get the good and the bad.
+			// Chat13: Sympathy is a lie, romantic is the key.
+			// Chat14: When you're alive, you can get the good and the bad.
 		}
 
 		Chat_Koishi: {
@@ -315,12 +316,12 @@ Mods: {
 			Chat5: Еда!
 			Chat6: Вкусно!
 			Chat7: Спасибо!
-			Chat5-1: Хочу кушать...
-			Chat6-1: Призракам тоже нужно есть, приготовь уже что-нибудь!
-			Chat7-1: Когда уже ужин?
-			Chat8: Ёму-чан, что у нас на поесть сегодня?
-			Chat9: У Ёму-чан есть какие-нибудь планы на будущее?
-			Chat10: Ёму-чан столь же проста сколь и кажется. Обговорим это позже
+			Chat8: Хочу кушать...
+			Chat9: Призракам тоже нужно есть, приготовь уже что-нибудь!
+			Chat10: Когда уже ужин?
+			Chat11: Ёму-чан, что у нас на поесть сегодня?
+			Chat12: У Ёму-чан есть какие-нибудь планы на будущее?
+			Chat13: Ёму-чан столь же проста сколь и кажется. Обговорим это позже
 		}
 
 		Chat_Youmu: {
@@ -383,10 +384,10 @@ Mods: {
 
 		Chat_Yukari: {
 			Chat1: Вечно поддерживать Хакурейский Барьер это моя работа как мудреца...
-			Chat2: Моя старая подруга в порядке?...
+			Chat2: Сколько мне лет? Мне 17... Больше не спрашивай
 			Chat3: Рейму явно стоит быть прилежнее.
-			Chat4: Сколько мне лет? Мне 17... Больше не спрашивай
-			Chat5: Если ты так по ней скучаешь, то думаю, я могу дать тебе отпуск.
+			Chat4: Если ты так по ней скучаешь, то думаю, я могу дать тебе отпуск.
+			Chat5: Моя старая подруга в порядке?...
 			Chat6: Ладно, пожалуй мне не стоит так беспокоится о её аппетите.
 		}
 

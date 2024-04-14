@@ -9,8 +9,10 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Iku : BasicTouhouPet
+    public class Iku : BasicTouhouPetNeo
     {
+        private bool InLunarInvasion => NPC.AnyNPCs(NPCID.LunarTowerStardust) || NPC.AnyNPCs(NPCID.LunarTowerSolar) ||
+                    NPC.AnyNPCs(NPCID.LunarTowerNebula) || NPC.AnyNPCs(NPCID.LunarTowerVortex);
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
@@ -162,99 +164,106 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        Color myColor = new Color(79, 215, 239);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(79, 215, 239);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
+            name = "Iku";
+            indexRange = new Vector2(1, 19);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 600;
+            chance = 3;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 if (Main.bloodMoon)
                 {
-                    chat.Add(ModUtils.GetChatText("Iku", "1"));
+                    chat.Add(ChatDictionary[1]);
                 }
                 if (Main.eclipse)
                 {
-                    chat.Add(ModUtils.GetChatText("Iku", "2"));
+                    chat.Add(ChatDictionary[2]);
                 }
                 if (!Main.eclipse && !Main.bloodMoon)
                 {
-                    if (Sandstorm.Happening && player.ZoneDesert && player.ZoneOverworldHeight)
+                    if (Sandstorm.Happening && Owner.ZoneDesert && Owner.ZoneOverworldHeight)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "3"));
+                        chat.Add(ChatDictionary[3]);
                     }
                     else if (Main.slimeRain)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "4"));
+                        chat.Add(ChatDictionary[4]);
                     }
-                    else if (!player.AnyBosses())
+                    else if (!Owner.AnyBosses())
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "5"));
+                        chat.Add(ChatDictionary[5]);
                         if (BirthdayParty.PartyIsUp)
                         {
-                            chat.Add(ModUtils.GetChatText("Iku", "6"));
+                            chat.Add(ChatDictionary[6]);
                         }
                         if (LanternNight.LanternsUp)
                         {
-                            chat.Add(ModUtils.GetChatText("Iku", "7"));
+                            chat.Add(ChatDictionary[7]);
                         }
                     }
                     if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) <= 0.1f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "8"));
+                        chat.Add(ChatDictionary[8]);
                     }
                     if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) > 0.1f
                        && Math.Abs(Main.windSpeedTarget) < 0.25f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "9"));
+                        chat.Add(ChatDictionary[9]);
                     }
                     if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) > .25f
                        && Math.Abs(Main.windSpeedTarget) < 0.4f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "10"));
+                        chat.Add(ChatDictionary[10]);
                     }
                     if (Main.cloudAlpha == 0 && Math.Abs(Main.windSpeedTarget) >= .4f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "11"));
+                        chat.Add(ChatDictionary[11]);
                     }
                     if (Main.cloudAlpha > 0f && Main.cloudAlpha < 0.3f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "12"));
+                        chat.Add(ChatDictionary[12]);
                     }
                     if (Main.cloudAlpha >= 0.4f && Math.Abs(Main.windSpeedTarget) >= 0.3f
                         && Main.cloudAlpha < 0.5f && Math.Abs(Main.windSpeedTarget) < 0.4f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "13"));
+                        chat.Add(ChatDictionary[13]);
                     }
                     if (Main.cloudAlpha >= 0.5f && Math.Abs(Main.windSpeedTarget) >= 0.4f
                         && Main.cloudAlpha < 0.8f && Math.Abs(Main.windSpeedTarget) < 0.65f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "14"));
+                        chat.Add(ChatDictionary[14]);
                     }
                     if (Main.cloudAlpha >= 0.8f && Math.Abs(Main.windSpeedTarget) >= 0.65f)
                     {
-                        chat.Add(ModUtils.GetChatText("Iku", "15"));
+                        chat.Add(ChatDictionary[15]);
                     }
+                }
+                if (Main.pumpkinMoon)
+                {
+                    chat.Add(ChatDictionary[17]);
+                }
+                if (Main.snowMoon)
+                {
+                    chat.Add(ChatDictionary[18]);
+                }
+                if (InLunarInvasion)
+                {
+                    chat.Add(ChatDictionary[19]);
                 }
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            int type1 = ProjectileType<Tenshi>();
-            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, type1, 2))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Iku", "16"), myColor, 0, 360);
-                p.localAI[2] = 0;
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(3) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -278,7 +287,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;
 
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Tenshi>()] > 0);
+            ChangeDir();
             MoveToPoint(point, 15f);
 
             if (Projectile.owner == Main.myPlayer)

@@ -133,7 +133,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
-            ChangeDir(true);
+            ChangeDir();
 
             MoveToPoint(point, 10f);
 

@@ -134,7 +134,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.026f;
 
-            ChangeDir(false);
+            ChangeDir();
             MoveToPoint(point, 10.5f);
 
             int dustID = MyDustId.WhiteTransparent;

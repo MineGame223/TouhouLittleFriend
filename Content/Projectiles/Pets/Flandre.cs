@@ -341,7 +341,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point = new Vector2(-60 * player.direction, -20 + player.gfxOffY);
             }
 
-            ChangeDir(hasRemilia);
+            ChangeDir();
             MoveToPoint(point, 19);
         }
         public override void AI()

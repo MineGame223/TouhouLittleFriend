@@ -185,7 +185,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.032f;
 
-            ChangeDir(!FindPet(ProjectileType<Cirno>()));
+            ChangeDir();
             MoveToPoint(point, 9f);
 
             if (Projectile.owner == Main.myPlayer)

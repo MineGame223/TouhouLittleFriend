@@ -9,7 +9,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Junko : BasicTouhouPet
+    public class Junko : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -152,40 +152,76 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        Color myColor = new Color(254, 159, 75);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(254, 159, 75);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
-            if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
-            {
-                text[1] = ModUtils.GetChatText("Junko", "1");
-            }
-            if (player.ownedProjectileCounts[ProjectileType<Reisen>()] > 0)
-            {
-                text[2] = ModUtils.GetChatText("Junko", "2");
-            }
-            text[3] = "......";
+            name = "Junko";
+            indexRange = new Vector2(1, 3);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 1000;
+            chance = 10;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 1)
-                            weight = 10;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[1]);
+                }
+                chat.Add(ChatDictionary[2]);
+                if (FindPet(ProjectileType<Reisen>()))
+                {
+                    chat.Add(ChatDictionary[3]);
                 }
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 960 == 0 && mainTimer > 0 && PetState != 2 && Main.rand.NextBool(9))
+            if (FindChatIndex(3))
             {
-                SetChat(myColor);
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Reisen>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile junko = chatRoom.initiator;
+            Projectile reisen = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //纯狐：乌冬酱~最近还好嘛？
+                reisen.CloseCurrentDialog();
+
+                if (junko.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //铃仙：嗯嗯...还、还好吧...
+                reisen.SetChat(ChatSettingConfig, 11, 20);
+
+                if (reisen.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
             }
         }
         public override void VisualEffectForPreview()
@@ -204,7 +240,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.018f;
 
-            ChangeDir(player);
+            ChangeDir();
             MoveToPoint(point, 17f);
 
             if (Projectile.owner == Main.myPlayer)
