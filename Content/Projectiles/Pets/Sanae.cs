@@ -8,7 +8,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Sanae : BasicTouhouPet
+    public class Sanae : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -177,7 +177,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Pray()
         {
-            chatFuncIsOccupied = true;
             if (Projectile.frame < 1)
             {
                 Projectile.frame = 1;
@@ -221,45 +220,84 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 5;
             }
         }
-        Color myColor = new Color(83, 241, 146);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(83, 241, 146);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Sanae", "1");
-            text[2] = ModUtils.GetChatText("Sanae", "2");
-            text[3] = ModUtils.GetChatText("Sanae", "3");
-            text[4] = ModUtils.GetChatText("Sanae", "4");
-            if (Main.IsItAHappyWindyDay)
-            {
-                text[5] = ModUtils.GetChatText("Sanae", "5");
-            }
+            name = "Sanae";
+            indexRange = new Vector2(1, 5);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 960;
+            chance = 7;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+                if (Main.IsItAHappyWindyDay)
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[5]);
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 960 == 0 && Main.rand.NextBool(7) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
-        }
-        int flyTimeleft = 0;
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
             UpdateHairFrame();
             UpdateItemFrame();
         }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Reimu>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile sanae = chatRoom.initiator;
+            Projectile reimu = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
+                reimu.CloseCurrentDialog();
+
+                if (sanae.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //灵梦：给我适可而止啊喂！
+                reimu.SetChat(ChatSettingConfig, 9, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        int flyTimeleft = 0;
         public override void AI()
         {
             float lightPlus = 1 + auraScale * Main.essScale;
@@ -279,7 +317,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.rotation = Projectile.velocity.X * 0.012f;
             if (PetState != 2)
             {
-                ChangeDir(player, PetState < 3);
+                ChangeDir(PetState < 3);
                 Lighting.AddLight(Projectile.Center, 0.62f, 1.02f, 0.95f);
             }
 

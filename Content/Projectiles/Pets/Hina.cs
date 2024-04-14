@@ -8,17 +8,48 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Hina : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Turning,
+            StopTurning,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => PetState <= 1;
+
+        private int blinkFrame, blinkFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hina_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hina_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor,
                 drawConfig with
@@ -27,75 +58,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     ShouldUseEntitySpriteDraw = true,
                 });
             return false;
-        }
-        private void Blink()
-        {
-            if (blinkFrame < 14)
-            {
-                blinkFrame = 14;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 16)
-            {
-                blinkFrame = 14;
-                PetState = 0;
-            }
-        }
-        private void Idle()
-        {
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 5)
-            {
-                Projectile.frame = 0;
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        private void Turning()
-        {
-            if (Projectile.frame < 6)
-            {
-                Projectile.frame = 6;
-            }
-            if (++Projectile.frameCounter > 7)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame > 13)
-                {
-                    Projectile.frame = 6;
-                    extraAI[1]++;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > Main.rand.Next(10, 20))
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 13)
-                {
-                    extraAI[2] = 0;
-                    Projectile.frame = 0;
-                    extraAI[0] = 300;
-                    PetState = 0;
-                }
-            }
         }
         public override Color ChatTextColor => new Color(70, 226, 164);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -125,8 +87,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void VisualEffectForPreview()
         {
-            if (PetState != 2)
-                Idle();
+            if (IsIdleState)
+                IdleAnimation();
         }
         private void UpdateTalking()
         {
@@ -241,51 +203,136 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<HinaBuff>());
+            Projectile.SetPetActive(Owner, BuffType<HinaBuff>());
+
             UpdateTalking();
-            Vector2 point = new Vector2(-40 * player.direction, -30 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.032f;
-            if (PetState != 2)
+
+            ControlMovement();
+
+            switch (CurrentState)
             {
-                ChangeDir(true);
+                case States.Blink:
+                    Blink();
+                    break;
+                case States.Turning:
+                    shouldNotTalking = true;
+                    Turning();
+                    break;
+                case States.StopTurning:
+                    shouldNotTalking = true;
+                    StopTurning();
+                    break;
+                default:
+                    Idle();
+                    break;
             }
 
-            MoveToPoint(point, 13f);
-
-            if (Projectile.owner == Main.myPlayer)
+            if (IsIdleState && ActionCD > 0)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
+                ActionCD--;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.032f;
+
+            if (IsIdleState)
+                ChangeDir(true);
+
+            Vector2 point = new Vector2(-40 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 13f);
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
+                if (mainTimer > 0 && mainTimer % 320 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (mainTimer % 200 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                    if (Main.rand.NextBool(3))
                     {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                        if (Main.rand.NextBool(3) && currentChatRoom == null && chatTimeLeft <= 0)
+                        RandomCount = Main.rand.Next(10, 20);
+                        CurrentState = States.Turning;
+
+                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
                             Projectile.SetChat(ChatSettingConfig, 3, 20);
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            if (blinkFrame < 14)
             {
-                if (extraAI[0] >= 1)
+                blinkFrame = 14;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 16)
+            {
+                blinkFrame = 14;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Turning()
+        {
+            if (Projectile.frame < 6)
+            {
+                Projectile.frame = 6;
+            }
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 13)
+            {
+                Projectile.frame = 6;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                if (Timer > RandomCount)
                 {
-                    extraAI[0]--;
+                    Timer = 0;
+                    CurrentState = States.StopTurning;
                 }
             }
-            else if (PetState == 1)
+        }
+        private void StopTurning()
+        {
+            if (++Projectile.frameCounter > 7)
             {
-                Blink();
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
             }
-            else if (PetState == 2)
+            if (Projectile.frame > 13)
             {
-                Turning();
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 500;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void IdleAnimation()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 5)
+            {
+                Projectile.frame = 0;
             }
         }
     }

@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Lily : BasicTouhouPet
+    public class Lily : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -92,32 +92,31 @@ namespace TouhouPets.Content.Projectiles.Pets
                 wingFrame = 4;
             }
         }
-        Color myColor = new Color(255, 255, 255);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => Color.White;
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Lily", "1");
-            text[2] = ModUtils.GetChatText("Lily", "2");
-            text[3] = ModUtils.GetChatText("Lily", "3");
+            name = "Lily";
+            indexRange = new Vector2(1, 4);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 9;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -135,7 +134,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.026f;
 
-            ChangeDir(player, false);
+            ChangeDir(false);
             MoveToPoint(point, 10.5f);
 
             int dustID = MyDustId.WhiteTransparent;

@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Kogasa : BasicTouhouPet
+    public class Kogasa : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -213,31 +213,29 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        Color myColor = new Color(172, 69, 191);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(172, 69, 191);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Kogasa", "1");
-            text[2] = ModUtils.GetChatText("Kogasa", "2");
+            name = "Kogasa";
+            indexRange = new Vector2(1, 2);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 888;
+            chance = 8;
+            whenShouldStop = PetState == 5;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && PetState != 5)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -255,7 +253,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;
 
-            ChangeDir(player, true);
+            ChangeDir(true);
             MoveToPoint(point, 12.5f);
 
             if (Projectile.owner == Main.myPlayer)
@@ -292,7 +290,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (PetState == 5)
             {
-                chatFuncIsOccupied = true;
                 Projectile.frame = 5;
                 if (!player.AnyBosses())
                     PetState = 0;

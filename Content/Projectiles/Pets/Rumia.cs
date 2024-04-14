@@ -8,7 +8,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Rumia : BasicTouhouPet
+    public class Rumia : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -134,42 +134,36 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 7;
             }
         }
-        Color myColor = Color.Black;
         public override Color ChatTextBoardColor => Color.White;
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => Color.Black;
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            if (PetState == 2)
-            {
-                text[5] = ModUtils.GetChatText("Rumia", "5");
-            }
-            else
-            {
-                text[1] = ModUtils.GetChatText("Rumia", "1");
-                text[2] = ModUtils.GetChatText("Rumia", "2");
-                text[3] = ModUtils.GetChatText("Rumia", "3");
-                text[4] = ModUtils.GetChatText("Rumia", "4");
-                if (Main.dayTime)
-                {
-                    text[6] = ModUtils.GetChatText("Rumia", "6");
-                }
-            }
+            name = "Rumia";
+            indexRange = new Vector2(1, 6);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 480;
+            chance = 10;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (PetState == 2)
                 {
-                    if (text[i] != null)
+                    chat.Add(ChatDictionary[5]);
+                }
+                else
+                {
+                    chat.Add(ChatDictionary[1], 5);
+                    chat.Add(ChatDictionary[2]);
+                    chat.Add(ChatDictionary[3]);
+                    chat.Add(ChatDictionary[4]);
+                    if (Main.dayTime)
                     {
-                        int weight = 1;
-                        if (i == 1 || i == 6)
-                        {
-                            weight = 5;
-                        }
-                        if (i == 5)
-                        {
-                            weight = 3;
-                        }
-                        chat.Add(text[i], weight);
+                        chat.Add(ChatDictionary[6], 3);
                     }
                 }
             }
@@ -177,10 +171,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 480 == 0 && Main.rand.NextBool(10) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -197,7 +187,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.035f;
 
-            ChangeDir(player, true);
+            ChangeDir(true);
             MoveToPoint(point, 14f);
             if (Projectile.owner == Main.myPlayer)
             {

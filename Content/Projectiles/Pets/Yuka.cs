@@ -9,7 +9,7 @@ using static TouhouPets.SolutionSpraySystem;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Yuka : BasicTouhouPet
+    public class Yuka : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -260,37 +260,36 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 3;
             }
         }
-        Color myColor = new(107, 252, 75);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new(107, 252, 75);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Yuka", "1");
-            text[2] = ModUtils.GetChatText("Yuka", "2");
-            text[3] = ModUtils.GetChatText("Yuka", "3");
-            WeightedRandom<string> chat = new();
+            name = "Yuka";
+            indexRange = new Vector2(1, 3);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 900;
+            chance = 12;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 900 == 0 && Main.rand.NextBool(12) && mainTimer > 0 && PetState < 3)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
         }
+        private void UpdateTalking()
+        {
+        }
+        
         public override void AI()
         {
             if (Projectile.owner == Main.myPlayer)
@@ -310,7 +309,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player, true);
+            ChangeDir(true);
             MoveToPoint(point, 12f);
             if (Projectile.owner == Main.myPlayer)
             {

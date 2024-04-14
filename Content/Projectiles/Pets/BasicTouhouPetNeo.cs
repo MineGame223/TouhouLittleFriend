@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
         /// <br/>用途：说完一句话以后一段时间内不会再进行其他对话
-        /// <br/>现在暂未被使用
+        /// <br/>仅由赤蛮奇使用
         /// </summary>
         internal int chatCD;
 
@@ -85,7 +85,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal int mainTimer;
 
         /// <summary>
-        /// 额外的本地AI（等同于localAI），长度为3
+        /// 额外的计时器（等同于Projectile.ai），长度为3
+        /// <br/>允许通过netUpdate进行同步
         /// </summary>
         internal int[] extraAI = new int[3];
 
@@ -114,12 +115,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => new();
         }
         /// <summary>
-        /// 宠物的状态值（Projectile.ai[1]）
+        /// 宠物的状态值（Projectile.ai[1]），设置该值时会进行一次netUpdate
         /// </summary>
         public int PetState
         {
-            get => (int)Projectile.ai[1];
-            set => Projectile.ai[1] = value;
+            get
+            {
+                return (int)Projectile.ai[1];
+            }
+            set
+            {
+                Projectile.ai[1] = value;
+                Projectile.netUpdate = true;
+            }
         }
         /// <summary>
         /// 宠物的所属玩家
@@ -345,7 +353,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
         /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPet(out Projectile target, int type, int minState = -1, int maxState = 0, bool checkTalkable = false)
+        internal bool FindPet(out Projectile target, int type, int minState = -1, int maxState = 0, bool checkTalkable = true)
         {
             target = null;
             if (maxState <= minState && minState > 0
@@ -375,7 +383,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
         /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPet(int type, int minState = -1, int maxState = 0, bool checkTalkable = false)
+        internal bool FindPet(int type, int minState = -1, int maxState = 0, bool checkTalkable = true)
         {
             if (maxState <= minState && minState > 0
                 || maxState >= minState && minState < 0)

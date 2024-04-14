@@ -9,18 +9,60 @@ namespace TouhouPets.Content.Projectiles.Pets
     /// <summary>
     /// 假面骑士赤蛮骑
     /// </summary>
-    public class Sekibanki : BasicTouhouPet
+    public class Sekibanki : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Posing,
+            StopPosing,
+            BeforeHenshin,
+            Henshin,
+            AfterHenshin,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private int CloseEyesTimer
+        {
+            get => (int)Projectile.ai[2];
+            set => Projectile.ai[2] = value;
+        }
+        private bool ShouldCloseEyes => CloseEyesTimer > 0;
+        private bool IsIdleState => PetState <= 1;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int headFrame, headFrameCounter;
+        private int headBaseY, headAdjX, headAdjY;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sekibanki_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            Vector2 headPosAdj = new Vector2(0, -2 * headBaseY) + new Vector2(headAdjX, headAdjY);
+            Vector2 headPosAdj = new Vector2(0, 2 * headBaseY) + new Vector2(headAdjX, headAdjY);
             DrawPetConfig config = drawConfig with
             {
                 AltTexture = clothTex,
@@ -32,34 +74,249 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
 
             Projectile.DrawPet(headFrame, lightColor, config2, 1);
-            Projectile.DrawPet(headFrame, lightColor, 
+            Projectile.DrawPet(headFrame, lightColor,
                 config with
                 {
                     PositionOffset = headPosAdj,
                 }, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            if (PetState == 1 || extraAI[2] > 0)
+            if (CurrentState == States.Blink || ShouldCloseEyes)
                 Projectile.DrawPet(blinkFrame, lightColor, config2, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
-        private void DrawSekibanki(int frame, Color lightColor, int columns = 0, Vector2 extraPos = default, Texture2D tex = null, bool entitySpriteDraw = false)
+        public override Color ChatTextColor => new Color(255, 105, 105);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            if (extraPos == default)
-                extraPos = Vector2.Zero;
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale) + extraPos;
-            Rectangle rect = new Rectangle(t.Width / 2 * columns, frame * height, t.Width / 2, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            name = "Sekibanki";
+            indexRange = new Vector2(1, 14);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 777;
+            chance = 7;
+            whenShouldStop = !IsIdleState || chatCD > 0;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                for (int i = 11; i <= 16; i++)
+                {
+                    chat.Add(ChatDictionary[i]);
+                }
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateHeadFrame();
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(3, 6))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+            if (FindChatIndex(1) || FindChatIndex(7, 10))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //赤蛮奇：一直以来我都穿着斗篷，
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //赤蛮奇：因为我不喜欢被人类认出是妖怪。
+                Projectile.SetChat(ChatSettingConfig, 4, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
+                Projectile.SetChat(ChatSettingConfig, 5, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                //赤蛮奇：...好吧，除了你。
+                Projectile.SetChat(ChatSettingConfig, 6, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
             else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //赤蛮奇：独来独往...
+                if (Projectile.CurrentDialogFinished())
+                {
+                    if (Main.rand.NextBool(4))
+                    {
+                        chatRoom.chatTurn++;
+                        if (OwnerIsMyPlayer)
+                        {
+                            CurrentState = States.BeforeHenshin;
+                        }
+                    }
+                    else
+                    {
+                        chatRoom.CloseChatRoom();
+                    }
+                }
+            }
+            else if (turn == 0)
+            {
+                //赤蛮奇：...我将超越一切！
+                Projectile.SetChat(ChatSettingConfig, 7, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                {
+                    chatRoom.chatTurn++;
+                    if (OwnerIsMyPlayer)
+                    {
+                        CurrentState = States.Henshin;
+                    }
+                }
+            }
+            else if (turn == 1)
+            {
+                //赤蛮奇：超——变——身——！！！
+                Projectile.SetChat(ChatSettingConfig, 8, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                //赤蛮奇：......
+                Projectile.SetChat(ChatSettingConfig, 9, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                {
+                    chatRoom.chatTurn++;
+                    if (OwnerIsMyPlayer)
+                    {
+                        CurrentState = States.AfterHenshin;
+                    }
+                }
+            }
+            else if (turn == 3)
+            {
+                //赤蛮奇：...呃，你什么都没听见
+                Projectile.SetChat(ChatSettingConfig, 10, 20);
+
+                if (Projectile.CurrentDialogFinished())
+                {
+                    chatRoom.chatTurn++;
+                    chatCD = 12000;
+                }
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<SekibankiBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+                case States.Posing:
+                    Posing();
+                    break;
+                case States.StopPosing:
+                    StopPosing();
+                    break;
+                case States.BeforeHenshin:
+                    BeforeHenshin();
+                    break;
+                case States.Henshin:
+                    Henshin();
+                    break;
+                case States.AfterHenshin:
+                    AfterHenshin();
+                    break;
+                default:
+                    Idle();
+                    break;
+            }
+
+            UpdateHeadPosition();
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+            if (CloseEyesTimer > 0)
+            {
+                blinkFrame = 12;
+                CloseEyesTimer--;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.032f;
+
+            ChangeDir(true);
+
+            Vector2 point = new Vector2(-40 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 7f);
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0 && !ShouldCloseEyes)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 555 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(7))
+                    {
+                        RandomCount = Main.rand.Next(5, 10);
+                        CurrentState = States.Posing;
+                    }
+                }
+            }
         }
         private void Blink()
         {
@@ -75,10 +332,88 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 12)
             {
                 blinkFrame = 11;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        private void Idle()
+        private void Posing()
+        {
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame == 6)
+            {
+                Projectile.frame = 9;
+            }
+            if (Projectile.frame > 13)
+            {
+                Projectile.frame = 11;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                if (Timer > RandomCount)
+                {
+                    Timer = 0;
+                    CurrentState = States.StopPosing;
+                }
+            }
+        }
+        private void StopPosing()
+        {
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 16)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 3600;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void BeforeHenshin()
+        {
+            IdleAnimation();
+            CloseEyesTimer = 2;
+        }
+        private void Henshin()
+        {
+            if (++Projectile.frameCounter > 4)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 8)
+            {
+                Projectile.frame = 7;
+            }
+        }
+        private void AfterHenshin()
+        {
+            if (++Projectile.frameCounter > 4)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame == 10)
+                Projectile.frame = 15;
+            if (Projectile.frame > 16)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    CloseEyesTimer = 480;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void IdleAnimation()
         {
             if (++Projectile.frameCounter > 7)
             {
@@ -90,70 +425,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        private void Pose()
-        {
-            if (++Projectile.frameCounter > 6)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame == 6)
-                    Projectile.frame = 9;
-                if (Projectile.frame > 13)
-                {
-                    Projectile.frame = 11;
-                    extraAI[1]++;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > Main.rand.Next(5, 10))
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 16)
-                {
-                    Projectile.frame = 0;
-                    PetState = 0;
-                    extraAI[0] = 3600;
-                }
-            }
-        }
-        private void Henshin()
-        {
-            if (++Projectile.frameCounter > 4)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame > 8)
-                {
-                    Projectile.frame = 7;
-                }
-            }
-            else
-            {
-                if (Projectile.frame == 10)
-                    Projectile.frame = 15;
-                if (Projectile.frame > 16)
-                {
-                    Projectile.frame = 0;
-                    PetState = 0;
-                    extraAI[2] = 480;
-                }
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        int headFrame, headFrameCounter, headBaseY, headAdjX, headAdjY;
         private void UpdateHeadFrame()
         {
             if (++headFrameCounter > 6)
@@ -161,7 +432,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 headFrameCounter = 0;
                 headFrame++;
             }
-            if (PetState == 2 && Projectile.frame >= 6)
+            if (Projectile.frame >= 9 && CurrentState == States.Posing)
             {
                 if (headFrame > 10)
                 {
@@ -185,17 +456,17 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateHeadPosition()
         {
-            if (PetState != 2)
+            if (headFrame >= 5)
             {
-                if (headBaseY > 0 && headFrame < 5)
-                    headBaseY -= 2;
+                if (headBaseY > -15)
+                    headBaseY--;
             }
             else
             {
-                if (headBaseY < 15 && headFrame >= 5)
-                    headBaseY++;
+                if (headBaseY < 0)
+                    headBaseY += 2;
             }
-            if (headBaseY < 0)
+            if (headBaseY > 0)
             {
                 headBaseY = 0;
             }
@@ -209,145 +480,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     headAdjX = -2 * Projectile.spriteDirection;
                 }
             }
-        }
-        Color myColor = new Color(255, 105, 105);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Sekibanki", "1");
-            text[2] = ModUtils.GetChatText("Sekibanki", "2");
-            if (talkInterval <= 0)
-                text[3] = ModUtils.GetChatText("Sekibanki", "3");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (Projectile.owner != Main.myPlayer)
-                return;
-
-            if (FindChainedChat(1) && PetState <= 1)
-            {
-                if (Main.rand.NextBool(4) && extraAI[0] <= 0)
-                {
-                    extraAI[0] = 0;
-                    Projectile.netUpdate = true;
-                    SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "7"), myColor, 7, 600);
-                }
-                else
-                    ChatIndex = 0;
-            }
-            else if (FindChainedChat(7))
-            {
-                if (PetState != 3)
-                {
-                    PetState = 3;
-                    Projectile.netUpdate = true;
-                }
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "8"), myColor, 8, 600, -1, 30, true);
-            }
-            else if (FindChainedChat(8))
-            {
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "9"), myColor, 9, 600, -1, 40);
-            }
-            else if (FindChainedChat(9))
-            {
-                if (extraAI[0] < 10800)
-                {
-                    extraAI[0] = 10800;
-                    Projectile.netUpdate = true;
-                }
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "10"), myColor, 0, 600);
-            }
-            if (FindChainedChat(3))
-            {
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "4"), myColor, 4, 600, -1, 9);
-            }
-            else if (FindChainedChat(4))
-            {
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "5"), myColor, 5, 600, -1, 9);
-            }
-            else if (FindChainedChat(5))
-            {
-                SetChatWithOtherOne(null, ModUtils.GetChatText("Sekibanki", "6"), myColor, 0, 360);
-                talkInterval = 3600;
-            }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(7))
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateHeadFrame();
-            if (PetState <= 1)
-            {
-                Idle();
-            }
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<SekibankiBuff>());
-            UpdateTalking();
-            Vector2 point = new Vector2(-40 * player.direction, -30 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.032f;
-
-            ChangeDir(player, true);
-            MoveToPoint(point, 7f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState == 0 && extraAI[2] <= 0)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
-                {
-                    if (mainTimer % 555 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0)
-                    {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState <= 1)
-            {
-                if (PetState == 1)
-                {
-                    Blink();
-                }
-                if (extraAI[0] > 0)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 2)
-            {
-                Pose();
-            }
-            else if (PetState == 3)
-            {
-                Henshin();
-            }
-            if (extraAI[2] > 0)
-            {
-                blinkFrame = 12;
-                extraAI[2]--;
-            }
-            UpdateHeadPosition();
         }
     }
 }

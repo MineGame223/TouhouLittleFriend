@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Wakasagihime : BasicTouhouPet
+    public class Wakasagihime : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -127,39 +127,35 @@ namespace TouhouPets.Content.Projectiles.Pets
                 tailFrame = 0;
             }
         }
-        Color myColor = new Color(87, 164, 255);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(87, 164, 255);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[11];
-            if (PetState != 2)
+            name = "Wakasagihime";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 600;
+            chance = 7;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                text[1] = ModUtils.GetChatText("Wakasagihime", "1");
-                text[2] = ModUtils.GetChatText("Wakasagihime", "2");
-                text[3] = ModUtils.GetChatText("Wakasagihime", "3");
-            }
-            WeightedRandom<string> chat = new();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 600 == 0 && Main.rand.NextBool(7) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateTailFrame();
+        }
+        private void UpdateTalking()
+        {
+
         }
         public override void AI()
         {
@@ -173,7 +169,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.022f;
 
-            ChangeDir(player);
+            ChangeDir();
             float speed = Projectile.wet ? 18f : 9f;
             MoveToPoint(point, speed);
 
@@ -196,7 +192,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         extraAI[1] = Main.rand.Next(360, 480);
                         extraAI[2] = Main.rand.Next(30, 90);
                         Projectile.netUpdate = true;
-                        SetChat(myColor, ModUtils.GetChatText("Wakasagihime", "4"), 4, 120, 30, true);
+                        Projectile.SetChat(ChatSettingConfig, 4, 120);
                     }
                 }
             }

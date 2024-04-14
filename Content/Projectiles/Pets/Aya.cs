@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Aya : BasicTouhouPet
+    public class Aya : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -214,33 +214,31 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        Color myColor = new Color(255, 102, 85);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(255, 102, 85);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Aya", "1");
-            text[2] = ModUtils.GetChatText("Aya", "2");
-            text[3] = ModUtils.GetChatText("Aya", "3");
-            text[4] = ModUtils.GetChatText("Aya", "4");
+            name = "Aya";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 7;
+            whenShouldStop = PetState == 2;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && mainTimer > 0 && PetState != 2)
-            {
-                SetChat(myColor);
-            }
         }
         private void SetShotChat()
         {
@@ -248,16 +246,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             switch (chance)
             {
                 case 1:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "5"), 5);
+                    Projectile.SetChat(ChatSettingConfig, 5);
                     break;
                 case 2:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "6"), 6);
+                    Projectile.SetChat(ChatSettingConfig, 6);
                     break;
                 case 3:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "7"), 7);
+                    Projectile.SetChat(ChatSettingConfig, 7);
                     break;
                 case 4:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "8"), 8);
+                    Projectile.SetChat(ChatSettingConfig, 8);
                     break;
                 default:
                     break;
@@ -286,7 +284,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Projectile.rotation = Projectile.velocity.X * 0.002f;
 
-            ChangeDir(player, true);
+            ChangeDir(true);
             MoveToPoint(point, 30f);
             if (Projectile.owner == Main.myPlayer)
             {
