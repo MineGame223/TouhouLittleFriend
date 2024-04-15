@@ -207,7 +207,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chat.Add(ChatDictionary[3]);
                     chat.Add(ChatDictionary[4]);
                     chat.Add(ChatDictionary[5]);
-                    if (FindPet(ProjectileType<Remilia>(), 0, 1) && !Main.dayTime)
+                    if (FindPet(ProjectileType<Remilia>()) && !Main.dayTime)
                     {
                         chat.Add(ChatDictionary[8]);
                     }

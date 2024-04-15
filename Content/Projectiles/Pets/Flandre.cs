@@ -238,7 +238,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                if (FindPet(ProjectileType<Meirin>(), 2, 2))
+                if (FindPet(ProjectileType<Meirin>(), true, 2))
                 {
                     chat.Add(ChatDictionary[10]);
                 }

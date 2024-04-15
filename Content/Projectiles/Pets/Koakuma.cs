@@ -137,11 +137,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                if (FindPet(ProjectileType<Patchouli>(), 0, 1))
+                if (FindPet(ProjectileType<Patchouli>()))
                 {
                     chat.Add(ChatDictionary[4], 4);
                 }
-                if (FindPet(ProjectileType<Patchouli>(), 2))
+                if (FindPet(ProjectileType<Patchouli>(), true, 2))
                 {
                     chat.Add(ChatDictionary[6], 4);
                 }

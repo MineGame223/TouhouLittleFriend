@@ -148,7 +148,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatTurn = currentChatRoom.chatTurn.ToString();
 
             DrawStatePanelForTesting(drawingForTest, chatCD + "," + chatIndex + "," + chatLag + "," + chatTimeLeft + "," + chatTurn, new Vector2(0, 0));
-            DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
+            DrawStatePanelForTesting(drawingForTest, Projectile.localAI[0] + "," + Projectile.localAI[1] + "," + Projectile.localAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
             DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
             DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
         }
@@ -386,7 +386,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
         /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPet(int type, int minState = -1, int maxState = 0, bool checkTalkable = true)
+        internal bool FindPet(int type, bool checkTalkable = true, int minState = -1, int maxState = 0)
         {
             if (maxState <= minState && minState > 0
                 || maxState >= minState && minState < 0)

@@ -16,7 +16,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Idle,
             Blink,
             Posing,
-            StopPosing,
+            AfterPosing,
             BeforeHenshin,
             Henshin,
             AfterHenshin,
@@ -261,8 +261,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 case States.Posing:
                     Posing();
                     break;
-                case States.StopPosing:
-                    StopPosing();
+                case States.AfterPosing:
+                    AfterPosing();
                     break;
                 case States.BeforeHenshin:
                     BeforeHenshin();
@@ -356,11 +356,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Timer > RandomCount)
                 {
                     Timer = 0;
-                    CurrentState = States.StopPosing;
+                    CurrentState = States.AfterPosing;
                 }
             }
         }
-        private void StopPosing()
+        private void AfterPosing()
         {
             if (++Projectile.frameCounter > 6)
             {

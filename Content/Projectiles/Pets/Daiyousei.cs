@@ -8,13 +8,26 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Daiyousei : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+
+        private int wingFrame, wingFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Daiyousei_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Daiyousei_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawPet(wingFrame, lightColor * 0.5f, drawConfig);
@@ -26,36 +39,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     ShouldUseEntitySpriteDraw = true,
                 });
             return false;
-        }
-        private void Blink()
-        {
-            if (++Projectile.frameCounter > 3)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 2)
-            {
-                Projectile.frame = 0;
-                PetState = 0;
-            }
-        }
-        int wingFrame, wingFrameCounter;
-        private void UpdateWingFrame()
-        {
-            if (wingFrame < 3)
-            {
-                wingFrame = 3;
-            }
-            if (++wingFrameCounter > 4)
-            {
-                wingFrameCounter = 0;
-                wingFrame++;
-            }
-            if (wingFrame > 6)
-            {
-                wingFrame = 3;
-            }
         }
         public override Color ChatTextColor => new Color(71, 228, 63);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -177,32 +160,69 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<DaiyouseiBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(-40 * player.direction, -30 + player.gfxOffY);
-            if (FindPet(ProjectileType<Cirno>()))
+
+            ControlMovement();
+
+            switch (CurrentState)
             {
-                point = new Vector2(80 * player.direction, -30 + player.gfxOffY);
+                case States.Blink:
+                    Blink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
             }
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.032f;
 
             ChangeDir();
-            MoveToPoint(point, 9f);
 
-            if (Projectile.owner == Main.myPlayer)
+            Vector2 point = new Vector2(-40 * Owner.direction, -30 + Owner.gfxOffY);
+            if (FindPet(ProjectileType<Cirno>(), false))
             {
-                if (mainTimer % 270 == 0)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
+                point = new Vector2(80 * Owner.direction, -30 + Owner.gfxOffY);
             }
-            if (PetState == 0)
+            MoveToPoint(point, 9f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
+            {
+                CurrentState = States.Blink;
+            }
+        }
+        private void Blink()
+        {
+            if (++Projectile.frameCounter > 3)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 2)
             {
                 Projectile.frame = 0;
+                CurrentState = States.Idle;
             }
-            else if (PetState == 1)
+        }
+        private void UpdateWingFrame()
+        {
+            if (wingFrame < 3)
             {
-                Blink();
+                wingFrame = 3;
+            }
+            if (++wingFrameCounter > 4)
+            {
+                wingFrameCounter = 0;
+                wingFrame++;
+            }
+            if (wingFrame > 6)
+            {
+                wingFrame = 3;
             }
         }
     }

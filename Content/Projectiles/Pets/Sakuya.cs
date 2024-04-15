@@ -78,7 +78,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (alt)
             {
                 Projectile.frame = 9;
-                if (!FindPet(ProjectileType<Remilia>()) || !Remilia.HateSunlight(Projectile))
+                if (!FindPet(ProjectileType<Remilia>(), false) || !Remilia.HateSunlight(Projectile))
                 {
                     Projectile.frame = 0;
                     PetState = 0;
@@ -328,7 +328,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Projectile.rotation = Projectile.velocity.X * 0.001f;
 
-            ChangeDir( 120);
+            ChangeDir(120);
 
             Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? 100 : -50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;

@@ -3,6 +3,11 @@ Mods: {
 		Chat_Kogasa: {
 			Chat1: 略略略略~
 			Chat2: 吓你一跳！
+			Chat3: 我才不可爱！我很吓人的！
+			Chat4: 好欸！下雨咯！
+			Chat5: 撑着伞在雨中踩水，最有意思了！
+			Chat6: 你带伞了吗？没带的话可以用我！
+			Chat7: 浠沥沥~ 哗啦啦~
 		}
 
 		Chat_Cirno: {
@@ -216,11 +221,8 @@ Mods: {
 			Chat8: 超——变——身——！！！
 			Chat9: ......
 			Chat10: ...呃，你什么都没听见！
-			//Kamen Rider Build
 			Chat11: 不能对明天的幻想乡置之不理！
-			//Kamen Rider Drive
 			Chat12: 不要盲从所谓的“逻辑”，要相信自己的直觉。
-			//Kamen Rider Gotchard
 			Chat13: 同情是欺骗，浪漫是关键。
 			Chat14: 无论好坏，皆来自生活之中。
 		}

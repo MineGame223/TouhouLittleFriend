@@ -221,7 +221,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[5]);
                 }
-                if (FindPet(ProjectileType<Flandre>(), 0, 1))
+                if (FindPet(ProjectileType<Flandre>()))
                 {
                     chat.Add(ChatDictionary[6]);
                 }

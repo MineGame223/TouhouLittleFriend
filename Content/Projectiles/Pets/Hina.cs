@@ -13,7 +13,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Idle,
             Blink,
             Turning,
-            StopTurning,
+            AfterTurning,
         }
         private States CurrentState
         {
@@ -77,7 +77,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
-                if (FindPet(ProjectileType<Nitori>(), 0, 1))
+                if (FindPet(ProjectileType<Nitori>()))
                 {
                     chat.Add(ChatDictionary[4]);
                     chat.Add(ChatDictionary[7]);
@@ -88,7 +88,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             if (IsIdleState)
+            {
                 IdleAnimation();
+            }
         }
         private void UpdateTalking()
         {
@@ -214,14 +216,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 case States.Blink:
                     Blink();
                     break;
+
                 case States.Turning:
                     shouldNotTalking = true;
                     Turning();
                     break;
-                case States.StopTurning:
+
+                case States.AfterTurning:
                     shouldNotTalking = true;
-                    StopTurning();
+                    AfterTurning();
                     break;
+
                 default:
                     Idle();
                     break;
@@ -297,16 +302,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 6;
                 Timer++;
             }
-            if (OwnerIsMyPlayer)
+            if (OwnerIsMyPlayer && Timer > RandomCount)
             {
-                if (Timer > RandomCount)
-                {
-                    Timer = 0;
-                    CurrentState = States.StopTurning;
-                }
+                Timer = 0;
+                CurrentState = States.AfterTurning;
             }
         }
-        private void StopTurning()
+        private void AfterTurning()
         {
             if (++Projectile.frameCounter > 7)
             {

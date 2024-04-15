@@ -3,6 +3,11 @@ Mods: {
 		Chat_Kogasa: {
 			Chat1: relo relo~
 			Chat2: BOO!
+			Chat3: I'm not cute, I'm SCARY!
+			Chat4: Yay! It's rainning now!
+			Chat5: Trample on water pit in raining day is the most interesting thing!
+			Chat6: Have you take any umbrella? If not, you can take me!
+			Chat7: 浠沥沥~ 哗啦啦~
 		}
 
 		Chat_Cirno: {
@@ -216,11 +221,8 @@ Mods: {
 			Chat8: CHO——HEN——SHIN——! ! !
 			Chat9: ......
 			Chat10: ...Eh, you heard nothing!
-			//Kamen Rider Build
 			Chat11: Let we be the one!
-			//Kamen Rider Drive
 			Chat12: Don't believe the "logic" blindly, believe your sense firmly.
-			//Kamen Rider Gotchard
 			Chat13: Sympathy is a lie, romantic is the key.
 			Chat14: When you're alive, you can get the good and the bad.
 		}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -47,9 +48,9 @@ namespace TouhouPets
         /// <returns></returns>
         public static string CoinValue(int value)
         {
-            int p = value % (100 * 100 * 100 * 100) / (100 * 100 * 100);
-            int g = value % (100 * 100 * 100) / (100 * 100);
-            int s = value % (100 * 100) / 100;
+            int p = value % (int)Math.Pow(100, 4) / (int)Math.Pow(100, 3);
+            int g = value % (int)Math.Pow(100, 3) / (int)Math.Pow(100, 2);
+            int s = value % (int)Math.Pow(100, 2) / 100;
             int c = value % 100;
             string textP = p <= 0 ? "" : $"[i/s{p}:{ItemID.PlatinumCoin}]";
             string textG = g <= 0 ? "" : $"[i/s{g}:{ItemID.GoldCoin}]";

@@ -12,17 +12,51 @@ namespace TouhouPets.Content.Projectiles.Pets
     /// </summary>
     public class Cirno : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Laughing,
+            AfterLaughing,
+            Hot,
+            HotBlink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => PetState <= 1;
+        private bool IsHotState => CurrentState == States.Hot || CurrentState == States.HotBlink;
         private bool InHotZone => (Owner.ZoneDesert && Main.dayTime)
             || Owner.ZoneUnderworldHeight || Owner.ZoneJungle;
         private bool CanSeeFrogs => Owner.ZoneJungle && Owner.ZoneOverworldHeight;
+
+        private int wingFrame, wingFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Cirno_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Cirno_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -35,88 +69,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
-        private void Blink()
-        {
-            if (++Projectile.frameCounter > 3)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 2)
-            {
-                Projectile.frame = 0;
-                PetState = 0;
-            }
-        }
-        int wingFrame, wingFrameCounter;
-        private void Laugh()
-        {
-            if (Projectile.frame < 3)
-            {
-                Projectile.frame = 3;
-            }
-            if (++Projectile.frameCounter > (Projectile.frame >= 4 && Projectile.frame <= 5 ? 12 : 7))
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame > 5)
-                {
-                    Projectile.frame = 4;
-                    extraAI[1]++;
-                }
-                if (OwnerIsMyPlayer)//拥有随机数的操作需要在本端选择完成后同步到其他端
-                {
-                    if (extraAI[1] > Main.rand.Next(10, 20))
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 6)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 600;
-                    PetState = 0;
-                }
-            }
-        }
-        private void UpdateWingFrame()
-        {
-            if (!Owner.ZoneUnderworldHeight)
-            {
-                if (wingFrame < 7 || wingFrame >= 10)
-                {
-                    wingFrame = 7;
-                }
-            }
-            else
-            {
-                if (wingFrame < 7)
-                {
-                    wingFrame = 7;
-                }
-            }
-            int count = Owner.ZoneUnderworldHeight ? 8 : 4;
-            if (++wingFrameCounter > count)
-            {
-                wingFrameCounter = 0;
-                wingFrame++;
-            }
-            if (Owner.ZoneUnderworldHeight)
-            {
-                if (wingFrame > 10)
-                {
-                    wingFrame = 7;
-                }
-            }
-        }
         public override Color ChatTextColor => new Color(76, 207, 239);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
@@ -127,13 +79,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 480;
             chance = 9;
-            whenShouldStop = PetState == 2;
+            whenShouldStop = CurrentState == States.Laughing || CurrentState == States.AfterLaughing;
         }
         public override string GetRegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                if (Owner.ZoneUnderworldHeight)
+                if (IsHotState)
                 {
                     chat.Add(ChatDictionary[7]);
                 }
@@ -234,7 +186,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 else if (turn == 0)
                 {
                     //大妖精：琪露诺酱你没事吧...
-                    daiyousei.SetChat(ChatSettingConfig, 6, 20);
+                    daiyousei.SetChat(ChatSettingConfig, 8, 20);
 
                     if (daiyousei.CurrentDialogFinished())
                         chatRoom.chatTurn++;
@@ -255,71 +207,195 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Lighting.AddLight(Projectile.Center, 0.57f, 1.61f, 1.84f);
-            Player player = Owner;
-            Projectile.SetPetActive(player, BuffType<CirnoBuff>());
+            Projectile.SetPetActive(Owner, BuffType<CirnoBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(40 * player.direction, -30 + player.gfxOffY);
+
+            ControlMovement();
+
+            if (Owner.ZoneUnderworldHeight && !IsHotState)
+            {
+                CurrentState = States.Hot;
+            }
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Laughing:
+                    shouldNotTalking = true;
+                    Laughing();
+                    break;
+
+                case States.AfterLaughing:
+                    shouldNotTalking = true;
+                    AfterLaughing();
+                    break;
+
+                case States.Hot:
+                    shouldNotTalking = true;
+                    Hot();
+                    break;
+
+                case States.HotBlink:
+                    shouldNotTalking = true;
+                    HotBlink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            Lighting.AddLight(Projectile.Center, 0.57f, 1.61f, 1.84f);
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.032f;
 
             ChangeDir();
-            MoveToPoint(point, 9f);
 
-            if (OwnerIsMyPlayer)//仅当处于本端时进行状态更新并同步到其他客户端
+            Vector2 point = new Vector2(40 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 9f);
+        }
+        private void MeltingDust()
+        {
+            if (Main.rand.NextBool(12))
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
+                for (int i = 0; i < Main.rand.Next(1, 4); i++)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(10, Projectile.width - 10), Main.rand.Next(10, Projectile.height - 10)),
+                        MyDustId.Water, null, 100, Color.White).scale = Main.rand.NextFloat(0.5f, 1.2f);
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
+            }
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
                 {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && extraAI[0] <= 0 && !InHotZone)
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 600 == 0 && !InHotZone
+                    && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(3))
                     {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
+                        RandomCount = Main.rand.Next(10, 20);
+                        CurrentState = States.Laughing;
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            if (++Projectile.frameCounter > 3)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 2)
             {
                 Projectile.frame = 0;
-                if (extraAI[0] >= 1)
+                CurrentState = States.Idle;
+            }
+        }
+        private void Laughing()
+        {
+            int count = 12;
+            if (Projectile.frame == 3)
+            {
+                count = 7;
+            }
+            if (Projectile.frame < 3)
+            {
+                Projectile.frame = 3;
+            }
+            if (++Projectile.frameCounter > count)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 5)
+            {
+                Projectile.frame = 4;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)//拥有随机数的操作一般需要在本端选择完成后同步到其他端
+            {
+                Timer = 0;
+                CurrentState = States.AfterLaughing;
+            }
+        }
+        private void AfterLaughing()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 6)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[0]--;
+                    ActionCD = 600;
+                    CurrentState = States.Idle;
                 }
             }
-            else if (PetState == 1)
+        }
+        private void Hot()
+        {
+            MeltingDust();
+            Projectile.frame = 1;
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
             {
-                Blink();
+                CurrentState = States.HotBlink;
             }
-            else if (PetState == 2)
+            if (!Owner.ZoneUnderworldHeight)
             {
-                Laugh();
+                CurrentState = States.Idle;
             }
-            //处于沙漠，地狱或丛林时琪露诺不会再大笑；处于地狱时琪露诺会半闭着眼且减少对话
-            if (InHotZone)
+        }
+        private void HotBlink()
+        {
+            MeltingDust();
+            if (++Projectile.frameCounter > 3)
             {
-                if (PetState == 2)
-                {
-                    PetState = 0;
-                }
-                if (player.ZoneUnderworldHeight)
-                {
-                    if (Projectile.frame < 1)
-                        Projectile.frame = 1;
-
-                    if (Main.rand.NextBool(12))
-                    {
-                        for (int i = 0; i < Main.rand.Next(1, 4); i++)
-                        {
-                            Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(10, Projectile.width - 10), Main.rand.Next(10, Projectile.height - 10)),
-                                MyDustId.Water, null, 100, Color.White).scale = Main.rand.NextFloat(0.5f, 1.2f);
-                        }
-                    }
-                }
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 2)
+            {
+                Projectile.frame = 1;
+                CurrentState = States.Hot;
+            }
+        }
+        private void UpdateWingFrame()
+        {
+            if (wingFrame < 7)
+            {
+                wingFrame = 7;
+            }
+            int count = IsHotState ? 8 : 4;
+            if (++wingFrameCounter > count)
+            {
+                wingFrameCounter = 0;
+                wingFrame++;
+            }
+            if (wingFrame > 10)
+            {
+                wingFrame = 7;
             }
         }
     }

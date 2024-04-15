@@ -169,8 +169,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[6]);
                 }
-                if (FindPet(ProjectileType<Reimu>(), 0, 1)
-                    || FindPet(ProjectileType<Reimu>(), 3, 4))
+                if (FindPet(ProjectileType<Reimu>()))
                 {
                     chat.Add(ChatDictionary[7]);
                 }

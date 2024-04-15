@@ -140,7 +140,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Serve()
         {
             Projectile.frame = 23;
-            if (!FindPet(ProjectileType<Flandre>()) || !Remilia.HateSunlight(Projectile))
+            if (!FindPet(ProjectileType<Flandre>(), false) || !Remilia.HateSunlight(Projectile))
             {
                 Projectile.frame = 0;
                 PetState = 0;
@@ -468,7 +468,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;
 
-            ChangeDir( 120);
+            ChangeDir(120);
 
             Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? -100 : 50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;
@@ -497,7 +497,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.owner == Main.myPlayer)
             {
                 if (Remilia.HateSunlight(Projectile) && PetState != 3 && PetState != 4
-                    && FindPet(ProjectileType<Flandre>()))
+                    && FindPet(ProjectileType<Flandre>(), false))
                 {
                     PetState = 3;
                     Projectile.netUpdate = true;
