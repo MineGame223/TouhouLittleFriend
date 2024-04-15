@@ -13,16 +13,55 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Yuyuko : BasicTouhouPet
+    public class Yuyuko : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            SwingFan,
+            AfterSwingFan,
+            BeforeEatting,
+            Eatting,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => PetState <= 1;
+        private bool IsEattingState => PetState >= (int)States.BeforeEatting && PetState <= (int)States.Eatting;
+
+        private int hatFrame, hatFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int extraAdjX, extraAdjY;
+        private Item food = new Item();
+        private List<Item> foodList = new List<Item>();
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuyuko_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 20;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuyuko_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -35,10 +74,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(hatFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, 
+            Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     AltTexture = clothTex,
@@ -46,9 +85,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            if (Projectile.frame >= 2 && Projectile.frame <= 4)
+            if (!Main.gameMenu)//避免有魂灵Mod冲突
             {
-                DrawFood(lightColor);
+                if (Projectile.frame >= 2 && Projectile.frame <= 4)
+                {
+                    DrawFood(lightColor);
+                }
             }
             return false;
         }
@@ -67,8 +109,279 @@ namespace TouhouPets.Content.Projectiles.Pets
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Main.spriteBatch.TeaNPCDraw(t, pos, rect, clr, Projectile.rotation, orig, 1f, effect, 0f);
         }
+        public override Color ChatTextColor => new Color(255, 112, 214);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Yuyuko";
+            indexRange = new Vector2(1, 13);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 970;
+            chance = 9;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+                if (FindPet(ProjectileType<Youmu>()))
+                {
+                    chat.Add(ChatDictionary[10]);
+                    chat.Add(ChatDictionary[11]);
+                }
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateHatFrame();
+            UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(11, 13) || FindChatIndex(1))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Youmu>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile yuyuko = chatRoom.initiator;
+            Projectile youmu = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 12 && index <= 13)
+            {
+                if (turn == -1)
+                {
+                    //幽幽子：妖梦酱有为未来做过打算嘛？
+                    youmu.CloseCurrentDialog();
+
+                    if (yuyuko.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //妖梦：欸？只要伺候幽幽子大人就行了吧...
+                    youmu.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (youmu.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
+                    yuyuko.SetChat(ChatSettingConfig, 13, 20);
+
+                    if (yuyuko.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    //妖梦：只要能待在幽幽子大人身旁，我就很知足了。
+                    youmu.SetChat(ChatSettingConfig, 10, 20);
+
+                    if (youmu.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 11)
+            {
+                if (turn == -1)
+                {
+                    //幽幽子：妖梦酱，今天晚上吃什么？
+                    youmu.CloseCurrentDialog();
+
+                    if (yuyuko.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //妖梦：幽幽子大人您五分钟之前刚吃过饭。
+                    youmu.SetChat(ChatSettingConfig, 8, 20);
+
+                    if (youmu.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 1)
+            {
+                if (turn == -1)
+                {
+                    //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
+                    youmu.CloseCurrentDialog();
+
+                    if (yuyuko.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //妖梦：可是幽幽子大人您已经死了啊？也不会复生。
+                    youmu.SetChat(ChatSettingConfig, 9, 20);
+
+                    if (youmu.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<YuyukoBuff>());
+            UpdateTalking();
+
+            ControlMovement();
+
+            SpawnButterfly();
+
+            if (food.IsAir && IsEattingState)
+            {
+                Projectile.frame = 0;
+                CurrentState = States.Idle;
+                return;
+            }
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.SwingFan:
+                    shouldNotTalking = true;
+                    SwingFan();
+                    break;
+
+                case States.AfterSwingFan:
+                    shouldNotTalking = true;
+                    AfterSwingFan();
+                    break;
+
+                case States.BeforeEatting:
+                    shouldNotTalking = true;
+                    BeforeEatting();
+                    break;
+
+                case States.Eatting:
+                    shouldNotTalking = true;
+                    Eatting();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+            UpdatePositionOffset();
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            ItemIO.Receive(food, reader);
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            ItemIO.Send(food, writer);
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.003f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-40 * Owner.direction, -50 + Owner.gfxOffY);
+            if (Owner.ownedProjectileCounts[ProjectileType<Youmu>()] > 0)
+            {
+                point = new Vector2(40 * Owner.direction, -50 + Owner.gfxOffY);
+            }
+            MoveToPoint(point, 16f);
+        }
+        private void SpawnButterfly()
+        {
+            if (!OwnerIsMyPlayer)
+                return;
+
+            if (mainTimer % 20 == 0)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
+                            , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);
+            }
+        }
+        private void UpdatePositionOffset()
+        {
+            extraAdjX = 0;
+            extraAdjY = 0;
+            switch (Projectile.frame)
+            {
+                case 2:
+                    extraAdjY = 2;
+                    break;
+                case 4:
+                    extraAdjX = -4 * Projectile.spriteDirection;
+                    extraAdjY = -4;
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 600 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(6))
+                    {
+                        RandomCount = Main.rand.Next(10, 30);
+                        CurrentState = States.SwingFan;
+                    }
+                    else if (Main.rand.NextBool(3))
+                    {
+                        FoodSelect(Owner);
+                    }
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;
@@ -77,17 +390,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 2)
             {
                 blinkFrame = 0;
-                PetState = 0;
-                Projectile.netUpdate = true;
+                CurrentState = States.Idle;
             }
         }
-        int hatFrame, hatFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int extraAdjX, extraAdjY;
-        Item food;
-        List<Item> foodList = new List<Item>();
-        private void Fan()
+        private void SwingFan()
         {
             if (Projectile.frame < 7)
                 Projectile.frame = 7;
@@ -97,30 +403,134 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (extraAI[0] == 0)
+            if (Projectile.frame > 15)
             {
-                if (Projectile.frame > 15)
+                Projectile.frame = 11;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterSwingFan;
+            }
+        }
+        private void AfterSwingFan()
+        {
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 19)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 11;
-                    extraAI[1]++;
-                }
-                if (extraAI[1] > extraAI[2])
-                {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
+                    ActionCD = 600;
+                    CurrentState = States.Idle;
                 }
             }
-            else
+        }
+        private void BeforeEatting()
+        {
+            if (++Projectile.frameCounter > 12)
             {
-                Projectile.frameCounter++;
-                if (Projectile.frame > 19)
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame >= 3)
+            {
+                Projectile.frame = 3;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > 180)
+            {
+                Timer = 0;
+                CurrentState = States.Eatting;
+            }
+        }
+        private void Eatting()
+        {
+            if (++Projectile.frameCounter > 12)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame == 5)
+            {
+                EmitFoodParticles(food);
+                if (Projectile.frameCounter == 1 && food.UseSound != null)
+                    AltVanillaFunction.PlaySound((SoundStyle)food.UseSound, Projectile.Center);
+            }
+            if (Projectile.frame > 6)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 0;
-                    extraAI[0] = 600;
-                    extraAI[2] = 0;
-                    PetState = 0;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Idle;
                 }
+            }
+        }
+        private void EmitFoodParticles(Item sItem)
+        {
+            Color[] array = ItemID.Sets.FoodParticleColors[sItem.type];
+            if (array != null && array.Length != 0 && Main.rand.NextBool(2))
+            {
+                Vector2? mouthPosition = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3)
+                    + new Vector2(extraAdjX, extraAdjY) + new Vector2(0, 7f * Main.essScale);
+                if (mouthPosition.HasValue)
+                {
+                    Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
+                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection, 0);
+                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                }
+            }
+
+            Color[] array2 = ItemID.Sets.DrinkParticleColors[sItem.type];
+            if (array2 != null && array2.Length != 0)
+            {
+                Vector2? mouthPosition = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3)
+                    + new Vector2(extraAdjX, extraAdjY) + new Vector2(0, 7f * Main.essScale);
+                if (mouthPosition.HasValue)
+                {
+                    Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
+                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection * 0.1f, 0);
+                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                }
+            }
+        }
+        private void UpdateHatFrame()
+        {
+            if (hatFrame < 3)
+            {
+                hatFrame = 3;
+            }
+            int count = 7;
+            if (++hatFrameCounter > count)
+            {
+                hatFrameCounter = 0;
+                hatFrame++;
+            }
+            if (hatFrame > 6)
+            {
+                hatFrame = 3;
+            }
+        }
+        private void UpdateClothFrame()
+        {
+            if (clothFrame < 7)
+            {
+                clothFrame = 7;
+            }
+            int count = 5;
+            if (++clothFrameCounter > count)
+            {
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 10)
+            {
+                clothFrame = 7;
             }
         }
         private void FoodListUpdate(Player player)
@@ -169,295 +579,43 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     fd.TurnToAir(true);
                 }
-
-                PetState = 3;
-                if (ChatIndex < 9 || ChatIndex > 10)
+                if (chatTimeLeft <= 0)
                 {
                     int chance = Main.rand.Next(3);
                     switch (chance)
                     {
                         case 1:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6"), 6, 60, 30, true);
+                            Projectile.SetChat(ChatSettingConfig, 6, 60);
                             break;
                         case 2:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7"), 7, 60, 30, true);
+                            Projectile.SetChat(ChatSettingConfig, 7, 60);
                             break;
                         default:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5"), 5, 60, 30, true);
+                            Projectile.SetChat(ChatSettingConfig, 5, 60);
                             break;
                     }
                 }
+                CurrentState = States.BeforeEatting;
             }
             else
             {
-                if (ChatIndex < 9 || ChatIndex > 10)
+                if (chatTimeLeft <= 0)
                 {
                     int chance = Main.rand.Next(3);
                     switch (chance)
                     {
                         case 1:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "6-1"), 13, 60, 30, true);
+                            Projectile.SetChat(ChatSettingConfig, 8);
                             break;
                         case 2:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "7-1"), 12, 60, 30, true);
+                            Projectile.SetChat(ChatSettingConfig, 9);
                             break;
                         default:
-                            SetChat(myColor, ModUtils.GetChatText("Yuyuko", "5-1"), 11, 60, 30, true);
+                            Projectile.SetChat(ChatSettingConfig, 10);
                             break;
                     }
                 }
             }
-        }
-        private void EmitFoodParticles(Item sItem)
-        {
-            Color[] array = ItemID.Sets.FoodParticleColors[sItem.type];
-            if (array != null && array.Length != 0 && Main.rand.NextBool(2))
-            {
-                Vector2? mouthPosition = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3)
-                    + new Vector2(extraAdjX, extraAdjY) + new Vector2(0, 7f * Main.essScale);
-                if (mouthPosition.HasValue)
-                {
-                    Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
-                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection, 0);
-                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
-                }
-            }
-
-            Color[] array2 = ItemID.Sets.DrinkParticleColors[sItem.type];
-            if (array2 != null && array2.Length != 0)
-            {
-                Vector2? mouthPosition = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3)
-                    + new Vector2(extraAdjX, extraAdjY) + new Vector2(0, 7f * Main.essScale);
-                if (mouthPosition.HasValue)
-                {
-                    Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
-                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection * 0.1f, 0);
-                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
-                }
-            }
-        }
-        private void Eat()
-        {
-            if (food == null || food.IsAir)
-            {
-                Projectile.frame = 0;
-                extraAI[0] = 60;
-                PetState = 0;
-                return;
-            }
-            if (++Projectile.frameCounter > 12)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame >= 3)
-                {
-                    Projectile.frame = 3;
-                    extraAI[1]++;
-                }
-                if (extraAI[1] > 180)
-                {
-                    extraAI[1] = 0;
-                    extraAI[0] = 1;
-                }
-            }
-            else
-            {
-                if (Projectile.frame == 5)
-                {
-                    EmitFoodParticles(food);
-                    if (Projectile.frameCounter == 1 && food.UseSound != null)
-                        AltVanillaFunction.PlaySound((SoundStyle)food.UseSound, Projectile.Center);
-                }
-                if (Projectile.frame > 6)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 60;
-                    PetState = 0;
-                    Projectile.netUpdate = true;
-                }
-            }
-        }
-        private void UpdateHatFrame()
-        {
-            if (hatFrame < 3)
-            {
-                hatFrame = 3;
-            }
-            int count = 7;
-            if (++hatFrameCounter > count)
-            {
-                hatFrameCounter = 0;
-                hatFrame++;
-            }
-            if (hatFrame > 6)
-            {
-                hatFrame = 3;
-            }
-        }
-        private void UpdateClothFrame()
-        {
-            if (clothFrame < 7)
-            {
-                clothFrame = 7;
-            }
-            int count = 5;
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 10)
-            {
-                clothFrame = 7;
-            }
-        }
-        Color myColor = new Color(255, 112, 214);
-        public override string GetChatText(out string[] text)
-        {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Yuyuko", "1");
-            text[2] = ModUtils.GetChatText("Yuyuko", "2");
-            text[3] = ModUtils.GetChatText("Yuyuko", "3");
-            text[4] = ModUtils.GetChatText("Yuyuko", "4");
-            if (player.HasBuff(BuffType<YoumuBuff>())
-                && FindPetState(out Projectile _, ProjectileType<Youmu>(), 0, 1))
-            {
-                text[8] = ModUtils.GetChatText("Yuyuko", "8");
-                text[9] = ModUtils.GetChatText("Yuyuko", "9");
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 9)
-                            weight = 10;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Youmu>();
-            if (FindChatIndex(out Projectile p, type1, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Yuyuko", "10"), myColor, 10, 600);
-            }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(9) && mainTimer > 0 && PetState < 2)
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateHatFrame();
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            if (food == null)
-            {
-                food = new();
-            }
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<YuyukoBuff>());
-            UpdateTalking();
-            Vector2 point = new Vector2(-40 * player.direction, -50 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Youmu>()] > 0)
-            {
-                point = new Vector2(40 * player.direction, -50 + player.gfxOffY);
-            }
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.003f;
-
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Youmu>()] <= 0);
-            MoveToPoint(point, 16f);
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 20 == 0)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
-                                , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);
-                }
-
-                if (mainTimer % 270 == 0 && PetState < 1)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 600 && extraAI[0] == 0)
-                {
-                    if (mainTimer % 600 == 0 && PetState < 2)
-                    {
-                        if (Main.rand.NextBool(6))
-                        {
-                            PetState = 2;
-                            extraAI[2] = Main.rand.Next(10, 30);
-                            Projectile.netUpdate = true;
-                        }
-                        else if (Main.rand.NextBool(3))
-                        {
-                            FoodSelect(player);
-                            Projectile.netUpdate = true;
-                        }
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Fan();
-            }
-            else if (PetState == 3)
-            {
-                Eat();
-            }
-            extraAdjX = 0;
-            extraAdjY = 0;
-            switch (Projectile.frame)
-            {
-                case 2:
-                    extraAdjY = 2;
-                    break;
-                case 4:
-                    extraAdjX = -4 * Projectile.spriteDirection;
-                    extraAdjY = -4;
-                    break;
-                default:
-                    break;
-            }
-        }
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            base.ReceiveExtraAI(reader);
-            if (food != null)
-                ItemIO.Receive(food, reader);
-        }
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            base.SendExtraAI(writer);
-            if (food != null)
-                ItemIO.Send(food, writer);
         }
     }
 }

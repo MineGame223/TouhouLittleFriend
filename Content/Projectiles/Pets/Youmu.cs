@@ -8,21 +8,41 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Youmu : BasicTouhouPet
+    public class Youmu : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            FindEnemy,
+            FindEnemyBlink,
+            Afraid,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Youmu_Cloth");
+
+        private int handFrame;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private Vector2 shake;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Youmu_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
             {
                 ShouldUseEntitySpriteDraw = true,
+                PositionOffset = shake,
             };
             DrawPetConfig config2 = config with
             {
@@ -45,7 +65,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1 || PetState == 4)
+            if (CurrentState == States.Blink || CurrentState == States.FindEnemyBlink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config2);
@@ -60,9 +80,137 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return false;
         }
+        public override Color ChatTextColor => new Color(188, 248, 248);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Youmu";
+            indexRange = new Vector2(1, 10);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 900;
+            chance = 12;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                if (CurrentState == States.FindEnemy || CurrentState == States.FindEnemyBlink)
+                {
+                    chat.Add(ChatDictionary[3]);
+                }
+                if (CurrentState == States.Afraid)
+                {
+                    chat.Add(ChatDictionary[4]);
+                    chat.Add(ChatDictionary[5]);
+                }
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<YoumuBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            if (FindBoss())
+            {
+                CurrentState = States.FindEnemy;
+            }
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.FindEnemy:
+                    shouldNotTalking = true;
+                    FindEnemy();
+                    break;
+
+                case States.FindEnemyBlink:
+                    shouldNotTalking = true;
+                    FindEnemyBlink();
+                    break;
+
+                case States.Afraid:
+                    shouldNotTalking = true;
+                    Afraid();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+            float lightPlus = 0.7f;
+            Lighting.AddLight(Projectile.Center, 1.83f * lightPlus, 2.02f * lightPlus, 1.99f * lightPlus);
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.001f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(54 * Owner.direction, -34 + Owner.gfxOffY);
+            if (FindPet(ProjectileType<Yuyuko>(), false))
+            {
+                point = new Vector2(-50 * Owner.direction, -50 + Owner.gfxOffY);
+            }
+            MoveToPoint(point, 15f * (PetState == 2 ? 0.5f : 1));
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (Owner.ZoneGraveyard)
+                {
+                    CurrentState = States.Afraid;
+                }
+            }
+        }
+        private bool FindBoss()
+        {
+            bool hasBoss = false;
+            if (Owner.active && !Owner.dead)
+            {
+                foreach (NPC n in Main.npc)
+                {
+                    if (n.active && !n.friendly
+                        && (n.target == Owner.whoAmI || Vector2.Distance(n.Center, Owner.Center) <= 1280))
+                    {
+                        if (n.boss)
+                        {
+                            hasBoss = true;
+                            Projectile.spriteDirection = (n.position.X > Projectile.position.X) ? 1 : -1;
+                        }
+                    }
+                }
+            }
+            return hasBoss;
+        }
         private void Blink()
         {
-            int startFrame = (PetState == 4 ? 6 : 5);
+            Projectile.frame = 0;
+            int startFrame = 5;
             if (blinkFrame < startFrame)
             {
                 blinkFrame = startFrame;
@@ -74,31 +222,61 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (blinkFrame > 7)
             {
-                blinkFrame = 5;
-                PetState = (PetState == 4 ? 3 : 0);
+                blinkFrame = startFrame;
+                CurrentState = States.Idle;
             }
         }
-        int handFrame;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        Vector2 shake;
-        private void Scared()
+        private void FindEnemy()
         {
-            extraAI[1]++;
+            Projectile.frame = 4;
+            handFrame = 9;
+            if (!FindBoss())
+            {
+                if (OwnerIsMyPlayer)
+                {
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void FindEnemyBlink()
+        {
+            int startFrame = 6;
+            if (blinkFrame < startFrame)
+            {
+                blinkFrame = startFrame;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 7)
+            {
+                blinkFrame = startFrame;
+                CurrentState = States.FindEnemy;
+            }
+        }
+        private void Afraid()
+        {
+            handFrame = 8;
+            shake = new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), 0);
             if (Projectile.frame < 1)
             {
                 Projectile.frame = 1;
             }
-            if (extraAI[1] % 180 == 0)
+            if (++Projectile.frameCounter > 180)
             {
+                Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
             if (Projectile.frame > 3)
             {
                 Projectile.frame = 1;
             }
-            handFrame = 8;
-            shake = new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), 0);
+            if (OwnerIsMyPlayer && !Owner.ZoneGraveyard)
+            {
+                CurrentState = States.Idle;
+            }
         }
         private void UpdateClothFrame()
         {
@@ -111,182 +289,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 3)
             {
                 clothFrame = 0;
-            }
-        }
-        Color myColor = new Color(188, 248, 248);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Youmu", "1");
-            text[2] = ModUtils.GetChatText("Youmu", "2");
-            if (PetState == 3)
-                text[3] = ModUtils.GetChatText("Youmu", "3");
-            if (PetState == 2)
-            {
-                text[4] = ModUtils.GetChatText("Youmu", "4");
-                text[5] = ModUtils.GetChatText("Youmu", "5");
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (PetState == 2 && i <= 3)
-                        {
-                            weight = 0;
-                        }
-                        if (PetState >= 3 && i != 3)
-                        {
-                            weight = 0;
-                        }
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Yuyuko>();
-            if (FindChatIndex(out Projectile _, type1, 1, default, 0)
-                || FindChatIndex(out Projectile _, type1, 2, default, 0)
-                  || FindChatIndex(out Projectile _, type1, 4, default, 0)
-                  || FindChatIndex(out Projectile _, type1, 8, default, 0)
-                  || FindChatIndex(out Projectile _, type1, 9, default, 0))
-            {
-                ChatCD = 1;
-            }
-
-            if (FindChatIndex(out Projectile p, type1, 9))
-            {
-                if (PetState < 2)
-                    SetChatWithOtherOne(p, ModUtils.GetChatText("Youmu", "6"), myColor, 6, 600);
-            }
-            else if (FindChatIndex(out Projectile p1, type1, 10, default, 1, true))
-            {
-                if (PetState < 2)
-                    SetChatWithOtherOne(p1, ModUtils.GetChatText("Youmu", "7"), myColor, 0, 600);
-                p1.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p2, type1, 4)
-                || FindChatIndex(out p2, type1, 8))
-            {
-                if (PetState < 2)
-                    SetChatWithOtherOne(p2, ModUtils.GetChatText("Youmu", "8"), myColor, 0, 360);
-                p2.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p3, type1, 1))
-            {
-                if (PetState < 2)
-                    SetChatWithOtherOne(p3, ModUtils.GetChatText("Youmu", "9"), myColor, 0, 360);
-                p3.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p4, type1, 2))
-            {
-                if (PetState < 2)
-                    SetChatWithOtherOne(p4, ModUtils.GetChatText("Youmu", "10"), myColor, 0, 360);
-                p4.localAI[2] = 0;
-            }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(12))
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            float lightPlus = 0.7f;
-            Lighting.AddLight(Projectile.Center, 1.83f * lightPlus, 2.02f * lightPlus, 1.99f * lightPlus);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<YoumuBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(54 * player.direction, -34 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Yuyuko>()] > 0)
-            {
-                point = new Vector2(-50 * player.direction, -50 + player.gfxOffY);
-            }
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.001f;
-
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Yuyuko>()] > 0);
-            MoveToPoint(point, 15f * (PetState == 2 ? 0.5f : 1));
-            bool hasBoss = false;
-            if (player.active && !player.dead)
-            {
-                foreach (NPC n in Main.npc)
-                {
-                    if (n.active && !n.friendly && (n.target == player.whoAmI || Vector2.Distance(n.Center, player.Center) <= 1280))
-                    {
-                        if (n.boss)
-                        {
-                            hasBoss = true;
-                            Projectile.spriteDirection = (n.position.X > Projectile.position.X) ? 1 : -1;
-                        }
-                    }
-                }
-            }
-            if (hasBoss)
-            {
-                PetState = 3;
-            }
-            else
-            {
-                if (PetState == 3)
-                {
-                    PetState = 0;
-                }
-                if (player.ZoneGraveyard)
-                {
-                    if (PetState != 2 && extraAI[1] > 0)
-                        extraAI[1] = 0;
-                    PetState = 2;
-                }
-                else if (PetState == 2)
-                {
-                    PetState = 0;
-                    extraAI[1] = 0;
-                }
-            }
-
-            shake = Vector2.Zero;
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0)
-                {
-                    if (PetState < 2)
-                        PetState = 1;
-                    else if (PetState == 3)
-                        PetState = 4;
-                    Projectile.netUpdate = true;
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Scared();
-            }
-            else if (PetState == 3 || PetState == 4)
-            {
-                Projectile.frame = 4;
-                handFrame = 9;
-                if (PetState == 4)
-                {
-                    Blink();
-                }
             }
         }
     }
