@@ -410,12 +410,6 @@ Mods: {
 		}
 
 		Chat_Kaguya: {
-			Chat-1: This turn, I win!
-			Chat-2: Practice makes perfect, you understand?
-			Chat-3: Ah hahaha!
-			Chat-4: DAMN!!!
-			Chat-5: You must cheated!
-			Chat-6: I'll grant your wish in the next round-- DIE!
 			Chat1: It's not very "dirty" on the ground...
 			Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
 			Chat3: ...I have to win this time!
@@ -425,15 +419,15 @@ Mods: {
 			Chat7: Hey, how long have we been fighting each other?
 			Chat8: Wanna do something new today?
 			Chat9: How about...something EXCITING?
+			Chat10: This turn, I win!
+			Chat11: Practice makes perfect, you understand?
+			Chat12: Ah hahaha!
+			Chat13: DAMN!!!
+			Chat14: You must cheated!
+			Chat15: I'll grant your wish in the next round-- DIE!
 		}
 
 		Chat_Moku: {
-			Chat-1: Just accept that I'm stronger!
-			Chat-2: Do you even want to defeat ME?
-			Chat-3: That's all you got?
-			Chat-4: I won't lose in the next round!
-			Chat-5: I'm too careless...
-			Chat-6: This'll be the last time you'll be this complacent...
 			Chat1: Living forever, is absolutely a greater curse than a blessing...
 			Chat2: ...How many years ago was that time?
 			Chat3: How could I know, about a thousand years?
@@ -443,6 +437,12 @@ Mods: {
 			Chat7: I'm fine, maybe. Just the usual.
 			Chat8: Nope, I'm trying to forget them...
 			Chat9: You will become this form every full moon, that's pretty scary!
+			Chat10: Just accept that I'm stronger!
+			Chat11: Do you even want to defeat ME?
+			Chat12: That's all you got?
+			Chat13: I won't lose in the next round!
+			Chat14: I'm too careless...
+			Chat15: This'll be the last time you'll be this complacent...
 		}
 
 		Chat_Meirin: {

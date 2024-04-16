@@ -37,20 +37,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, currentRow);
             return false;
         }
-        private void DrawKeine(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
-        {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            int width = t.Width / 2;
-            Rectangle rect = new Rectangle(width * (UseAlternatePhase ? 1 : 0), frame * height, width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
-        }
         private void Blink()
         {
             if (++Projectile.frameCounter > 3)

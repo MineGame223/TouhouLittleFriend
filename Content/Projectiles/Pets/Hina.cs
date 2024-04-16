@@ -35,7 +35,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[2];
             set => Projectile.localAI[2] = value;
         }
-        private bool IsIdleState => PetState <= 1;
+        private bool IsIdleState => CurrentState <= States.Blink;
 
         private int blinkFrame, blinkFrameCounter;
 

@@ -9,14 +9,30 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Yukari : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+
+        private int gapFrame, gapFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int hairFrame, hairFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yukari_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yukari_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -30,10 +46,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(hairFrame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, 
+            Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     AltTexture = clothTex,
@@ -67,71 +83,6 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(gapFrame, Color.White * 0.9f * Main.essScale, drawConfig);
             Projectile.DrawPet(gapFrame, lightColor, config);
-        }
-        private void Blink()
-        {
-            if (blinkFrame < 4)
-            {
-                blinkFrame = 4;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 6)
-            {
-                blinkFrame = 4;
-                PetState = 0;
-            }
-        }
-        int gapFrame, gapFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int hairFrame, hairFrameCounter;
-        private void UpdateGapFrame()
-        {
-            if (gapFrame < 8)
-            {
-                gapFrame = 8;
-            }
-            int count = 11;
-            if (++gapFrameCounter > count)
-            {
-                gapFrameCounter = 0;
-                gapFrame++;
-            }
-            if (gapFrame > 9)
-            {
-                gapFrame = 8;
-            }
-        }
-        private void UpdateMiscFrame()
-        {
-            int count = 5;
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 3)
-            {
-                clothFrame = 0;
-            }
-
-            if (hairFrame < 4)
-            {
-                hairFrame = 4;
-            }
-            if (++hairFrameCounter > count)
-            {
-                hairFrameCounter = 0;
-                hairFrame++;
-            }
-            if (hairFrame > 7)
-            {
-                hairFrame = 4;
-            }
         }
         public override Color ChatTextColor => new Color(156, 91, 250);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -223,41 +174,112 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Lighting.AddLight(Projectile.Center, 1.56f, 0.91f, 2.50f);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<YukariBuff>());
+            Projectile.SetPetActive(Owner, BuffType<YukariBuff>());
+
             UpdateTalking();
-            Vector2 point = new Vector2(60 * player.direction, -30 + player.gfxOffY);
+
+            ControlMovement();
+
+            GenDust();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            Lighting.AddLight(Projectile.Center, 1.56f, 0.91f, 2.50f);
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.002f;
 
+            ChangeDir();
+
+            Vector2 point = new Vector2(60 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 18f);
+        }
+        private void GenDust()
+        {
             if (Main.rand.NextBool(7))
                 Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)), MyDustId.PurpleLight
                     , new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)), 100, default
                     , Main.rand.NextFloat(1f, 2f)).noGravity = true;
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
+            {
+                CurrentState = States.Blink;
+            }
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 4)
+            {
+                blinkFrame = 4;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 6)
+            {
+                blinkFrame = 4;
+                CurrentState = States.Idle;
+            }
+        }
+        private void UpdateGapFrame()
+        {
+            if (gapFrame < 8)
+            {
+                gapFrame = 8;
+            }
+            int count = 11;
+            if (++gapFrameCounter > count)
+            {
+                gapFrameCounter = 0;
+                gapFrame++;
+            }
+            if (gapFrame > 9)
+            {
+                gapFrame = 8;
+            }
+        }
+        private void UpdateMiscFrame()
+        {
+            int count = 5;
+            if (++clothFrameCounter > count)
+            {
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 3)
+            {
+                clothFrame = 0;
+            }
 
-            ChangeDir();
-            MoveToPoint(point, 18f);
-            if (Projectile.owner == Main.myPlayer)
+            if (hairFrame < 4)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
+                hairFrame = 4;
             }
-            if (PetState == 0)
+            if (++hairFrameCounter > count)
             {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
+                hairFrameCounter = 0;
+                hairFrame++;
             }
-            else if (PetState == 1)
+            if (hairFrame > 7)
             {
-                Projectile.frame = 0;
-                Blink();
+                hairFrame = 4;
             }
         }
     }

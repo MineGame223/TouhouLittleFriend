@@ -10,6 +10,29 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Koakuma : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private bool EarActive
+        {
+            get => Projectile.ai[2] == 0;
+            set => Projectile.ai[2] = value ? 0 : 1;
+        }
+
+        private int wingFrame, wingFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int earFrame, earFrameCounter;
+        private int hairFrame, hairFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koakuma_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
@@ -24,8 +47,6 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             base.OnSpawn(source);
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koakuma_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawPet(hairFrame, lightColor, drawConfig);
@@ -36,7 +57,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(earFrame, lightColor, drawConfig, 1);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -46,77 +67,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     ShouldUseEntitySpriteDraw = true,
                 });
             return false;
-        }
-        private void Blink()
-        {
-            if (blinkFrame < 3)
-            {
-                blinkFrame = 3;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 5)
-            {
-                blinkFrame = 3;
-                PetState = 0;
-            }
-        }
-        int wingFrame, wingFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int earFrame, earFrameCounter;
-        int hairFrame, hairFrameCounter;
-        bool EarActive
-        {
-            get => Projectile.ai[2] == 0;
-            set => Projectile.ai[2] = value ? 0 : 1;
-        }
-        private void UpdateWingFrame()
-        {
-            if (wingFrame < 4)
-            {
-                wingFrame = 4;
-            }
-            if (++wingFrameCounter > 5)
-            {
-                wingFrameCounter = 0;
-                wingFrame++;
-            }
-            if (wingFrame > 9)
-            {
-                wingFrame = 4;
-            }
-        }
-        private void UpdateHairFrame()
-        {
-            if (hairFrame < 6)
-            {
-                hairFrame = 6;
-            }
-            if (++hairFrameCounter > 7)
-            {
-                hairFrameCounter = 0;
-                hairFrame++;
-            }
-            if (hairFrame > 9)
-            {
-                hairFrame = 6;
-            }
-        }
-        private void UpdateEarsFrame()
-        {
-            if (++earFrameCounter > 5 && EarActive)
-            {
-                earFrameCounter = 0;
-                earFrame++;
-            }
-            if (earFrame > 3)
-            {
-                earFrame = 0;
-                EarActive = false;
-            }
         }
         public override Color ChatTextColor => new Color(224, 78, 78);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -151,7 +101,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateWingFrame();
-            UpdateEarsFrame();
             UpdateHairFrame();
         }
         private void UpdateTalking()
@@ -256,6 +205,31 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<KoakumaBuff>());
+            Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
+
+            UpdateTalking();
+
+            ControlMovement(Owner);
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (EarActive)
+            {
+                UpdateEarsFrame();
+            }
+        }
         private void ControlMovement(Player player)
         {
             Projectile.tileCollide = false;
@@ -279,29 +253,80 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             MoveToPoint(point, speed, center);
         }
-        public override void AI()
+        private void Idle()
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<KoakumaBuff>());
-            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
-
-            UpdateTalking();
-            ControlMovement(player);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0)
-                {
-                    PetState = 1;
-                    if (Main.rand.NextBool(4))
-                        EarActive = true;
-                    Projectile.netUpdate = true;
-                }
-            }
             Projectile.frame = 0;
-            if (PetState == 1)
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
             {
-                Blink();
+                if (Main.rand.NextBool(4))
+                {
+                    EarActive = true;
+                }
+                CurrentState = States.Blink;
+            }
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 3)
+            {
+                blinkFrame = 3;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 5)
+            {
+                blinkFrame = 3;
+                CurrentState = States.Idle;
+            }
+        }
+        private void UpdateWingFrame()
+        {
+            if (wingFrame < 4)
+            {
+                wingFrame = 4;
+            }
+            if (++wingFrameCounter > 5)
+            {
+                wingFrameCounter = 0;
+                wingFrame++;
+            }
+            if (wingFrame > 9)
+            {
+                wingFrame = 4;
+            }
+        }
+        private void UpdateHairFrame()
+        {
+            if (hairFrame < 6)
+            {
+                hairFrame = 6;
+            }
+            if (++hairFrameCounter > 7)
+            {
+                hairFrameCounter = 0;
+                hairFrame++;
+            }
+            if (hairFrame > 9)
+            {
+                hairFrame = 6;
+            }
+        }
+        private void UpdateEarsFrame()
+        {
+            if (++earFrameCounter > 5)
+            {
+                earFrameCounter = 0;
+                earFrame++;
+            }
+            if (earFrame > 3)
+            {
+                earFrame = 0;
+                EarActive = false;
+                Projectile.netUpdate = true;
             }
         }
     }

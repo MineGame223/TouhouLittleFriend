@@ -251,8 +251,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         #endregion
 
         #region 对话更新方法
-        /// <summary>
-        /// </summary>
         private void UpdateChat()
         {
             if (chatLag > 0)
@@ -304,7 +302,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateRegularDialog()
         {
-            if (currentChatRoom != null || Projectile.owner != Main.myPlayer || mainTimer <= 0)
+            if (currentChatRoom != null || mainTimer <= 0)
                 return;
 
             int time = 0;
@@ -485,6 +483,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         #region 自身重写函数
         /// <summary>
         /// 注册对话文本及其索引值
+        /// <br/>仅在本地端更新
         /// </summary>
         /// <param name="name">对话所属宠物的名字</param>
         /// <param name="indexRange">对话索引的范围</param>
@@ -494,6 +493,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         /// <summary>
         /// 设置常规对话文本
+        /// <br/>仅在本地端更新
         /// </summary>
         /// <param name="timePerDialog">每次说话机会的间隔</param>
         /// <param name="chance">说话的几率（1 / chance）</param>
@@ -518,6 +518,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         /// <summary>
         /// 常规对话
+        /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
         public virtual string GetRegularDialogText()
@@ -525,7 +526,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             return null;
         }
         /// <summary>
-        /// 视觉效果，用于动画表现（包含玩家选择界面）
+        /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
+        /// <br/>若寻常动作下本体包含动画，则该动画也应当在此运行
         /// </summary>
         public virtual void VisualEffectForPreview()
         {
@@ -564,8 +566,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 mainTimer = 0;
             }
-            UpdateChat();
-            UpdateRegularDialog();
+            if (OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
+            {
+                UpdateChat();
+                UpdateRegularDialog();
+            }
             return base.PreAI();
         }
         public override void PostAI()

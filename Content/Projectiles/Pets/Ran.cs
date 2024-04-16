@@ -9,14 +9,29 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Ran : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+
+        private int tailFrame, tailFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Ran_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 8;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Ran_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -27,7 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, 
@@ -37,56 +52,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             return false;
-        }
-        private void Blink()
-        {
-            if (blinkFrame < 4)
-            {
-                blinkFrame = 4;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 6)
-            {
-                blinkFrame = 4;
-                PetState = 0;
-            }
-        }
-        int tailFrame, tailFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        private void UpdateTailFrame()
-        {
-            int count = 6;
-            if (++tailFrameCounter > count)
-            {
-                tailFrameCounter = 0;
-                tailFrame++;
-            }
-            if (tailFrame > 3)
-            {
-                tailFrame = 0;
-            }
-        }
-        private void UpdateClothFrame()
-        {
-            if (clothFrame < 4)
-            {
-                clothFrame = 4;
-            }
-            int count = 5;
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 7)
-            {
-                clothFrame = 4;
-            }
         }
         public override Color ChatTextColor => new Color(254, 216, 82);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -214,35 +179,87 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<YukariBuff>());
+            Projectile.SetPetActive(Owner, BuffType<YukariBuff>());
+
             UpdateTalking();
-            Vector2 point = new Vector2(-60 * player.direction, -30 + player.gfxOffY);
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.015f;
 
             ChangeDir();
+
+            Vector2 point = new Vector2(-60 * Owner.direction, -30 + Owner.gfxOffY);
             MoveToPoint(point, 18f);
-            if (Projectile.owner == Main.myPlayer)
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
+                CurrentState = States.Blink;
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 4)
             {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
+                blinkFrame = 4;
             }
-            else if (PetState == 1)
+            if (++blinkFrameCounter > 3)
             {
-                Projectile.frame = 0;
-                Blink();
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 6)
+            {
+                blinkFrame = 4;
+                CurrentState = States.Idle;
+            }
+        }
+        private void UpdateTailFrame()
+        {
+            int count = 6;
+            if (++tailFrameCounter > count)
+            {
+                tailFrameCounter = 0;
+                tailFrame++;
+            }
+            if (tailFrame > 3)
+            {
+                tailFrame = 0;
+            }
+        }
+        private void UpdateClothFrame()
+        {
+            if (clothFrame < 4)
+            {
+                clothFrame = 4;
+            }
+            int count = 5;
+            if (++clothFrameCounter > count)
+            {
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 7)
+            {
+                clothFrame = 4;
             }
         }
     }
