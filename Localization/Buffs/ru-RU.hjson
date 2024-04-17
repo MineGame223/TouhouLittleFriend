@@ -236,6 +236,11 @@ Mods: {
 				DisplayName: Богиня Урожая
 				Description: "'Осень символизирует радость жатвы'"
 			}
+
+			AllPetsBuff: {
+				// DisplayName: The Gensokyors
+				// Description: "'Gods preferred meeting'"
+			}
 		}
 	}
 }

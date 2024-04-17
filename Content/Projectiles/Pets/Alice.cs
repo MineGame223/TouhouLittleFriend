@@ -9,14 +9,48 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Alice : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Puppet,
+            Puppet2,
+            AfterPuppet,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int auraFrame, auraFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Alice_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Alice_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -29,7 +63,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
@@ -63,133 +97,6 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.4f, config, 1);
         }
-        private void Blink()
-        {
-            if (blinkFrame < 10)
-            {
-                blinkFrame = 10;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 12)
-            {
-                blinkFrame = 10;
-                PetState = 0;
-                Projectile.netUpdate = true;
-            }
-        }
-        int auraFrame, auraFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        private void Puppetia()
-        {
-            Projectile.velocity *= 0.8f;
-            if (++Projectile.frameCounter > 7)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame == 2 && Projectile.frameCounter % 4 == 0 && Projectile.frameCounter <= 7)
-                {
-                    float posX = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
-                    float posY = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
-                    if (Projectile.owner == Main.myPlayer)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
-                            , new Vector2(Main.rand.NextFloat(-8f, 8f), Main.rand.NextFloat(-8f, 8f)), ProjectileType<AliceDoll_Proj>(), 0, 0
-                            , Main.myPlayer, Projectile.whoAmI, posX, posY);
-                    }
-                }
-                if (Projectile.frame > 3)
-                {
-                    Projectile.frame = 3;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    extraAI[1]++;
-                    if (extraAI[1] > extraAI[2])
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0]++;
-                        extraAI[2] = Main.rand.Next(400, 600);
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else if (extraAI[0] == 1)
-            {
-                if (Projectile.frame == 6 && Projectile.frameCounter % 4 == 0 && Projectile.frameCounter <= 7)
-                {
-                    float posX = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
-                    float posY = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
-                    if (Projectile.owner == Main.myPlayer)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
-                            , new Vector2(Main.rand.NextFloat(-8f, 8f), Main.rand.NextFloat(-8f, 8f)), ProjectileType<AliceDoll_Proj>(), 0, 0
-                            , Main.myPlayer, Projectile.whoAmI, posX, posY);
-                    }
-                }
-                if (Projectile.frame > 7)
-                {
-                    Projectile.frame = 7;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    extraAI[1]++;
-                    if (extraAI[1] > extraAI[2])
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0]++;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 9)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 240;
-                    extraAI[2] = 0;
-                    PetState = 0;
-                }
-            }
-        }
-        private void UpdateAuraFrame()
-        {
-            int count = 3;
-            if (auraFrame < 4)
-            {
-                auraFrame = 4;
-            }
-            if (++auraFrameCounter > count)
-            {
-                auraFrameCounter = 0;
-                auraFrame++;
-            }
-            if (auraFrame > 7)
-            {
-                auraFrame = 4;
-            }
-        }
-        private void UpdateClothFrame()
-        {
-            int count = 6;
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 3)
-            {
-                clothFrame = 0;
-            }
-        }
         public override Color ChatTextColor => new Color(185, 228, 255);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
@@ -200,7 +107,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 1200;
             chance = 4;
-            whenShouldStop = false;
+            whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
         {
@@ -307,48 +214,203 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<AliceBuff>());
+            Projectile.SetPetActive(Owner, BuffType<AliceBuff>());
+
             UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -40 + player.gfxOffY);
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Puppet:
+                    shouldNotTalking = true;
+                    Puppet();
+                    break;
+
+                case States.Puppet2:
+                    shouldNotTalking = true;
+                    Puppet2();
+                    break;
+
+                case States.AfterPuppet:
+                    shouldNotTalking = true;
+                    AfterPuppet();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.006f;
 
             ChangeDir();
+
+            Vector2 point = new Vector2(-50 * Owner.direction, -40 + Owner.gfxOffY);
             MoveToPoint(point, 12f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
-                if (mainTimer % 270 == 0 && PetState == 0)
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (mainTimer >= 600 && mainTimer < 3600 && PetState <= 1 && extraAI[0] == 0)
+                if (mainTimer > 0 && mainTimer % 600 == 0 && currentChatRoom == null && ActionCD <= 0
+                    && Projectile.velocity.Length() <= 3f)
                 {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(12) && Projectile.velocity.Length() <= 3f)
+                    if (Main.rand.NextBool(12))
                     {
-                        PetState = 2;
-                        extraAI[2] = Main.rand.Next(400, 600);
-                        Projectile.netUpdate = true;
+                        RandomCount = Main.rand.Next(400, 600);
+                        CurrentState = States.Puppet;
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 10)
             {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
+                blinkFrame = 10;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 12)
+            {
+                blinkFrame = 10;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Puppet()
+        {
+            Projectile.velocity *= 0.8f;
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame == 2 && Projectile.frameCounter % 4 == 0 && Projectile.frameCounter <= 7)
+            {
+                float posX = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
+                float posY = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[0]--;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
+                        , new Vector2(Main.rand.NextFloat(-8f, 8f), Main.rand.NextFloat(-8f, 8f)), ProjectileType<AliceDoll_Proj>(), 0, 0
+                        , Main.myPlayer, Projectile.whoAmI, posX, posY);
                 }
             }
-            else if (PetState == 1)
+            if (Projectile.frame > 3)
+            {
+                Projectile.frame = 3;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                Timer++;
+                if (Timer > RandomCount)
+                {
+                    Timer = 0;
+                    RandomCount = Main.rand.Next(400, 600);
+                    CurrentState = States.Puppet2;
+                }
+            }
+        }
+        private void Puppet2()
+        {
+            Projectile.velocity *= 0.8f;
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame == 6 && Projectile.frameCounter % 4 == 0 && Projectile.frameCounter <= 7)
+            {
+                float posX = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
+                float posY = Main.rand.NextFloat(Main.rand.NextFloat(-210f, -90f), Main.rand.NextFloat(90f, 210f));
+                if (OwnerIsMyPlayer)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center
+                        , new Vector2(Main.rand.NextFloat(-8f, 8f), Main.rand.NextFloat(-8f, 8f)), ProjectileType<AliceDoll_Proj>(), 0, 0
+                        , Main.myPlayer, Projectile.whoAmI, posX, posY);
+                }
+            }
+            if (Projectile.frame > 7)
+            {
+                Projectile.frame = 7;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                Timer++;
+                if (Timer > RandomCount)
+                {
+                    Timer = 0;
+                    CurrentState = States.AfterPuppet;
+                }
+            }
+        }
+        private void AfterPuppet()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 9)
             {
                 Projectile.frame = 0;
-                Blink();
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 320;
+                    CurrentState = States.Idle;
+                }
             }
-            else if (PetState == 2)
+        }
+        private void UpdateAuraFrame()
+        {
+            int count = 3;
+            if (auraFrame < 4)
             {
-                Puppetia();
+                auraFrame = 4;
+            }
+            if (++auraFrameCounter > count)
+            {
+                auraFrameCounter = 0;
+                auraFrame++;
+            }
+            if (auraFrame > 7)
+            {
+                auraFrame = 4;
+            }
+        }
+        private void UpdateClothFrame()
+        {
+            int count = 6;
+            if (++clothFrameCounter > count)
+            {
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 3)
+            {
+                clothFrame = 0;
             }
         }
     }

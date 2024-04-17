@@ -6,6 +6,7 @@ using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using TouhouPets.Content.Buffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -571,6 +572,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 UpdateChat();
                 UpdateRegularDialog();
             }
+            Projectile.SetPetActive(Owner, BuffType<AllPetsBuff>());
             return base.PreAI();
         }
         public override void PostAI()

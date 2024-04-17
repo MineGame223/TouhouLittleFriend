@@ -107,7 +107,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                for (int i = 11; i <= 16; i++)
+                for (int i = 11; i <= 14; i++)
                 {
                     chat.Add(ChatDictionary[i]);
                 }

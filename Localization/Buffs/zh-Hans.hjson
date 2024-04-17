@@ -236,6 +236,11 @@ Mods: {
 				DisplayName: 丰收之神
 				Description: "'秋天象征着丰收的喜悦'"
 			}
+
+			AllPetsBuff: {
+				DisplayName: 幻想乡联盟
+				Description: "'诸神眷恋的开会现场'"
+			}
 		}
 	}
 }

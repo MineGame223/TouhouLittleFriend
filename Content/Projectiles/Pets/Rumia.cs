@@ -10,14 +10,47 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Rumia : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Darken,
+            AfterDarken,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int clothFrame, clothFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private float darkAuraScale;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rumia_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rumia_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -27,7 +60,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -49,91 +82,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             for (int i = 0; i < 3; i++)
                 Main.spriteBatch.TeaNPCDraw(tex, pos, null, clr * darkAuraScale, 0f, orig, darkAuraScale * 1.2f * Main.essScale, SpriteEffects.None, 0);
         }
-        private void Blink()
-        {
-            if (blinkFrame < 4)
-            {
-                blinkFrame = 4;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 6)
-            {
-                blinkFrame = 4;
-                PetState = 0;
-            }
-        }
-        int clothFrame, clothFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        float darkAuraScale;
-        private void Darkin()
-        {
-            if (++Projectile.frameCounter > 7)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame >= 1 && Projectile.frameCounter > 4 || Projectile.frame >= 2)
-                {
-                    darkAuraScale = Math.Clamp(darkAuraScale + 0.03f, 0, 1);
-                    if (darkAuraScale > 0.36f)
-                        Projectile.scale -= 0.02f;
-                }
-                if (Projectile.frame > 2)
-                {
-                    Projectile.frame = 2;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    extraAI[1]++;
-                    if (extraAI[1] > extraAI[2])
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                darkAuraScale = Math.Clamp(darkAuraScale - 0.01f, 0, 1);
-                if (Projectile.scale < 1)
-                    Projectile.scale += 0.05f;
-                if (darkAuraScale > 0.3f)
-                {
-                    Projectile.frame = 2;
-                }
-                if (Projectile.frame > 3)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 1200;
-                    extraAI[2] = 0;
-                    PetState = 0;
-                }
-            }
-        }
-        private void UpdateClothFrame()
-        {
-            int count = 5;
-            if (clothFrame < 7)
-            {
-                clothFrame = 7;
-            }
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 10)
-            {
-                clothFrame = 7;
-            }
-        }
         public override Color ChatTextBoardColor => Color.White;
         public override Color ChatTextColor => Color.Black;
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -151,7 +99,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                if (PetState == 2)
+                if (CurrentState == States.Darken)
                 {
                     chat.Add(ChatDictionary[5]);
                 }
@@ -178,54 +126,160 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Projectile.scale = Math.Clamp(Projectile.scale, 0, 1);
+            Projectile.SetPetActive(Owner, BuffType<RumiaBuff>());
 
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<RumiaBuff>());
             UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -40 + player.gfxOffY);
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Darken:
+                    shouldNotTalking = true;
+                    Darken();
+                    break;
+
+                case States.AfterDarken:
+                    shouldNotTalking = true;
+                    AfterDarken();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState)
+            {
+                if (ActionCD > 0)
+                {
+                    ActionCD--;
+                }
+                darkAuraScale = Math.Clamp(darkAuraScale - 0.1f, 0, 1);
+            }
+            Projectile.scale = Math.Clamp(Projectile.scale, 0, 1);
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.035f;
 
             ChangeDir();
+
+            Vector2 point = new Vector2(-50 * Owner.direction, -40 + Owner.gfxOffY);
             MoveToPoint(point, 14f);
-            if (Projectile.owner == Main.myPlayer)
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
             {
-                if (mainTimer % 270 == 0 && PetState == 0)
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (mainTimer >= 600 && mainTimer < 3600 && PetState != 2 && extraAI[0] == 0)
+                if (mainTimer > 0 && mainTimer % 600 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(3))
+                    if (Main.rand.NextBool(3))
                     {
-                        PetState = 2;
-                        extraAI[2] = Main.rand.Next(600, 2400);
-                        Projectile.netUpdate = true;
+                        RandomCount = Main.rand.Next(600, 2400);
+                        CurrentState = States.Darken;
+
+                        if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
+                            Projectile.SetChat(ChatSettingConfig, 3, 20);
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 4)
             {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
+                blinkFrame = 4;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 6)
+            {
+                blinkFrame = 4;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Darken()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame >= 1 && Projectile.frameCounter > 4 || Projectile.frame >= 2)
+            {
+                darkAuraScale = Math.Clamp(darkAuraScale + 0.03f, 0, 1);
+                if (darkAuraScale > 0.36f)
+                    Projectile.scale -= 0.02f;
+            }
+            if (Projectile.frame > 2)
+            {
+                Projectile.frame = 2;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                Timer++;
+                if (Timer > RandomCount)
                 {
-                    extraAI[0]--;
+                    Timer = 0;
+                    CurrentState = States.AfterDarken;
                 }
             }
-            else if (PetState == 1)
+        }
+        private void AfterDarken()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+
+            darkAuraScale = Math.Clamp(darkAuraScale - 0.01f, 0, 1);
+            if (Projectile.scale < 1)
+                Projectile.scale += 0.05f;
+            if (darkAuraScale > 0.3f)
+            {
+                Projectile.frame = 2;
+            }
+            if (Projectile.frame > 3)
             {
                 Projectile.frame = 0;
-                Blink();
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 1200;
+                    CurrentState = States.Idle;
+                }
             }
-            else if (PetState == 2)
+        }
+        private void UpdateClothFrame()
+        {
+            int count = 5;
+            if (clothFrame < 7)
             {
-                Darkin();
+                clothFrame = 7;
             }
-            if (PetState != 2)
+            if (++clothFrameCounter > count)
             {
-                darkAuraScale = Math.Clamp(darkAuraScale - 0.1f, 0, 1);
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 10)
+            {
+                clothFrame = 7;
             }
         }
     }

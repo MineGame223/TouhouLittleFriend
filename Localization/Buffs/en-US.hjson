@@ -236,6 +236,11 @@ Mods: {
 				DisplayName: Goddess of Harvest
 				Description: "'Autumn symbolizes the joy of harvest'"
 			}
+
+			AllPetsBuff: {
+				DisplayName: The Gensokyors
+				Description: "'Gods preferred meeting'"
+			}
 		}
 	}
 }

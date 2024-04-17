@@ -129,7 +129,8 @@ namespace TouhouPets.Content.Projectiles
             }
             if (IsAliceExited)
             {
-                if (Alice.ai[1] != 2)
+                int state = Alice.ToPetClass().PetState;
+                if (state < 2 || state > 3)
                 {
                     Projectile.velocity = Vector2.Normalize(Alice.Center - Projectile.Center) * (5f + Alice.velocity.Length());
                     if (Projectile.Distance(Alice.Center) <= 5f)
