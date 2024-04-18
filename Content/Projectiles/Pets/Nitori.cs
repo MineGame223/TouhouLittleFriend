@@ -9,15 +9,45 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Nitori : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            BeforeBreakdown,
+            Alert,
+            Breakdown,
+            CleanAsh,
+            AfterBreakdown,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int backFrame, backFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Nitori_Cloth");
+        private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Nitori_Glow");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 16;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Nitori_Cloth");
-        readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Nitori_Glow");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -38,11 +68,128 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
+        }
+        public override Color ChatTextColor => new Color(74, 165, 255);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Nitori";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 9;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            if (IsIdleState)
+            {
+                IdleAnimation();
+                UpdateBackFrame();
+            }
+        }
+        private void UpdateTalking()
+        {
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<NitoriBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.BeforeBreakdown:
+                    shouldNotTalking = true;
+                    BeforeBreakdown();
+                    break;
+
+                case States.Alert:
+                    shouldNotTalking = true;
+                    Alert();
+                    break;
+
+                case States.Breakdown:
+                    shouldNotTalking = true;
+                    Breakdown();
+                    break;
+
+                case States.CleanAsh:
+                    shouldNotTalking = true;
+                    CleanAsh();
+                    break;
+
+                case States.AfterBreakdown:
+                    shouldNotTalking = true;
+                    AfterBreakdown();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+            if (backFrame != 8)
+            {
+                Lighting.AddLight(Projectile.Center + new Vector2(0, 20), 1.95f, 1.64f, 0.67f);
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.012f;
+            if (CurrentState == States.Breakdown)
+            {
+                Projectile.rotation = 0;
+            }
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(60 * Owner.direction, -40 + Owner.gfxOffY);
+            MoveToPoint(point, 12.5f);
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 900 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(4))
+                    {
+                        CurrentState = States.BeforeBreakdown;
+                    }
+                }
+            }
         }
         private void Blink()
         {
@@ -58,161 +205,161 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 15)
             {
                 blinkFrame = 13;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int blinkFrame, blinkFrameCounter;
-        int backFrame, backFrameCounter;
-        private void UpdateBackFrame()
+        private void BeforeBreakdown()
+        {
+            IdleAnimation();
+            if (++backFrameCounter > 4)
+            {
+                backFrameCounter = 0;
+                backFrame++;
+            }
+            if (backFrame > 7)
+            {
+                backFrame = 4;
+                Timer++;
+            }
+            if (Main.rand.NextBool(8 - Timer))
+            {
+                Dust.NewDustPerfect(Projectile.Center + new Vector2(-6 * Projectile.spriteDirection, -8)
+                    , MyDustId.Smoke
+                    , new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-6, -3) * 0.75f)
+                    , 100, default, Main.rand.NextFloat(1.5f, 2.25f)).noGravity = true;
+            }
+            if (OwnerIsMyPlayer && Timer > 6)
+            {
+                Timer = 0;
+                CurrentState = States.Alert;
+            }
+        }
+        private void Alert()
         {
             if (++backFrameCounter > 4)
             {
                 backFrameCounter = 0;
                 backFrame++;
             }
-            if (backFrame > 3)
+            if (backFrame > 7)
             {
-                backFrame = 0;
+                backFrame = 4;
+            }
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 7)
+            {
+                Projectile.frame = 4;
+                Timer++;
+            }
+            if (Main.rand.NextBool(4 - Timer))
+            {
+                Dust.NewDustPerfect(Projectile.Center + new Vector2(-6 * Projectile.spriteDirection, -8)
+                    , MyDustId.Smoke
+                    , new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-6, -3) * 0.75f)
+                    , 100, Color.Black, Main.rand.NextFloat(1.5f, 2.25f)).noGravity = true;
+                if (Main.rand.NextBool(2))
+                {
+                    Gore.NewGoreDirect(Projectile.GetSource_FromAI()
+                        , Projectile.Center + new Vector2(0, -24)
+                        , new Vector2(Main.rand.Next(-3, 3) * 0.15f, Main.rand.Next(-3, -1) * 0.15f)
+                        , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.25f, 0.5f));
+                }
+            }
+            if (OwnerIsMyPlayer && Timer > 2)
+            {
+                Timer = 0;
+                CurrentState = States.Breakdown;
             }
         }
         private void Breakdown()
         {
-            if (extraAI[0] == 0)
+            backFrame = 8;
+            if (Timer == 0)
             {
-                if (++backFrameCounter > 4)
-                {
-                    backFrameCounter = 0;
-                    backFrame++;
-                }
-                if (backFrame > 7)
-                {
-                    backFrame = 4;
-                    extraAI[1]++;
-                }
-                if (Main.rand.NextBool(8 - extraAI[1]))
-                {
-                    Dust.NewDustPerfect(Projectile.Center + new Vector2(-6 * Projectile.spriteDirection, -8)
+                for (int i = 0; i < 25; i++)
+                    Dust.NewDustPerfect(Projectile.Center
                         , MyDustId.Smoke
-                        , new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-6, -3) * 0.75f)
-                        , 100, default, Main.rand.NextFloat(1.5f, 2.25f)).noGravity = true;
-                }
-                if (extraAI[1] > 6)
-                {
-                    extraAI[1] = 4;
-                    extraAI[1] = 0;
-                    extraAI[0]++;
-                }
+                        , new Vector2(Main.rand.Next(-6, 6) * 0.75f, Main.rand.Next(-6, 6) * 0.75f)
+                        , 20, Color.Black, Main.rand.NextFloat(2.5f, 4.25f)).noGravity = true;
+                for (int i = 0; i < 10; i++)
+                    Gore.NewGoreDirect(Projectile.GetSource_FromAI()
+                        , Projectile.Center + new Vector2(Main.rand.Next(-8, 8), Main.rand.Next(-8, 8))
+                        , new Vector2(Main.rand.Next(-3, 3) * 0.15f, Main.rand.Next(-3, 3) * 0.15f)
+                        , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.75f, 1.25f));
+                AltVanillaFunction.PlaySound(SoundID.Item14, Projectile.position);
             }
-            else if (extraAI[0] == 1)
+            else if (Main.rand.NextBool(2))
             {
-                if (++backFrameCounter > 4)
-                {
-                    backFrameCounter = 0;
-                    backFrame++;
-                }
-                if (backFrame > 7)
-                {
-                    backFrame = 4;
-                }
-                if (++Projectile.frameCounter > 6)
-                {
-                    Projectile.frameCounter = 0;
-                    Projectile.frame++;
-                }
-                if (Projectile.frame > 7)
-                {
-                    Projectile.frame = 4;
-                    extraAI[1]++;
-                }
-                if (Main.rand.NextBool(4 - extraAI[1]))
-                {
-                    Dust.NewDustPerfect(Projectile.Center + new Vector2(-6 * Projectile.spriteDirection, -8)
+                Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(-8, 8))
                         , MyDustId.Smoke
-                        , new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-6, -3) * 0.75f)
-                        , 100, Color.Black, Main.rand.NextFloat(1.5f, 2.25f)).noGravity = true;
-                    if (Main.rand.NextBool(2))
-                    {
-                        Gore.NewGoreDirect(Projectile.GetSource_FromAI()
-                            , Projectile.Center + new Vector2(0, -24)
-                            , new Vector2(Main.rand.Next(-3, 3) * 0.15f, Main.rand.Next(-3, -1) * 0.15f)
-                            , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.25f, 0.5f));
-                    }
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > 2)
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0]++;
-                        Projectile.netUpdate = true;
-                    }
-                }
+                        , new Vector2(Main.rand.Next(-1, 1) * 0.75f, Main.rand.Next(-4, -2) * 0.75f)
+                        , 90, Color.Black, Main.rand.NextFloat(1f, 2f)).noGravity = true;
             }
-            else if (extraAI[0] == 2)
+            Timer++;
+
+            if (Timer > 120 && Timer <= 144)
+                Projectile.frame = Timer % 6 == 0 ? 8 : 9;
+            else
+                Projectile.frame = 8;
+
+            if (OwnerIsMyPlayer && Timer > 240)
             {
-                backFrame = 8;
-                if (extraAI[1] == 0)
-                {
-                    for (int i = 0; i < 25; i++)
-                        Dust.NewDustPerfect(Projectile.Center
-                            , MyDustId.Smoke
-                            , new Vector2(Main.rand.Next(-6, 6) * 0.75f, Main.rand.Next(-6, 6) * 0.75f)
-                            , 20, Color.Black, Main.rand.NextFloat(2.5f, 4.25f)).noGravity = true;
-                    for (int i = 0; i < 10; i++)
-                        Gore.NewGoreDirect(Projectile.GetSource_FromAI()
-                            , Projectile.Center + new Vector2(Main.rand.Next(-8, 8), Main.rand.Next(-8, 8))
-                            , new Vector2(Main.rand.Next(-3, 3) * 0.15f, Main.rand.Next(-3, 3) * 0.15f)
-                            , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.75f, 1.25f));
-                    AltVanillaFunction.PlaySound(SoundID.Item14, Projectile.position);
-                }
-                else if (Main.rand.NextBool(2))
-                {
+                Timer = 0;
+                CurrentState = States.CleanAsh;
+            }
+        }
+        private void CleanAsh()
+        {
+            if (Main.rand.NextBool(3))
+            {
+                for (int i = 0; i < 4; i++)
                     Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(-8, 8))
-                            , MyDustId.Smoke
-                            , new Vector2(Main.rand.Next(-1, 1) * 0.75f, Main.rand.Next(-4, -2) * 0.75f)
-                            , 90, Color.Black, Main.rand.NextFloat(1f, 2f)).noGravity = true;
-                }
-                extraAI[1]++;
-                if (extraAI[1] > 120 && extraAI[1] <= 144)
-                    Projectile.frame = extraAI[1] % 6 == 0 ? 8 : 9;
-                else
-                    Projectile.frame = 8;
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > 240)
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0]++;
-                        Projectile.netUpdate = true;
-                    }
-                }
+                        , MyDustId.Smoke
+                        , new Vector2(Main.rand.Next(-6, 6) * 0.85f, Main.rand.Next(-6, 6) * 0.85f)
+                        , 90, Color.Black, Main.rand.NextFloat(1f, 2f)).noGravity = true;
             }
-            else if (extraAI[0] == 3)
+
+            backFrame = 9;
+
+            if (++Projectile.frameCounter > 6)
             {
-                if (Main.rand.NextBool(3))
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 11)
+            {
+                Projectile.frame = 10;
+                Timer++;
+            }
+            if (Timer > 6 && OwnerIsMyPlayer)
+            {
+                Timer = 0;
+                CurrentState = States.AfterBreakdown;
+            }
+        }
+        private void AfterBreakdown()
+        {
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 12)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    for (int i = 0; i < 4; i++)
-                        Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(-8, 8))
-                            , MyDustId.Smoke
-                            , new Vector2(Main.rand.Next(-6, 6) * 0.85f, Main.rand.Next(-6, 6) * 0.85f)
-                            , 90, Color.Black, Main.rand.NextFloat(1f, 2f)).noGravity = true;
-                }
-                int maxTime = 6;
-                backFrame = 9;
-                extraAI[1]++;
-                if (extraAI[1] <= maxTime * 6)
-                    Projectile.frame = extraAI[1] % maxTime == 0 ? 10 : 11;
-                else
-                    Projectile.frame = 12;
-                if (extraAI[1] > maxTime * 6 + 6)
-                {
-                    extraAI[1] = 0;
-                    extraAI[0] = 2400;
-                    PetState = 0;
+                    Timer = 0;
+                    ActionCD = 2400;
+                    CurrentState = States.Idle;
                 }
             }
         }
-        private void Idel()
+        private void IdleAnimation()
         {
             if (++Projectile.frameCounter > 6)
             {
@@ -224,92 +371,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
             }
         }
-        public override Color ChatTextColor => new Color(74, 165, 255);
-        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        private void UpdateBackFrame()
         {
-            name = "Nitori";
-            indexRange = new Vector2(1, 8);
-        }
-        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
-        {
-            timePerDialog = 720;
-            chance = 9;
-            whenShouldStop = PetState == 2;
-        }
-        public override string GetRegularDialogText()
-        {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            if (++backFrameCounter > 4)
             {
-                chat.Add(ChatDictionary[1]);
-                chat.Add(ChatDictionary[2]);
-                chat.Add(ChatDictionary[3]);
+                backFrameCounter = 0;
+                backFrame++;
             }
-            return chat;
-        }
-        public override void VisualEffectForPreview()
-        {
-            if (PetState != 2)
+            if (backFrame > 3)
             {
-                Idel();
-                UpdateBackFrame();
-            }
-            else if (extraAI[0] == 0)
-                Idel();
-        }
-        private void UpdateTalking()
-        {
-        }
-        public override void AI()
-        {
-            if (backFrame != 8)
-            {
-                Lighting.AddLight(Projectile.Center + new Vector2(0, 20), 1.95f, 1.64f, 0.67f);
-            }
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<NitoriBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.012f;
-            if (PetState == 2 && extraAI[0] == 2)
-            {
-                Projectile.rotation = 0;
-            }
-
-            ChangeDir();
-            MoveToPoint(point, 12.5f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState == 0)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState < 1)
-                {
-                    if (mainTimer % 900 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0 && chatTimeLeft <= 0)
-                    {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Breakdown();
+                backFrame = 0;
             }
         }
     }
