@@ -9,9 +9,39 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Sunny : BasicTouhouPetNeo
     {
-        private bool RainWet => Main.raining &&
+        private enum States
+        {
+            Idle,
+            Blink,
+            Reflecting,
+            AfterReflecting,
+            RainWet,
+            RainWetBlink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+        private bool IsWetState => CurrentState >= States.RainWet && CurrentState <= States.RainWetBlink;
+        private bool IsRainWet => Main.raining &&
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
-
         private bool UnderSunShine => Main.cloudAlpha <= 0 && Main.dayTime &&
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
         public override void SetStaticDefaults()
@@ -20,8 +50,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sunny_Cloth");
+
+        private int blinkFrame, blinkFrameCounter;
+        private int wingsFrame, wingsFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int hairFrame, hairFrameCounter;
+        private float extraX, extraY, phantomTime;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sunny_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawSunny(lightColor);
@@ -67,7 +104,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PositionOffset = offset,
                 });
 
-            if (PetState == 1 || PetState == 4)
+            if (CurrentState == States.Blink || CurrentState == States.RainWetBlink)
                 Projectile.DrawPet(blinkFrame, lightColor, config);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -98,133 +135,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             }
         }
-        private void Blink(bool alt = false)
-        {
-            int startFrame = alt ? 11 : 10;
-            if (blinkFrame < startFrame)
-            {
-                blinkFrame = startFrame;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 12)
-            {
-                blinkFrame = startFrame;
-                PetState = alt ? 3 : 0;
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        int wingsFrame, wingsFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int hairFrame, hairFrameCounter;
-        float extraX, extraY, phantomTime;
-        private void Happy()
-        {
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame > 3)
-                {
-                    Projectile.frame = 2;
-                    extraAI[1]++;
-                }
-
-                if (OwnerIsMyPlayer)
-                {
-                    if (extraAI[1] > Main.rand.Next(6, 12))
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 3)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 3600;
-                    PetState = 0;
-                }
-            }
-        }
-        private void UpdateExtraPos()
-        {
-            extraX = 0;
-            extraY = 0;
-            if (Projectile.frame >= 1 && Projectile.frame <= 3)
-            {
-                extraY = -2;
-            }
-            if (Projectile.frame == 4)
-            {
-                extraY = 2;
-            }
-            if (PetState == 2)
-            {
-                phantomTime += 0.1f;
-            }
-            else
-            {
-                phantomTime -= 0.1f;
-            }
-            phantomTime = MathHelper.Clamp(phantomTime, 0, 1);
-        }
-        private void UpdateMiscFrame()
-        {
-            if (wingsFrame < 9)
-            {
-                wingsFrame = 9;
-            }
-            if (++wingsFrameCounter > 3)
-            {
-                wingsFrameCounter = 0;
-                wingsFrame++;
-            }
-            if (wingsFrame > 12)
-            {
-                wingsFrame = 9;
-            }
-
-            if (PetState >= 3)
-            {
-                hairFrame = 8;
-                clothFrame = 0;
-            }
-            else
-            {
-                if (hairFrame < 4)
-                {
-                    hairFrame = 4;
-                }
-                if (++hairFrameCounter > 7)
-                {
-                    hairFrameCounter = 0;
-                    hairFrame++;
-                }
-                if (hairFrame > 7)
-                {
-                    hairFrame = 4;
-                }
-                if (++clothFrameCounter > 6)
-                {
-                    clothFrameCounter = 0;
-                    clothFrame++;
-                }
-                if (clothFrame > 3)
-                {
-                    clothFrame = 0;
-                }
-            }
-        }
         public override Color ChatTextColor => new Color(240, 196, 48);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
@@ -235,13 +145,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 640;
             chance = 6;
-            whenShouldStop = PetState == 2;
+            whenShouldStop = !IsIdleState && !IsWetState;
         }
         public override string GetRegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                if (RainWet)
+                if (IsRainWet)
                 {
                     chat.Add(ChatDictionary[6]);
                     chat.Add(ChatDictionary[7]);
@@ -267,10 +177,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
-            if (PetState < 2)
-            {
-                Projectile.frame = 0;
-            }
         }
         private void UpdateTalking()
         {
@@ -403,9 +309,58 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatRoom.CloseChatRoom();
             }
         }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<SunnyBuff>());
+            Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
+
+            UpdateTalking();
+
+            ControlMovement(Owner);
+
+            GenDust();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Reflecting:
+                    shouldNotTalking = true;
+                    Reflecting();
+                    break;
+
+                case States.AfterReflecting:
+                    shouldNotTalking = true;
+                    AfterReflecting();
+                    break;
+
+                case States.RainWet:
+                    shouldNotTalking = true;
+                    RainWet();
+                    break;
+
+                case States.RainWetBlink:
+                    shouldNotTalking = true;
+                    RainWetBlink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            UpdateExtraPos();
+            Lighting.AddLight(Projectile.Center, 2.40f, 1.96f, 0.84f);
+        }
         private void GenDust()
         {
-            if (RainWet)
+            if (IsRainWet)
             {
                 if (Main.rand.NextBool(6) && !Owner.behindBackWall)
                 {
@@ -436,7 +391,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
-            ChangeDir( 200);
+            ChangeDir(200);
 
             Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
             if (player.HasBuff<TheThreeFairiesBuff>())
@@ -446,71 +401,195 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             MoveToPoint(point, 8.5f);
         }
-        public override void AI()
+        private void UpdateExtraPos()
         {
-            Lighting.AddLight(Projectile.Center, 2.40f, 1.96f, 0.84f);
-            Player player = Owner;
-            Projectile.SetPetActive(player, BuffType<SunnyBuff>());
-            Projectile.SetPetActive(player, BuffType<TheThreeFairiesBuff>());
-
-            UpdateTalking();
-            ControlMovement(player);
-            GenDust();
-
+            extraX = 0;
+            extraY = 0;
+            if (Projectile.frame >= 1 && Projectile.frame <= 3)
+            {
+                extraY = -2;
+            }
+            if (Projectile.frame == 4)
+            {
+                extraY = 2;
+            }
+            if (CurrentState == States.Reflecting)
+            {
+                phantomTime += 0.1f;
+            }
+            else
+            {
+                phantomTime -= 0.1f;
+            }
+            phantomTime = MathHelper.Clamp(phantomTime, 0, 1);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
+                if (IsRainWet)
+                {
+                    CurrentState = States.RainWet;
+                    return;
+                }
                 if (mainTimer % 270 == 0)
                 {
-                    if (PetState == 3)
-                    {
-                        PetState = 4;
-                    }
-                    else if (PetState == 0)
-                    {
-                        PetState = 1;
-                    }
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (RainWet && PetState < 3)
+                if (mainTimer > 0 && mainTimer % 650 == 0 && UnderSunShine
+                    && currentChatRoom == null && ActionCD <= 0)
                 {
-                    PetState = 3;
-                    Projectile.netUpdate = true;
-                }
-                else if (mainTimer >= 600 && mainTimer < 3600 && PetState == 0)
-                {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && UnderSunShine && chatTimeLeft <= 0)
+                    if (Main.rand.NextBool(6))
                     {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
+                        RandomCount = Main.rand.Next(6, 12);
+                        CurrentState = States.Reflecting;
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            int startFrame = 10;
+            if (blinkFrame < startFrame)
             {
-                if (extraAI[0] >= 1)
+                blinkFrame = startFrame;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 12)
+            {
+                blinkFrame = startFrame;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Reflecting()
+        {
+            if (IsRainWet)
+            {
+                Timer = 0;
+                CurrentState = States.RainWet;
+                return;
+            }
+
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 3)
+            {
+                Projectile.frame = 2;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterReflecting;
+            }
+        }
+        private void AfterReflecting()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 3)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[0]--;
+                    ActionCD = 3600;
+                    CurrentState = States.Idle;
                 }
             }
-            else if (PetState == 1)
+        }
+        private void RainWet()
+        {
+            Projectile.frame = 4;
+            if (OwnerIsMyPlayer)
             {
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Happy();
-            }
-            else if (PetState == 3 || PetState == 4)
-            {
-                Projectile.frame = 4;
-                if (PetState == 4)
-                    Blink(true);
-                if (!RainWet)
+                if (!IsRainWet)
                 {
-                    PetState = 0;
+                    CurrentState = States.Idle;
+                    return;
+                }
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.RainWetBlink;
                 }
             }
-            UpdateExtraPos();
+        }
+        private void RainWetBlink()
+        {
+            Projectile.frame = 4;
+            int startFrame = 11;
+            if (blinkFrame < startFrame)
+            {
+                blinkFrame = startFrame;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 12)
+            {
+                blinkFrame = startFrame;
+                CurrentState = States.RainWet;
+            }
+        }
+        private void UpdateMiscFrame()
+        {
+            if (wingsFrame < 9)
+            {
+                wingsFrame = 9;
+            }
+            if (++wingsFrameCounter > 3)
+            {
+                wingsFrameCounter = 0;
+                wingsFrame++;
+            }
+            if (wingsFrame > 12)
+            {
+                wingsFrame = 9;
+            }
+
+            if (IsWetState)
+            {
+                hairFrame = 8;
+                clothFrame = 0;
+            }
+            else
+            {
+                if (hairFrame < 4)
+                {
+                    hairFrame = 4;
+                }
+                if (++hairFrameCounter > 7)
+                {
+                    hairFrameCounter = 0;
+                    hairFrame++;
+                }
+                if (hairFrame > 7)
+                {
+                    hairFrame = 4;
+                }
+                if (++clothFrameCounter > 6)
+                {
+                    clothFrameCounter = 0;
+                    clothFrame++;
+                }
+                if (clothFrame > 3)
+                {
+                    clothFrame = 0;
+                }
+            }
         }
     }
 }
