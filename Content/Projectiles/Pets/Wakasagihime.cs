@@ -9,14 +9,45 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Wakasagihime : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            BlowingBubble,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount2
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int tailFrame, tailFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Wakasagihime_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Wakasagihime_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             int extraHeight = Projectile.frame == 2 ? -2 : 0;
@@ -33,7 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config2);
@@ -60,73 +91,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     });
             return false;
         }
-        private void Blink()
-        {
-            if (blinkFrame < 5)
-            {
-                blinkFrame = 5;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 7)
-            {
-                blinkFrame = 5;
-                PetState = 0;
-            }
-        }
-        int tailFrame, tailFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        private void Bubble()
-        {
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame >= 2 && extraAI[2] > 0)
-            {
-                extraAI[2]--;
-                Projectile.frame = 2;
-            }
-            if (Projectile.frame >= 3 && extraAI[1] > 0)
-            {
-                extraAI[1]--;
-                Projectile.frame = 3;
-            }
-            if (Projectile.frame == 3 && Projectile.frameCounter == 0)
-            {
-                AltVanillaFunction.PlaySound(SoundID.Item85, Projectile.Center);
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(4 * Projectile.spriteDirection, 4)
-                    , new Vector2(Main.rand.NextFloat(1f, 3f) * Projectile.spriteDirection, Main.rand.NextFloat(-0.4f, 0.2f)), ProjectileType<WakasagihimeBubble>(), 0, 0, Main.myPlayer
-                    , Main.rand.Next(0, 3), Main.rand.NextFloat(0.6f, 1.2f));
-                }
-            }
-            if (Projectile.frame > 4 && extraAI[1] <= 0)
-            {
-                extraAI[0] = 1200;
-                extraAI[1] = 0;
-                extraAI[2] = 0;
-                PetState = 0;
-                Projectile.frame = 0;
-            }
-        }
-        private void UpdateTailFrame()
-        {
-            if (++tailFrameCounter > 5)
-            {
-                tailFrameCounter = 0;
-                tailFrame++;
-            }
-            if (tailFrame > 5)
-            {
-                tailFrame = 0;
-            }
-        }
         public override Color ChatTextColor => new Color(87, 164, 255);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
@@ -137,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 600;
             chance = 7;
-            whenShouldStop = PetState > 1;
+            whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
         {
@@ -159,58 +123,141 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            float brightness = Main.essScale * (Projectile.wet ? 1f : 2f);
-            Lighting.AddLight(Projectile.Center, 0.87f * brightness, 1.64f * brightness, 1.55f * brightness);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<WakasagihimeBuff>());
+            Projectile.SetPetActive(Owner, BuffType<WakasagihimeBuff>());
 
             UpdateTalking();
-            Vector2 point = new Vector2(40 * player.direction, -40 + player.gfxOffY);
+
+            ControlMovement();
+
+            GenDust();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.BlowingBubble:
+                    shouldNotTalking = true;
+                    BlowingBubble();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+            float brightness = Main.essScale * (Projectile.wet ? 1f : 2f);
+            Lighting.AddLight(Projectile.Center, 0.87f * brightness, 1.64f * brightness, 1.55f * brightness);
+        }
+        private void GenDust()
+        {
+            if (!Projectile.wet)
+            {
+                int dustID = MyDustId.BlueParticle;
+                Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
+                    , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
+                    , Main.rand.NextFloat(0.75f, 1.05f)).noGravity = true;
+            }
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.022f;
 
             ChangeDir();
+
+            Vector2 point = new Vector2(40 * Owner.direction, -40 + Owner.gfxOffY);
             float speed = Projectile.wet ? 18f : 9f;
             MoveToPoint(point, speed);
-
-            int dustID = MyDustId.BlueParticle;
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
-                , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
-                , Main.rand.NextFloat(0.75f, 1.05f)).noGravity = true;
-            if (Projectile.owner == Main.myPlayer)
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (PetState == 0)
+                if (mainTimer > 0 && mainTimer % 800 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (mainTimer >= 300 && mainTimer % 800 == 0 && extraAI[0] <= 0 && Main.rand.NextBool(5))
+                    if (Main.rand.NextBool(5))
                     {
-                        PetState = 2;
-                        extraAI[1] = Main.rand.Next(360, 480);
-                        extraAI[2] = Main.rand.Next(30, 90);
-                        Projectile.netUpdate = true;
+                        RandomCount = Main.rand.Next(360, 480);
+                        RandomCount2 = Main.rand.Next(30, 90);
+                        CurrentState = States.BlowingBubble;
+
                         Projectile.SetChat(ChatSettingConfig, 4, 120);
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 5)
             {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
+                blinkFrame = 5;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 7)
+            {
+                blinkFrame = 5;
+                CurrentState = States.Idle;
+            }
+        }
+        private void BlowingBubble()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame >= 2 && RandomCount2 > 0)
+            {
+                RandomCount2--;
+                Projectile.frame = 2;
+            }
+            if (Projectile.frame >= 3 && RandomCount > 0)
+            {
+                RandomCount--;
+                Projectile.frame = 3;
+            }
+            if (Projectile.frame == 3 && Projectile.frameCounter == 0)
+            {
+                AltVanillaFunction.PlaySound(SoundID.Item85, Projectile.Center);
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[0]--;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(4 * Projectile.spriteDirection, 4)
+                    , new Vector2(Main.rand.NextFloat(1f, 3f) * Projectile.spriteDirection, Main.rand.NextFloat(-0.4f, 0.2f)), ProjectileType<WakasagihimeBubble>(), 0, 0, Main.myPlayer
+                    , Main.rand.Next(0, 3), Main.rand.NextFloat(0.6f, 1.2f));
                 }
             }
-            else if (PetState == 1)
+            if (Projectile.frame > 4 && RandomCount <= 0)
             {
-                Blink();
+                ActionCD = 1200;
+                CurrentState = States.Idle;
             }
-            else if (PetState == 2)
+        }
+        private void UpdateTailFrame()
+        {
+            if (++tailFrameCounter > 5)
             {
-                Bubble();
+                tailFrameCounter = 0;
+                tailFrame++;
+            }
+            if (tailFrame > 5)
+            {
+                tailFrame = 0;
             }
         }
     }

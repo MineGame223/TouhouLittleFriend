@@ -39,10 +39,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Youmu_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
+            drawConfig = drawConfig with
+            {
+                PositionOffset = shake,
+            };
             DrawPetConfig config = drawConfig with
             {
                 ShouldUseEntitySpriteDraw = true,
-                PositionOffset = shake,
             };
             DrawPetConfig config2 = config with
             {
@@ -129,6 +132,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 CurrentState = States.FindEnemy;
             }
+            //shake = Vector2.Zero;
 
             switch (CurrentState)
             {

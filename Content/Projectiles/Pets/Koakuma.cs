@@ -102,6 +102,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateWingFrame();
             UpdateHairFrame();
+            UpdateEarsFrame();
         }
         private void UpdateTalking()
         {
@@ -224,11 +225,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
-            if (EarActive)
-            {
-                UpdateEarsFrame();
-            }
         }
         private void ControlMovement(Player player)
         {
@@ -317,7 +313,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateEarsFrame()
         {
-            if (++earFrameCounter > 5)
+            if (++earFrameCounter > 5 && EarActive)
             {
                 earFrameCounter = 0;
                 earFrame++;
@@ -325,8 +321,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (earFrame > 3)
             {
                 earFrame = 0;
-                EarActive = false;
-                Projectile.netUpdate = true;
+                if (OwnerIsMyPlayer)
+                {
+                    EarActive = false;
+                    Projectile.netUpdate = true;
+                }
             }
         }
     }
