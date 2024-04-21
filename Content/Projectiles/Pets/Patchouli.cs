@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Patchouli : BasicTouhouPet
+    public class Patchouli : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -40,7 +40,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (PetState == 1 || PetState == 3)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, 
+            Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     ShouldUseEntitySpriteDraw = true,
@@ -181,132 +181,228 @@ namespace TouhouPets.Content.Projectiles.Pets
                 auraFrame = 0;
             }
         }
-        Color myColor = new Color(252, 197, 238);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(252, 197, 238);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            if (Projectile.velocity.Length() >= 4f)
-            {
-                text[1] = ModUtils.GetChatText("Patchouli", "1");
-            }
-            if (PetState > 1)
-            {
-                text[2] = ModUtils.GetChatText("Patchouli", "2");
-                text[3] = ModUtils.GetChatText("Patchouli", "3");
-                text[4] = ModUtils.GetChatText("Patchouli", "4");
-                text[5] = ModUtils.GetChatText("Patchouli", "5");
-                if (FindPetState(out Projectile _, ProjectileType<Remilia>(), 0) && !Main.dayTime)
-                {
-                    text[6] = ModUtils.GetChatText("Patchouli", "6");
-                }
-            }
-            else
-            {
-                text[7] = ModUtils.GetChatText("Patchouli", "7");
-            }
-            text[8] = ModUtils.GetChatText("Patchouli", "8");
-            if (FindPetState(out Projectile _, ProjectileType<Alice>(), 0))
-            {
-                text[12] = ModUtils.GetChatText("Patchouli", "12");
-            }
+            name = "Patchouli";
+            indexRange = new Vector2(1, 35);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 12;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                if (Projectile.velocity.Length() >= 4f)
                 {
-                    if (text[i] != null)
+                    chat.Add(ChatDictionary[1]);
+                }
+                if (PetState > 1)
+                {
+                    chat.Add(ChatDictionary[2]);
+                    chat.Add(ChatDictionary[3]);
+                    chat.Add(ChatDictionary[4]);
+                    chat.Add(ChatDictionary[5]);
+                    if (FindPet(ProjectileType<Remilia>()) && !Main.dayTime)
                     {
-                        int weight = 1;
-                        if (i == 13)
-                            weight = 2;
-                        if (i == 16)
-                            weight = 10;
-                        chat.Add(text[i], weight);
+                        chat.Add(ChatDictionary[8]);
                     }
+                }
+                else
+                {
+                    chat.Add(ChatDictionary[7]);
+                }
+                chat.Add(ChatDictionary[6]);
+                if (FindPet(ProjectileType<Alice>()))
+                {
+                    chat.Add(ChatDictionary[12]);
                 }
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type = ProjectileType<Alice>();
-            int type2 = ProjectileType<Remilia>();
-            int type3 = ProjectileType<Koakuma>();
-            if (FindChatIndex(out Projectile _, type3, 4, default, 0)
-                || FindChatIndex(out Projectile _, type3, 6, default, 0))
-            {
-                ChatCD = 1;
-            }
-
-            if (FindChatIndex(out Projectile p1, type2, 10, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Patchouli", "9"), myColor, 9);
-            }
-            else if (FindChatIndex(out Projectile p2, type2, 11, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Patchouli", "10"), myColor, 10);
-            }
-            else if (FindChatIndex(out Projectile p3, type2, 12, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Patchouli", "11"), myColor, 0);
-                p3.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p4, type, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Patchouli", "13"), myColor, 13);
-            }
-            else if (FindChatIndex(out Projectile p5, type, 9, default, 0, true))
-            {
-                ChatCD = 0;
-                SetChat(myColor, ModUtils.GetChatText("Patchouli", "14"), 14, 0);
-                ChatCD = 600;
-                p5.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p6, type, 10, default, 1, true))
-            {
-                SetChatWithOtherOne(p6, ModUtils.GetChatText("Patchouli", "15"), myColor, 0);
-                p6.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p7, type3, 4, default, 1, true))
-            {
-                SetChatWithOtherOne(p7, ModUtils.GetChatText("Patchouli", "16"), myColor, 16);
-            }
-            else if (FindChatIndex(out Projectile p8, type3, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "17"), myColor, 17);
-                p8.localAI[2] = 0;
-            }
-            else if (FindChainedChat(17))
-            {
-                SetChatWithOtherOne(p8, ModUtils.GetChatText("Patchouli", "18"), myColor, 0);
-            }
-            else if (FindChatIndex(out Projectile p9, type3, 6, default, 1, true))
-            {
-                int chance = Main.rand.Next(19, 36);
-                SetChatWithOtherOne(p9, ModUtils.GetChatText("Patchouli", chance.ToString()), myColor, chance);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(12) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
             UpdateAuraFrame();
         }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(8, 11))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+            if (FindChatIndex(12, 15))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Remilia>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile patchouli = chatRoom.initiator;
+            Projectile remilia = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //帕秋莉：唔...蕾咪？
+                remilia.CloseCurrentDialog();
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //蕾米：嗯？帕琪？有啥事么？
+                remilia.SetChat(ChatSettingConfig, 10, 20);
+
+                if (remilia.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //帕秋莉：你身为吸血鬼，为什么不像书里说的一样怕十字架？
+                patchouli.SetChat(ChatSettingConfig, 9, 20);
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                //蕾米：哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰。
+                remilia.SetChat(ChatSettingConfig, 11, 20);
+
+                if (remilia.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 3)
+            {
+                //帕秋莉：好吧...看来书里说的不全是正确的。
+                patchouli.SetChat(ChatSettingConfig, 10, 20);
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                //蕾米：当然了，帕琪你也要多出来走走嘛。
+                remilia.SetChat(ChatSettingConfig, 12, 20);
+
+                if (remilia.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 5)
+            {
+                //帕秋莉：不要...
+                patchouli.SetChat(ChatSettingConfig, 11, 20);
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Alice>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile patchouli = chatRoom.initiator;
+            Projectile alice = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //帕秋莉：最近魔理沙那家伙还安分么？
+                alice.CloseCurrentDialog();
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //爱丽丝：别说了，上次刚顺走我一瓶魔药。
+                alice.SetChat(ChatSettingConfig, 8, 20);
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //帕秋莉：她偷走的那好几本书也一直没还...
+                patchouli.SetChat(ChatSettingConfig, 13, 20);
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                //帕秋莉&爱丽丝：...一定要找她算账！
+                alice.SetChat(ChatSettingConfig, 9, 20);
+                patchouli.SetChat(ChatSettingConfig, 14, 20);
+
+                if (alice.CurrentDialogFinished())
+                {
+                    chatRoom.chatTurn++;
+                }
+            }
+            else if (turn == 3)
+            {
+                //爱丽丝：...？还是我去找她吧，就不麻烦你了...
+                patchouli.CloseCurrentDialog();
+                alice.SetChat(ChatSettingConfig, 10, 20);
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                //帕秋莉：不不不，我去就行，我去就行...
+                patchouli.SetChat(ChatSettingConfig, 15, 20);
+
+                if (patchouli.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
         private void ControlMovement(Player player)
         {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.012f;
 
-            ChangeDir(player);
+            ChangeDir();
 
             Vector2 point = new Vector2(50 * player.direction, -20 + player.gfxOffY);
             if (player.HasBuff<ScarletBuff>())
             {
                 point = new Vector2(0, -120 + player.gfxOffY);
             }
-            
+
             MoveToPoint(point, 4.5f);
         }
         public override void AI()
@@ -316,7 +412,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(player, BuffType<PatchouliBuff>());
             Projectile.SetPetActive(player, BuffType<ScarletBuff>());
 
-            UpdateTalking();           
+            UpdateTalking();
             ControlMovement(player);
 
             if (Projectile.owner == Main.myPlayer)

@@ -4,7 +4,6 @@ using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -13,19 +12,66 @@ using static TouhouPets.DanmakuFightHelper;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Moku : BasicTouhouPet
+    public class Moku : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            BeforeBattle,
+            Battling,
+            Win,
+            Lose,
+            Burning,
+            AfterBurning,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+        private bool IsBattling => CurrentState == States.Battling;
+        private bool IsBattleState => CurrentState >= States.BeforeBattle && CurrentState <= States.Lose;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int wingFrame, wingFrameCounter;
+        private int hairFrame, hairFrameCounter;
+        private float extraX, extraY;
+
+        private float floatingX, floatingY;
+        private float ringAlpha, flameAlhpa;
+        private int[] abilityCD;
+        private int health;
+
+        private const int MaxHealth = 360;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Moku_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Moku_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            if (Fighting)
+            if (IsBattling)
             {
                 DrawDanmakuRing();
             }
@@ -60,7 +106,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             DrawMokuBody(lightColor, drawConfig);
 
-            if (Projectile.owner == Main.myPlayer && PetState < 0)
+            if (OwnerIsMyPlayer && IsBattleState)
             {
                 DrawFightState();
             }
@@ -87,7 +133,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, config, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config2);
@@ -95,12 +141,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawFightState()
         {
-            if (Fighting)
+            if (IsBattling && health < MaxHealth)
             {
                 Main.instance.DrawHealthBar(Projectile.Center.X, Projectile.position.Y + Projectile.height + 16
-                    , extraAI[2], 360, 0.8f);
+                    , health, MaxHealth, 0.8f);
             }
-            if (PetState < -1)
+            if (CurrentState == States.Win || CurrentState == States.Lose)
             {
                 Projectile.DrawIndividualSource(PlayerB_Source);
             }
@@ -122,8 +168,258 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false);
         }
+        public override Color ChatTextColor => new Color(200, 200, 200);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Moku";
+            indexRange = new Vector2(1, 15);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 940;
+            chance = 5;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                if (FindPet(ProjectileType<Keine>(), false, 2, 3))
+                {
+                    chat.Add(ChatDictionary[9]);
+                }
+            }
+            return chat;
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(9))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Keine>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile moku = chatRoom.initiator;
+            Projectile keine = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //妹红：每到满月你都会这样，怪吓人的！
+                keine.CloseCurrentDialog();
+
+                if (moku.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //慧音：这是天性，也是使命。
+                keine.SetChat(ChatSettingConfig, 9, 20);
+
+                if (keine.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateMiscFrame();
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            base.OnSpawn(source);
+            abilityCD = new int[2];
+        }
+        public override void AI()
+        {
+            Lighting.AddLight(Projectile.Center, 2.15f, 1.84f, 0.87f);
+            Player player = Main.player[Projectile.owner];
+            Projectile.SetPetActive(player, BuffType<MokuBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            GenDust();
+
+            bool noKaguya = !FindPet(ProjectileType<Kaguya>(), false) || !Owner.HasBuff<KaguyaBuff>();
+            if (IsBattleState && (Owner.afkCounter <= 0 || noKaguya))
+            {
+                Timer = 0;
+                CurrentState = States.Idle;
+            }
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.BeforeBattle:
+                    shouldNotTalking = true;
+                    BeforeBattle();
+                    break;
+
+                case States.Battling:
+                    shouldNotTalking = true;
+                    Battling();
+                    break;
+
+                case States.Win:
+                    shouldNotTalking = true;
+                    Win();
+                    break;
+
+                case States.Lose:
+                    shouldNotTalking = true;
+                    Lose();
+                    break;
+
+                case States.Burning:
+                    shouldNotTalking = true;
+                    Burning();
+                    break;
+
+                case States.AfterBurning:
+                    shouldNotTalking = true;
+                    AfterBurning();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            UpdateMiscData();
+        }
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            floatingX = reader.ReadSingle();
+            floatingY = reader.ReadSingle();
+        }
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.Write(floatingX);
+            writer.Write(floatingY);
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.032f;
+            if (!IsBattleState)
+            {
+                Vector2 point = new Vector2(70 * Owner.direction, -30 + Owner.gfxOffY);
+                ChangeDir();
+                MoveToPoint(point, 15f);
+            }
+        }
+        private void GenDust()
+        {
+            if (Main.rand.NextBool(7))
+                Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)), MyDustId.Fire
+                    , new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)), 100, default
+                    , Main.rand.NextFloat(1f, 2f)).noGravity = true;
+        }
+        private void UpdateMiscData()
+        {
+            extraX = 0;
+            extraY = 0;
+            if (Projectile.frame >= 7 && Projectile.frame <= 8)
+            {
+                extraX = 2 * Projectile.spriteDirection;
+            }
+            if (Projectile.frame == 11)
+            {
+                extraY = -2;
+            }
+            if (Projectile.frame == 13 || Projectile.frame == 8)
+            {
+                extraY = 2;
+            }
+            if (CurrentState == States.Burning)
+            {
+                flameAlhpa += 0.1f;
+            }
+            else
+            {
+                flameAlhpa -= 0.03f;
+            }
+            ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * (IsBattling ? 1 : -1), 0, 1);
+            flameAlhpa = MathHelper.Clamp(flameAlhpa, 0, 1);
+
+            if (!OwnerIsMyPlayer)
+                return;
+
+            if (!IsBattling)
+            {
+                abilityCD[0] = 0;
+                abilityCD[1] = 0;
+            }
+            else
+            {
+                if (abilityCD[0] > 0)
+                    abilityCD[0]--;
+                if (abilityCD[1] > 0)
+                    abilityCD[1]--;
+            }
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (Owner.afkCounter >= 600)
+                {
+                    bool ableToFight = mainTimer % 60 == 0 && Main.rand.NextBool(2) 
+                        && FindPet(ProjectileType<Kaguya>(), false, 0, 1);
+                    if (ableToFight || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
+                    {
+                        InitializeFightData();
+                        Timer = 0;
+                        CurrentState = States.BeforeBattle;
+                        return;
+                    }
+                }
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 990 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(4))
+                    {
+                        RandomCount = Main.rand.Next(120, 240);
+                        CurrentState = States.Burning;
+                    }
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;
@@ -132,17 +428,249 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 2)
             {
                 blinkFrame = 0;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int blinkFrame, blinkFrameCounter;
-        int wingFrame, wingFrameCounter;
-        int hairFrame, hairFrameCounter;
+        private void BeforeBattle()
+        {
+            Projectile.CloseCurrentDialog();
 
-        float extraX, extraY;
-        float floatingX, floatingY;
-        float ringAlpha, flameAlhpa;
-        int[] abilityCD;
+            floatingX = 0;
+            floatingY = 0;
+
+            Projectile.frame = 0;
+
+            if (Timer == 0)
+            {
+                Round++;
+            }
+            Timer++;
+            if (OwnerIsMyPlayer && Timer > 375)
+            {
+                Timer = 0;
+                health = MaxHealth;
+                CurrentState = States.Battling;
+            }
+
+            Projectile.spriteDirection = 1;
+            Vector2 point = new Vector2(-200, -200);
+            MoveToPoint2(point, 15f);
+        }
+        private void Battling()
+        {
+            Projectile.velocity *= 0.5f;
+            hairFrameCounter += 2;
+            if (Projectile.frame < 7)
+            {
+                Projectile.frame = 7;
+            }
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame >= 8)
+            {
+                Projectile.frame = 8;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                Timer++;
+                if (Timer >= 3600)
+                {
+                    Timer = 0;
+                }
+                if (Timer % 120 == 0)
+                {
+                    floatingX = Main.rand.Next(-50, 50);
+                    floatingY = Main.rand.Next(-50, 50);
+                    Projectile.netUpdate = true;
+                }
+                if (Timer % (30 * MathHelper.Clamp(health / MaxHealth, 0.5f, 1)) == 0)
+                {
+                    if (Main.rand.NextBool(30) && abilityCD[0] <= 0
+                        && Owner.ownedProjectileCounts[ProjectileType<MokuFireball>()] < 1)
+                    {
+                        abilityCD[0] = 180;
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center,
+                            new Vector2(Main.rand.Next(7, 9), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-3, 3)))
+                            , ProjectileType<MokuFireball>(), Main.rand.Next(12, 20), 0, Projectile.owner);
+                    }
+                    else if (Main.rand.NextBool(25) && abilityCD[1] <= 0)
+                    {
+                        abilityCD[1] = 180;
+                        for (int i = -3; i <= 3; i++)
+                        {
+                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center,
+                                new Vector2(5, 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(5, 6) * i))
+                                , ProjectileType<MokuBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner);
+                        }
+                    }
+                    else
+                    {
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, Main.rand.Next(-50, -50)).RotatedByRandom(MathHelper.ToRadians(360)),
+                            new Vector2(Main.rand.Next(4, 8), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-9, 9)))
+                            , ProjectileType<MokuBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner);
+                    }
+                }
+            }
+            Projectile.HandleHurt(ref health, false);
+            if (OwnerIsMyPlayer)
+            {
+                if (FindPet(ProjectileType<Kaguya>(), false, (int)States.Lose))
+                {
+                    CombatText.NewText(Projectile.getRect(), Color.Yellow, "WIN!", true, false);
+
+                    PlayerB_Source++;
+                    Timer = 0;
+                    CurrentState = States.Win;
+                }
+                else if (health <= 0)
+                {
+                    Projectile.FailEffect();
+                    CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
+
+                    Timer = 0;
+                    CurrentState = States.Lose;
+                }
+            }
+
+            Projectile.spriteDirection = 1;
+            Vector2 point = new Vector2(-200 + floatingX, -200 + floatingY);
+            MoveToPoint2(point, 4f);
+        }
+        private void Win()
+        {
+            Projectile.velocity *= 0;
+            Projectile.spriteDirection = 1;
+            if (Projectile.frame < 10)
+            {
+                Projectile.frame = 10;
+            }
+            if (++Projectile.frameCounter > 30)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 11)
+            {
+                Projectile.frame = 10;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                if (Timer == 0)
+                {
+                    int chance = Main.rand.Next(3);
+                    switch (chance)
+                    {
+                        case 1:
+                            Projectile.SetChat(ChatSettingConfig, 10);
+                            break;
+                        case 2:
+                            Projectile.SetChat(ChatSettingConfig, 11);
+                            break;
+                        default:
+                            Projectile.SetChat(ChatSettingConfig, 12);
+                            break;
+                    }
+                }
+                if (++Timer > 480 || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
+                {
+                    Timer = 0;
+                    CurrentState = States.BeforeBattle;
+                }
+            }
+        }
+        private void Lose()
+        {
+            Projectile.velocity *= 0;
+            Projectile.spriteDirection = 1;
+            if (Projectile.frame < 12)
+            {
+                Projectile.frame = 12;
+            }
+            if (++Projectile.frameCounter > 30)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 13)
+            {
+                Projectile.frame = 12;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                if (Timer == 0)
+                {
+                    int chance = Main.rand.Next(3);
+                    switch (chance)
+                    {
+                        case 1:
+                            Projectile.SetChat(ChatSettingConfig, 13);
+                            break;
+                        case 2:
+                            Projectile.SetChat(ChatSettingConfig, 14);
+                            break;
+                        default:
+                            Projectile.SetChat(ChatSettingConfig, 15);
+                            break;
+                    }
+                }
+                if (++Timer > 480 || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
+                {
+                    Timer = 0;
+                    CurrentState = States.BeforeBattle;
+                }
+            }
+        }
+        private void Burning()
+        {
+            if (Projectile.frame < 1)
+            {
+                Projectile.frame = 1;
+            }
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 3)
+            {
+                Projectile.frame = 2;
+                if (OwnerIsMyPlayer)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis()
+                            , Projectile.Center + new Vector2(0, Main.rand.Next(20, 90)).RotatedByRandom(MathHelper.TwoPi)
+                                , Vector2.Zero, ProjectileType<MokuFlame>(), 0, 0);
+                    }
+                    Timer++;
+                }
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterBurning;
+            }
+        }
+        private void AfterBurning()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 4)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 900;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
         private void UpdateMiscFrame()
         {
             if (wingFrame < 9)
@@ -172,472 +700,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 hairFrame = 3;
             }
-        }
-        private void Fire()
-        {
-            if (Projectile.frame < 1)
-            {
-                Projectile.frame = 1;
-            }
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] < 1)
-            {
-                if (Projectile.frame > 3)
-                {
-                    Projectile.frame = 2;
-                    if (Projectile.owner == Main.myPlayer)
-                    {
-                        for (int i = 0; i < 4; i++)
-                        {
-                            Projectile.NewProjectile(Projectile.GetSource_FromThis()
-                                , Projectile.Center + new Vector2(0, Main.rand.Next(20, 90)).RotatedByRandom(MathHelper.TwoPi)
-                                    , Vector2.Zero, ProjectileType<MokuFlame>(), 0, 0);
-                        }
-                        extraAI[1]++;
-                    }
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > extraAI[2])
-                    {
-                        extraAI[0]++;
-                        extraAI[1] = 0;
-                        extraAI[2] = 0;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 4)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 1800;
-                    PetState = 0;
-                }
-            }
-        }
-        private bool Fighting => PetState == -1 && extraAI[0] > 0;
-        private void Battle()
-        {
-            float speed = 15f;
-            chatFuncIsOccupied = true;
-            Player player = Main.player[Projectile.owner];
-            Projectile.spriteDirection = 1;
-            if (extraAI[0] == 0)
-            {
-                floatingX = 0;
-                floatingY = 0;
-
-                Projectile.frame = 0;
-                if (extraAI[1] == 0)
-                {
-                    Round++;
-                }
-                extraAI[1]++;
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > 375)
-                    {
-                        extraAI[2] = 360;
-                        extraAI[1] = 0;
-                        extraAI[0]++;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else if (extraAI[0] == 1)
-            {
-                speed = 4f;
-                Projectile.velocity *= 0.5f;
-                hairFrameCounter += 2;
-                if (Projectile.frame < 7)
-                {
-                    Projectile.frame = 7;
-                }
-                if (++Projectile.frameCounter > 6)
-                {
-                    Projectile.frameCounter = 0;
-                    Projectile.frame++;
-                }
-                if (Projectile.frame >= 8)
-                {
-                    Projectile.frame = 8;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    extraAI[1]++;
-                    if (extraAI[1] >= 3600)
-                    {
-                        extraAI[1] = 0;
-                    }
-                    if (extraAI[1] % 120 == 0)
-                    {
-                        floatingX = Main.rand.Next(-50, 50);
-                        floatingY = Main.rand.Next(-50, 50);
-                        Projectile.netUpdate = true;
-                    }
-                    if (extraAI[1] % (30 * MathHelper.Clamp(extraAI[2] / 360, 0.5f, 1)) == 0)
-                    {
-                        if (Main.rand.NextBool(30) && abilityCD[0] <= 0
-                            && player.ownedProjectileCounts[ProjectileType<MokuFireball>()] < 1)
-                        {
-                            abilityCD[0] = 180;
-                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center,
-                                new Vector2(Main.rand.Next(7, 9), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-3, 3)))
-                                , ProjectileType<MokuFireball>(), Main.rand.Next(12, 20), 0, Projectile.owner);
-                        }
-                        else if (Main.rand.NextBool(25) && abilityCD[1] <= 0)
-                        {
-                            abilityCD[1] = 180;
-                            for (int i = -3; i <= 3; i++)
-                            {
-                                Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center,
-                                    new Vector2(5, 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(5, 6) * i))
-                                    , ProjectileType<MokuBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner);
-                            }
-                        }
-                        else
-                        {
-                            Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, Main.rand.Next(-50, -50)).RotatedByRandom(MathHelper.ToRadians(360)),
-                                new Vector2(Main.rand.Next(4, 8), 0).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-9, 9)))
-                                , ProjectileType<MokuBullet>(), Main.rand.Next(6, 13), 0, Projectile.owner);
-                        }
-                    }
-                }
-                Projectile.HandleHurt(ref extraAI[2], false);
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (FindPetState(out _, ProjectileType<Kaguya>(), -3))
-                    {
-                        PlayerB_Source++;
-                        CombatText.NewText(Projectile.getRect(), Color.Yellow, "WIN!", true, false);
-                        PetState = -2;
-                        extraAI[0] = 0;
-                        extraAI[1] = 0;
-                        extraAI[2] = 0;
-                        Projectile.netUpdate = true;
-                    }
-                    else if (extraAI[2] <= 0)
-                    {
-                        Projectile.FailEffect();
-                        CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
-                        PetState = -3;
-                        extraAI[0] = 0;
-                        extraAI[1] = 0;
-                        extraAI[2] = 0;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            Vector2 point = new Vector2(-200 + floatingX * player.direction, -200 + floatingY);
-            MoveToPoint2(point, speed);
-        }
-        private void Win()
-        {
-            Projectile.velocity *= 0;
-            Projectile.spriteDirection = 1;
-            if (Projectile.frame < 10)
-            {
-                Projectile.frame = 10;
-            }
-            if (++Projectile.frameCounter > 30)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 11)
-            {
-                Projectile.frame = 10;
-            }
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (extraAI[0] == 0)
-                {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            SetChat(myColor, ModUtils.GetChatText("Moku", "-1"));
-                            break;
-                        case 2:
-                            SetChat(myColor, ModUtils.GetChatText("Moku", "-2"));
-                            break;
-                        default:
-                            SetChat(myColor, ModUtils.GetChatText("Moku", "-3"));
-                            break;
-                    }
-                }
-                if (++extraAI[0] > 480 || FindPetState(out _, ProjectileType<Kaguya>(), -1))
-                {
-                    extraAI[0] = 0;
-                    PetState = -1;
-                    Projectile.netUpdate = true;
-                }
-            }
-        }
-        private void Lose()
-        {
-            Projectile.velocity *= 0;
-            Projectile.spriteDirection = 1;
-            if (Projectile.frame < 12)
-            {
-                Projectile.frame = 12;
-            }
-            if (++Projectile.frameCounter > 30)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 13)
-            {
-                Projectile.frame = 12;
-            }
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (extraAI[0] == 0)
-                {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            SetChat(myColor, ModUtils.GetChatText("Moku", "-4"));
-                            break;
-                        case 2:
-                            SetChat(myColor, ModUtils.GetChatText("Moku", "-5"));
-                            break;
-                        default:
-                            SetChat(myColor, ModUtils.GetChatText("Moku", "-6"));
-                            break;
-                    }
-                }
-                if (++extraAI[0] > 480 || FindPetState(out _, ProjectileType<Kaguya>(), -1))
-                {
-                    extraAI[0] = 0;
-                    PetState = -1;
-                    Projectile.netUpdate = true;
-                }
-            }
-        }
-        Color myColor = new Color(200, 200, 200);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Moku", "1");
-            text[2] = ModUtils.GetChatText("Moku", "2");
-            if (FindPetState(out _, ProjectileType<Keine>(), 2, 3))
-            {
-                text[9] = ModUtils.GetChatText("Moku", "9");
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 9)
-                            weight = 3;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Kaguya>();
-            int type2 = ProjectileType<Keine>();
-            if (FindChatIndex(out _, type1, 3, 5, 0)
-                || FindChatIndex(out _, type1, 7, default, 0)
-                || FindChatIndex(out _, type2, 7, default, 0))
-            {
-                ChatCD = 1;
-            }
-
-            if (FindChatIndex(out Projectile p, type1, 7))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "3"), myColor, 3);
-            }
-            else if (FindChatIndex(out p, type1, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "4"), myColor, 4);
-            }
-            else if (FindChatIndex(out p, type1, 9, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "5"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, type1, 3, 5))
-            {
-                if (mainTimer % 64 == 0 && Main.rand.NextBool(5) && FindPetState(out _, ProjectileType<Kaguya>(), 2))
-                    SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "6"), myColor, 6);
-            }
-            else if (FindChatIndex(out p, type2, 7))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "7"), myColor, 7);
-            }
-            else if (FindChatIndex(out p, type2, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Moku", "8"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(5))
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateMiscFrame();
-        }
-        private void UpdateMiscData()
-        {
-            extraX = 0;
-            extraY = 0;
-            if (Projectile.frame >= 7 && Projectile.frame <= 8)
-            {
-                extraX = 2 * Projectile.spriteDirection;
-            }
-            if (Projectile.frame == 11)
-            {
-                extraY = -2;
-            }
-            if (Projectile.frame == 13 || Projectile.frame == 8)
-            {
-                extraY = 2;
-            }
-            if (PetState == 2)
-            {
-                flameAlhpa += 0.1f;
-            }
-            else
-            {
-                flameAlhpa -= 0.03f;
-            }
-            ringAlpha = MathHelper.Clamp(ringAlpha += 0.05f * (Fighting ? 1 : -1), 0, 1);
-            flameAlhpa = MathHelper.Clamp(flameAlhpa, 0, 1);
-
-            if (Projectile.owner != Main.myPlayer)
-                return;
-
-            if (!Fighting)
-            {
-                abilityCD[0] = 0;
-                abilityCD[1] = 0;
-            }
-            else
-            {
-                if (abilityCD[0] > 0)
-                    abilityCD[0]--;
-                if (abilityCD[1] > 0)
-                    abilityCD[1]--;
-            }
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-            abilityCD = new int[2];
-        }
-        public override void AI()
-        {
-            Lighting.AddLight(Projectile.Center, 2.15f, 1.84f, 0.87f);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<MokuBuff>());
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.032f;
-            if (PetState >= 0)
-            {
-                UpdateTalking();
-                Vector2 point = new Vector2(70 * player.direction, -30 + player.gfxOffY);
-                ChangeDir(player);
-                MoveToPoint(point, 15f);
-            }
-
-            if (Main.rand.NextBool(7))
-                Dust.NewDustPerfect(Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Main.rand.Next(0, Projectile.height)), MyDustId.Fire
-                    , new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)), 100, default
-                    , Main.rand.NextFloat(1f, 2f)).noGravity = true;
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (player.afkCounter >= 600 && player.HasBuff<KaguyaBuff>() && PetState >= 0)
-                {
-                    if (mainTimer % 60 == 0 && Main.rand.NextBool(2) || FindPetState(out _, ProjectileType<Kaguya>(), -1))
-                    {
-                        InitializeFightData();
-                        extraAI[0] = 0;
-                        extraAI[1] = 0;
-                        extraAI[2] = 0;
-                        PetState = -1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-                if (PetState >= 0)
-                {
-                    if (mainTimer % 270 == 0 && PetState == 0)
-                    {
-                        PetState = 1;
-                        Projectile.netUpdate = true;
-                    }
-                    if (mainTimer % 720 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0 && PetState <= 1)
-                    {
-                        extraAI[2] = Main.rand.Next(120, 240);
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Fire();
-            }
-            else if (PetState == -1)
-            {
-                Battle();
-            }
-            else if (PetState == -2)
-            {
-                Win();
-            }
-            else if (PetState == -3)
-            {
-                Lose();
-            }
-            if (PetState < 0 && (player.afkCounter <= 0 || !player.HasBuff<KaguyaBuff>()))
-            {
-                PetState = 0;
-            }
-            UpdateMiscData();
-        }
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            base.ReceiveExtraAI(reader);
-            floatingX = reader.ReadSingle();
-            floatingY = reader.ReadSingle();
-        }
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            base.SendExtraAI(writer);
-            writer.Write(floatingX);
-            writer.Write(floatingY);
         }
     }
 }

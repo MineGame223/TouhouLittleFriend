@@ -253,6 +253,11 @@ Mods: {
 				DisplayName: 烤红薯
 				Tooltip: "'香香甜甜的，充满秋天的味道！'"
 			}
+
+			AllPetsTelephone: {
+				DisplayName: 客服电话
+				Tooltip: "'拨通之后，你会得到一个特别服务...'"
+			}
 		}
 	}
 }

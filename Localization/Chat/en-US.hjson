@@ -3,6 +3,11 @@ Mods: {
 		Chat_Kogasa: {
 			Chat1: relo relo~
 			Chat2: BOO!
+			Chat3: I'm not cute, I'm SCARY!
+			Chat4: Yay! It's rainning now!
+			Chat5: Trample on water pit in raining day is the most interesting thing!
+			Chat6: Have you take any umbrella? If not, you can take me!
+			Chat7: 浠沥沥~ 哗啦啦~
 		}
 
 		Chat_Cirno: {
@@ -67,9 +72,9 @@ Mods: {
 			Chat3: This place seems... different than what I know.
 			Chat4: Interesting...
 			Chat5: ...Is that real?
-			Chat6: Hey... Remi?
+			Chat6: *cough...*cough...
 			Chat7: What page have I read last time...?
-			Chat8: *cough...*cough...
+			Chat8: Hey... Remi?
 			Chat9: If you're a vampire, why don't you fear the cross, like what my books say?
 			Chat10: Well...Looks like what my books say isn't always right.
 			Chat11: Nope...
@@ -151,7 +156,8 @@ Mods: {
 
 		Chat_Junko: {
 			Chat1: Are you watching, Chang'e?...
-			Chat2: Udon-chan~ How're you doing?
+			Chat2: ......
+			Chat3: Udon-chan~ How're you doing?
 		}
 
 		Chat_Marisa: {
@@ -176,7 +182,7 @@ Mods: {
 			Chat2: Somebody give me some money please...
 			Chat3: Trouble always comes when you speak of it...
 			Chat4: Tut, looks like a 'mutation' is coming...
-			Chat5: ...What?
+			Chat5: What?
 			Chat6: What it is? Don't tell me is the book you stole from Patchouli...
 			Chat7: ...That thing has a lot during the night...
 			Chat8: I don't think so, You must be boring again...
@@ -214,7 +220,11 @@ Mods: {
 			Chat7: ...I'll get over them all!
 			Chat8: CHO——HEN——SHIN——! ! !
 			Chat9: ......
-			Chat10: ...Eh, you heard nothing.
+			Chat10: ...Eh, you heard nothing!
+			Chat11: Let we be the one!
+			Chat12: Don't believe the "logic" blindly, believe your sense firmly.
+			Chat13: Sympathy is a lie, romantic is the key.
+			Chat14: When you're alive, you can get the good and the bad.
 		}
 
 		Chat_Koishi: {
@@ -308,12 +318,24 @@ Mods: {
 			Chat5: Thanks for the food!
 			Chat6: Delicious!
 			Chat7: Thank you!
-			Chat5-1: Hungry...
-			Chat6-1: Ghosts need food too, so you just take it quickly please!
-			Chat7-1: When is dinner time?
-			Chat8: Youmu-chan, what're we eating tonight?
-			Chat9: Has Youmu-chan made any plans for the future?
-			Chat10: Youmu-chan is as simple as I thought, we'll just talk this over later
+			Chat8: Hungry...
+			Chat9: Ghosts need food too, so you just take it quickly please!
+			Chat10: When is dinner time?
+			Chat11: Youmu-chan, what're we eating tonight?
+			Chat12: Has Youmu-chan made any plans for the future?
+			Chat13: Youmu-chan is as simple as I thought, we'll just talk this over later.
+			Chat14: Life won't be awesome without alcohol, Cheers!
+			Chat15: A peculiar jungle delicacy with high protein!
+			Chat16: Is a homeland taste...But there is no sea in the Netherworld, right?
+			Chat17: Salute to the legendary commercial food!
+			Chat18: The fries without ketchup or cod are soulless...
+			Chat19: Thank you for your generous and let me eat this!
+			Chat20: No matter shucks or something, just eat them together.
+			Chat21: An apple a day keeps the doctor... wait, Am I need a doctor?
+			Chat22: These won't explode, right?
+			Chat23: I've hidden all pineapples...
+			Chat24: Could it be a pie?
+			Chat25: Tasty if there are no small bones!
 		}
 
 		Chat_Youmu: {
@@ -324,7 +346,7 @@ Mods: {
 			Chat5: ...IS THERE A GHOST?!
 			Chat6: Eh? Just taking good care of Yuyuko-sama is enough...
 			Chat7: Ah...I can't understand...
-			Chat8: Your last meal was less than 5 minutes ago, Yuyuko sama.
+			Chat8: Your last meal was less than 5 minutes ago, Yuyuko-sama.
 			Chat9: But you are already dead, Yuyuko-sama! You can't just reincarnate!
 			Chat10: I'm content with staying by Yuyuko-sama.
 		}
@@ -376,10 +398,10 @@ Mods: {
 
 		Chat_Yukari: {
 			Chat1: As a sage, it's my eternal duty to protect the barrier...
-			Chat2: Is that old friend of mine doing alright?...
+			Chat2: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
 			Chat3: That Reimu, she should really be more diligent.
-			Chat4: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
-			Chat5: If you miss her, I'll allow you to take a temporary leave.
+			Chat4: If you miss her, I'll allow you to take a temporary leave.
+			Chat5: Is that old friend of mine doing alright?...
 			Chat6: Nothing, Maybe I don't need to worry about her appetite.
 		}
 
@@ -387,7 +409,7 @@ Mods: {
 			Chat1: There's something wrong about the sun's position and the time...
 			Chat2: How could gold be stronger than iron?
 			Chat3: Is Yuuma still living in the Animal Realm?...
-			Chat4: I, I'm NOT! Yukari sama!
+			Chat4: I, I'm NOT! Yukari-sama!
 			Chat5: You mean?
 			Chat6: I might know who she is...
 			Chat7: Don't leave me too far, Chen!
@@ -400,12 +422,6 @@ Mods: {
 		}
 
 		Chat_Kaguya: {
-			Chat-1: This turn, I win!
-			Chat-2: Practice makes perfect, you understand?
-			Chat-3: Ah hahaha!
-			Chat-4: DAMN!!!
-			Chat-5: You must cheated!
-			Chat-6: I'll grant your wish in the next round-- DIE!
 			Chat1: It's not very "dirty" on the ground...
 			Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
 			Chat3: ...I have to win this time!
@@ -415,15 +431,15 @@ Mods: {
 			Chat7: Hey, how long have we been fighting each other?
 			Chat8: Wanna do something new today?
 			Chat9: How about...something EXCITING?
+			Chat10: This turn, I win!
+			Chat11: Practice makes perfect, you understand?
+			Chat12: Ah hahaha!
+			Chat13: DAMN!!!
+			Chat14: You must cheated!
+			Chat15: I'll grant your wish in the next round-- DIE!
 		}
 
 		Chat_Moku: {
-			Chat-1: Just accept that I'm stronger!
-			Chat-2: Do you even want to defeat ME?
-			Chat-3: That's all you got?
-			Chat-4: I won't lose in the next round!
-			Chat-5: I'm too careless...
-			Chat-6: This'll be the last time you'll be this complacent...
 			Chat1: Living forever, is absolutely a greater curse than a blessing...
 			Chat2: ...How many years ago was that time?
 			Chat3: How could I know, about a thousand years?
@@ -433,6 +449,12 @@ Mods: {
 			Chat7: I'm fine, maybe. Just the usual.
 			Chat8: Nope, I'm trying to forget them...
 			Chat9: You will become this form every full moon, that's pretty scary!
+			Chat10: Just accept that I'm stronger!
+			Chat11: Do you even want to defeat ME?
+			Chat12: That's all you got?
+			Chat13: I won't lose in the next round!
+			Chat14: I'm too careless...
+			Chat15: This'll be the last time you'll be this complacent...
 		}
 
 		Chat_Meirin: {
@@ -442,8 +464,8 @@ Mods: {
 			Chat4: My homeland is in the East, right above the Yangtze River!
 			//Don't translate this
 			Chat5: 易有太极，是生两仪...
-			Chat6: It's my home language, Flandre sama.
-			Chat7: It's called "Tai ji", Flandre sama.
+			Chat6: It's my home language, Flandre-sama.
+			Chat7: It's called "Tai ji", Flandre-sama.
 			Chat8: Mmm...Maybe need Remilia-sama's agreement?
 			Chat9: I'm NOT!
 			Chat10: Ms.Sakuya is so busy, do you ever get a vacation?
@@ -456,7 +478,7 @@ Mods: {
 
 		Chat_Sakuya: {
 			Chat1: Past is past, now I only need to serve Remilia sama.
-			Chat2: The storage of alcohol in the mansion is not enough...
+			Chat2: My life already restarted since I met you, there is no past.
 			Chat3: I'll be fine if Remilia sama is fine.
 			Chat4: Is Meirin swinging the lead now?...
 			Chat5: Enjoy the tea, Remilia sama...
@@ -464,7 +486,7 @@ Mods: {
 			Chat7: What?
 			Chat8: You read comic during your work time?
 			Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
-			Chat10: My life already restarted since I met you, there is no past.
+			Chat10: The storage of alcohol in the mansion is not enough...
 		}
 
 		Chat_Raiko: {

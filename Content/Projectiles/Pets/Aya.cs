@@ -7,16 +7,66 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Aya : BasicTouhouPet
+    public class Aya : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Shot,
+            ShotBreak,
+            ShotContinue,
+            AfterShot,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool ReadyToShot
+        {
+            get
+            {
+                return (int)Projectile.ai[2] == 1;
+            }
+            set
+            {
+                Projectile.ai[2] = value ? 1 : 0;
+                Projectile.netUpdate = true;
+            }
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int wingFrame, wingFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int extraAdjX, extraAdjY;
+        private float flash;
+        private int flashChance, flashRandomCount;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Aya_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Aya_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -38,7 +88,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(clothFrame, lightColor, config2, 1);
@@ -69,8 +119,156 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.spriteBatch.TeaNPCDraw(t, pos, rect, clr, Projectile.rotation + MathHelper.Pi / 2, orig, new Vector2(0.5f, 1f) * flash * 1.6f, effect, 0f);
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
+        public override Color ChatTextColor => new Color(255, 102, 85);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Aya";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 7;
+            whenShouldStop = IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+            }
+            return chat;
+        }
+        private void UpdateTalking()
+        {
+        }
+        private void SetShotChat()
+        {
+            int chance = Main.rand.Next(6);
+            switch (chance)
+            {
+                case 1:
+                    Projectile.SetChat(ChatSettingConfig, 5);
+                    break;
+                case 2:
+                    Projectile.SetChat(ChatSettingConfig, 6);
+                    break;
+                case 3:
+                    Projectile.SetChat(ChatSettingConfig, 7);
+                    break;
+                case 4:
+                    Projectile.SetChat(ChatSettingConfig, 8);
+                    break;
+                default:
+                    break;
+            }
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+            UpdateClothFrame();
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<AyaBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Shot:
+                    shouldNotTalking = true;
+                    Shot();
+                    break;
+
+                case States.ShotBreak:
+                    shouldNotTalking = true;
+                    ShotBreak();
+                    break;
+
+                case States.ShotContinue:
+                    shouldNotTalking = true;
+                    ShotContinue();
+                    break;
+
+                case States.AfterShot:
+                    shouldNotTalking = true;
+                    AfterShot();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            UpdateMiscData();
+
+            Lighting.AddLight(Projectile.Center + new Vector2(14 * Projectile.spriteDirection, -10)
+                , 2.55f * flash, 2.55f * flash, 2.55f * flash);
+        }
+        private void UpdateMiscData()
+        {
+            if (flash > 0)
+            {
+                flash -= 0.1f;
+            }
+            extraAdjX = 0;
+            extraAdjY = 0;
+            if (Projectile.frame == 3)
+            {
+                extraAdjY = -2;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            if (IsIdleState)
+                Projectile.rotation = Projectile.velocity.X * 0.035f;
+            else
+                Projectile.rotation = Projectile.velocity.X * 0.002f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-70 * Owner.direction, -50 + Owner.gfxOffY);
+            MoveToPoint(point, 30f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 600 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(3))
+                    {
+                        RandomCount = Main.rand.Next(1, 5);
+                        flashChance = 6;
+                        CurrentState = States.Shot;
+                    }
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (blinkFrame < 6)
             {
                 blinkFrame = 6;
@@ -86,12 +284,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 PetState = 0;
             }
         }
-        int wingFrame, wingFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int extraAdjX, extraAdjY;
-        float flash;
-        int flashChance;
         private void Shot()
         {
             Projectile.velocity *= 0.9f;
@@ -100,87 +292,85 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (extraAI[0] > 0)
+            if (Projectile.frame >= 3)
             {
-                if (extraAI[1] == 0)
+                Projectile.frame = 3;
+            }
+            if (ReadyToShot)//准备拍照
+            {
+                flash = 1;//设置闪光
+                AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
+                ReadyToShot = false;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                if (Timer == 0)
                 {
-                    if (Projectile.frame >= 3)
-                    {
-                        Projectile.frame = 3;
-                    }
-                    if (Projectile.ai[2] > 0)
-                    {
-                        flash = 1;
-                        AltVanillaFunction.PlaySound(SoundID.Camera, Projectile.Center);
-                        Projectile.ai[2] = 0;
-                    }
-                    if (Projectile.owner == Main.myPlayer)
-                    {
-                        if (extraAI[2] == 0 && Main.rand.NextBool(3))
-                        {
-                            SetShotChat();
-                        }
-                        extraAI[2]++;
-                        int chance = Main.rand.Next(180, 600);
-                        if (extraAI[2] >= chance)
-                        {
-                            extraAI[1] = 1;
-                            if (extraAI[0] <= 1)
-                            {
-                                extraAI[2] = Main.rand.Next(30, 60);
-                            }
-                            Projectile.netUpdate = true;
-                        }
-                        else if (extraAI[2] % 30 == 0 && Main.rand.NextBool(7 - flashChance))
-                        {
-                            flashChance -= 2;
-                            Projectile.ai[2]++;
-                            Projectile.netUpdate = true;
-                        }
-                    }
+                    //设置举相机的持续时长
+                    flashRandomCount = Main.rand.Next(180, 600);
+
+                    if (Main.rand.NextBool(3))
+                        SetShotChat();
                 }
-                if (extraAI[1] == 1)
+                Timer++;
+                //大于时长则进入休息阶段
+                if (Timer >= flashRandomCount)
                 {
-                    if (Projectile.frame >= 5)
-                    {
-                        Projectile.frame = 5;
-                    }
-                    if (Projectile.owner == Main.myPlayer)
-                    {
-                        extraAI[2]--;
-                        if (extraAI[2] < 0)
-                        {
-                            extraAI[2] = 0;
-                            extraAI[0]--;
-                            flashChance = 6;
-                            if (extraAI[0] > 0)
-                                extraAI[1] = 2;
-                            Projectile.netUpdate = true;
-                        }
-                    }
+                    Timer = Main.rand.Next(30, 60);//设置休息阶段时长
+                    CurrentState = States.ShotBreak;
                 }
-                if (extraAI[1] == 2)
+                else if (Timer % 30 == 0 && Main.rand.NextBool(7 - flashChance))//每30刻就有概率进行一次拍照
                 {
-                    if (Projectile.frame >= 1)
-                    {
-                        Projectile.frame = 1;
-                        if (Projectile.owner == Main.myPlayer)
-                        {
-                            extraAI[1] = 0;
-                            Projectile.netUpdate = true;
-                        }
-                    }
+                    flashChance -= 2;//减少下次拍照的概况
+                    ReadyToShot = true;//准备拍照
                 }
             }
-            else
+        }
+        private void ShotBreak()
+        {
+            Projectile.velocity *= 0.9f;
+            if (++Projectile.frameCounter > 7)
             {
-                if (Projectile.frame > 5)
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame >= 5)
+            {
+                Projectile.frame = 5;
+            }
+
+            Timer--;
+
+            if (OwnerIsMyPlayer && Timer < 0)
+            {
+                RandomCount--;
+                Timer = 0;
+                CurrentState = (RandomCount > 0) ? States.ShotContinue : States.AfterShot;
+            }
+        }
+        private void ShotContinue()
+        {
+            Projectile.frame = 1;
+            if (OwnerIsMyPlayer)
+            {
+                flashChance = 6;//使拍照概率回到最大
+                CurrentState = States.Shot;
+            }
+        }
+        private void AfterShot()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 5)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 0;
-                    extraAI[0] = 1800;
-                    extraAI[2] = 0;
-                    PetState = 0;
-                    Projectile.netUpdate = true;
+                    ActionCD = 1800;
+                    CurrentState = States.Idle;
                 }
             }
         }
@@ -212,122 +402,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 3)
             {
                 clothFrame = 0;
-            }
-        }
-        Color myColor = new Color(255, 102, 85);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Aya", "1");
-            text[2] = ModUtils.GetChatText("Aya", "2");
-            text[3] = ModUtils.GetChatText("Aya", "3");
-            text[4] = ModUtils.GetChatText("Aya", "4");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(7) && mainTimer > 0 && PetState != 2)
-            {
-                SetChat(myColor);
-            }
-        }
-        private void SetShotChat()
-        {
-            int chance = Main.rand.Next(6);
-            switch (chance)
-            {
-                case 1:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "5"), 5);
-                    break;
-                case 2:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "6"), 6);
-                    break;
-                case 3:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "7"), 7);
-                    break;
-                case 4:
-                    SetChat(myColor, ModUtils.GetChatText("Aya", "8"), 8);
-                    break;
-                default:
-                    break;
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            if (flash > 0)
-            {
-                flash -= 0.1f;
-            }
-            Lighting.AddLight(Projectile.Center + new Vector2(14 * Projectile.spriteDirection, -10)
-                , 2.55f * flash, 2.55f * flash, 2.55f * flash);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<AyaBuff>());
-            UpdateTalking();
-            Vector2 point = new Vector2(-70 * player.direction, -50 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            if (PetState != 2)
-                Projectile.rotation = Projectile.velocity.X * 0.035f;
-            else
-                Projectile.rotation = Projectile.velocity.X * 0.002f;
-
-            ChangeDir(player, true);
-            MoveToPoint(point, 30f);
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
-                {
-                    if (mainTimer % 600 == 0 && Main.rand.NextBool(3) && PetState != 2)
-                    {
-                        PetState = 2;
-                        extraAI[0] = Main.rand.Next(1, 5);
-                        flashChance = 6;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Shot();
-            }
-            extraAdjX = 0;
-            extraAdjY = 0;
-            if (Projectile.frame == 3)
-            {
-                extraAdjY = -2;
             }
         }
     }

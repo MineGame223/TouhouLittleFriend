@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Meirin : BasicTouhouPet
+    public class Meirin : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PositionOffset = clothPosOffset,
                 }, 1);
 
-            if (PetState == 3 || PetState == 4)
+            if (Projectile.frame == 23)
             {
                 DrawUmbrella(lightColor);
             }
@@ -117,7 +117,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(25) && extraAI[1] <= 0)
                     {
-                        SetChat(myColor, ModUtils.GetChatText("Meirin", "5"), 5);
+                        Projectile.SetChat(ChatSettingConfig, 5);
                         extraAI[1]++;
                     }
                 }
@@ -140,8 +140,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Serve()
         {
             Projectile.frame = 23;
-            if (Main.player[Projectile.owner].ownedProjectileCounts[ProjectileType<Flandre>()] <= 0
-                || !Remilia.HateSunlight(Projectile))
+            if (!FindPet(ProjectileType<Flandre>(), false) || !Remilia.HateSunlight(Projectile))
             {
                 Projectile.frame = 0;
                 PetState = 0;
@@ -253,91 +252,204 @@ namespace TouhouPets.Content.Projectiles.Pets
                 auraFrame = 11;
             }
         }
-        Color myColor = new Color(255, 81, 81);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(255, 81, 81);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Meirin", "1");
-            text[2] = ModUtils.GetChatText("Meirin", "2");
-            text[3] = ModUtils.GetChatText("Meirin", "3");
-            text[4] = ModUtils.GetChatText("Meirin", "4");
-            if (player.ownedProjectileCounts[ProjectileType<Sakuya>()] > 0)
-            {
-                text[10] = ModUtils.GetChatText("Meirin", "10");
-                text[13] = ModUtils.GetChatText("Meirin", "13");
-            }
+            name = "Meirin";
+            indexRange = new Vector2(1, 15);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 960;
+            chance = Owner.HasBuff<ScarletBuff>() ? 30 : 5;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+                if (FindPet(ProjectileType<Sakuya>()))
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[10]);
+                    chat.Add(ChatDictionary[13]);
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-            Player player = Main.player[Projectile.owner];
-            bool chance = Main.rand.NextBool(player.HasBuff<ScarletBuff>() ? 30 : 5);
-
-            int sakuya = ProjectileType<Sakuya>();
-            int flandre = ProjectileType<Flandre>();
-
-            if (FindChatIndex(out Projectile _, sakuya, 4, default, 0) && PetState <= 4
-                || FindChatIndex(out Projectile _, flandre, 10, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, sakuya, 4))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "9"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, sakuya, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "11"), myColor, 11);
-            }
-            else if (FindChatIndex(out p, sakuya, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "12"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, sakuya, 8, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "14"), myColor, 14);
-            }
-            else if (FindChatIndex(out p, sakuya, 9, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "15"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, flandre, 9, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "6"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, flandre, 10))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "7"), myColor, 7);
-            }
-            else if (FindChatIndex(out p, flandre, 11, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Meirin", "8"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (mainTimer % 960 == 0 && chance && PetState <= 1)
-            {
-                SetChat(myColor);
-            }
-        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(10, 15))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+            if (FindChatIndex(5, 6))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Sakuya>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile meirin = chatRoom.initiator;
+            Projectile sakuya = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 10 && index <= 12)
+            {
+                if (turn == -1)
+                {
+                    //美铃：咲夜小姐每天那么忙，有过休假的时候吗？
+                    sakuya.CloseCurrentDialog();
+
+                    if (meirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
+                    sakuya.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //美铃：这个工作和休假没啥区别啊...
+                    meirin.SetChat(ChatSettingConfig, 11, 20);
+
+                    if (meirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    //咲夜：什么？
+                    sakuya.SetChat(ChatSettingConfig, 7, 20);
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 3)
+                {
+                    //美铃：没！没什么...
+                    meirin.SetChat(ChatSettingConfig, 12, 20);
+
+                    if (meirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 13 || index == 15)
+            {
+                if (turn == -1)
+                {
+                    //美铃：咲夜小姐，我最近发现了一本讲保安和女仆谈恋爱的漫画欸！
+                    sakuya.CloseCurrentDialog();
+
+                    if (meirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //咲夜：站岗期间你看漫画？
+                    sakuya.SetChat(ChatSettingConfig, 8, 20);
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //美铃：啊，糟了！偷懒的事暴露了...
+                    meirin.SetChat(ChatSettingConfig, 14, 20);
+
+                    if (meirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    //咲夜：看我晚上不好好收拾你！...书记得给我看看...
+                    sakuya.SetChat(ChatSettingConfig, 9, 20);
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 3)
+                {
+                    //美铃：呜呜呜...欸？
+                    meirin.SetChat(ChatSettingConfig, 15, 20);
+
+                    if (meirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Flandre>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile meirin = chatRoom.initiator;
+            Projectile flandre = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //美铃：易有太极，是生两仪...
+                flandre.CloseCurrentDialog();
+
+                if (meirin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //芙兰：美铃在说什么？
+                flandre.SetChat(ChatSettingConfig, 9, 20);
+
+                if (flandre.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //美铃：是我的家乡话哦，二小姐。
+                meirin.SetChat(ChatSettingConfig, 6, 20);
+
+                if (meirin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         private void SetMeirinLight()
         {
@@ -356,7 +468,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.003f;
 
-            ChangeDir(player, false, 120);
+            ChangeDir(120);
 
             Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? -100 : 50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;
@@ -385,7 +497,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.owner == Main.myPlayer)
             {
                 if (Remilia.HateSunlight(Projectile) && PetState != 3 && PetState != 4
-                    && player.ownedProjectileCounts[ProjectileType<Flandre>()] > 0)
+                    && FindPet(ProjectileType<Flandre>(), false))
                 {
                     PetState = 3;
                     Projectile.netUpdate = true;
@@ -400,7 +512,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (PetState <= 0)
                 {
-                    if (mainTimer % 270 == 0 && PetState <= 0)
+                    if (mainTimer % 270 == 0)
                     {
                         PetState = 1;
                         Projectile.netUpdate = true;
@@ -412,8 +524,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                             bool chance = !player.HasBuff<ScarletBuff>();
                             extraAI[1] = 0;
                             if (chance)
+                            {
                                 extraAI[2] = Main.rand.Next(120, 540);
-                            PetState = chance ? 5 : 2;
+                                PetState = 5;
+                            }
+                            else
+                            {
+                                PetState = 2;
+                            }
                             Projectile.netUpdate = true;
                         }
                     }

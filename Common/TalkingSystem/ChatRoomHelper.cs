@@ -13,6 +13,15 @@ namespace TouhouPets
     public static class ChatRoomHelper
     {
         /// <summary>
+        /// 宠物是否被允许说话（shouldNotTalking 是否为 false）
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <returns></returns>
+        public static bool ShouldPetTalking(this Projectile projectile)
+        {
+            return !projectile.ToPetClass().shouldNotTalking;
+        }
+        /// <summary>
         /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPetNeo"/> 类
         /// </summary>
         /// <param name="projectile"></param>

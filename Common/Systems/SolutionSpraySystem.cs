@@ -22,8 +22,14 @@ namespace TouhouPets
         public const int Phase_Spray_Mode2 = 4;
         public const int Phase_StopSpray = 5;
         public static Item Sprayer => new(ItemID.Clentaminator2);
-        public static bool InSprayMode => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
-        private static float PetState { get => yuka.ai[1]; }
+        public static bool IsSpraying => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
+        private static float PetState
+        {
+            get
+            {
+                return (yuka == null) ? 0 : yuka.ai[1];
+            }
+        }
         public static int SprayState { get => sprayState; set => sprayState = value; }
         public static Item Solution { get => solution; set => solution = value; }
         public static int SolutionSprayType(int type)
@@ -66,14 +72,11 @@ namespace TouhouPets
                 sprayMode = 0;
             }
             yuka = null;
-            foreach (Projectile p in Main.projectile)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
-                if (p != null && p.active)
+                if (p.owner == Main.myPlayer && p.type == ProjectileType<Yuka>())
                 {
-                    if (p.owner == Main.myPlayer && p.type == ProjectileType<Yuka>())
-                    {
-                        yuka = p;
-                    }
+                    yuka = p;
                 }
             }
         }
@@ -101,7 +104,7 @@ namespace TouhouPets
             if (yuka.isAPreviewDummy || PetState == Phase_StopSpray)
                 return;
 
-            if (!InSprayMode)
+            if (!IsSpraying)
                 Solution = new Item();
 
             bool request = false;
@@ -133,7 +136,7 @@ namespace TouhouPets
                         }
                         if (Main.mouseLeft && Main.mouseLeftRelease)
                         {
-                            if (!InSprayMode)
+                            if (!IsSpraying)
                             {
                                 AltVanillaFunction.PlaySound(SoundID.MenuTick, yuka.position);
                                 sprayMode++;
@@ -166,10 +169,10 @@ namespace TouhouPets
                                 , Color.White, Color.Black
                                 , orig, 1f);
             }
-            string modeText = InSprayMode ? "Stop" : "Request";
+            string modeText = IsSpraying ? "Stop" : "Request";
             if (drawRequestText)
             {
-                if (!InSprayMode && PetState != Phase_StopSpray)
+                if (!IsSpraying && PetState != Phase_StopSpray)
                     DrawSprayModeSign(sprayMode == 0 ? 9 : 8);
 
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -8,17 +7,50 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Mystia : BasicTouhouPet
+    public class Mystia : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Singing,
+            AfterSinging,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Mystia_Cloth");
-        readonly Texture2D patchTex = AltVanillaFunction.GetExtraTexture("Mystia_EyePatch");
+        private int wingFrame, wingFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int extraAdjX, extraAdjY;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Mystia_Cloth");
+        private readonly Texture2D patchTex = AltVanillaFunction.GetExtraTexture("Mystia_EyePatch");
         public override bool PreDraw(ref Color lightColor)
         {
             bool blackDye = Main.LocalPlayer.miscDyes[0].type == ItemID.BlackDye;
@@ -31,7 +63,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -40,7 +72,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                    ShouldUseEntitySpriteDraw = true,
                    AltTexture = clothTex,
                });
-            Projectile.DrawPet(clothFrame, lightColor, 
+            Projectile.DrawPet(clothFrame, lightColor,
                 config with
                 {
                     ShouldUseEntitySpriteDraw = true,
@@ -55,8 +87,137 @@ namespace TouhouPets.Content.Projectiles.Pets
                     });
             return false;
         }
+        public override Color ChatTextColor => new Color(246, 110, 169);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Mystia";
+            indexRange = new Vector2(1, 9);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 840;
+            chance = 6;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+            UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<MystiaBuff>());
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Singing:
+                    shouldNotTalking = true;
+                    Singing();
+                    break;
+
+                case States.AfterSinging:
+                    shouldNotTalking = true;
+                    AfterSinging();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+            UpdateMiscData();
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            if (CurrentState != States.Singing)
+                Projectile.rotation = Projectile.velocity.X * 0.035f;
+            else
+                Projectile.rotation = Projectile.velocity.X * 0.005f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-50 * Owner.direction, -50 + Owner.gfxOffY);
+            MoveToPoint(point, 14f);
+        }
+        private void UpdateMiscData()
+        {
+            extraAdjX = 0;
+            extraAdjY = 0;
+            if (Projectile.frame >= 1 && Projectile.frame <= 5)
+            {
+                extraAdjY = -2;
+                if (Projectile.frame >= 2 && Projectile.frame <= 4)
+                {
+                    extraAdjY = -4;
+                    extraAdjX = -2 * Projectile.spriteDirection;
+                }
+            }
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 1200 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(3))
+                    {
+                        RandomCount = Main.rand.Next(60, 180);
+                        CurrentState = States.Singing;
+
+                        int chance = Main.rand.Next(4);
+                        switch (chance)
+                        {
+                            case 1:
+                                Projectile.SetChat(ChatSettingConfig, 5, 90);
+                                break;
+                            case 2:
+                                Projectile.SetChat(ChatSettingConfig, 6, 90);
+                                break;
+                            case 3:
+                                Projectile.SetChat(ChatSettingConfig, 7, 90);
+                                break;
+                            default:
+                                Projectile.SetChat(ChatSettingConfig, 8, 90);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (blinkFrame < 10)
             {
                 blinkFrame = 10;
@@ -69,13 +230,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 12)
             {
                 blinkFrame = 10;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int wingFrame, wingFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int extraAdjX, extraAdjY;
         private void Singing()
         {
             Projectile.velocity *= 0.8f;
@@ -84,32 +241,32 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (extraAI[0] == 0)
+            if (Projectile.frame > 4)
             {
-                if (Projectile.frame > 4)
-                {
-                    Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -27), new Vector2(Main.rand.Next(-5, 5), Main.rand.Next(-6, -3)) * 0.1f, Main.rand.Next(570, 573), Main.rand.NextFloat(0.9f, 1.1f));
-                    Projectile.frame = 2;
-                    extraAI[1]++;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > extraAI[2])
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
+                Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -27), new Vector2(Main.rand.Next(-5, 5), Main.rand.Next(-6, -3)) * 0.1f, Main.rand.Next(570, 573), Main.rand.NextFloat(0.9f, 1.1f));
+                Projectile.frame = 2;
+                Timer++;
             }
-            else
+            if (OwnerIsMyPlayer && Timer > RandomCount)
             {
-                if (Projectile.frame > 5)
+                Timer = 0;
+                CurrentState = States.AfterSinging;
+            }
+        }
+        private void AfterSinging()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 5)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 0;
-                    extraAI[0] = 3600;
-                    extraAI[2] = 0;
-                    PetState = 0;
+                    ActionCD = 3600;
+                    CurrentState = States.Idle;
                 }
             }
         }
@@ -141,128 +298,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 9)
             {
                 clothFrame = 6;
-            }
-        }
-        Color myColor = new Color(246, 110, 169);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Mystia", "1");
-            text[2] = ModUtils.GetChatText("Mystia", "2");
-            text[3] = ModUtils.GetChatText("Mystia", "3");
-            text[4] = ModUtils.GetChatText("Mystia", "4");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Wriggle>();
-            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (PetState != 2)
-            {
-                if (FindChatIndex(out Projectile p, type1, 1))
-                {
-                    SetChatWithOtherOne(p, ModUtils.GetChatText("Mystia", "9"), myColor, 0, 360);
-                    p.localAI[2] = 0;
-                }
-                else if (mainTimer % 840 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
-                {
-                    SetChat(myColor);
-                }
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<MystiaBuff>());
-            UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -50 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            if (PetState != 2)
-                Projectile.rotation = Projectile.velocity.X * 0.035f;
-            else
-                Projectile.rotation = Projectile.velocity.X * 0.005f;
-
-            ChangeDir(player, true);
-            MoveToPoint(point, 14f);
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && extraAI[0] == 0)
-                {
-                    if (mainTimer % 1200 == 0 && Main.rand.NextBool(3) && PetState != 2)
-                    {
-                        PetState = 2;
-                        extraAI[2] = Main.rand.Next(60, 180);
-                        Projectile.netUpdate = true;
-                        int chance = Main.rand.Next(4);
-                        switch (chance)
-                        {
-                            case 1:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "6"), 6, 90, 30, true);
-                                break;
-                            case 2:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "7"), 7, 90, 30, true);
-                                break;
-                            case 3:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "8"), 8, 90, 30, true);
-                                break;
-                            default:
-                                SetChat(myColor, ModUtils.GetChatText("Mystia", "5"), 5, 90, 30, true);
-                                break;
-                        }
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Singing();
-            }
-            extraAdjX = 0;
-            extraAdjY = 0;
-            if (Projectile.frame >= 1 && Projectile.frame <= 5)
-            {
-                extraAdjY = -2;
-                if (Projectile.frame >= 2 && Projectile.frame <= 4)
-                {
-                    extraAdjY = -4;
-                    extraAdjX = -2 * Projectile.spriteDirection;
-                }
             }
         }
     }

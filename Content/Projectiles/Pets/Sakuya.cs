@@ -1,14 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Sakuya : BasicTouhouPet
+    public class Sakuya : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -25,7 +24,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            Projectile.DrawPet(Projectile.frame,lightColor,drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
             if (PetState == 1)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
@@ -79,8 +78,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (alt)
             {
                 Projectile.frame = 9;
-                if (Main.player[Projectile.owner].ownedProjectileCounts[ProjectileType<Remilia>()] <= 0
-                    || !Remilia.HateSunlight(Projectile))
+                if (!FindPet(ProjectileType<Remilia>(), false) || !Remilia.HateSunlight(Projectile))
                 {
                     Projectile.frame = 0;
                     PetState = 0;
@@ -99,7 +97,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(15) && extraAI[1] <= 0)
                     {
-                        SetChat(myColor, ModUtils.GetChatText("Sakuya", "5"), 5);
+                        Projectile.SetChat(ChatSettingConfig, 5);
                         extraAI[1]++;
                     }
                 }
@@ -108,7 +106,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 1;
             }
-            if (!FindPetState(out _, ProjectileType<Remilia>(), 2))
+            if (!FindPet(out _, ProjectileType<Remilia>(), 2))
             {
                 extraAI[1] = 0;
                 Projectile.frame = 0;
@@ -131,7 +129,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.spriteDirection = Projectile.position.X > meirin.position.X ? -1 : 1;
                 if (Projectile.frameCounter == 2 && Projectile.frame == 6)
                 {
-                    Vector2 vel = Vector2.Normalize(meirin.Center - Projectile.Center) * 4f;
+                    Vector2 vel = Vector2.Normalize(meirin.Center - Projectile.Center) * 12f;
                     Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, vel, ProjectileType<SakuyaKnife>()
                         , 0, 0, Projectile.owner);
                 }
@@ -173,79 +171,154 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 13;
             }
         }
-        Color myColor = new Color(114, 106, 255);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(114, 106, 255);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Player player = Main.player[Projectile.owner];
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Sakuya", "1");
-            text[2] = ModUtils.GetChatText("Sakuya", "2");
-            text[3] = ModUtils.GetChatText("Sakuya", "3");
-            if (player.ownedProjectileCounts[ProjectileType<Meirin>()] > 0)
-            {
-                text[4] = ModUtils.GetChatText("Sakuya", "4");
-            }
+            name = "Sakuya";
+            indexRange = new Vector2(1, 10);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 960;
+            chance = Owner.HasBuff<ScarletBuff>() ? 30 : 12;
+            whenShouldStop = PetState > 1;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[3]);
+                if (FindPet(ProjectileType<Meirin>()))
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[4]);
                 }
+                chat.Add(ChatDictionary[10]);
             }
             return chat;
-        }
-        private void UpdateTalking()
-        {
-            int remilia = ProjectileType<Remilia>();
-            int meirin = ProjectileType<Meirin>();
-
-            Player player = Main.player[Projectile.owner];
-            bool chance = Main.rand.NextBool(player.HasBuff<ScarletBuff>() ? 30 : 12);
-
-            if (FindChatIndex(out Projectile _, meirin, 13, default, 0)
-                || FindChatIndex(out Projectile _, meirin, 10, default, 0))
-            {
-                ChatCD = 1;
-            }
-
-            if (FindChatIndex(out Projectile p, remilia, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Sakuya", "10"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, remilia, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Sakuya", "10"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, meirin, 10))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Sakuya", "6"), myColor, 6);
-            }
-            else if (FindChatIndex(out p, meirin, 11, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Sakuya", "7"), myColor, 7);
-            }
-            else if (FindChatIndex(out p, meirin, 13))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Sakuya", "8"), myColor, 8);
-            }
-            else if (FindChatIndex(out p, meirin, 14, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Sakuya", "9"), myColor, 9);
-            }
-            else if (mainTimer % 960 == 0 && chance && PetState <= 1 && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(1, 3))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+            if (FindChatIndex(4))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Remilia>();
+            if (FindPet(out Projectile member, type, 0, 1))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile sakuya = chatRoom.initiator;
+            Projectile remilia = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 1 && index <= 2)
+            {
+                if (turn == -1)
+                {
+                    //咲夜：过去已为过去，如今只要侍奉大小姐便是。
+                    remilia.CloseCurrentDialog();
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //蕾米：咲夜还记得你过去的日子吗？
+                    remilia.SetChat(ChatSettingConfig, 14, 20);
+
+                    if (remilia.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //咲夜：从遇到您的那一刻起我的人生就重新开始了，没有所谓过去了。
+                    sakuya.SetChat(ChatSettingConfig, 2, 20);
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 3)
+            {
+                if (turn == -1)
+                {
+                    //咲夜：大小姐能安好，我就安好。
+                    remilia.CloseCurrentDialog();
+
+                    if (sakuya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //蕾米：咲夜偶尔也得为自己考虑一下嘛。
+                    remilia.SetChat(ChatSettingConfig, 13, 20);
+
+                    if (remilia.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Meirin>();
+            if (FindPet(out Projectile member, type, 0, 4))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile sakuya = chatRoom.initiator;
+            Projectile meirin = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //咲夜：美铃那家伙，是不是又在偷懒了...
+                meirin.CloseCurrentDialog();
+
+                if (sakuya.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //美铃：我才没有呐！
+                meirin.SetChat(ChatSettingConfig, 9, 20);
+
+                if (meirin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         private void ControlMovement(Player player)
         {
@@ -255,7 +328,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
                 Projectile.rotation = Projectile.velocity.X * 0.001f;
 
-            ChangeDir(player, true, 120);
+            ChangeDir(120);
 
             Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? 100 : -50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;

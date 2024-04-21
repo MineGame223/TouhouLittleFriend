@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Raiko : BasicTouhouPet
+    public class Raiko : BasicTouhouPetNeo
     {
         public override void SetStaticDefaults()
         {
@@ -232,32 +232,30 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        Color myColor = new Color(249, 101, 101);
-        public override string GetChatText(out string[] text)
+        public override Color ChatTextColor => new Color(249, 101, 101);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Raiko", "1");
-            text[2] = ModUtils.GetChatText("Raiko", "2");
-            text[3] = ModUtils.GetChatText("Raiko", "3");
+            name = "Raiko";
+            indexRange = new Vector2(1, 3);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 555;
+            chance = 9;
+            whenShouldStop = PetState >= 4;
+        }
+        public override string GetRegularDialogText()
+        {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
             }
             return chat;
         }
         private void UpdateTalking()
         {
-            if (mainTimer % 555 == 0 && Main.rand.NextBool(9) && PetState < 4)
-            {
-                SetChat(myColor);
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -274,7 +272,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir(player, true);
+            ChangeDir();
 
             Vector2 point = new Vector2(-60 * player.direction, -40 + player.gfxOffY);
             MoveToPoint(point, 12.5f);

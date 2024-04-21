@@ -8,19 +8,59 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Sanae : BasicTouhouPet
+    public class Sanae : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Pray,
+            AfterPray,
+            Flying,
+            FlyingBlink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsPraying => CurrentState == States.Pray;
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int itemFrame, itemFrameCounter;
+        private int hairFrame, hairFrameCounter;
+        private float auraScale;
+        private int extraAdjY;
+        private int flyTimeleft = 0;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sanae_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sanae_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
-            if (PetState == 2)
+            if (auraScale > 0)
             {
                 float time = Main.GlobalTimeWrappedHourly * 6f;
                 Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
@@ -28,8 +68,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     for (int i = -1; i <= 1; i++)
                     {
-                        Vector2 auraPos = new Vector2(0, 2 * auraScale * i * (float)Math.Sin(time)).RotatedBy(MathHelper.PiOver2 * i);
-                        DrawSanaeAura(Color.SeaGreen * 0.4f, auraPos);
+                        Vector2 auraPos = new Vector2(2.5f * auraScale * (float)Math.Sin(time), 0);
+                        DrawSanaeAura(Color.SeaGreen * 0.4f, auraPos.RotatedBy(MathHelper.Pi * i));
+
+                        auraPos = new Vector2(0, 2.5f * auraScale * (float)Math.Sin(time));
+                        DrawSanaeAura(Color.SeaGreen * 0.4f, auraPos.RotatedBy(MathHelper.Pi * i));
                     }
                 }
                 Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
@@ -46,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            if (PetState < 3)
+            if (CurrentState < States.Flying)
                 Projectile.DrawPet(hairFrame, lightColor,
                     drawConfig with
                     {
@@ -55,7 +98,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1 || PetState == 4)
+            if (CurrentState == States.Blink || CurrentState == States.FlyingBlink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -65,7 +108,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.DrawStateNormalizeForPet();
 
-            if (PetState < 3)
+            if (CurrentState < States.Flying)
             {
                 Projectile.DrawPet(itemFrame, lightColor, drawConfig, 1);
                 Projectile.DrawPet(clothFrame, lightColor,
@@ -90,7 +133,293 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.DrawPet(clothFrame, lightColor, config);
         }
+        public override Color ChatTextColor => new Color(83, 241, 146);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Sanae";
+            indexRange = new Vector2(1, 5);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 960;
+            chance = 7;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+                if (Main.IsItAHappyWindyDay)
+                {
+                    chat.Add(ChatDictionary[5]);
+                }
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+            UpdateHairFrame();
+            UpdateItemFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(4))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Reimu>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile sanae = chatRoom.initiator;
+            Projectile reimu = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
+                reimu.CloseCurrentDialog();
+
+                if (sanae.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //灵梦：给我适可而止啊喂！
+                reimu.SetChat(ChatSettingConfig, 9, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<SanaeBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            if (Owner.velocity.Length() > 15f)
+            {
+                flyTimeleft = 5;
+                if (OwnerIsMyPlayer && CurrentState < States.Flying)
+                {
+                    Timer = 0;
+                    CurrentState = States.Flying;
+                }
+            }
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Pray:
+                    shouldNotTalking = true;
+                    Pray();
+                    break;
+
+                case States.AfterPray:
+                    shouldNotTalking = true;
+                    AfterPray();
+                    break;
+
+                case States.Flying:
+                    shouldNotTalking = true;
+                    Flying();
+                    break;
+
+                case States.FlyingBlink:
+                    shouldNotTalking = true;
+                    Flying();
+                    FlyingBlink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            UpdateMiscData();
+
+            float lightPlus = 1 + auraScale * Main.essScale;
+            Lighting.AddLight(Projectile.Center, 0.55f * lightPlus, 2.14f * lightPlus, 1.53f * lightPlus);
+        }
+        private void UpdateMiscData()
+        {
+            if (flyTimeleft > 0)
+            {
+                flyTimeleft--;
+            }
+            if (CurrentState == States.Pray)
+            {
+                PrayEffect();
+                auraScale = MathHelper.Clamp(auraScale += 0.02f, 0, 2);
+            }
+            else
+            {
+                auraScale = MathHelper.Clamp(auraScale -= 0.01f, 0, 1);
+            }
+            extraAdjY = 0;
+            if (Projectile.frame >= 2 && Projectile.frame <= 3)
+            {
+                extraAdjY = -2;
+            }
+        }
+        private void PrayEffect()
+        {
+            int dustType;
+            switch (Main.rand.Next(4))
+            {
+                default:
+                    dustType = MyDustId.GreenTrans;
+                    break;
+                case 1:
+                    dustType = MyDustId.TrailingGreen1;
+                    break;
+            }
+            if (Main.rand.NextBool(3))
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType,
+                    0, Main.rand.Next(-3, -1), 100, default, auraScale * 0.45f).noGravity = true;
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.012f;
+
+            if (CurrentState != States.Pray)
+            {
+                ChangeDir();
+            }
+
+            Vector2 point = new Vector2(50 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 22f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 480 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(5))
+                    {
+                        RandomCount = Main.rand.Next(120, 240);
+                        CurrentState = States.Pray;
+                    }
+                }
+            }
+        }
         private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 7)
+            {
+                blinkFrame = 7;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 9)
+            {
+                blinkFrame = 7;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Pray()
+        {
+            if (Projectile.frame < 1)
+            {
+                Projectile.frame = 1;
+            }
+            int count = (Projectile.frame >= 2 && Projectile.frame <= 3) ? 3 : 6;
+            if (++Projectile.frameCounter > count)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 3)
+            {
+                Projectile.frame = 2;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterPray;
+            }
+        }
+        private void AfterPray()
+        {
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 4)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 4800;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void Flying()
+        {
+            if (OwnerIsMyPlayer && flyTimeleft <= 0)
+            {
+                ActionCD = 600;
+                CurrentState = States.Idle;
+                return;
+            }
+            if (Projectile.frame < 5)
+            {
+                Projectile.frame = 5;
+            }
+            if (++Projectile.frameCounter > 3)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 6)
+            {
+                Projectile.frame = 5;
+            }
+        }
+        private void FlyingBlink()
         {
             if (blinkFrame < 7)
             {
@@ -104,29 +433,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 9)
             {
                 blinkFrame = 7;
-                if (PetState == 4)
-                {
-                    PetState = 3;
-                }
-                else
-                {
-                    PetState = 0;
-                }
+                CurrentState = States.Flying;
             }
         }
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int itemFrame, itemFrameCounter;
-        int hairFrame, hairFrameCounter;
-        float auraScale;
-        int extraAdjY;
         private void UpdateClothFrame()
         {
             if (clothFrame < 10)
             {
                 clothFrame = 10;
             }
-            int count = PetState == 2 ? 3 : 5;
+            int count = IsPraying ? 3 : 5;
             if (++clothFrameCounter > count)
             {
                 clothFrameCounter = 0;
@@ -143,7 +459,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 hairFrame = 8;
             }
-            int count = PetState == 2 ? 3 : 6;
+            int count = IsPraying ? 3 : 6;
             if (++hairFrameCounter > count)
             {
                 hairFrameCounter = 0;
@@ -156,13 +472,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateItemFrame()
         {
-            int count = PetState == 2 ? 3 : 7;
+            int count = IsPraying ? 3 : 7;
             if (++itemFrameCounter > count)
             {
                 itemFrameCounter = 0;
                 itemFrame++;
             }
-            if (PetState == 2)
+            if (IsPraying)
             {
                 if (Projectile.frame > 0)
                 {
@@ -173,209 +489,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (itemFrame > 3)
             {
                 itemFrame = 0;
-            }
-        }
-        private void Pray()
-        {
-            chatFuncIsOccupied = true;
-            if (Projectile.frame < 1)
-            {
-                Projectile.frame = 1;
-            }
-            if (auraScale < 2)
-            {
-                auraScale += 0.02f;
-            }
-            if (++Projectile.frameCounter > ((Projectile.frame >= 2 && Projectile.frame <= 3) ? 3 : 6))
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 3 && extraAI[1] < extraAI[2])
-            {
-                Projectile.frame = 2;
-                extraAI[1]++;
-            }
-            if (Projectile.frame > 4)
-            {
-                Projectile.frame = 0;
-                extraAI[0] = 4800;
-                extraAI[1] = 0;
-                extraAI[2] = 0;
-                PetState = 0;
-            }
-        }
-        private void Flying()
-        {
-            if (Projectile.frame < 5)
-            {
-                Projectile.frame = 5;
-            }
-            if (++Projectile.frameCounter > 3)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 6)
-            {
-                Projectile.frame = 5;
-            }
-        }
-        Color myColor = new Color(83, 241, 146);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Sanae", "1");
-            text[2] = ModUtils.GetChatText("Sanae", "2");
-            text[3] = ModUtils.GetChatText("Sanae", "3");
-            text[4] = ModUtils.GetChatText("Sanae", "4");
-            if (Main.IsItAHappyWindyDay)
-            {
-                text[5] = ModUtils.GetChatText("Sanae", "5");
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 960 == 0 && Main.rand.NextBool(7) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
-        }
-        int flyTimeleft = 0;
-        public override void VisualEffectForPreview()
-        {
-            UpdateClothFrame();
-            UpdateHairFrame();
-            UpdateItemFrame();
-        }
-        public override void AI()
-        {
-            float lightPlus = 1 + auraScale * Main.essScale;
-            Lighting.AddLight(Projectile.Center, 0.55f * lightPlus, 2.14f * lightPlus, 1.53f * lightPlus);
-            if (flyTimeleft > 0)
-            {
-                flyTimeleft--;
-            }
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<SanaeBuff>());
-            if (PetState != 2)
-            {
-                UpdateTalking();
-            }
-            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.012f;
-            if (PetState != 2)
-            {
-                ChangeDir(player, PetState < 3);
-                Lighting.AddLight(Projectile.Center, 0.62f, 1.02f, 0.95f);
-            }
-
-            MoveToPoint(point, 22f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0)
-                {
-                    if (PetState == 0)
-                        PetState = 1;
-                    else if (PetState == 3)
-                        PetState = 4;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1 && PetState < 3)
-                {
-                    if (mainTimer % 480 == 0 && Main.rand.NextBool(5) && extraAI[0] <= 0)
-                    {
-                        PetState = 2;
-                        extraAI[2] = Main.rand.Next(120, 240);
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (player.velocity.Length() > 15f)
-            {
-                flyTimeleft = 5;
-                if (PetState < 3)
-                {
-                    PetState = 3;
-                }
-            }
-            else if (flyTimeleft <= 0)
-            {
-                if (PetState >= 3)
-                {
-                    extraAI[0] = 960;
-                    extraAI[1] = 0;
-                    extraAI[2] = 0;
-                    PetState = 0;
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Pray();
-            }
-            else if (PetState == 3)
-            {
-                Flying();
-            }
-            else if (PetState == 4)
-            {
-                Flying();
-                Blink();
-            }
-            if (PetState != 2)
-            {
-                if (auraScale > 0)
-                {
-                    auraScale -= 0.01f;
-                }
-            }
-            else
-            {
-                int dustType;
-                switch (Main.rand.Next(4))
-                {
-                    default:
-                        dustType = MyDustId.GreenTrans;
-                        break;
-                    case 1:
-                        dustType = MyDustId.TrailingGreen1;
-                        break;
-                }
-                if (Main.rand.NextBool(3))
-                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType,
-                        0, Main.rand.Next(-3, -1), 100, default, auraScale * 0.45f).noGravity = true;
-            }
-            extraAdjY = 0;
-            if (Projectile.frame >= 2 && Projectile.frame <= 3)
-            {
-                extraAdjY = -2;
             }
         }
     }

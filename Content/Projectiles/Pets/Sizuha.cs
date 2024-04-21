@@ -9,15 +9,33 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Sizuha : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Cold,
+            ColdBlink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private bool IsIdleState => PetState <= 1;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sizuha_Cloth");
+        private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Sizuha_Glow");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sizuha_Cloth");
-        readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Sizuha_Glow");
+
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -27,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink || CurrentState == States.ColdBlink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(clothFrame, lightColor, config);
@@ -45,59 +63,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        private void Blink()
-        {
-            int startFrame = Owner.ZoneSnow ? 9 : 8;
-            if (blinkFrame < startFrame)
-            {
-                blinkFrame = startFrame;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 10)
-            {
-                blinkFrame = startFrame;
-                PetState = 0;
-            }
-        }
-        private void UpdateClothFrame()
-        {
-            if (clothFrame < 4)
-            {
-                clothFrame = 4;
-            }
-            if (++clothFrameCounter > 6)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 7)
-            {
-                clothFrame = 4;
-            }
-        }
-        private void Idle()
-        {
-            if (Owner.ZoneSnow)
-            {
-                Projectile.frame = 11;
-                return;
-            }
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 3)
-            {
-                Projectile.frame = 0;
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
         public override Color ChatTextColor => new Color(244, 150, 91);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
@@ -114,7 +79,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                if (Owner.ZoneSnow)
+                if (!IsIdleState)
                 {
                     chat.Add(ChatDictionary[9]);
                 }
@@ -132,8 +97,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void VisualEffectForPreview()
         {
-            Idle();
             UpdateClothFrame();
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
         }
         private void UpdateTalking()
         {
@@ -160,6 +128,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             int turn = chatRoom.chatTurn;
             if (turn == -1)
             {
+                //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
                 minoriko.CloseCurrentDialog();
 
                 if (sizuha.CurrentDialogFinished())
@@ -167,6 +136,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 0)
             {
+                //穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
                 minoriko.SetChat(ChatSettingConfig, 6, 20);
 
                 if (minoriko.CurrentDialogFinished())
@@ -174,6 +144,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 1)
             {
+                //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
                 sizuha.SetChat(ChatSettingConfig, 7, 20);
 
                 if (sizuha.CurrentDialogFinished())
@@ -181,6 +152,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 2)
             {
+                //穰子：那姐姐要吃烤红薯吗？
                 minoriko.SetChat(ChatSettingConfig, 7, 20);
 
                 if (minoriko.CurrentDialogFinished())
@@ -188,6 +160,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (turn == 3)
             {
+                //静叶：好欸！...我是说，好啊。
                 sizuha.SetChat(ChatSettingConfig, 8, 20);
 
                 if (sizuha.CurrentDialogFinished())
@@ -200,44 +173,149 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Lighting.AddLight(Projectile.Center, 1.61f, 0.98f, 0.58f);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<SizuhaBuff>());
+            Projectile.SetPetActive(Owner, BuffType<SizuhaBuff>());
 
             UpdateTalking();
 
-            Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
+            ControlMovement();
+
+            SpawnFallingLeaves();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Cold:
+                    shouldNotTalking = true;
+                    Cold();
+                    break;
+
+                case States.ColdBlink:
+                    shouldNotTalking = true;
+                    ColdBlink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+            Lighting.AddLight(Projectile.Center, 1.61f, 0.98f, 0.58f);
+        }
+        private void SpawnFallingLeaves()
+        {
+            if (!OwnerIsMyPlayer || !IsIdleState)
+                return;
+
+            if (Main.rand.NextBool(16) && Projectile.velocity.Length() > 3f)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-20, 20), Main.rand.Next(0, 50))
+                            , new Vector2(0, Main.rand.NextFloat(0.3f, 0.4f)), ProjectileType<SizuhaLeaf>(), 0, 0, Main.myPlayer, Main.rand.Next(0, 3));
+            }
+        }
+        private void ControlMovement()
+        {
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.02f;
+
             ChangeDir();
 
+            Vector2 point = new Vector2(50 * Owner.direction, -30 + Owner.gfxOffY);
             MoveToPoint(point, 10f);
-
-            if (Projectile.owner == Main.myPlayer)
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer)
             {
-                if (Main.rand.NextBool(16) && Projectile.velocity.Length() > 3f)
+                if (Owner.ZoneSnow)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-20, 20), Main.rand.Next(0, 50))
-                                , new Vector2(0, Main.rand.NextFloat(0.3f, 0.4f)), ProjectileType<SizuhaLeaf>(), 0, 0, Main.myPlayer, Main.rand.Next(0, 3));
+                    CurrentState = States.Cold;
                 }
-
                 if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
             }
-            if (PetState == 1)
+        }
+        private void Blink()
+        {
+            int startFrame = 8;
+            if (blinkFrame < startFrame)
             {
-                Blink();
+                blinkFrame = startFrame;
             }
-            if (Owner.ZoneSnow)
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 10)
+            {
+                blinkFrame = startFrame;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Cold()
+        {
+            Projectile.frame = 11;
+            if (OwnerIsMyPlayer)
+            {
+                if (!Owner.ZoneSnow)
+                {
+                    CurrentState = States.Idle;
+                }
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.ColdBlink;
+                }
+            }
+        }
+        private void ColdBlink()
+        {
+            Projectile.frame = 11;
+            int startFrame = 9;
+            if (blinkFrame < startFrame)
+            {
+                blinkFrame = startFrame;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 10)
+            {
+                blinkFrame = startFrame;
+                CurrentState = States.Cold;
+            }
+        }
+        private void IdleAnimation()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 3)
             {
                 Projectile.frame = 0;
-                if (blinkFrame < 9)
-                {
-                    blinkFrame = 9;
-                }
+            }
+        }
+        private void UpdateClothFrame()
+        {
+            if (clothFrame < 4)
+            {
+                clothFrame = 4;
+            }
+            if (++clothFrameCounter > 6)
+            {
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 7)
+            {
+                clothFrame = 4;
             }
         }
     }

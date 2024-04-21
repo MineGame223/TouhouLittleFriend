@@ -7,16 +7,57 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Tenshi : BasicTouhouPet
+    public class Tenshi : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Eating,
+            EatingToBreak,
+            Break,
+            AfterEating,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private int EatingCount
+        {
+            get => (int)Projectile.ai[2];
+            set => Projectile.ai[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int stoneFrame, stoneFrameCounter;
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int randomCount2, randomCount3;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Tenshi_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Tenshi_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -35,19 +76,169 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
-            Projectile.DrawPet(clothFrame, lightColor, 
+            Projectile.DrawPet(clothFrame, lightColor,
                 drawConfig with
                 {
-                    ShouldUseEntitySpriteDraw= true,
+                    ShouldUseEntitySpriteDraw = true,
                 }, 1);
             return false;
         }
+        public override Color ChatTextColor => new Color(69, 170, 234);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Tenshin";
+            indexRange = new Vector2(1, 3);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 740;
+            chance = 7;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateStoneFrame();
+            UpdateClothAndHairFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(2))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Iku>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile tenshin = chatRoom.initiator;
+            Projectile iku = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //天子：今天也要大干一场！
+                iku.CloseCurrentDialog();
+
+                if (tenshin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //衣玖：天女大人您还是安分点吧...
+                iku.SetChat(ChatSettingConfig, 16, 20);
+
+                if (iku.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<TenshiBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Eating:
+                    shouldNotTalking = true;
+                   Eating();
+                    break;
+
+                case States.EatingToBreak:
+                    shouldNotTalking = true;
+                    EatingToBreak();
+                    break;
+
+                case States.Break:
+                    shouldNotTalking = true;
+                    Break();
+                    break;
+
+                case States.AfterEating:
+                    shouldNotTalking = true;
+                    AfterEating();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.005f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-50 * Owner.direction, -30 + Owner.gfxOffY);
+            if (FindPet(ProjectileType<Iku>(), false))
+            {
+                point = new Vector2(50 * Owner.direction, -30 + Owner.gfxOffY);
+            }
+            MoveToPoint(point, 15f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 860 == 0
+                    && currentChatRoom == null && ActionCD <= 0 && Owner.velocity.Length() < 4f)
+                {
+                    if (Main.rand.NextBool(4))
+                    {
+                        RandomCount = Main.rand.Next(4, 6);
+                        CurrentState = States.Eating;
+                    }
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (blinkFrame < 11)
             {
                 blinkFrame = 11;
@@ -60,82 +251,88 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 13)
             {
                 blinkFrame = 11;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int stoneFrame, stoneFrameCounter;
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        private void EatingPeach()
+        private void Eating()
         {
-            if (Projectile.frame < 1)
+            if (OwnerIsMyPlayer && Timer == 0)
             {
-                Projectile.frame = 1;
+                randomCount2 = Main.rand.Next(3, 6);
+                randomCount3 = Main.rand.Next(180, 360);
             }
             if (++Projectile.frameCounter > 7)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (extraAI[0] == 0)
+            if (Projectile.frame > 8)
             {
-                if (Projectile.frame > 8)
-                {
-                    Projectile.frame = 7;
-                    extraAI[1]++;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > Main.rand.Next(3, 6))
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
+                Projectile.frame = 7;
+                Timer++;
             }
-            else if (extraAI[0] == 1)
+            if (OwnerIsMyPlayer && Timer > randomCount2)
             {
-                if (Projectile.frame > 9)
-                {
-                    Projectile.frame = 5;
-                    extraAI[0] = 2;
-                }
+                Timer = 0;
+                CurrentState = States.EatingToBreak;
             }
-            else if (extraAI[0] == 2)
+        }
+        private void EatingToBreak()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 9)
             {
                 Projectile.frame = 5;
-                if (Projectile.owner == Main.myPlayer)
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[1]++;
-                    if (extraAI[1] > Main.rand.Next(180, 360))
+                    CurrentState = States.Break;
+                }
+            }
+        }
+        private void Break()
+        {
+            Projectile.frame = 5;
+            if (OwnerIsMyPlayer)
+            {
+                Timer++;
+                if (Timer > randomCount3)
+                {
+                    Timer = 0;
+                    EatingCount++;
+                    if (EatingCount > RandomCount)
                     {
-                        extraAI[1] = 0;
-                        extraAI[2]++;
-                        if (extraAI[2] > Main.rand.Next(3, 6))
-                        {
-                            extraAI[2] = 0;
-                            extraAI[0] = 3;
-                        }
-                        else
-                        {
-                            extraAI[0] = 0;
-                        }
-                        Projectile.netUpdate = true;
+                        EatingCount = 0;
+                        CurrentState = States.AfterEating;
+                    }
+                    else
+                    {
+                        CurrentState = States.Eating;
                     }
                 }
             }
-            else
+        }
+        private void AfterEating()
+        {
+            if (++Projectile.frameCounter > 7)
             {
-                if (Projectile.frame == 9)
-                    Projectile.frame = 10;
-                if (Projectile.frame > 10)
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame == 9)
+            {
+                Projectile.frame = 10;
+            }
+            if (Projectile.frame > 10)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 0;
-                    extraAI[1] = 0;
-                    extraAI[2] = 0;
-                    extraAI[0] = 1800;
-                    PetState = 0;
+                    ActionCD = 1800;
+                    CurrentState = States.Idle;
                 }
             }
         }
@@ -167,88 +364,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 3)
             {
                 clothFrame = 0;
-            }
-        }
-        Color myColor = new Color(69, 170, 234);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Tenshin", "1");
-            text[2] = ModUtils.GetChatText("Tenshin", "2");
-            text[3] = ModUtils.GetChatText("Tenshin", "3");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateStoneFrame();
-            UpdateClothAndHairFrame();
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<TenshiBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Iku>()] > 0)
-            {
-                point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-            }
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.005f;
-
-            ChangeDir(player, player.ownedProjectileCounts[ProjectileType<Iku>()] <= 0);
-            MoveToPoint(point, 15f);
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-                {
-                    if (mainTimer % 860 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0 && player.velocity.Length() < 4f)
-                    {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                EatingPeach();
             }
         }
     }

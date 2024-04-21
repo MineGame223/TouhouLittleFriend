@@ -7,29 +7,48 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Keine : BasicTouhouPet
+    public class Keine : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            AltForm,
+            AltFormBlink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        internal static bool UseAlternateForm => Main.bloodMoon || (Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime);
+        private bool IsAltForm => CurrentState >= States.AltForm && CurrentState <= States.AltFormBlink;
+
+        private int hairFrame, hairFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int auraFrame, auraFrameCounter;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Keine_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 16;
             Main.projPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Keine_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
             {
                 ShouldUseEntitySpriteDraw = true,
             };
-            int currentRow = UseAlternatePhase ? 1 : 0;
+            int currentRow = IsAltForm ? 1 : 0;
             Projectile.DrawPet(auraFrame, Color.White, config, currentRow);
             Projectile.DrawStateNormalizeForPet();
 
             Projectile.DrawPet(hairFrame, lightColor, drawConfig, currentRow);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig, currentRow);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, 
+            Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     AltTexture = clothTex,
@@ -37,19 +56,205 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, currentRow);
             return false;
         }
-        private void DrawKeine(int frame, Color lightColor, Texture2D tex = null, bool entitySpriteDraw = false)
+        public override Color ChatTextColor => IsAltForm ? new Color(69, 172, 105) : new Color(97, 103, 255);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            Texture2D t = tex ?? AltVanillaFunction.ProjectileTexture(Type);
-            int height = t.Height / Main.projFrames[Type];
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            int width = t.Width / 2;
-            Rectangle rect = new Rectangle(width * (UseAlternatePhase ? 1 : 0), frame * height, width, height);
-            Vector2 orig = rect.Size() / 2;
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (entitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            name = "Keine";
+            indexRange = new Vector2(1, 9);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 720;
+            chance = 7;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                if (UseAlternateForm)
+                {
+                    chat.Add(ChatDictionary[4]);
+                    chat.Add(ChatDictionary[5]);
+                    chat.Add(ChatDictionary[6]);
+                }
+                else
+                {
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+                    chat.Add(ChatDictionary[3]);
+                }
+                if (FindPet(ProjectileType<Moku>()))
+                {
+                    chat.Add(ChatDictionary[7]);
+                }
+            }
+            return chat;
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(6))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+            if (FindChatIndex(7, 8))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Moku>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
             else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, effect, 0f);
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile keine = chatRoom.initiator;
+            Projectile moku = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 7 && index <= 8)
+            {
+                if (turn == -1)
+                {
+                    //慧音：最近你怎么样？
+                    moku.CloseCurrentDialog();
+
+                    if (keine.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //妹红：还好吧，还是和以前一样罢了。
+                    moku.SetChat(ChatSettingConfig, 7, 20);
+
+                    if (moku.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //慧音：还在纠结过去的事情么？
+                    keine.SetChat(ChatSettingConfig, 8, 20);
+
+                    if (keine.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    //妹红：不，我已经在试着忘掉那些了...
+                    moku.SetChat(ChatSettingConfig, 8, 20);
+
+                    if (moku.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Cirno>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile keine = chatRoom.initiator;
+            Projectile cirno = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //慧音：让我看看谁没写作业...
+                cirno.CloseCurrentDialog();
+
+                if (keine.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //琪露诺：（糟了！要被慧音老师发现了...）
+                cirno.SetChat(ChatSettingConfig, 12, 20);
+
+                if (cirno.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateMiscFrame();
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<KeineBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.AltForm:
+                   AltForm();
+                    break;
+
+                case States.AltFormBlink:
+                    AltFormBlink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.007f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-50 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 12f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
+            {
+                CurrentState = States.Blink;
+            }
+            if (UseAlternateForm)
+            {
+                for (int i = 0; i < 40; i++)
+                {
+                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.RedBubble, 0, 0
+                        , 100, default, Main.rand.NextFloat(1.7f, 2.5f)).noGravity = true;
+                }
+                if (OwnerIsMyPlayer)
+                {
+                    CurrentState = States.AltForm;
+                }
+            }
         }
         private void Blink()
         {
@@ -61,19 +266,42 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 2)
             {
                 Projectile.frame = 0;
-                if (PetState == 3)
+                CurrentState = States.Idle;
+            }
+        }
+        private void AltForm()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
+            {
+                CurrentState = States.AltFormBlink;
+            }
+            if (!UseAlternateForm)
+            {
+                for (int i = 0; i < 40; i++)
                 {
-                    PetState = 2;
+                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.BlueMagic, 0, 0
+                        , 100, default, Main.rand.NextFloat(1.7f, 2.5f)).noGravity = true;
                 }
-                else
+                if (OwnerIsMyPlayer)
                 {
-                    PetState = 0;
+                    CurrentState = States.Idle;
                 }
             }
         }
-        int hairFrame, hairFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int auraFrame, auraFrameCounter;
+        private void AltFormBlink()
+        {
+            if (++Projectile.frameCounter > 3)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 2)
+            {
+                Projectile.frame = 0;
+                CurrentState = States.AltForm;
+            }
+        }
         private void UpdateMiscFrame()
         {
             if (clothFrame < 3)
@@ -117,131 +345,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 auraFrame = 11;
             }
-        }
-        Color myColor => UseAlternatePhase ? new Color(69, 172, 105) : new Color(97, 103, 255);
-        public override string GetChatText(out string[] text)
-        {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Keine", "1");
-            text[2] = ModUtils.GetChatText("Keine", "2");
-            text[3] = ModUtils.GetChatText("Keine", "3");
-            if (UseAlternatePhase)
-            {
-                text[4] = ModUtils.GetChatText("Keine", "4");
-                text[5] = ModUtils.GetChatText("Keine", "5");
-                text[6] = ModUtils.GetChatText("Keine", "6");
-            }
-            if (player.HasBuff<MokuBuff>())
-            {
-                text[7] = ModUtils.GetChatText("Keine", "7");
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-
-                        if (i <= 3 && UseAlternatePhase)
-                            weight = 0;
-
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Moku>();
-            if (FindChatIndex(out _, type1, 9, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, type1, 9))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Keine", "9"), myColor, 0);
-                p.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out p, type1, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Keine", "8"), myColor, 8);
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(9) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateMiscFrame();
-        }
-        internal static bool UseAlternatePhase => Main.bloodMoon || (Main.GetMoonPhase() == MoonPhase.Full && !Main.dayTime);
-        private void ControlMovement(Player player)
-        {
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.007f;
-
-            ChangeDir(player, true);
-
-            Vector2 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
-            MoveToPoint(point, 12f);
-        }
-        private void Transform()
-        {
-            if (PetState == 0 && UseAlternatePhase)
-            {
-                for (int i = 0; i < 40; i++)
-                {
-                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.RedBubble, 0, 0
-                        , 100, default, Main.rand.NextFloat(1.7f, 2.5f)).noGravity = true;
-                }
-                PetState = 2;
-            }
-            if (PetState == 2 && !UseAlternatePhase)
-            {
-                for (int i = 0; i < 40; i++)
-                {
-                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.BlueMagic, 0, 0
-                        , 100, default, Main.rand.NextFloat(1.7f, 2.5f)).noGravity = true;
-                }
-                PetState = 0;
-            }
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<KeineBuff>());
-
-            UpdateTalking();
-            ControlMovement(player);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0)
-                {
-                    if (PetState == 2)
-                    {
-                        PetState = 3;
-                    }
-                    else
-                    {
-                        PetState = 1;
-                    }
-                    Projectile.netUpdate = true;
-                }
-            }
-            if (PetState == 0 || PetState == 2)
-            {
-                Projectile.frame = 0;
-            }
-            else if (PetState == 1 || PetState == 3)
-            {
-                Blink();
-            }
-            Transform();
         }
     }
 }

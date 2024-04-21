@@ -8,16 +8,39 @@ namespace TouhouPets
 {
     public static class DanmakuFightHelper
     {
-        public static int PlayerA_Source;
-        public static int PlayerB_Source;
-        public static int Round;
-        public static int RoundTimer;
+        private static int playerA_Source;
+        private static int playerB_Source;
+        private static int round;
+        private static int roundTimer;
 
         private static float myEssScale;
         private static int myEssDir;
         private static float textScale;
         private static float textAlpha;
-        public static float DanmakuRingScale { get => myEssScale; }
+        public static float DanmakuRingScale
+        {
+            get => myEssScale;
+        }
+        public static int PlayerA_Source
+        {
+            get => playerA_Source; 
+            set => playerA_Source = value;
+        }
+        public static int PlayerB_Source
+        {
+            get => playerB_Source; 
+            set => playerB_Source = value;
+        }
+        public static int Round
+        {
+            get => round; 
+            set => round = value;
+        }
+        public static int RoundTimer
+        {
+            get => roundTimer; 
+            set => roundTimer = value;
+        }
         public static void UpdateDanmakuRingScale()
         {
             if (!Main.gamePaused)

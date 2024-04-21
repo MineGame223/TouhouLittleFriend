@@ -8,17 +8,48 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Hina : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Turning,
+            AfterTurning,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int blinkFrame, blinkFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hina_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hina_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor,
                 drawConfig with
@@ -27,75 +58,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     ShouldUseEntitySpriteDraw = true,
                 });
             return false;
-        }
-        private void Blink()
-        {
-            if (blinkFrame < 14)
-            {
-                blinkFrame = 14;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 16)
-            {
-                blinkFrame = 14;
-                PetState = 0;
-            }
-        }
-        private void Idle()
-        {
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 5)
-            {
-                Projectile.frame = 0;
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        private void Turning()
-        {
-            if (Projectile.frame < 6)
-            {
-                Projectile.frame = 6;
-            }
-            if (++Projectile.frameCounter > 7)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame > 13)
-                {
-                    Projectile.frame = 6;
-                    extraAI[1]++;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > Main.rand.Next(10, 20))
-                    {
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 13)
-                {
-                    extraAI[2] = 0;
-                    Projectile.frame = 0;
-                    extraAI[0] = 300;
-                    PetState = 0;
-                }
-            }
         }
         public override Color ChatTextColor => new Color(70, 226, 164);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -107,7 +69,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 720;
             chance = 7;
-            whenShouldStop = false;
+            whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
         {
@@ -115,7 +77,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
-                if (FindPetState(ProjectileType<Nitori>(), 0, 1))
+                if (FindPet(ProjectileType<Nitori>()))
                 {
                     chat.Add(ChatDictionary[4]);
                     chat.Add(ChatDictionary[7]);
@@ -125,8 +87,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void VisualEffectForPreview()
         {
-            if (PetState != 2)
-                Idle();
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
         }
         private void UpdateTalking()
         {
@@ -155,6 +119,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //转转：荷取，你知道吗？我一直有一个愿望。
                     nitori.CloseCurrentDialog();
 
                     if (hina.CurrentDialogFinished())
@@ -162,6 +127,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //荷取：嗯？是什么愿望呢？
                     nitori.SetChat(ChatSettingConfig, 4, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -169,6 +135,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //转转：我希望，把这个世界彻底净化成没有厄运的世界。
                     hina.SetChat(ChatSettingConfig, 5, 20);
 
                     if (hina.CurrentDialogFinished())
@@ -176,6 +143,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 2)
                 {
+                    //荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
                     nitori.SetChat(ChatSettingConfig, 5, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -183,6 +151,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 3)
                 {
+                    //转转：哈哈，所以说只是一个愿望啊。
                     hina.SetChat(ChatSettingConfig, 6, 20);
 
                     if (hina.CurrentDialogFinished())
@@ -190,6 +159,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 4)
                 {
+                    //荷取：说不定哪一天真的可以实现哦！
                     nitori.SetChat(ChatSettingConfig, 6, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -204,6 +174,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (turn == -1)
                 {
+                    //转转：我们是...
                     nitori.CloseCurrentDialog();
 
                     if (hina.CurrentDialogFinished())
@@ -211,6 +182,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 0)
                 {
+                    //荷取：“旋转河童”组合！
                     nitori.SetChat(ChatSettingConfig, 7, 20);
 
                     if (nitori.CurrentDialogFinished())
@@ -218,6 +190,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else if (turn == 1)
                 {
+                    //转转&荷取：哈哈哈哈！...
                     nitori.SetChat(ChatSettingConfig, 8, 20);
                     hina.SetChat(ChatSettingConfig, 8, 20);
 
@@ -232,51 +205,136 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<HinaBuff>());
+            Projectile.SetPetActive(Owner, BuffType<HinaBuff>());
+
             UpdateTalking();
-            Vector2 point = new Vector2(-40 * player.direction, -30 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.032f;
-            if (PetState != 2)
+
+            ControlMovement();
+
+            switch (CurrentState)
             {
-                ChangeDir(true);
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Turning:
+                    shouldNotTalking = true;
+                    Turning();
+                    break;
+
+                case States.AfterTurning:
+                    shouldNotTalking = true;
+                    AfterTurning();
+                    break;
+
+                default:
+                    Idle();
+                    break;
             }
 
-            MoveToPoint(point, 13f);
-
-            if (Projectile.owner == Main.myPlayer)
+            if (IsIdleState && ActionCD > 0)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
+                ActionCD--;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.032f;
+
+            if (IsIdleState)
+                ChangeDir();
+
+            Vector2 point = new Vector2(-40 * Owner.direction, -30 + Owner.gfxOffY);
+            MoveToPoint(point, 13f);
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState == 0)
+                if (mainTimer > 0 && mainTimer % 320 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (mainTimer % 200 == 0 && Main.rand.NextBool(2) && extraAI[0] <= 0)
+                    if (Main.rand.NextBool(3))
                     {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
+                        RandomCount = Main.rand.Next(10, 20);
+                        CurrentState = States.Turning;
+
+                        if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
                             Projectile.SetChat(ChatSettingConfig, 3, 20);
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            if (blinkFrame < 14)
             {
-                if (extraAI[0] >= 1)
+                blinkFrame = 14;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 16)
+            {
+                blinkFrame = 14;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Turning()
+        {
+            if (Projectile.frame < 6)
+            {
+                Projectile.frame = 6;
+            }
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 13)
+            {
+                Projectile.frame = 6;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterTurning;
+            }
+        }
+        private void AfterTurning()
+        {
+            if (++Projectile.frameCounter > 7)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 13)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[0]--;
+                    ActionCD = 500;
+                    CurrentState = States.Idle;
                 }
             }
-            else if (PetState == 1)
+        }
+        private void IdleAnimation()
+        {
+            if (++Projectile.frameCounter > 8)
             {
-                Blink();
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
             }
-            else if (PetState == 2)
+            if (Projectile.frame > 5)
             {
-                Turning();
+                Projectile.frame = 0;
             }
         }
     }

@@ -8,16 +8,30 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Piece : BasicTouhouPet
+    public class Piece : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+
+        private int blinkFrame, blinkFrameCounter;
+        private int wingFrame, wingFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Piece_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Piece_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             Projectile.DrawPet(wingFrame, lightColor * 0.7f, drawConfig);
@@ -53,6 +67,101 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
+        public override Color ChatTextColor => new Color(255, 119, 187);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Piece";
+            indexRange = new Vector2(1, 3);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 740;
+            chance = 5;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+            }
+            return chat;
+        }
+        private void UpdateTalking()
+        {
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+            IdleAnimation();
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<HecatiaBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            TorchDust();
+            Lighting.AddLight(Projectile.Center, 1.38f, 0.41f, 1.55f);
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.028f;
+
+            ChangeDir(150);
+
+            int xPos = 55;
+            foreach (Projectile otherPets in Main.projectile)
+            {
+                if (otherPets != null && otherPets.active && otherPets.owner == Projectile.owner)
+                {
+                    if ((Main.projPet[otherPets.type] || ProjectileID.Sets.LightPet[otherPets.type])
+                        && otherPets.type != Projectile.type && otherPets.type != ProjectileType<Hecatia>())
+                    {
+                        Projectile p = otherPets;
+                        if (Math.Abs(p.position.X - Owner.position.X) < 180 && Math.Abs(p.position.Y - Owner.position.Y) < 180)
+                        {
+                            xPos = -115;
+                        }
+                    }
+                }
+            }
+            Vector2 point = new Vector2(xPos * Owner.direction, -40 + Owner.gfxOffY);
+            MoveToPoint(point, 13f);
+        }
+        private void TorchDust()
+        {
+            if (Main.rand.NextBool(30))
+            {
+                Dust d = Dust.NewDustDirect(Projectile.Center + new Vector2(26 * Projectile.spriteDirection, 0).RotatedBy(Projectile.rotation), 4, 4, MyDustId.PurpleTorch, 0f, 0f, 100);
+                if (!Main.rand.NextBool(3))
+                    d.noGravity = true;
+                d.velocity *= 0.3f;
+                d.velocity.Y -= 1.5f;
+            }
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
+            {
+                CurrentState = States.Blink;
+            }
+        }
         private void Blink()
         {
             if (blinkFrame < 8)
@@ -67,12 +176,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 10)
             {
                 blinkFrame = 8;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int blinkFrame, blinkFrameCounter;
-        int wingFrame, wingFrameCounter;
-        private void Idel()
+        private void IdleAnimation()
         {
             if (++Projectile.frameCounter > 6)
             {
@@ -98,97 +205,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (wingFrame > 7)
             {
                 wingFrame = 4;
-            }
-        }
-        Color myColor = new Color(255, 119, 187);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Piece", "1");
-            text[2] = ModUtils.GetChatText("Piece", "2");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type1 = ProjectileType<Hecatia>();
-            if (FindChatIndex(out Projectile _, type1, 2, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p, type1, 2))
-            {
-                SetChatWithOtherOne(p, ModUtils.GetChatText("Piece", "3"), myColor, 0, 360);
-                p.localAI[2] = 0;
-            }
-            else if (mainTimer % 720 == 0 && Main.rand.NextBool(6) && mainTimer > 0)
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-            Idel();
-        }
-        public override void AI()
-        {
-            Lighting.AddLight(Projectile.Center, 1.38f, 0.41f, 1.55f);
-            if (Main.rand.NextBool(30))
-            {
-                Dust d = Dust.NewDustDirect(Projectile.Center + new Vector2(26 * Projectile.spriteDirection, 0).RotatedBy(Projectile.rotation), 4, 4, MyDustId.PurpleTorch, 0f, 0f, 100);
-                if (!Main.rand.NextBool(3))
-                    d.noGravity = true;
-                d.velocity *= 0.3f;
-                d.velocity.Y -= 1.5f;
-            }
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<HecatiaBuff>());
-            UpdateTalking();
-            int xPos = 55;
-            foreach (Projectile otherPets in Main.projectile)
-            {
-                if (otherPets != null && otherPets.active && otherPets.owner == Projectile.owner)
-                {
-                    if ((Main.projPet[otherPets.type] || ProjectileID.Sets.LightPet[otherPets.type])
-                        && otherPets.type != Projectile.type && otherPets.type != ProjectileType<Hecatia>())
-                    {
-                        Projectile p = otherPets;
-                        if (Math.Abs(p.position.X - player.position.X) < 180 && Math.Abs(p.position.Y - player.position.Y) < 180)
-                        {
-                            xPos = -115;
-                        }
-                    }
-                }
-            }
-            Vector2 point = new Vector2(xPos * player.direction, -40 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.028f;
-
-            ChangeDir(player, true, 150);
-            MoveToPoint(point, 13f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-            }
-            if (PetState == 1)
-            {
-                Blink();
             }
         }
     }

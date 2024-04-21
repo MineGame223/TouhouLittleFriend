@@ -6,14 +6,208 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Hecatia : BasicTouhouPet
+    public class Hecatia : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int PlanteState
+        {
+            get => (int)Projectile.ai[2];
+            set => Projectile.ai[2] = value;
+        }
+
+        private int blinkFrame, blinkFrameCounter;
+
+        private Color myColor;
+        private float[] bodyAlpha = new float[3];
+        private Vector2[] plantePos = new Vector2[3];
+
+        private DrawPetConfig drawConfig = new(3);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hecatia_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
         }
-        #region 绘制，太繁杂了所以隐藏
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
+            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+            DrawPlantes(pos + new Vector2(0, 4 * Main.essScale), Projectile.GetAlpha(lightColor), effect);
+
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[0], drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[1], drawConfig, 1);
+            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[2], drawConfig, 2);
+            if (CurrentState == States.Blink)
+            {
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[0], drawConfig);
+                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[1], drawConfig, 1);
+                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[2], drawConfig, 2);
+            }
+            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig with
+            {
+                AltTexture = clothTex,
+                ShouldUseEntitySpriteDraw = true,
+            });
+            return false;
+        }
+        public override Color ChatTextColor => myColor;
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Hecatia";
+            indexRange = new Vector2(1, 2);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 666;
+            chance = 6;
+            whenShouldStop = false;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+            }
+            return chat;
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(2))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Piece>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile hecatia = chatRoom.initiator;
+            Projectile piece = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //赫卡提娅：我的穿搭是无可挑剔的...真的会有人不喜欢么？
+                piece.CloseCurrentDialog();
+
+                if (hecatia.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //皮丝：主人大人的着装当然是最时尚的啦！
+                piece.SetChat(ChatSettingConfig, 3, 20);
+
+                if (piece.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWorldState();
+            IdleAnimation();
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<HecatiaBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer == 4798 && !Projectile.isAPreviewDummy)
+                {
+                    PlanteState++;
+                    Projectile.netUpdate = true;
+                }
+            }
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.03f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-55 * Owner.direction, -40 + Owner.gfxOffY);
+            MoveToPoint(point, 14.5f);
+        }
+        private void Idle()
+        {
+            if (OwnerIsMyPlayer && mainTimer % 270 == 0)
+            {
+                CurrentState = States.Blink;
+            }
+        }
+        private void Blink()
+        {
+            if (blinkFrame < 4)
+            {
+                blinkFrame = 4;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 6)
+            {
+                blinkFrame = 4;
+                CurrentState = States.Idle;
+            }
+        }
+        private void IdleAnimation()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 3)
+            {
+                Projectile.frame = 0;
+            }
+        }
+
+        #region 星球更新与绘制
+        private int dummyTimer = 0;
         private void DrawPlantes(Vector2 pos, Color color, SpriteEffects effect)
         {
             Texture2D t2 = AltVanillaFunction.GetExtraTexture("HecatiaPlanets");
@@ -29,36 +223,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             //月球 -2
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[2].X * -Projectile.spriteDirection, plantePos[2].Y).RotatedBy(Projectile.rotation), rect5, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
         }
-
-        DrawPetConfig drawConfig = new(3);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hecatia_Cloth");
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-
-            DrawPlantes(pos + new Vector2(0, 4 * Main.essScale), Projectile.GetAlpha(lightColor), effect);
-
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
-            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[0], drawConfig);
-            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[1], drawConfig, 1);
-            Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[2], drawConfig, 2);
-            if (PetState == 1)
-            {
-                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
-                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[0], drawConfig);
-                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[1], drawConfig, 1);
-                Projectile.DrawPet(blinkFrame, lightColor * bodyAlpha[2], drawConfig, 2);
-            }
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig with
-            {
-                AltTexture = clothTex,
-                ShouldUseEntitySpriteDraw = true,
-            });
-            return false;
-        }
         private void UpdateWorldState()
         {
+            if (Projectile.isAPreviewDummy)
+            {
+                dummyTimer++;
+                if (dummyTimer >= 120)
+                {
+                    dummyTimer = 0;
+                    PlanteState++;
+                }
+            }
             //懒得改
             float xSpeed = 1.5f;
             if (PlanteState > 2)
@@ -171,120 +346,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-
-        float[] bodyAlpha = new float[3];
-        Vector2[] plantePos = new Vector2[3];
-        private int PlanteState
-        {
-            get => (int)Projectile.ai[2];
-            set => Projectile.ai[2] = value;
-        }
         #endregion
-        private void Blink()
-        {
-            if (blinkFrame < 4)
-            {
-                blinkFrame = 4;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 6)
-            {
-                blinkFrame = 4;
-                PetState = 0;
-            }
-        }
-        private void Idle()
-        {
-            if (++Projectile.frameCounter > 8)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (Projectile.frame > 3)
-            {
-                Projectile.frame = 0;
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        Color myColor;
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Hecatia", "1");
-            text[2] = ModUtils.GetChatText("Hecatia", "2");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 666 == 0 && Main.rand.NextBool(6))
-            {
-                SetChat(myColor);
-            }
-        }
-        int dummyTimer = 0;
-        public override void VisualEffectForPreview()
-        {
-            UpdateWorldState();
-            Idle();
-
-            if (Projectile.isAPreviewDummy)
-            {
-                dummyTimer++;
-                if (dummyTimer >= 120)
-                {
-                    dummyTimer = 0;
-                    PlanteState++;
-                }
-            }
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<HecatiaBuff>());
-            UpdateTalking();
-            Vector2 point = new Vector2(-55 * player.direction, -40 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.030f;
-            if (PetState != 2)
-            {
-                ChangeDir(player, true);
-            }
-
-            MoveToPoint(point, 14.5f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer == 4798 && !Projectile.isAPreviewDummy)
-                {
-                    PlanteState++;
-                    Projectile.netUpdate = true;
-                }
-            }
-            if (PetState == 1)
-            {
-                Blink();
-            }
-        }
     }
 }
 

@@ -6,6 +6,7 @@ using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using TouhouPets.Content.Buffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -15,6 +16,12 @@ namespace TouhouPets.Content.Projectiles.Pets
     public abstract class BasicTouhouPetNeo : ModProjectile
     {
         #region 字段与属性
+        /// <summary>
+        /// 是否不应该说话
+        /// <br/>该属性并不会影响宠物更新常规对话，仅作为是否应当参与聊天的判断条件
+        /// <br/>!--该属性会反复重置
+        /// </summary>
+        internal bool shouldNotTalking;
         /// <summary>
         /// 对话文本不透明度
         /// </summary>
@@ -43,7 +50,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
         /// <br/>用途：说完一句话以后一段时间内不会再进行其他对话
-        /// <br>现在暂未被使用</br>
+        /// <br/>仅由赤蛮奇使用
         /// </summary>
         internal int chatCD;
 
@@ -79,7 +86,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal int mainTimer;
 
         /// <summary>
-        /// 额外的本地AI（等同于localAI），长度为3
+        /// 额外的计时器（等同于Projectile.ai），长度为3
+        /// <br/>允许通过netUpdate进行同步
         /// </summary>
         internal int[] extraAI = new int[3];
 
@@ -108,12 +116,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => new();
         }
         /// <summary>
-        /// 宠物的状态值（Projectile.ai[1]）
+        /// 宠物的状态值（Projectile.ai[1]），设置该值时会进行一次netUpdate
         /// </summary>
         public int PetState
         {
-            get => (int)Projectile.ai[1];
-            set => Projectile.ai[1] = value;
+            get
+            {
+                return (int)Projectile.ai[1];
+            }
+            set
+            {
+                Projectile.ai[1] = value;
+                Projectile.netUpdate = true;
+            }
         }
         /// <summary>
         /// 宠物的所属玩家
@@ -134,7 +149,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatTurn = currentChatRoom.chatTurn.ToString();
 
             DrawStatePanelForTesting(drawingForTest, chatCD + "," + chatIndex + "," + chatLag + "," + chatTimeLeft + "," + chatTurn, new Vector2(0, 0));
-            DrawStatePanelForTesting(drawingForTest, extraAI[0] + "," + extraAI[1] + "," + extraAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
+            DrawStatePanelForTesting(drawingForTest, Projectile.localAI[0] + "," + Projectile.localAI[1] + "," + Projectile.localAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
             DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
             DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
         }
@@ -237,8 +252,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         #endregion
 
         #region 对话更新方法
-        /// <summary>
-        /// </summary>
         private void UpdateChat()
         {
             if (chatLag > 0)
@@ -286,10 +299,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             timeToType = Math.Clamp(timeToType, 0, totalTimeToType);
 
             textShaking = false;
+            shouldNotTalking = false;
         }
         private void UpdateRegularDialog()
         {
-            if (currentChatRoom != null || Projectile.owner != Main.myPlayer || mainTimer <= 0)
+            if (currentChatRoom != null || mainTimer <= 0)
                 return;
 
             int time = 0;
@@ -300,6 +314,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 for (int i = 1; i < ChatDictionary.Count; i++)
                 {
+                    if (string.IsNullOrEmpty(GetRegularDialogText()))
+                        return;
+
                     if (GetRegularDialogText().Equals(ChatDictionary[i]))
                     {
                         Projectile.SetChat(ChatSettingConfig, i);
@@ -334,15 +351,25 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         /// <param name="target">被查找的对象</param>
         /// <param name="type">宠物ID</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
+        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPet(out Projectile target, int type)
+        internal bool FindPet(out Projectile target, int type, int minState = -1, int maxState = 0, bool checkTalkable = true)
         {
             target = null;
+            if (maxState <= minState && minState > 0
+                || maxState >= minState && minState < 0)
+            {
+                maxState = minState;
+            }
             foreach (Projectile p in Main.ActiveProjectiles)
             {
                 if (p.owner == Projectile.owner)
                 {
-                    if (p.type == type)
+                    if (p.type == type
+                       && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
+                       && (!checkTalkable || p.ShouldPetTalking()))
                     {
                         target = p;
                     }
@@ -354,58 +381,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// 查找对应宠物
         /// </summary>
         /// <param name="type">宠物ID</param>
-        /// <returns></returns>
-        internal bool FindPet(int type)
-        {
-            foreach (Projectile p in Main.ActiveProjectiles)
-            {
-                if (p.owner == Projectile.owner)
-                {
-                    if (p.type == type)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-        /// <summary>
-        /// 查找对应宠物的状态（ai[1]）
-        /// </summary>
-        /// <param name="target">被查找的对象</param>
-        /// <param name="type">宠物ID</param>
-        /// <param name="minState">最小状态值</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
         /// <returns></returns>
-        internal bool FindPetState(out Projectile target, int type, int minState = 0, int maxState = 0)
-        {
-            target = null;
-            if (maxState <= minState && minState > 0
-                || maxState >= minState && minState < 0)
-            {
-                maxState = minState;
-            }
-            foreach (Projectile p in Main.ActiveProjectiles)
-            {
-                if (p.owner == Projectile.owner)
-                {
-                    if (p.type == type && p.ai[1] >= minState && p.ai[1] <= maxState)
-                    {
-                        target = p;
-                    }
-                }
-            }
-            return target != null;
-        }
-        /// <summary>
-        /// 查找对应宠物的状态（ai[1]）
-        /// </summary>
-        /// <param name="target">被查找的对象</param>
-        /// <param name="type">宠物ID</param>
-        /// <param name="minState">最小状态值</param>
-        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
-        /// <returns></returns>
-        internal bool FindPetState(int type, int minState = 0, int maxState = 0)
+        internal bool FindPet(int type, bool checkTalkable = true, int minState = -1, int maxState = 0)
         {
             if (maxState <= minState && minState > 0
                 || maxState >= minState && minState < 0)
@@ -416,7 +396,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (p.owner == Projectile.owner)
                 {
-                    if (p.type == type && p.ai[1] >= minState && p.ai[1] <= maxState)
+                    if (p.type == type
+                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
+                        && (!checkTalkable || p.ShouldPetTalking()))
                     {
                         return true;
                     }
@@ -478,27 +460,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 设置转向
         /// </summary>
-        /// <param name="style2">用于处在玩家后方的宠物</param>
         /// <param name="dist">设置与玩家同向的最小距离</param>
-        internal void ChangeDir(bool style2 = false, float dist = 100)
+        internal void ChangeDir(float dist = 100)
         {
-            if (style2)
+            if (Projectile.Distance(Owner.Center) <= dist)
             {
-                if (Projectile.Distance(Owner.Center) <= dist)
-                {
-                    Projectile.spriteDirection = Owner.direction;
-                }
-                else
-                {
-                    if (Projectile.velocity.X > 0.25f)
-                    {
-                        Projectile.spriteDirection = 1;
-                    }
-                    else if (Projectile.velocity.X < -0.25f)
-                    {
-                        Projectile.spriteDirection = -1;
-                    }
-                }
+                Projectile.spriteDirection = Owner.direction;
             }
             else
             {
@@ -510,8 +477,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Projectile.spriteDirection = -1;
                 }
-                else
-                    Projectile.spriteDirection = Owner.direction;
             }
         }
         #endregion
@@ -519,6 +484,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         #region 自身重写函数
         /// <summary>
         /// 注册对话文本及其索引值
+        /// <br/>仅在本地端更新
         /// </summary>
         /// <param name="name">对话所属宠物的名字</param>
         /// <param name="indexRange">对话索引的范围</param>
@@ -528,6 +494,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         /// <summary>
         /// 设置常规对话文本
+        /// <br/>仅在本地端更新
         /// </summary>
         /// <param name="timePerDialog">每次说话机会的间隔</param>
         /// <param name="chance">说话的几率（1 / chance）</param>
@@ -552,6 +519,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         /// <summary>
         /// 常规对话
+        /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
         public virtual string GetRegularDialogText()
@@ -559,7 +527,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             return null;
         }
         /// <summary>
-        /// 视觉效果，用于动画表现（包含玩家选择界面）
+        /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
+        /// <br/>若寻常动作下本体包含动画，则该动画也应当在此运行
         /// </summary>
         public virtual void VisualEffectForPreview()
         {
@@ -598,8 +567,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 mainTimer = 0;
             }
-            UpdateChat();
-            UpdateRegularDialog();
+            if (OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
+            {
+                UpdateChat();
+                UpdateRegularDialog();
+            }
+            Projectile.SetPetActive(Owner, BuffType<AllPetsBuff>());
             return base.PreAI();
         }
         public override void PostAI()
