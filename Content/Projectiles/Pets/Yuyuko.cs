@@ -113,7 +113,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Yuyuko";
-            indexRange = new Vector2(1, 13);
+            indexRange = new Vector2(1, 25);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -579,9 +579,92 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     fd.TurnToAir(true);
                 }
-                if (chatTimeLeft <= 0)
+                switch (food.type)
                 {
-                    int chance = Main.rand.Next(3);
+                    case ItemID.Ale:
+                        //人生得意须尽欢，莫使金樽空对月。干了！
+                        Projectile.SetChat(ChatSettingConfig, 14, 60);
+                        break;
+
+                    case ItemID.Sake:
+                        //人生得意须尽欢，莫使金樽空对月。干了！
+                        Projectile.SetChat(ChatSettingConfig, 14, 60);
+                        break;
+
+                    case ItemID.GrubSoup:
+                        //奇特的丛林美食，富含蛋白质！
+                        Projectile.SetChat(ChatSettingConfig, 15, 60);
+                        break;
+
+                    case ItemID.Sashimi:
+                        //是家乡的味道呢...但是冥界并没有海吧？
+                        Projectile.SetChat(ChatSettingConfig, 16, 60);
+                        break;
+
+                    case ItemID.Burger:
+                        //向传奇商业食物致敬！
+                        Projectile.SetChat(ChatSettingConfig, 17, 60);
+                        break;
+
+                    case ItemID.Fries:
+                        //没有番茄酱或者炸鱼的薯条是没有灵魂的...
+                        Projectile.SetChat(ChatSettingConfig, 18, 60);
+                        break;
+
+                    case ItemID.GoldenDelight:
+                        //谢谢你这么大方，请我吃这个！
+                        Projectile.SetChat(ChatSettingConfig, 19, 60);
+                        break;
+
+                    case ItemID.ShuckedOyster:
+                        //壳什么的一起吃掉就好啦！
+                        Projectile.SetChat(ChatSettingConfig, 20, 60);
+                        break;
+
+                    case ItemID.Apple:
+                        //一天一个苹果，医生...欸我需要医生吗？
+                        Projectile.SetChat(ChatSettingConfig, 21, 60);
+                        break;
+
+                    case ItemID.Cherry:
+                        //这不会爆炸，对吧？
+                        Projectile.SetChat(ChatSettingConfig, 22, 60);
+                        break;
+
+                    case ItemID.Pizza:
+                        //我已经把菠萝都藏起来了...
+                        Projectile.SetChat(ChatSettingConfig, 23, 60);
+                        break;
+
+                    case ItemID.Escargot:
+                        //能不能做成派呢？
+                        Projectile.SetChat(ChatSettingConfig, 24, 60);
+                        break;
+
+                    case ItemID.ChickenNugget:
+                        //没有碎骨更好吃！
+                        Projectile.SetChat(ChatSettingConfig, 25, 60);
+                        break;
+
+                    default:
+                        UpdateRegularFoodText(true);
+                        break;
+                };
+                CurrentState = States.BeforeEatting;
+            }
+            else
+            {
+                UpdateRegularFoodText(false);
+            }
+        }
+        private void UpdateRegularFoodText(bool hasFood)
+        {
+            if (chatTimeLeft <= 0)
+            {
+                int chance;
+                if (hasFood)
+                {
+                    chance = Main.rand.Next(3);
                     switch (chance)
                     {
                         case 1:
@@ -595,13 +678,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                             break;
                     }
                 }
-                CurrentState = States.BeforeEatting;
-            }
-            else
-            {
-                if (chatTimeLeft <= 0)
+                else
                 {
-                    int chance = Main.rand.Next(3);
+                    chance = Main.rand.Next(3);
                     switch (chance)
                     {
                         case 1:

@@ -324,6 +324,18 @@ Mods: {
 			Chat11: Ёму-чан, что у нас на поесть сегодня?
 			Chat12: У Ёму-чан есть какие-нибудь планы на будущее?
 			Chat13: Ёму-чан столь же проста сколь и кажется. Обговорим это позже
+			// Chat14: Life won't be awesome without alcohol, Cheers!
+			// Chat15: A peculiar jungle delicacy with high protein!
+			// Chat16: Is a homeland taste...But there is no sea in the Netherworld, right?
+			// Chat17: Salute to the legendary commercial food!
+			// Chat18: The fries without ketchup or cod are soulless...
+			// Chat19: Thank you for your generous and let me eat this!
+			// Chat20: No matter shucks or something, just eat them together.
+			// Chat21: An apple a day keeps the doctor... wait, Am I need a doctor?
+			// Chat22: These won't explode, right?
+			// Chat23: I've hidden all pineapples...
+			// Chat24: Could it be a pie?
+			// Chat25: Tasty if there are no small bones!
 		}
 
 		Chat_Youmu: {

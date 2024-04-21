@@ -23,6 +23,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (States)PetState;
             set => PetState = (int)value;
         }
+        private bool IsAfraid => CurrentState == States.Afraid;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
@@ -91,24 +92,27 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 900;
-            chance = 12;
+            timePerDialog = IsAfraid ? 500 : 900;
+            chance = IsAfraid ? 3 : 12;
             whenShouldStop = false;
         }
         public override string GetRegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                chat.Add(ChatDictionary[1]);
-                chat.Add(ChatDictionary[2]);
-                if (CurrentState == States.FindEnemy || CurrentState == States.FindEnemyBlink)
-                {
-                    chat.Add(ChatDictionary[3]);
-                }
-                if (CurrentState == States.Afraid)
+                if (IsAfraid)
                 {
                     chat.Add(ChatDictionary[4]);
                     chat.Add(ChatDictionary[5]);
+                }
+                else
+                {
+                    chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[2]);
+                    if (CurrentState == States.FindEnemy || CurrentState == States.FindEnemyBlink)
+                    {
+                        chat.Add(ChatDictionary[3]);
+                    }
                 }
             }
             return chat;
@@ -132,7 +136,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 CurrentState = States.FindEnemy;
             }
-            //shake = Vector2.Zero;
+            shake = Vector2.Zero;
 
             switch (CurrentState)
             {
@@ -173,6 +177,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindPet(ProjectileType<Yuyuko>(), false))
             {
                 point = new Vector2(-50 * Owner.direction, -50 + Owner.gfxOffY);
+            }
+            if (IsAfraid)
+            {
+                point = new Vector2(-30 * Owner.direction, -20 + Owner.gfxOffY);
             }
             MoveToPoint(point, 15f * (PetState == 2 ? 0.5f : 1));
         }
