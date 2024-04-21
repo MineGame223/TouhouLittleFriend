@@ -5,8 +5,8 @@ Mods: {
 			Chat2: BOO!
 			Chat3: I'm not cute, I'm SCARY!
 			Chat4: Yay! It's rainning now!
-			Chat5: Trample on water pit in raining day is the most interesting thing!
-			Chat6: Have you take any umbrella? If not, you can take me!
+			Chat5: Jumping in puddles on rainy days is the most interesting thing!
+			Chat6: Do you have an umbrella? If not, you can take me!
 			Chat7: 浠沥沥~ 哗啦啦~
 		}
 
@@ -151,7 +151,7 @@ Mods: {
 		Chat_Tenshin: {
 			Chat1: I'm gonna to prove to you all that I'm the most powerful!
 			Chat2: Let's make a big bang today!
-			Chat3: Heaven is too boring...So, So, I, the greatest celestial came down here to give you some care!
+			Chat3: Heaven is too boring... So, I, the greatest celestial came down here to give you some care!
 		}
 
 		Chat_Junko: {
@@ -204,7 +204,7 @@ Mods: {
 
 		Chat_Sanae: {
 			Chat1: I'll follow the two dear gods forever...
-			Chat2: You shouldn't just stick on common sense here!
+			Chat2: You shouldn't just stick to common sense here!
 			Chat3: Sometimes I miss the old days...Ah, but what's important is the present!
 			Chat4: Join the Moriya Shrine, and believe in Kanako-sama and Suwako-sama!
 			Chat5: Feel the wind!
@@ -213,18 +213,18 @@ Mods: {
 		Chat_Sekibanki: {
 			Chat1: Being alone...
 			Chat2: Please don't constantly talk to me...
-			Chat3: I wear this cape all long,
+			Chat3: I wear this cape all the time,
 			Chat4: Because I don't want to look like a youkai.
-			Chat5: Humans don't like youkai, and I don't want to get close to them too...
+			Chat5: Humans don't like youkai, and I don't want to get close to them either...
 			Chat6: ...Well, except you.
 			Chat7: ...I'll get over them all!
 			Chat8: CHO——HEN——SHIN——! ! !
 			Chat9: ......
 			Chat10: ...Eh, you heard nothing!
-			Chat11: Let we be the one!
-			Chat12: Don't believe the "logic" blindly, believe your sense firmly.
-			Chat13: Sympathy is a lie, romantic is the key.
-			Chat14: When you're alive, you can get the good and the bad.
+			Chat11: Let us be the ones!
+			Chat12: Don't believe any "logic" blindly, trust your instincts firmly.
+			Chat13: Sympathy is a lie, romance is the key.
+			Chat14: When you're alive, you can get both the good and the bad.
 		}
 
 		Chat_Koishi: {
@@ -290,7 +290,7 @@ Mods: {
 			Chat1: Twinkle twinkle little bug~ How I wonder what you are~
 			Chat2: Bugs were horrifying beings in the past!
 			Chat3: The great bugs are falling now... That's unacceptable!
-			Chat4: Only in here can you see the firefly...
+			Chat4: Only in here can you see the fireflies...
 			Chat5: Happy bugs day to you~ Happy bugs day to you~...Ugh, forget it...
 			Chat6: ...TOO COLD!...
 			Chat7: Wanna enjoy 'Bug Service'?
@@ -300,7 +300,7 @@ Mods: {
 		}
 
 		Chat_Aya: {
-			Chat1: Today's wind is so noisy!
+			Chat1: The wind's so noisy today!
 			Chat2: Can you reach my speed?
 			Chat3: Material...Where is today's story material...
 			Chat4: I'm not a 'Fake news reporter', I just 'exaggerate' it a bit, to make it more interesting!
@@ -319,7 +319,7 @@ Mods: {
 			Chat6: Delicious!
 			Chat7: Thank you!
 			Chat8: Hungry...
-			Chat9: Ghosts need food too, so you just take it quickly please!
+			Chat9: Ghosts need food too, so just pass it quickly, please!
 			Chat10: When is dinner time?
 			Chat11: Youmu-chan, what're we eating tonight?
 			Chat12: Has Youmu-chan made any plans for the future?
@@ -329,13 +329,13 @@ Mods: {
 			Chat16: Is a homeland taste...But there is no sea in the Netherworld, right?
 			Chat17: Salute to the legendary commercial food!
 			Chat18: The fries without ketchup or cod are soulless...
-			Chat19: Thank you for your generous and let me eat this!
-			Chat20: No matter shucks or something, just eat them together.
-			Chat21: An apple a day keeps the doctor... wait, Am I need a doctor?
+			Chat19: Thank you for your generosity, now let me eat this!
+			Chat20: No matter if it's shucks, or something else, just eat them together.
+			Chat21: An apple a day keeps the doctor... wait, do I need a doctor?
 			Chat22: These won't explode, right?
-			Chat23: I've hidden all pineapples...
+			Chat23: I've hidden all the pineapples...
 			Chat24: Could it be a pie?
-			Chat25: Tasty if there are no small bones!
+			Chat25: It's tasty if there are no small bones!
 		}
 
 		Chat_Youmu: {
@@ -352,7 +352,7 @@ Mods: {
 		}
 
 		Chat_Alice: {
-			Chat1: Puppets have been wearing down easily...
+			Chat1: My puppets have been wearing down easily...
 			Chat2: Should I make some more puppets?
 			Chat3: I just can't give up old habits, even if I'm already a mage.
 			Chat4: Marisa, when can you give me the mushroom that you stole from me?
@@ -391,14 +391,14 @@ Mods: {
 		}
 
 		Chat_Yuka: {
-			Chat1: The most beautiful time is always the time where the flowers are in full bloom.
+			Chat1: The most beautiful time is always when the flowers are in full bloom.
 			Chat2: Another peaceful and boring day...
-			Chat3: Every flower has a short and colorful life, you'd better don't bother them.
+			Chat3: Every flower has a short and colorful life, you'd best not bother them.
 		}
 
 		Chat_Yukari: {
 			Chat1: As a sage, it's my eternal duty to protect the barrier...
-			Chat2: You wanna know my age? Of course, I'm 17 year's old~... You should say no more.
+			Chat2: You wanna know my age? Of course, I'm 17 year's old~... You shouldn't press the subject.
 			Chat3: That Reimu, she should really be more diligent.
 			Chat4: If you miss her, I'll allow you to take a temporary leave.
 			Chat5: Is that old friend of mine doing alright?...
@@ -412,7 +412,7 @@ Mods: {
 			Chat4: I, I'm NOT! Yukari-sama!
 			Chat5: You mean?
 			Chat6: I might know who she is...
-			Chat7: Don't leave me too far, Chen!
+			Chat7: Don't go too far alone, Chen!
 		}
 
 		Chat_Chen: {
@@ -423,14 +423,14 @@ Mods: {
 
 		Chat_Kaguya: {
 			Chat1: It's not very "dirty" on the ground...
-			Chat2: Can't help to remember the old days since I come to the ground, such a long time ago...
+			Chat2: Can't help to remember the old days since I came down to Earth, such a long time ago...
 			Chat3: ...I have to win this time!
 			Chat4: Hold on, hold on...
 			Chat5: Practice makes perfect.
-			Chat6: Not your business!
+			Chat6: None of your business!
 			Chat7: Hey, how long have we been fighting each other?
 			Chat8: Wanna do something new today?
-			Chat9: How about...something EXCITING?
+			Chat9: How about something... EXCITING?
 			Chat10: This turn, I win!
 			Chat11: Practice makes perfect, you understand?
 			Chat12: Ah hahaha!
@@ -446,13 +446,13 @@ Mods: {
 			Chat4: ...What you want to do?
 			Chat5: No, never!...Well, I know a place we can go...
 			Chat6: Can you just be QUIET for once?
-			Chat7: I'm fine, maybe. Just the usual.
+			Chat7: I'm fine, I think. Just the usual.
 			Chat8: Nope, I'm trying to forget them...
 			Chat9: You will become this form every full moon, that's pretty scary!
 			Chat10: Just accept that I'm stronger!
 			Chat11: Do you even want to defeat ME?
 			Chat12: That's all you got?
-			Chat13: I won't lose in the next round!
+			Chat13: I won't lose the next round!
 			Chat14: I'm too careless...
 			Chat15: This'll be the last time you'll be this complacent...
 		}
@@ -553,22 +553,22 @@ Mods: {
 			Chat1: Maybe it's just not possible to go back... I'd be better off living here...
 			Chat2: Could master have taught that rabbit a lesson?
 			Chat3: I haven't been able to sleep well as of late...
-			Chat4: I wonder how my buddy on the moon are doing?
+			Chat4: I wonder how my buddies on the moon are doing?
 			Chat5: Surely, I'm a traitor, just like the princess...
-			Chat6: I REALLY don't want to get on with human!
-			Chat7: I'd advise you don't have a staring contest with me.
-			Chat8: I just wish master won't use me as a test subject again, please...
+			Chat6: I REALLY don't want to get involved with humans!
+			Chat7: I'd advise that you don't have a staring contest with me.
+			Chat8: I just hope master won't use me as a test subject again, please...
 			Chat9: I have NO connection to udon noodles! ...Also, please don't eat that in front of me.
-			Chat10: You'd better not be gazing at the moon on such a night, or else you might go crazy... Not me, of course, just you.
+			Chat10: You'd best not be gazing at the moon on such a night, or else you might go crazy... Not me, of course, just you.
 			Chat11: Eh eh...I-I'm fine...
 		}
 
 		Chat_Sizuha: {
 			Chat1: *Sigh...The end of the year's coming, and the winter comes with it...
-			Chat2: Falling leaves herald autumn's arrival, it also means the year is coming to a close.
+			Chat2: Falling leaves herald autumn's arrival, but it also means the year is coming to a close.
 			Chat3: Autumn always symbolizes loneliness, even since ancient times...
 			Chat4: Should I use more yellow, or more red this year?
-			Chat5: Nobody can block autumn's arrival, It is the will of nature!
+			Chat5: Nobody can block autumn's arrival, for it's the will of nature!
 			Chat6: I'm the elder sister, so why am I not as famous as my younger sister...
 			Chat7: ...Of、of course! Falling leaves are also an important part of autumn!
 			Chat8: Alright!...I mean, OK.
@@ -577,7 +577,7 @@ Mods: {
 
 		Chat_Minoriko: {
 			Chat1: Would you like some baked sweet potatoes?
-			Chat2: You say I smell like sweet potato? That's a sweet smell! isn't it?
+			Chat2: You say I smell like sweet potato? That's a sweet smell! It is, isn't it?
 			Chat3: If you want a harvest, you should treat me better.
 			Chat4: Farming means obtaining from nature, so you must follow the rules of natural farming.
 			Chat5: Do NOT waste food!
@@ -590,7 +590,7 @@ Mods: {
 			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all.
 			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence.
 			Chat3: Want to have a cute partner? Why not look here!
-			Chat4: Your later life may have no relationship with Gensokyo, but what you do now will influence it's fate...I mean, buy something?
+			Chat4: Your later life may have no relationship with Gensokyo, but what you do now will influence it's fate...I mean, would you like to buy something?
 			Chat5: Thank you for supporting Gensokyo for so long! This is what you've earned.
 			Chat6:
 				'''

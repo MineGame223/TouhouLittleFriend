@@ -78,7 +78,7 @@ Mods: {
 
 			SatoriBuff: {
 				DisplayName: Youkai of Consciousness
-				Description: "'I know what you are thinking...'"
+				Description: "'I know what you're thinking...'"
 			}
 
 			KoishiBuff: {
@@ -123,7 +123,7 @@ Mods: {
 
 			WriggleBuff: {
 				DisplayName: Firefly Youkai
-				Description: "'Twinkle twinkle little bug'"
+				Description: "'Twinkle, twinkle, little bug'"
 			}
 
 			YuyukoBuff: {
@@ -148,7 +148,7 @@ Mods: {
 
 			RumiaBuff: {
 				DisplayName: Youkai of Darkness
-				Description: "'So ~nanoka?'"
+				Description: "'So, nanoka?~'"
 			}
 
 			KoakumaBuff: {
@@ -168,7 +168,7 @@ Mods: {
 
 			YukariBuff: {
 				DisplayName: Sage of the Gap
-				Description: "'Thank your support for the Gensokyo!'"
+				Description: "'Thank you for supporting Gensokyo!'"
 			}
 
 			KaguyaBuff: {
