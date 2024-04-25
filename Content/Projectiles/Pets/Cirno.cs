@@ -43,13 +43,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool IsIdleState => PetState <= 1;
         private bool IsHotState => CurrentState == States.Hot || CurrentState == States.HotBlink;
+        private bool UseSunnySkin => Main.LocalPlayer.miscDyes[1].type == ItemID.BrownDye;
         private bool InHotZone => (Owner.ZoneDesert && Main.dayTime)
             || Owner.ZoneUnderworldHeight || Owner.ZoneJungle;
         private bool CanSeeFrogs => Owner.ZoneJungle && Owner.ZoneOverworldHeight;
 
         private int wingFrame, wingFrameCounter;
 
-        private DrawPetConfig drawConfig = new(1);
+        private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Cirno_Cloth");
         public override void SetStaticDefaults()
         {
@@ -66,7 +67,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
             Projectile.DrawPet(wingFrame, Projectile.GetAlpha(Color.White * 0.7f), drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
-            Projectile.DrawPet(Projectile.frame, lightColor, config);
+
+            if (UseSunnySkin)
+            {
+                Projectile.DrawPet(Projectile.frame, lightColor,
+                    drawConfig with
+                    {
+                        AltTexture = clothTex,
+                    });
+                Projectile.DrawPet(Projectile.frame, lightColor, drawConfig, 1);
+            }
+            else
+            {
+                Projectile.DrawPet(Projectile.frame, lightColor, config);
+            }
             return false;
         }
         public override Color ChatTextColor => new Color(76, 207, 239);
@@ -213,7 +227,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (Owner.ZoneUnderworldHeight && !IsHotState)
+            if (Owner.ZoneUnderworldHeight && !IsHotState && !UseSunnySkin)
             {
                 CurrentState = States.Hot;
             }
@@ -286,7 +300,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     CurrentState = States.Blink;
                 }
-                if (mainTimer > 0 && mainTimer % 600 == 0 && !InHotZone
+                bool canLaugh = !InHotZone || (UseSunnySkin && !Owner.ZoneUnderworldHeight);
+
+                if (mainTimer > 0 && mainTimer % 600 == 0 && canLaugh
                     && currentChatRoom == null && ActionCD <= 0)
                 {
                     if (Main.rand.NextBool(3))
@@ -362,7 +378,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 CurrentState = States.HotBlink;
             }
-            if (!Owner.ZoneUnderworldHeight)
+            if (!Owner.ZoneUnderworldHeight || UseSunnySkin)
             {
                 CurrentState = States.Idle;
             }

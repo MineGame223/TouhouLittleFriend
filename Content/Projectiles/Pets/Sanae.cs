@@ -245,12 +245,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
 
                 case States.Flying:
-                    shouldNotTalking = true;
                     Flying();
                     break;
 
                 case States.FlyingBlink:
-                    shouldNotTalking = true;
                     Flying();
                     FlyingBlink();
                     break;
