@@ -169,7 +169,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (IsIdleState && FindPet(ProjectileType<Junko>()))
+            if (IsIdleState && FindPet(ProjectileType<Junko>(), false))
             {
                 CurrentState = States.Nerves;
             }

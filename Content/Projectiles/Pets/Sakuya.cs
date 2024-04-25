@@ -4,19 +4,49 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using static TouhouPets.Content.Projectiles.Pets.Remilia;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Sakuya : BasicTouhouPetNeo
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Serve,
+            TeaServe,
+            ThrowingKnife,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+        private bool IsSevring => CurrentState >= States.Serve && CurrentState <= States.TeaServe;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sakuya_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sakuya_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -26,7 +56,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -37,7 +67,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config);
             Projectile.DrawStateNormalizeForPet();
 
-            if (PetState == 3)
+            if (Projectile.frame == 9)
             {
                 DrawUmbrella(lightColor);
             }
@@ -53,123 +83,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 orig = tex.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Main.EntitySpriteDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, effect, 0);
-        }
-        private void Blink()
-        {
-            if (blinkFrame < 10)
-            {
-                blinkFrame = 10;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 12)
-            {
-                blinkFrame = 10;
-                PetState = 0;
-            }
-        }
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        private void Serve(bool alt = false)
-        {
-            if (alt)
-            {
-                Projectile.frame = 9;
-                if (!FindPet(ProjectileType<Remilia>(), false) || !Remilia.HateSunlight(Projectile))
-                {
-                    Projectile.frame = 0;
-                    PetState = 0;
-                }
-                return;
-            }
-            if (Projectile.frame < 1)
-            {
-                Projectile.frame = 1;
-            }
-            if (++Projectile.frameCounter > 9)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (Main.rand.NextBool(15) && extraAI[1] <= 0)
-                    {
-                        Projectile.SetChat(ChatSettingConfig, 5);
-                        extraAI[1]++;
-                    }
-                }
-            }
-            if (Projectile.frame > 2)
-            {
-                Projectile.frame = 1;
-            }
-            if (!FindPet(out _, ProjectileType<Remilia>(), 2))
-            {
-                extraAI[1] = 0;
-                Projectile.frame = 0;
-                PetState = 0;
-            }
-        }
-        private void WakeUp()
-        {
-            if (Projectile.frame < 3)
-            {
-                Projectile.frame = 3;
-            }
-            if (++Projectile.frameCounter > 9)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (FindPet(out Projectile meirin, ProjectileType<Meirin>()))
-            {
-                Projectile.spriteDirection = Projectile.position.X > meirin.position.X ? -1 : 1;
-                if (Projectile.frameCounter == 2 && Projectile.frame == 6)
-                {
-                    Vector2 vel = Vector2.Normalize(meirin.Center - Projectile.Center) * 12f;
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, vel, ProjectileType<SakuyaKnife>()
-                        , 0, 0, Projectile.owner);
-                }
-            }
-            if (Projectile.frame > 8)
-            {
-                Projectile.frame = 0;
-                PetState = 0;
-            }
-        }
-        private void Teleport(Vector2 targetPos)
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.BlueMagic, 0, 0
-                    , 100, default, Main.rand.NextFloat(1.5f, 2.2f)).noGravity = true;
-            }
-            Projectile.Center = targetPos;
-            for (int i = 0; i < 20; i++)
-            {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.BlueMagic, 0, 0
-                    , 100, default, Main.rand.NextFloat(1.5f, 2.2f)).noGravity = true;
-            }
-        }
-        private void UpdateClothFrame()
-        {
-            if (clothFrame < 13)
-            {
-                clothFrame = 13;
-            }
-            int count = 4;
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 16)
-            {
-                clothFrame = 13;
-            }
         }
         public override Color ChatTextColor => new Color(114, 106, 255);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -320,10 +233,63 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatRoom.CloseChatRoom();
             }
         }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<SakuyaBuff>());
+            Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
+
+            UpdateTalking();
+
+            ControlMovement(Owner);
+
+
+            if (OwnerIsMyPlayer)
+            {
+                if (FindPet(out Projectile master, ProjectileType<Remilia>(), -1, 0, false) && !IsSevring)
+                {
+                    if (ShouldDefense(Projectile))
+                    {
+                        Teleport(master.Center + new Vector2(-20 * master.spriteDirection, Owner.gfxOffY));
+                        CurrentState = States.Serve;
+                        return;
+                    }
+                }
+            }
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Serve:
+                    shouldNotTalking = true;
+                    Serve();
+                    break;
+
+                case States.TeaServe:
+                    shouldNotTalking = true;
+                    TeaServe();
+                    break;
+
+                case States.ThrowingKnife:
+                    shouldNotTalking = true;
+                    ThrowingKnife();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+        }
         private void ControlMovement(Player player)
         {
             Projectile.tileCollide = false;
-            if (PetState <= 1)
+            if (IsIdleState)
                 Projectile.rotation = Projectile.velocity.X * 0.01f;
             else
                 Projectile.rotation = Projectile.velocity.X * 0.001f;
@@ -333,82 +299,157 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 point = new Vector2((player.HasBuff<ScarletBuff>() ? 100 : -50) * player.direction, -30 + player.gfxOffY);
             Vector2 center = default;
             float speed = 16f;
-            if (FindPet(out Projectile master, ProjectileType<Remilia>()))
+            if (FindPet(out Projectile master, ProjectileType<Remilia>(), -1, 0, false))
             {
                 Projectile.spriteDirection = master.spriteDirection;
-                if (PetState == 3 || PetState == 2)
+                if (IsSevring)
                 {
-                    point = new Vector2(((PetState == 2 ? -40 : -20) + 60) * master.spriteDirection, player.gfxOffY - 20);
+                    int xOffset = CurrentState == States.TeaServe ? 20 : 40;
+                    point = new Vector2(xOffset * master.spriteDirection, player.gfxOffY - 20);
                     speed = 19f;
                 }
             }
             MoveToPoint(point, speed, center);
         }
-        public override void AI()
+        private void Teleport(Vector2 targetPos)
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<SakuyaBuff>());
-            Projectile.SetPetActive(player, BuffType<ScarletBuff>());
-
-            UpdateTalking();
-            ControlMovement(player);
-
-            if (Projectile.owner == Main.myPlayer)
+            for (int i = 0; i < 20; i++)
             {
-                if (FindPet(out Projectile master, ProjectileType<Remilia>()) && PetState != 3)
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.BlueMagic, 0, 0
+                    , 100, default, Main.rand.NextFloat(1.5f, 2.2f)).noGravity = true;
+            }
+            Projectile.Center = targetPos;
+            for (int i = 0; i < 20; i++)
+            {
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.BlueMagic, 0, 0
+                    , 100, default, Main.rand.NextFloat(1.5f, 2.2f)).noGravity = true;
+            }
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (FindPet(out Projectile master, ProjectileType<Remilia>(), 3, 4, false))
                 {
-                    if (Remilia.HateSunlight(Projectile))
+                    Teleport(master.Center + new Vector2(-40 * master.spriteDirection, Owner.gfxOffY));
+                    CurrentState = States.TeaServe;
+                }
+                if (FindPet(ProjectileType<Meirin>(), false, 6))
+                {
+                    if (mainTimer % 320 == 0 && Main.rand.NextBool(3))
                     {
-                        Teleport(master.Center + new Vector2(-20 * master.spriteDirection, player.gfxOffY));
-                        PetState = 3;
-                        Projectile.netUpdate = true;
-                    }
-                    else if (master.ai[1] == 2 && PetState != 2)
-                    {
-                        extraAI[1] = 0;
-                        Teleport(master.Center + new Vector2(-40 * master.spriteDirection, player.gfxOffY));
-                        PetState = 2;
-                        Projectile.netUpdate = true;
+                        CurrentState = States.ThrowingKnife;
                     }
                 }
-                else if (FindPet(out Projectile meirin, ProjectileType<Meirin>()) && PetState <= 1)
+                if (mainTimer % 270 == 0)
                 {
-                    if (meirin.frame == 2 && mainTimer % 480 == 0 && Main.rand.NextBool(3))
-                    {
-                        PetState = 4;
-                        Projectile.netUpdate = true;
-                    }
-                }
-                if (mainTimer % 270 == 0 && PetState <= 0)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 10)
+            {
+                blinkFrame = 10;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 12)
+            {
+                blinkFrame = 10;
+                CurrentState = States.Idle;
+            }
+        }
+        private void TeaServe()
+        {
+            if (++Projectile.frameCounter > 9)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+                if (OwnerIsMyPlayer)
+                {
+                    if (Main.rand.NextBool(15) && Timer == 0)
+                    {
+                        Projectile.SetChat(ChatSettingConfig, 5);
+                        Timer++;
+                    }
+                }
+            }
+            if (Projectile.frame > 2)
+            {
+                Projectile.frame = 1;
+            }
+            if (!FindPet(ProjectileType<Remilia>(), false, 3, 4))
+            {
+                if (OwnerIsMyPlayer)
+                {
+                    Timer = 0;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void Serve()
+        {
+            Projectile.frame = 9;
+            if (!FindPet(ProjectileType<Remilia>(), false) || !ShouldDefense(Projectile))
+            {
+                if (OwnerIsMyPlayer)
+                {
+                    CurrentState = States.Idle;
+                }
+            }
+        }
+        private void ThrowingKnife()
+        {
+            if (Projectile.frame < 3)
+            {
+                Projectile.frame = 3;
+            }
+            if (++Projectile.frameCounter > 9)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (FindPet(out Projectile meirin, ProjectileType<Meirin>(), -1, 0, false))
+            {
+                Projectile.spriteDirection = Projectile.position.X > meirin.position.X ? -1 : 1;
+                if (Projectile.frameCounter == 2 && Projectile.frame == 6)
+                {
+                    Vector2 vel = Vector2.Normalize(meirin.Center - Projectile.Center) * 12f;
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center, vel, ProjectileType<SakuyaKnife>()
+                        , 0, 0, Projectile.owner);
+                }
+            }
+            if (Projectile.frame > 8)
             {
                 Projectile.frame = 0;
-                if (extraAI[0] >= 1)
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[0]--;
+                    CurrentState = States.Idle;
                 }
             }
-            else if (PetState == 1)
+        }
+        private void UpdateClothFrame()
+        {
+            if (clothFrame < 13)
             {
-                Projectile.frame = 0;
-                Blink();
+                clothFrame = 13;
             }
-            else if (PetState == 2)
+            int count = 4;
+            if (++clothFrameCounter > count)
             {
-                Serve();
+                clothFrameCounter = 0;
+                clothFrame++;
             }
-            else if (PetState == 3)
+            if (clothFrame > 16)
             {
-                Serve(true);
-            }
-            else if (PetState == 4)
-            {
-                WakeUp();
+                clothFrame = 13;
             }
         }
     }
