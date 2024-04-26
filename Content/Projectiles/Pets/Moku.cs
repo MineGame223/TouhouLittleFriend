@@ -12,7 +12,7 @@ using static TouhouPets.DanmakuFightHelper;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Moku : BasicTouhouPetNeo
+    public class Moku : BasicTouhouPet
     {
         private enum States
         {

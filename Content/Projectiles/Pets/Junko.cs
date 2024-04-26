@@ -9,7 +9,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Junko : BasicTouhouPetNeo
+    public class Junko : BasicTouhouPet
     {
         private enum States
         {

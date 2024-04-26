@@ -9,7 +9,7 @@ using static TouhouPets.SolutionSpraySystem;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Yuka : BasicTouhouPetNeo
+    public class Yuka : BasicTouhouPet
     {
         private enum States
         {

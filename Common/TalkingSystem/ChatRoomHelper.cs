@@ -22,13 +22,13 @@ namespace TouhouPets
             return !projectile.ToPetClass().shouldNotTalking;
         }
         /// <summary>
-        /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPetNeo"/> 类
+        /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPet"/> 类
         /// </summary>
         /// <param name="projectile"></param>
         /// <returns></returns>
-        public static BasicTouhouPetNeo ToPetClass(this Projectile projectile)
+        public static BasicTouhouPet ToPetClass(this Projectile projectile)
         {
-            return Main.projectile[projectile.whoAmI].ModProjectile as BasicTouhouPetNeo;
+            return Main.projectile[projectile.whoAmI].ModProjectile as BasicTouhouPet;
         }
         /// <summary>
         /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空、chatIndex归零
@@ -36,7 +36,7 @@ namespace TouhouPets
         /// <param name="chatRoom"></param>
         public static void CloseChatRoom(this PetChatRoom chatRoom)
         {
-            BasicTouhouPetNeo owner = ToPetClass(chatRoom.initiator);
+            BasicTouhouPet owner = ToPetClass(chatRoom.initiator);
             owner.currentChatRoom = null;
             owner.chatIndex = 0;
             foreach (Projectile m in chatRoom.member)
@@ -106,7 +106,7 @@ namespace TouhouPets
         /// <param name="projectile"></param>
         public static void CloseCurrentDialog(this Projectile projectile)
         {
-            BasicTouhouPetNeo pet = projectile.ToPetClass();
+            BasicTouhouPet pet = projectile.ToPetClass();
             pet.chatTimeLeft = 0;
         }
         /// <summary>
@@ -119,7 +119,7 @@ namespace TouhouPets
         /// <param name="color">文本颜色</param>
         public static void SetChat(this Projectile projectile, ChatSettingConfig config, int index, int lag = 0, Color color = default)
         {
-            BasicTouhouPetNeo pet = projectile.ToPetClass();
+            BasicTouhouPet pet = projectile.ToPetClass();
             if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0 || pet.chatCD > 0)
             {
                 return;

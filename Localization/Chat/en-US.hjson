@@ -221,21 +221,21 @@ Mods: {
 			Chat8: CHO——HEN——SHIN——! ! !
 			Chat9: ......
 			Chat10: ...Eh, you heard nothing!
-			Chat11: Let us be the ones!
+			Chat11: Let us "be the one"!
 			Chat12: Don't believe any "logic" blindly, trust your instincts firmly.
 			Chat13: Sympathy is a lie, romance is the key.
 			Chat14: When you're alive, you can get both the good and the bad.
 		}
 
 		Chat_Koishi: {
-			Chat-1: Moshi moshi?
-			Chat-2: It's me, Koishi...
-			Chat-3: I'M AT YOUR BACK NOW...
 			Chat1: Can I play with you?
 			Chat2: I'll put your body on to!... Wait, to where?
 			Chat3: Wanna play Doki Doki Adventure?
 			Chat4: Have you noticed me?
 			Chat5: Even my sister doesn't know what I'm thinking!
+			Chat6: Moshi moshi?
+			Chat7: It's me, Koishi...
+			Chat8: I'M AT YOUR BACK NOW...
 		}
 
 		Chat_Satori: {

@@ -12,14 +12,56 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Koishi : BasicTouhouPet
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Calling,
+            CallingFadeIn,
+            CallingFadeOut,
+            BeforeKill,
+            KILL,
+            AfterKill,
+            Annoying,
+            AfterAnnoying,
+            Fading,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+        private bool IsKillingState => CurrentState >= States.Calling && CurrentState <= States.AfterKill;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private int annoyingFrame, annoyingFrameCounter;
+        private int killCD;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -36,7 +78,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -47,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             Projectile.DrawStateNormalizeForPet();
 
-            if (PetState == 3)
+            if (CurrentState == States.Annoying)
                 Projectile.DrawPet(annoyingFrame, lightColor, drawConfig, 1);
 
             if (eyeAdj.Y > 0)
@@ -62,8 +104,249 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 orig = rect.Size() / 2;
             Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
         }
+        public override Color ChatTextColor => new Color(145, 255, 183);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Koishi";
+            indexRange = new Vector2(1, 8);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 721;
+            chance = 6;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+                chat.Add(ChatDictionary[5]);
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(5))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Satori>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile koishi = chatRoom.initiator;
+            Projectile satori = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //恋恋：就算是姐姐，也不知道恋在想什么哦。
+                satori.CloseCurrentDialog();
+
+                if (koishi.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //觉：姐姐现在就在看着你呢...
+                satori.SetChat(ChatSettingConfig, 5, 20);
+
+                if (satori.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void AI()
+        {
+            Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity, 0, 1);
+
+            if (!SetKoishiActive(Owner))
+                return;
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Calling:
+                    shouldNotTalking = true;
+                    Calling();
+                    break;
+
+                case States.CallingFadeIn:
+                    shouldNotTalking = true;
+                    CallingFadeIn();
+                    break;
+
+                case States.CallingFadeOut:
+                    shouldNotTalking = true;
+                    CallingFadeOut();
+                    break;
+
+                case States.BeforeKill:
+                    shouldNotTalking = true;
+                    BeforeKill();
+                    break;
+
+                case States.KILL:
+                    shouldNotTalking = true;
+                    KILL();
+                    break;
+
+                case States.AfterKill:
+                    shouldNotTalking = true;
+                    AfterKill();
+                    break;
+
+                case States.Fading:
+                    shouldNotTalking = true;
+                    Fading();
+                    break;
+
+                case States.Annoying:
+                    shouldNotTalking = true;
+                    Annoying();
+                    break;
+
+                case States.AfterAnnoying:
+                    shouldNotTalking = true;
+                    AfterAnnoying();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            UpdateMiscData();
+        }
+        private bool ShouldKillPlayer()
+        {
+            bool lowHealth = !Owner.dead && Owner.statLife < Owner.statLifeMax2 / 10;
+            bool noSatori = !Owner.HasBuff<SatoriBuff>() && !Owner.HasBuff<KomeijiBuff>();
+            if (lowHealth && noSatori)
+            {
+                if (mainTimer > 0 && mainTimer % 120 == 0 && Main.rand.NextBool(3) && killCD == 0)
+                {
+                    Timer = 0;
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool SetKoishiActive(Player player)
+        {
+            Projectile.timeLeft = 2;
+
+            bool noActiveBuff = !player.HasBuff(BuffType<KoishiBuff>()) && !player.HasBuff(BuffType<KomeijiBuff>());
+            bool shouldInactiveNormally = noActiveBuff && !IsKillingState;
+
+            if (shouldInactiveNormally || player.dead)
+            {
+                Projectile.velocity *= 0;
+                Projectile.frame = CurrentState == States.AfterKill ? 13 : 0;
+                Projectile.Opacity -= 0.009f;
+                if (Projectile.Opacity <= 0)
+                {
+                    Projectile.active = false;
+                    Projectile.netUpdate = true;
+                }
+            }
+            else
+            {
+                if (CurrentState != States.Fading && !IsKillingState)
+                    Projectile.Opacity += 0.009f;
+                return true;
+            }
+            return false;
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.01f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-54 * Owner.direction, -34 + Owner.gfxOffY);
+            if (Owner.HasBuff<KomeijiBuff>())
+                point = new Vector2(-44 * Owner.direction, -80 + Owner.gfxOffY);
+            if (!Owner.dead)
+                MoveToPoint(point, 13f);
+        }
+        private void UpdateMiscData()
+        {
+            if (!OwnerIsMyPlayer)
+                return;
+            if (killCD > 0)
+            {
+                killCD--;
+            }
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (ShouldKillPlayer())
+                {
+                    CurrentState = States.Calling;
+                    return;
+                }
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 360 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(1))
+                    {
+                        if (Main.rand.NextBool(1) && !FindPet(ProjectileType<Satori>(), false))
+                        {
+                            RandomCount = Main.rand.Next(1800, 3600);
+                            CurrentState = States.Fading;
+                        }
+                        else if (Projectile.CurrentDialogFinished())
+                        {
+                            RandomCount = Main.rand.Next(5, 14);
+                            CurrentState = States.Annoying;
+                        }
+                    }
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (blinkFrame < 4)
             {
                 blinkFrame = 4;
@@ -79,10 +362,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 PetState = 0;
             }
         }
-        private void Fade()
+        private void Fading()
         {
-            extraAI[0]++;
-            if (extraAI[0] > extraAI[1] - 255 / 2)
+            Projectile.frame = 0;
+            Timer++;
+            if (Timer > RandomCount - 255 / 2)
             {
                 Projectile.Opacity += 0.01f;
             }
@@ -90,15 +374,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.Opacity -= 0.005f;
             }
-            if (Projectile.owner == Main.myPlayer)
+            if (OwnerIsMyPlayer && Timer > RandomCount)
             {
-                if (extraAI[0] > extraAI[1])
-                {
-                    extraAI[0] = 3600;
-                    extraAI[1] = 0;
-                    PetState = 0;
-                    Projectile.netUpdate = true;
-                }
+                Timer = 0;
+                ActionCD = 3600;
+                CurrentState = States.Idle;
             }
         }
         private void Annoying()
@@ -116,6 +396,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 annoyingFrame = 8;
             }
+
             if (++Projectile.frameCounter > 5)
             {
                 Projectile.frameCounter = 0;
@@ -125,39 +406,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 14;
             }
-            if (Projectile.owner == Main.myPlayer)
+            if (Projectile.frame > 16)
             {
-                if (extraAI[1] > extraAI[2])
-                {
-                    extraAI[0] = 1;
-                    Projectile.netUpdate = true;
-                }
+                Projectile.frame = 15;
+                Timer++;
             }
-            if (extraAI[0] >= 1)
+            if (OwnerIsMyPlayer && Timer > RandomCount)
             {
-                if (Projectile.frame > 17)
-                {
-                    extraAI[0] = 1800;
-                    extraAI[1] = 0;
-                    extraAI[2] = 0;
-                    PetState = 0;
-                    Projectile.frame = 0;
-                }
+                Timer = 0;
+                CurrentState = States.AfterAnnoying;
             }
-            else
-            {
-                if (Projectile.frame > 16)
-                {
-                    extraAI[1]++;
-                    Projectile.frame = 15;
-                }
-            }
-            chatFuncIsOccupied = true;
         }
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        int annoyingFrame, annoyingFrameCounter;
-        int killCD;
+        private void AfterAnnoying()
+        {
+            if (++Projectile.frameCounter > 5)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 17)
+            {
+                Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 1800;
+                    CurrentState = States.Idle;
+                }
+            }
+        }
         private void UpdateClothFrame()
         {
             int count = 4;
@@ -171,277 +447,146 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 0;
             }
         }
-        private void KillingPhoneCall()
+        private void Calling()
         {
-            Player player = Main.player[Projectile.owner];
             if (++Projectile.frameCounter > 12)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (extraAI[0] == 0)
+            if (Projectile.frame > 6)
             {
-                if (Projectile.frame < 5)
+                Projectile.frame = 5;
+            }
+
+            if (Projectile.frame >= 5)
+            {
+                if (OwnerIsMyPlayer)
                 {
-                    chatFuncIsOccupied = true;
-                }
-                else
-                {
-                    if (extraAI[2] <= 0)
+                    ChatSettingConfig chatConfig = ChatSettingConfig with
                     {
-                        if (extraAI[1] == 0)
-                        {
-                            SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-1"), myColor, -1, cd: 60, -1, 60);
-                            extraAI[2] = 240;
-                            extraAI[1]++;
-                        }
-                        if (extraAI[1] == 1 && extraAI[2] <= 0)
-                        {
-                            extraAI[2] = 240;
-                            extraAI[1]++;
-                        }
-                        if (extraAI[1] == 2)
-                        {
-                            SetChatWithOtherOne(null, ModUtils.GetChatText("Koishi", "-2"), myColor, -2, cd: 60, -1, 60);
-                            extraAI[2] = 540;
-                            extraAI[1]++;
-                        }
-                        if (Projectile.owner == Main.myPlayer)
-                        {
-                            if (extraAI[1] == 3 && extraAI[2] <= 0)
-                            {
-                                extraAI[1]++;
-                                Projectile.netUpdate = true;
-                            }
-                        }
+                        TimeLeftPerWord = 60,
+                    };
+                    if (Timer == 0)
+                    {
+                        Projectile.SetChat(chatConfig, 6, 60);
+                    }
+                    if (Timer == 360)
+                    {
+                        Projectile.SetChat(chatConfig, 7, 60);
+                    }
+                    if (Timer >= 360 + 540)
+                    {
+                        Timer = 0;
+                        CurrentState = States.CallingFadeIn;
+                        Projectile.CloseCurrentDialog();
+                        return;
                     }
                 }
-                if (Projectile.frame > 6)
+                Timer++;
+            }
+        }
+        private void CallingFadeIn()
+        {
+            Projectile.frame = 6;
+            Projectile.Opacity -= 0.01f;
+            if (Projectile.Opacity <= 0f)
+            {
+                Projectile.Opacity = 0;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 5;
-                }
-                if (extraAI[1] >= 4)
-                {
-                    Projectile.frame = 6;
-                    Projectile.Opacity -= 0.01f;
-                    if (Projectile.Opacity <= 0f)
-                    {
-                        if (Projectile.owner == Main.myPlayer)
-                        {
-                            extraAI[0] = 1;
-                            extraAI[1] = 0;
-                            Projectile.netUpdate = true;
-                        }
-                    }
+                    CurrentState = States.CallingFadeOut;
                 }
             }
-            else if (extraAI[0] == 1)
+        }
+        private void CallingFadeOut()
+        {
+            if (!Owner.dead)
             {
-                textShaking = true;
-                Projectile.Opacity += 0.01f;
-                if (Projectile.Opacity < 1)
+                Projectile.Center = Owner.Center + new Vector2(-30 * Owner.direction, Owner.gfxOffY);
+            }
+            Projectile.frame = 7;
+            Projectile.Opacity += 0.01f;
+            if (Projectile.Opacity >= 1f)
+            {
+                Projectile.Opacity = 1;
+                if (OwnerIsMyPlayer)
                 {
-                    Projectile.frame = 7;
-                }
-                if (extraAI[1] == 0 && Projectile.frame == 8)
-                {
-                    SetChat(Color.Red, ModUtils.GetChatText("Koishi", "-3"), -3, 0, 45, true, 300);
-                    extraAI[1]++;
-                    extraAI[2] = 420;
-                }
-                if (Projectile.frame > 10)
-                {
-                    Projectile.frame = 9;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > 0 && extraAI[2] <= 0)
-                    {
-                        extraAI[0]++;
-                        extraAI[1] = 0;
-                        Projectile.netUpdate = true;
-                    }
+                    CurrentState = States.BeforeKill;
                 }
             }
-            else if (extraAI[0] == 2)
+        }
+        private void BeforeKill()
+        {
+            if (!Owner.dead)
             {
-                textShaking = true;
-                Projectile.frameCounter += 2;
-                if (Projectile.frame > 13)
+                Projectile.Center = Owner.Center + new Vector2(-30 * Owner.direction, Owner.gfxOffY);
+            }
+
+            textShaking = true;
+
+            if (++Projectile.frameCounter > 12)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 10)
+            {
+                Projectile.frame = 9;
+            }
+            if (Projectile.frame > 8)
+            {
+                Timer++;
+            }
+            if (OwnerIsMyPlayer)
+            {
+                if (Projectile.frame == 8 && Projectile.frameCounter == 1)
                 {
-                    Projectile.frame = 13;
-                    if (Projectile.owner == Main.myPlayer)
+                    Projectile.SetChat(ChatSettingConfig with
                     {
-                        player.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", player.name)), 0, 0, false);
-                        extraAI[0]++;
-                        killCD = 3600;
-                        Projectile.netUpdate = true;
-                    }
+                        TimeLeftPerWord = 45,
+                        TyperModeUseTime = 300,
+                    }, 8, 0, Color.Red);
+                }
+                if (Projectile.frame >= 9 && Timer > 540)
+                {
+                    Timer = 0;
+                    CurrentState = States.KILL;
                 }
             }
-            else if (extraAI[0] == 3)
+        }
+        private void KILL()
+        {
+            if (!Owner.dead)
+            {
+                Projectile.Center = Owner.Center + new Vector2(-30 * Owner.direction, Owner.gfxOffY);
+            }
+            textShaking = true;
+
+            if (++Projectile.frameCounter > 12)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+
+            if (Projectile.frame > 12)
             {
                 Projectile.frame = 13;
-                if (!player.dead)
+                if (OwnerIsMyPlayer)
                 {
-                    extraAI[2] = 0;
-                    extraAI[0] = 0;
-                    PetState = 0;
-                    Projectile.netUpdate = true;
+                    Owner.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", Owner.name)), 0, 0, false);
+                    killCD = 3600;
+                    CurrentState = States.AfterKill;
+                    Projectile.CloseCurrentDialog();
                 }
-            }
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (extraAI[2] > 0)
-                {
-                    extraAI[2]--;
-                }
-            }
-            if (player.active && extraAI[0] > 0 && !player.dead)
-            {
-                Projectile.Center = player.Center + new Vector2(-30 * player.direction, player.gfxOffY);
             }
         }
-        Color myColor = new Color(145, 255, 183);
-        public override string GetChatText(out string[] text)
+        private void AfterKill()
         {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Koishi", "1");
-            text[2] = ModUtils.GetChatText("Koishi", "2");
-            text[3] = ModUtils.GetChatText("Koishi", "3");
-            text[4] = ModUtils.GetChatText("Koishi", "4");
-            text[5] = ModUtils.GetChatText("Koishi", "5");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            Projectile.frame = 13;
+            if (!Owner.dead && OwnerIsMyPlayer)
             {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            if (Projectile.owner != Main.myPlayer)
-                return;
-
-            Player player = Main.player[Projectile.owner];
-            if (!player.dead && player.statLife < player.statLifeMax2 / 10
-                && !player.HasBuff<SatoriBuff>() && !player.HasBuff<KomeijiBuff>())
-            {
-                if (mainTimer % 120 == 0 && mainTimer > 0 && Main.rand.NextBool(3)
-                    && PetState == 0 && ChatCD <= 0 && killCD == 0)
-                {
-                    PetState = State_Kill;
-                    extraAI[0] = 0;
-                    Projectile.netUpdate = true;
-                }
-            }
-            else if (mainTimer % 720 == 0 && mainTimer > 0 && Main.rand.NextBool(7) && PetState <= 1)
-            {
-                SetChat(myColor);
-            }
-        }
-        private void SetKoishiActive(Player player)
-        {
-            if (!player.HasBuff(BuffType<KoishiBuff>()) && !player.HasBuff(BuffType<KomeijiBuff>())
-                && PetState != State_Kill || player.dead)
-            {
-                Projectile.velocity *= 0;
-                Projectile.frame = Projectile.frame == 13 ? 13 : 0;
-                Projectile.Opacity -= 0.009f;
-                if (Projectile.Opacity <= 0)
-                {
-                    Projectile.active = false;
-                    return;
-                }
-            }
-            else if (PetState <= 1)
-            {
-                Projectile.Opacity += 0.009f;
-            }
-        }
-        const int State_Kill = 4;
-        public override void VisualEffectForPreview()
-        {
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            Projectile.timeLeft = 2;
-
-            UpdateTalking();
-            Vector2 point = new Vector2(-54 * player.direction, -34 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Rin>()] > 0)
-                point = new Vector2(-44 * player.direction, -80 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.01f;
-
-            ChangeDir(player, true);
-            if (!player.dead)
-                MoveToPoint(point, 13f);
-            SetKoishiActive(player);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState < 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 600 && mainTimer < 4200 && PetState == 0)
-                {
-                    if (mainTimer % 360 == 0 && Main.rand.NextBool(4) && extraAI[0] <= 0)
-                    {
-                        if (Main.rand.NextBool(2) && player.ownedProjectileCounts[ProjectileType<Satori>()] <= 0)
-                        {
-                            PetState = 2;
-                            extraAI[1] = Main.rand.Next(1800, 3600);
-                            Projectile.netUpdate = true;
-                        }
-                        else if (ChatTimeLeft <= 0)
-                        {
-                            PetState = 3;
-                            extraAI[2] = Main.rand.Next(5, 14);
-                            Projectile.netUpdate = true;
-                        }
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Projectile.frame = 0;
-                Fade();
-            }
-            else if (PetState == 3)
-            {
-                Annoying();
-            }
-            else if (PetState == State_Kill)
-            {
-                KillingPhoneCall();
-            }
-            if (killCD > 0)
-            {
-                killCD--;
+                CurrentState = States.Idle;
             }
         }
     }

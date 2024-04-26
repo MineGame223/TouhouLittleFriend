@@ -8,7 +8,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Koakuma : BasicTouhouPetNeo
+    public class Koakuma : BasicTouhouPet
     {
         private enum States
         {
@@ -91,7 +91,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[4], 4);
                 }
-                if (FindPet(ProjectileType<Patchouli>(), true, 2))
+                if (FindPet(ProjectileType<Patchouli>(), true, 2, 4))
                 {
                     chat.Add(ChatDictionary[6], 4);
                 }

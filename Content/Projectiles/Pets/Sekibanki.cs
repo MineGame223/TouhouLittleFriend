@@ -9,7 +9,7 @@ namespace TouhouPets.Content.Projectiles.Pets
     /// <summary>
     /// 假面骑士赤蛮骑
     /// </summary>
-    public class Sekibanki : BasicTouhouPetNeo
+    public class Sekibanki : BasicTouhouPet
     {
         private enum States
         {
