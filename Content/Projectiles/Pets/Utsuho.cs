@@ -9,17 +9,50 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Utsuho : BasicTouhouPet
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            BeforeFire,
+            Firing,
+            AfterFire,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int wingFrame, wingFrameCounter;
+        private Vector2 sunPos;
+
+        private DrawPetConfig drawConfig = new(1);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Utsuho_Cloth");
+        private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow");
+        private readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
+        private readonly Texture2D sunTex = AltVanillaFunction.GetExtraTexture("UtsuhoSun");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(1);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Utsuho_Cloth");
-        readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow");
-        readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
-        readonly Texture2D sunTex = AltVanillaFunction.GetExtraTexture("UtsuhoSun");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -74,6 +107,178 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Main.EntitySpriteDraw(sunTex, pos + sunPos, null, Projectile.GetAlpha(Color.White), mainTimer * 0.05f, sunTex.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
         }
+        public override Color ChatTextColor => new Color(228, 184, 75);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Utsuho";
+            indexRange = new Vector2(1, 6);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 721;
+            chance = 7;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (Owner.ZoneUnderworldHeight)
+                {
+                    chat.Add(ChatDictionary[4]);
+                }
+                if (FindPet(ProjectileType<Satori>()))
+                {
+                    chat.Add(ChatDictionary[5], 3);
+                }
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            sunPos = new Vector2(0, -40);
+            position = Projectile.Center + sunPos;
+            rgb = new Vector3(1.95f, 1.64f, 0.67f);
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(5))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Satori>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile utsuho = chatRoom.initiator;
+            Projectile satori = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //阿空：觉大人最好了！
+                satori.CloseCurrentDialog();
+
+                if (utsuho.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //觉：阿空也是我最喜欢的乌鸦哦。
+                satori.SetChat(ChatSettingConfig, 6, 20);
+
+                if (satori.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<UtsuhoBuff>());
+            Projectile.SetPetActive(Owner, BuffType<KomeijiBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            SmokeDust();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.BeforeFire:
+                    shouldNotTalking = true;
+                    BeforeFire();
+                    break;
+
+                case States.Firing:
+                    shouldNotTalking = true;
+                    Firing();
+                    break;
+
+                case States.AfterFire:
+                    shouldNotTalking = true;
+                    AfterFire();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+        }
+        private void SmokeDust()
+        {
+            if (ActionCD >= 480)
+            {
+                if (Main.rand.NextBool(4))
+                    Dust.NewDustPerfect(Projectile.Center + new Vector2(24 * Projectile.spriteDirection, 20), MyDustId.Smoke, new Vector2(0, Main.rand.Next(-4, -2) * 0.5f), 100, default, Main.rand.NextFloat(0.5f, 1.25f)).noGravity = true;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.012f;
+
+            if (CurrentState == States.Firing)
+                return;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(0, -60 + Owner.gfxOffY);
+            if (FindPet(ProjectileType<Rin>(), false))
+            {
+                point = new Vector2(50 * Owner.direction, -30 + Owner.gfxOffY);
+                if (Owner.HasBuff<KomeijiBuff>())
+                    point = new Vector2(70 * Owner.direction, 0 + Owner.gfxOffY);
+            }
+            MoveToPoint(point, 13.5f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 300 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    if (Main.rand.NextBool(7))
+                    {
+                        RandomCount = Main.rand.Next(50, 80);
+                        CurrentState = States.BeforeFire;
+                    }
+                }
+            }
+        }
         private void Blink()
         {
             if (++Projectile.frameCounter > 3)
@@ -84,41 +289,42 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 2)
             {
                 Projectile.frame = 0;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int wingFrame, wingFrameCounter;
-        Vector2 sunPos;
-        private void Fire()
+        private void BeforeFire()
         {
-            if (extraAI[1] > 0)
-            {
-                extraAI[1]--;
-            }
-            if (Projectile.frame == 3 && Projectile.frameCounter >= 12)
-            {
-                Projectile.frame = 4;
-                extraAI[1] = 60;
-            }
-            if (extraAI[1] > 0)
-            {
-                if (Main.rand.NextBool(2))
-                    Dust.NewDustPerfect(Projectile.Center + new Vector2(26 * Projectile.spriteDirection, 6), MyDustId.OrangeFire2, new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-3, 3) * 0.75f), 100, default, Main.rand.NextFloat(0.5f, 1.25f)).noGravity = true;
-            }
-
             if (Projectile.frame < 3)
             {
                 Projectile.frame = 3;
             }
-            if (extraAI[1] <= 0)
-                Projectile.frameCounter++;
 
-            if (Projectile.frameCounter > 12)
+            if (++Projectile.frameCounter > 12)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (Projectile.frame == 5 && Projectile.frameCounter == 1)
+
+            if (Projectile.frame >= 4)
+            {
+                Projectile.frame = 4;
+                if (Main.rand.NextBool(2))
+                    Dust.NewDustPerfect(Projectile.Center + new Vector2(26 * Projectile.spriteDirection, 6)
+                        , MyDustId.OrangeFire2, new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-3, 3) * 0.75f)
+                        , 100, default, Main.rand.NextFloat(0.5f, 1.25f)).noGravity = true;
+
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.Firing;
+            }
+        }
+        private void Firing()
+        {
+            Projectile.frame = 5;
+            if (Timer == 0)
             {
                 for (int i = 0; i < 7; i++)
                 {
@@ -128,23 +334,37 @@ namespace TouhouPets.Content.Projectiles.Pets
                     vel = (new Vector2(6 * Projectile.spriteDirection, -4) * 2f * Main.rand.NextFloat(0.5f, 2f)).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
                     Dust.NewDustDirect(center, 4, 4, MyDustId.OrangeFire2, vel.X, vel.Y, 100, default, Main.rand.NextFloat(1.4f, 1.9f)).noGravity = true;
                 }
-                if (Projectile.owner == Main.myPlayer)
+                if (OwnerIsMyPlayer)
                 {
                     Projectile.velocity.X = 9 * -Projectile.spriteDirection;
                     Projectile.velocity.Y = 4;
                     Projectile.netUpdate = true;
                 }
             }
-            if (Projectile.frame >= 5)
+            Timer++;
+            if (Timer > 30 && OwnerIsMyPlayer)
             {
-                Projectile.velocity *= 0.85f;
+                Timer = 0;
+                CurrentState = States.AfterFire;
+            }
+
+            Projectile.velocity *= 0.85f;
+        }
+        private void AfterFire()
+        {
+            if (++Projectile.frameCounter > 12)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
             }
             if (Projectile.frame > 6)
             {
                 Projectile.frame = 0;
-                extraAI[1] = 0;
-                extraAI[0] = 600;
-                PetState = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 600;
+                    CurrentState = States.Idle;
+                }
             }
         }
         private void UpdateWingFrame()
@@ -161,125 +381,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (wingFrame > 10)
             {
                 wingFrame = 7;
-            }
-        }
-        Color myColor = new Color(228, 184, 75);
-        public override string GetChatText(out string[] text)
-        {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Utsuho", "1");
-            text[2] = ModUtils.GetChatText("Utsuho", "2");
-            text[3] = ModUtils.GetChatText("Utsuho", "3");
-            if (player.ZoneUnderworldHeight)
-            {
-                text[4] = ModUtils.GetChatText("Utsuho", "4");
-            }
-            if (player.ownedProjectileCounts[ProjectileType<Satori>()] > 0)
-            {
-                text[5] = ModUtils.GetChatText("Utsuho", "5");
-            }
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        if (i == 4)
-                        {
-                            weight = 3;
-                        }
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type3 = ProjectileType<Rin>();
-            if (FindChatIndex(out Projectile _, type3, 5, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type3, 7, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Utsuho", "6"), myColor, 6, 600);
-                p1.localAI[2] = 0;
-            }
-            if (mainTimer % 720 == 0 && Main.rand.NextBool(7))
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-        }
-        public override void AI()
-        {
-            sunPos = new Vector2(0, -40);
-
-            Lighting.AddLight(Projectile.Center + sunPos, 1.95f, 1.64f, 0.67f);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<UtsuhoBuff>());
-            Projectile.SetPetActive(player, BuffType<KomeijiBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(0, -60 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Rin>()] > 0)
-            {
-                point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
-                if (player.HasBuff<KomeijiBuff>())
-                    point = new Vector2(70 * player.direction, 0 + player.gfxOffY);
-            }
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.012f;
-            if (Projectile.frame < 5)
-            {
-                ChangeDir(player);
-            }
-
-            if (Projectile.frame < 5)
-                MoveToPoint(point, 13.5f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
-                {
-                    if (mainTimer % 300 == 0 && Main.rand.NextBool(7) && extraAI[0] <= 0)
-                    {
-                        PetState = 2;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                Fire();
-            }
-            if (extraAI[0] >= 480)
-            {
-                if (Main.rand.NextBool(4))
-                    Dust.NewDustPerfect(Projectile.Center + new Vector2(24 * Projectile.spriteDirection, 20), MyDustId.Smoke, new Vector2(0, Main.rand.Next(-4, -2) * 0.5f), 100, default, Main.rand.NextFloat(0.5f, 1.25f)).noGravity = true;
             }
         }
     }

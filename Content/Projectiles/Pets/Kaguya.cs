@@ -11,7 +11,7 @@ using static TouhouPets.DanmakuFightHelper;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Kaguya : BasicTouhouPetNeo
+    public class Kaguya : BasicTouhouPet
     {
         private enum States
         {

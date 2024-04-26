@@ -228,14 +228,14 @@ Mods: {
 		}
 
 		Chat_Koishi: {
-			Chat-1: Moshi moshi?
-			Chat-2: It's me, Koishi...
-			Chat-3: I'M AT YOUR BACK NOW...
 			Chat1: Can I play with you?
 			Chat2: I'll put your body on to!... Wait, to where?
 			Chat3: Wanna play Doki Doki Adventure?
 			Chat4: Have you noticed me?
 			Chat5: Even my sister doesn't know what I'm thinking!
+			Chat6: Moshi moshi?
+			Chat7: It's me, Koishi...
+			Chat8: I'M AT YOUR BACK NOW...
 		}
 
 		Chat_Satori: {

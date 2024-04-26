@@ -17,7 +17,7 @@ namespace TouhouPets
         /// </summary>
         public bool AutoHandleTimeLeft = true;
         /// <summary>
-        /// 打字机模式打印文本所需总时长；默认为字符数 * 5，上限为150刻
+        /// 打字机模式打印文本所需总时长；默认为字符数 * 5、上限为150刻
         /// </summary>
         public int TyperModeUseTime = -1;
     }

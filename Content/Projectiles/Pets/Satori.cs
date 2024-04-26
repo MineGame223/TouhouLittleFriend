@@ -10,14 +10,48 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Satori : BasicTouhouPet
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            MindReading,
+            AfterMindReading,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int clothFrame, clothFrameCounter;
+        private float eyeSparkScale;
+        private Vector2 eyePos;
+
+        private DrawPetConfig drawConfig = new(2);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Satori_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        DrawPetConfig drawConfig = new(2);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Satori_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -37,7 +71,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -80,8 +114,120 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
+        public override Color ChatTextColor => new Color(255, 149, 170);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
+        {
+            name = "Satori";
+            indexRange = new Vector2(1, 7);
+        }
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
+        {
+            timePerDialog = 961;
+            chance = 8;
+            whenShouldStop = !IsIdleState;
+        }
+        public override string GetRegularDialogText()
+        {
+            WeightedRandom<string> chat = new WeightedRandom<string>();
+            {
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+            }
+            return chat;
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+        }
+        private void UpdateTalking()
+        {
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<SatoriBuff>());
+            Projectile.SetPetActive(Owner, BuffType<KomeijiBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.MindReading:
+                    shouldNotTalking = true;
+                    MindReading();
+                    break;
+
+                case States.AfterMindReading:
+                    shouldNotTalking = true;
+                    AfterMindReading();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+
+            float lightPlus = 1 + eyeSparkScale;
+            Lighting.AddLight(eyePos, 1.72f * lightPlus, 0.69f * lightPlus, 0.89f * lightPlus);
+
+            UpdateMiscData();
+        }
+        private void UpdateMiscData()
+        {
+            if (CurrentState != States.MindReading)
+            {
+                if (eyeSparkScale > 0)
+                    eyeSparkScale -= 0.02f;
+            }
+            else
+            {
+                Owner.detectCreature = true;
+            }
+            if (eyeSparkScale < 0)
+                eyeSparkScale = 0;
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.01f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(54 * Owner.direction, -34 + Owner.gfxOffY);
+            if (Owner.HasBuff<KomeijiBuff>())
+                point = new Vector2(44 * Owner.direction, -80 + Owner.gfxOffY);
+            MoveToPoint(point, 11f);
+        }
+        private void Idle()
+        {
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
+            {
+                if (mainTimer % 270 == 0)
+                {
+                    CurrentState = States.Blink;
+                }
+                if (mainTimer > 0 && mainTimer % 600 == 0 && currentChatRoom == null && ActionCD <= 0)
+                {
+                    RandomCount = Main.rand.Next(360, 480);
+                    CurrentState = States.MindReading;
+                }
+            }
+        }
         private void Blink()
         {
+            Projectile.frame = 0;
             if (blinkFrame < 4)
             {
                 blinkFrame = 4;
@@ -94,13 +240,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (blinkFrame > 6)
             {
                 blinkFrame = 4;
-                PetState = 0;
+                CurrentState = States.Idle;
             }
         }
-        int blinkFrame, blinkFrameCounter;
-        int clothFrame, clothFrameCounter;
-        float eyeSparkScale;
-        Vector2 eyePos;
         private void MindReading()
         {
             if (++Projectile.frameCounter > 8)
@@ -108,22 +250,35 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (Projectile.frame > 2 && extraAI[1] > 0)
-            {
-                Projectile.frame = 2;
-            }
             if (Projectile.frame >= 2)
             {
-                extraAI[1]--;
+                Projectile.frame = 2;
+
                 if (eyeSparkScale < 1)
                     eyeSparkScale += 0.01f;
             }
+            Timer++;
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterMindReading;
+            }
+        }
+        private void AfterMindReading()
+        {
+            if (++Projectile.frameCounter > 8)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
             if (Projectile.frame > 3)
             {
-                extraAI[0] = 1200;
-                extraAI[1] = 0;
-                PetState = 0;
                 Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 1200;
+                    CurrentState = States.Idle;
+                }
             }
         }
         private void UpdateClothFrame()
@@ -138,130 +293,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 clothFrame = 0;
             }
-        }
-        Color myColor = new Color(255, 149, 170);
-        public override string GetChatText(out string[] text)
-        {
-            text = new string[21];
-            text[1] = ModUtils.GetChatText("Satori", "1");
-            text[2] = ModUtils.GetChatText("Satori", "2");
-            text[3] = ModUtils.GetChatText("Satori", "3");
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            {
-                for (int i = 1; i < text.Length; i++)
-                {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
-                }
-            }
-            return chat;
-        }
-        private void UpdateTalking()
-        {
-            int type2 = ProjectileType<Koishi>();
-            int type3 = ProjectileType<Utsuho>();
-            int type4 = ProjectileType<Rin>();
-            if (FindChatIndex(out Projectile _, type2, 5, default, 0)
-                || FindChatIndex(out Projectile _, type3, 5, default, 0)
-                || FindChatIndex(out Projectile _, type4, 5, default, 0))
-            {
-                ChatCD = 1;
-            }
-            if (FindChatIndex(out Projectile p1, type2, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p1, ModUtils.GetChatText("Satori", "4"), myColor, 0, 600);
-                p1.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p2, type4, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p2, ModUtils.GetChatText("Satori", "5"), myColor, 0, 600);
-                p2.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p3, type3, 5, default, 1, true))
-            {
-                SetChatWithOtherOne(p3, ModUtils.GetChatText("Satori", "6"), myColor, 0, 600);
-                p3.localAI[2] = 0;
-            }
-            else if (FindChatIndex(out Projectile p4, type4, 6, default, 1, true))
-            {
-                SetChatWithOtherOne(p4, ModUtils.GetChatText("Satori", "7"), myColor, 0, 600);
-                p4.localAI[2] = 0;
-            }
-            else if (mainTimer % 960 == 0 && Main.rand.NextBool(8))
-            {
-                SetChat(myColor);
-            }
-        }
-        public override void VisualEffectForPreview()
-        {
-            UpdateClothFrame();
-        }
-        public override void AI()
-        {
-            float lightPlus = 1 + eyeSparkScale;
-            Lighting.AddLight(eyePos, 1.72f * lightPlus, 0.69f * lightPlus, 0.89f * lightPlus);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<SatoriBuff>());
-            Projectile.SetPetActive(player, BuffType<KomeijiBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(54 * player.direction, -34 + player.gfxOffY);
-            if (player.ownedProjectileCounts[ProjectileType<Rin>()] > 0 && player.ownedProjectileCounts[ProjectileType<Utsuho>()] > 0)
-                point = new Vector2(44 * player.direction, -80 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.01f;
-
-            ChangeDir(player);
-            MoveToPoint(point, 11f);
-
-            if (Projectile.owner == Main.myPlayer)
-            {
-                if (mainTimer % 270 == 0 && PetState != 2)
-                {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
-                }
-                if (PetState == 0)
-                {
-                    if (mainTimer >= 600 && mainTimer % 120 == 0 && extraAI[0] <= 0)
-                    {
-                        PetState = 2;
-                        extraAI[1] = Main.rand.Next(360, 480);
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            if (PetState == 0)
-            {
-                Projectile.frame = 0;
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
-            }
-            else if (PetState == 1)
-            {
-                Projectile.frame = 0;
-                Blink();
-            }
-            else if (PetState == 2)
-            {
-                MindReading();
-                if (eyeSparkScale >= 1)
-                {
-                    player.detectCreature = true;
-                }
-            }
-            if (PetState != 2)
-            {
-                if (eyeSparkScale > 0)
-                    eyeSparkScale -= 0.02f;
-            }
-            if (eyeSparkScale < 0)
-                eyeSparkScale = 0;
         }
     }
 }

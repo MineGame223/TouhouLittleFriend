@@ -8,7 +8,7 @@ using static TouhouPets.Content.Projectiles.Pets.Remilia;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Flandre : BasicTouhouPetNeo
+    public class Flandre : BasicTouhouPet
     {
         private enum States
         {

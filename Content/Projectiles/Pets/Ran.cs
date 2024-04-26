@@ -7,7 +7,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Ran : BasicTouhouPetNeo
+    public class Ran : BasicTouhouPet
     {
         private enum States
         {

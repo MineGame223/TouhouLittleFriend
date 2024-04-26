@@ -10,7 +10,7 @@ namespace TouhouPets.Content.Projectiles.Pets
     /// <summary>
     /// 示范好孩子琪露诺
     /// </summary>
-    public class Cirno : BasicTouhouPetNeo
+    public class Cirno : BasicTouhouPet
     {
         private enum States
         {

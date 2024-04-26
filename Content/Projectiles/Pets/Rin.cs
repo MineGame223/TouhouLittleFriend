@@ -10,14 +10,46 @@ namespace TouhouPets.Content.Projectiles.Pets
 {
     public class Rin : BasicTouhouPet
     {
+        private enum States
+        {
+            Idle,
+            Blink,
+            Playing,
+            AfterPlaying,
+        }
+        private States CurrentState
+        {
+            get => (States)PetState;
+            set => PetState = (int)value;
+        }
+        private int ActionCD
+        {
+            get => (int)Projectile.localAI[0];
+            set => Projectile.localAI[0] = value;
+        }
+        private int Timer
+        {
+            get => (int)Projectile.localAI[1];
+            set => Projectile.localAI[1] = value;
+        }
+        private int RandomCount
+        {
+            get => (int)Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
+        }
+        private bool IsIdleState => CurrentState <= States.Blink;
+
+        private int blinkFrame, blinkFrameCounter;
+        private int swingFrame, swingFrameCounter;
+
+        private DrawPetConfig drawConfig = new(3);
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rin_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        DrawPetConfig drawConfig = new(3);
-        readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rin_Cloth");
         public override bool PreDraw(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -30,7 +62,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(swingFrame + 4, lightColor, drawConfig, 1);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (PetState == 1)
+            if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(swingFrame, lightColor, drawConfig, 1);
@@ -43,120 +75,204 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, Color.White * 0.8f, drawConfig, 2);
             return false;
         }
-        private void Blink()
+        public override Color ChatTextColor => new Color(227, 59, 59);
+        public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            if (blinkFrame < 10)
-            {
-                blinkFrame = 10;
-            }
-            if (++blinkFrameCounter > 3)
-            {
-                blinkFrameCounter = 0;
-                blinkFrame++;
-            }
-            if (blinkFrame > 12)
-            {
-                blinkFrame = 10;
-                PetState = 0;
-            }
+            name = "Rin";
+            indexRange = new Vector2(1, 7);
         }
-        int blinkFrame, blinkFrameCounter;
-        int swingFrame, swingFrameCounter;
-        private void Playing()
+        public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            if (Projectile.frame < 1)
-            {
-                Projectile.frame = 1;
-            }
-            if (++Projectile.frameCounter > 4)
-            {
-                Projectile.frameCounter = 0;
-                Projectile.frame++;
-            }
-            if (extraAI[0] == 0)
-            {
-                if (Projectile.frame > 7)
-                {
-                    Projectile.frame = 3;
-                    extraAI[1]++;
-                }
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    if (extraAI[1] > extraAI[2])
-                    {
-                        extraAI[2] = 0;
-                        extraAI[1] = 0;
-                        extraAI[0] = 1;
-                        Projectile.netUpdate = true;
-                    }
-                }
-            }
-            else
-            {
-                if (Projectile.frame > 9)
-                {
-                    Projectile.frame = 0;
-                    extraAI[0] = 3600;
-                    PetState = 0;
-                }
-            }
+            timePerDialog = 641;
+            chance = 6;
+            whenShouldStop = !IsIdleState;
         }
-        private void UpdateMiscFrame()
+        public override string GetRegularDialogText()
         {
-            if (++swingFrameCounter > 6)
-            {
-                swingFrameCounter = 0;
-                swingFrame++;
-            }
-            if (swingFrame > 3)
-            {
-                swingFrame = 0;
-            }
-        }
-        Color myColor = new Color(227, 59, 59);
-        public override string GetChatText(out string[] text)
-        {
-            Player player = Main.player[Projectile.owner];
-            text = new string[11];
-            text[1] = ModUtils.GetChatText("Rin", "1");
-            text[2] = ModUtils.GetChatText("Rin", "2");
-            text[3] = ModUtils.GetChatText("Rin", "3");
-            if (player.ZoneUnderworldHeight)
-            {
-                text[4] = ModUtils.GetChatText("Rin", "4");
-            }
-            if (player.ownedProjectileCounts[ProjectileType<Satori>()] > 0)
-            {
-                text[5] = ModUtils.GetChatText("Rin", "5");
-                text[6] = ModUtils.GetChatText("Rin", "6");
-            }
-            if (player.ownedProjectileCounts[ProjectileType<Utsuho>()] > 0)
-            {
-                text[7] = ModUtils.GetChatText("Rin", "7");
-            }
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
-                for (int i = 1; i < text.Length; i++)
+                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[3]);
+                if (Owner.ZoneUnderworldHeight)
                 {
-                    if (text[i] != null)
-                    {
-                        int weight = 1;
-                        chat.Add(text[i], weight);
-                    }
+                    chat.Add(ChatDictionary[4]);
+                }
+                if (FindPet(ProjectileType<Satori>()))
+                {
+                    chat.Add(ChatDictionary[5], 3);
+                    chat.Add(ChatDictionary[6], 3);
+                }
+                if (FindPet(ProjectileType<Utsuho>()))
+                {
+                    chat.Add(ChatDictionary[7], 2);
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-            if (mainTimer % 640 == 0 && Main.rand.NextBool(6) && PetState != 2)
-            {
-                SetChat(myColor);
-            }
-        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
+        }
+        private void UpdateTalking()
+        {
+            if (FindChatIndex(5, 6))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+            if (FindChatIndex(7))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Satori>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile rin = chatRoom.initiator;
+            Projectile satori = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index == 5)
+            {
+                if (turn == -1)
+                {
+                    //阿燐：觉大人最好了！
+                    satori.CloseCurrentDialog();
+
+                    if (rin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //觉：阿燐也是我最喜欢的猫咪哦。
+                    satori.SetChat(ChatSettingConfig, 5, 20);
+
+                    if (satori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index == 6)
+            {
+                if (turn == -1)
+                {
+                    //阿燐：今天觉大人有好好吃饭吗？
+                    satori.CloseCurrentDialog();
+
+                    if (rin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //觉：别担心啦。
+                    satori.SetChat(ChatSettingConfig, 7, 20);
+
+                    if (satori.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Utsuho>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile rin = chatRoom.initiator;
+            Projectile utsuho = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //阿燐：阿空，今天也要好好干活啊！
+                utsuho.CloseCurrentDialog();
+
+                if (rin.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //阿空：放心交给我吧！
+                utsuho.SetChat(ChatSettingConfig, 6, 20);
+
+                if (utsuho.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<RinBuff>());
+            Projectile.SetPetActive(Owner, BuffType<KomeijiBuff>());
+
+            UpdateTalking();
+
+            ControlMovement();
+
+            GenDust(Owner);
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.Playing:
+                    shouldNotTalking = true;
+                    Playing();
+                    break;
+
+                case States.AfterPlaying:
+                    shouldNotTalking = true;
+                    AfterPlaying();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+        }
+        private void ControlMovement()
+        {
+            Projectile.tileCollide = false;
+            Projectile.rotation = Projectile.velocity.X * 0.012f;
+
+            ChangeDir();
+
+            Vector2 point = new Vector2(-50 * Owner.direction, -30 + Owner.gfxOffY);
+            if (Owner.HasBuff<KomeijiBuff>())
+                point = new Vector2(-70 * Owner.direction, 0 + Owner.gfxOffY);
+            MoveToPoint(point, 12.5f);
         }
         private void GenDust(Player player)
         {
@@ -174,56 +290,88 @@ namespace TouhouPets.Content.Projectiles.Pets
             d.noGravity = true;
             d.shader = GameShaders.Armor.GetSecondaryShader(player.cPet, player);
         }
-        public override void AI()
+        private void Idle()
         {
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<RinBuff>());
-            Projectile.SetPetActive(player, BuffType<KomeijiBuff>());
-
-            UpdateTalking();
-            Vector2 point = new Vector2(-50 * player.direction, -30 + player.gfxOffY);
-            if (player.HasBuff<KomeijiBuff>())
-                point = new Vector2(-70 * player.direction, 0 + player.gfxOffY);
-            Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.012f;
-
-            ChangeDir(player, true);
-            MoveToPoint(point, 12.5f);
-
-            GenDust(player);
-
-            if (Projectile.owner == Main.myPlayer)
+            Projectile.frame = 0;
+            if (OwnerIsMyPlayer)
             {
-                if (mainTimer % 270 == 0 && PetState != 2)
+                if (mainTimer % 270 == 0)
                 {
-                    PetState = 1;
-                    Projectile.netUpdate = true;
+                    CurrentState = States.Blink;
                 }
-                if (mainTimer >= 1200 && mainTimer < 3600 && PetState != 1)
+                if (mainTimer > 0 && mainTimer % 240 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (mainTimer % 120 == 0 && Main.rand.NextBool(6) && extraAI[0] <= 0)
+                    if (Main.rand.NextBool(6))
                     {
-                        extraAI[2] = Main.rand.Next(20, 45);
-                        PetState = 2;
-                        Projectile.netUpdate = true;
+                        RandomCount = Main.rand.Next(20, 35);
+                        CurrentState = States.Playing;
                     }
                 }
             }
-            if (PetState == 0)
+        }
+        private void Blink()
+        {
+            Projectile.frame = 0;
+            if (blinkFrame < 10)
             {
-                if (extraAI[0] >= 1)
-                {
-                    extraAI[0]--;
-                }
+                blinkFrame = 10;
+            }
+            if (++blinkFrameCounter > 3)
+            {
+                blinkFrameCounter = 0;
+                blinkFrame++;
+            }
+            if (blinkFrame > 12)
+            {
+                blinkFrame = 10;
+                CurrentState = States.Idle;
+            }
+        }
+        private void Playing()
+        {
+            if (++Projectile.frameCounter > 4)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 7)
+            {
+                Projectile.frame = 3;
+                Timer++;
+            }
+            if (OwnerIsMyPlayer && Timer > RandomCount)
+            {
+                Timer = 0;
+                CurrentState = States.AfterPlaying;
+            }
+        }
+        private void AfterPlaying()
+        {
+            if (++Projectile.frameCounter > 4)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 9)
+            {
                 Projectile.frame = 0;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 3600;
+                    CurrentState = States.Idle;
+                }
             }
-            else if (PetState == 1)
+        }
+        private void UpdateMiscFrame()
+        {
+            if (++swingFrameCounter > 6)
             {
-                Blink();
+                swingFrameCounter = 0;
+                swingFrame++;
             }
-            else if (PetState == 2)
+            if (swingFrame > 3)
             {
-                Playing();
+                swingFrame = 0;
             }
         }
     }

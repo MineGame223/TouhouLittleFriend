@@ -6,7 +6,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Kogasa : BasicTouhouPetNeo
+    public class Kogasa : BasicTouhouPet
     {
         private enum States
         {
