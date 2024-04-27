@@ -254,7 +254,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (++Timer > 45)
                 {
                     Timer = 0;
-                    if (Projectile.owner == Main.myPlayer)
+                    if (OwnerIsMyPlayer)
                     {
                         if (Main.rand.NextBool(2, 3) && Solution.consumable && Solution.ammo > AmmoID.None)
                             Solution.stack--;

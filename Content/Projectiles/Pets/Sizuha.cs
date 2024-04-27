@@ -95,14 +95,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void VisualEffectForPreview()
-        {
-            UpdateClothFrame();
-            if (IsIdleState)
-            {
-                IdleAnimation();
-            }
-        }
         private void UpdateTalking()
         {
             if (FindChatIndex(6, 8))
@@ -171,6 +163,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatRoom.CloseChatRoom();
             }
         }
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(1.61f, 0.98f, 0.58f);
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<SizuhaBuff>());
@@ -201,7 +205,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-            Lighting.AddLight(Projectile.Center, 1.61f, 0.98f, 0.58f);
         }
         private void SpawnFallingLeaves()
         {

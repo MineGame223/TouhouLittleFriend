@@ -122,6 +122,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(1.52f, 1.50f, 1.15f);
+        }
         private void UpdateTalking()
         {
         }
@@ -175,7 +179,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-            Lighting.AddLight(Projectile.Center, 1.52f, 1.50f, 1.15f);
         }
         private void GenDust()
         {

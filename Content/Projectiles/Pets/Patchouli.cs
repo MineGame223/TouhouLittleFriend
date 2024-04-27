@@ -150,11 +150,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void VisualEffectForPreview()
-        {
-            UpdateClothFrame();
-            UpdateAuraFrame();
-        }
         private void UpdateTalking()
         {
             if (FindChatIndex(8, 11))
@@ -316,6 +311,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatRoom.CloseChatRoom();
             }
         }
+        public override void VisualEffectForPreview()
+        {
+            UpdateClothFrame();
+            UpdateAuraFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(2.52f, 1.97f, 2.38f);
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<PatchouliBuff>());
@@ -364,8 +368,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            Lighting.AddLight(Projectile.Center, 2.52f, 1.97f, 2.38f);
         }
         private void ControlMovement(Player player)
         {

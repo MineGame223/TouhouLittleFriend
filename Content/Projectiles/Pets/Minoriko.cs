@@ -91,6 +91,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 IdleAnimation();
             }
         }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(0.54f, 0.34f, 0.34f);
+            inactive = !IsIdleState;
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MinorikoBuff>());
@@ -116,10 +121,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 default:
                     Idle();
                     break;
-            }
-            if (!IsIdleState)
-            {
-                Lighting.AddLight(Projectile.Center, 0.54f, 0.34f, 0.34f);
             }
         }
         private void ControlMovement()

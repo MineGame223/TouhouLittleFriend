@@ -137,16 +137,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-        }
-        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
-        {
-            sunPos = new Vector2(0, -40);
-            position = Projectile.Center + sunPos;
-            rgb = new Vector3(1.95f, 1.64f, 0.67f);
-        }
         private void UpdateTalking()
         {
             if (FindChatIndex(5))
@@ -190,6 +180,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chatRoom.CloseChatRoom();
             }
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            sunPos = new Vector2(0, -40);
+            position += sunPos;
+            rgb = new Vector3(1.95f, 1.64f, 0.67f);
         }
         public override void AI()
         {

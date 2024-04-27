@@ -32,36 +32,6 @@ namespace TouhouPets
         }
         public static int SprayState { get => sprayState; set => sprayState = value; }
         public static Item Solution { get => solution; set => solution = value; }
-        public static int SolutionSprayType(int type)
-        {
-            return type switch
-            {
-                ItemID.GreenSolution => ProjectileID.PureSpray,
-                ItemID.BlueSolution => ProjectileID.HallowSpray,
-                ItemID.DarkBlueSolution => ProjectileID.MushroomSpray,
-                ItemID.DirtSolution => ProjectileID.DirtSpray,
-                ItemID.PurpleSolution => ProjectileID.CorruptSpray,
-                ItemID.RedSolution => ProjectileID.CrimsonSpray,
-                ItemID.SandSolution => ProjectileID.SandSpray,
-                ItemID.SnowSolution => ProjectileID.SnowSpray,
-                _ => SolutionSpraySystem.Sprayer.shoot,
-            };
-        }
-        public static int SolutionSprayDust(int type)
-        {
-            return type switch
-            {
-                ProjectileID.PureSpray => MyDustId.GreenBubble,
-                ProjectileID.HallowSpray => MyDustId.CyanBubble,
-                ProjectileID.MushroomSpray => MyDustId.BlueIce,
-                ProjectileID.DirtSpray => MyDustId.BrownBubble,
-                ProjectileID.CorruptSpray => MyDustId.PinkBubble,
-                ProjectileID.CrimsonSpray => MyDustId.PinkYellowBubble,
-                ProjectileID.SandSpray => MyDustId.YellowBubble,
-                ProjectileID.SnowSpray => MyDustId.WhiteBubble,
-                _ => MyDustId.RedBubble,
-            };
-        }
         public override void PostUpdateProjectiles()
         {
             if (Main.netMode == NetmodeID.Server)
@@ -95,6 +65,36 @@ namespace TouhouPets
                     InterfaceScaleType.Game)
                 );
             }
+        }
+        public static int SolutionSprayType(int type)
+        {
+            return type switch
+            {
+                ItemID.GreenSolution => ProjectileID.PureSpray,
+                ItemID.BlueSolution => ProjectileID.HallowSpray,
+                ItemID.DarkBlueSolution => ProjectileID.MushroomSpray,
+                ItemID.DirtSolution => ProjectileID.DirtSpray,
+                ItemID.PurpleSolution => ProjectileID.CorruptSpray,
+                ItemID.RedSolution => ProjectileID.CrimsonSpray,
+                ItemID.SandSolution => ProjectileID.SandSpray,
+                ItemID.SnowSolution => ProjectileID.SnowSpray,
+                _ => SolutionSpraySystem.Sprayer.shoot,
+            };
+        }
+        public static int SolutionSprayDust(int type)
+        {
+            return type switch
+            {
+                ProjectileID.PureSpray => MyDustId.GreenBubble,
+                ProjectileID.HallowSpray => MyDustId.CyanBubble,
+                ProjectileID.MushroomSpray => MyDustId.BlueIce,
+                ProjectileID.DirtSpray => MyDustId.BrownBubble,
+                ProjectileID.CorruptSpray => MyDustId.PinkBubble,
+                ProjectileID.CrimsonSpray => MyDustId.PinkYellowBubble,
+                ProjectileID.SandSpray => MyDustId.YellowBubble,
+                ProjectileID.SnowSpray => MyDustId.WhiteBubble,
+                _ => MyDustId.RedBubble,
+            };
         }
         private static void SetSpray()
         {

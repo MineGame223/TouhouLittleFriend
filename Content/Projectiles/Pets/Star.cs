@@ -89,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Star";
-            indexRange = new Vector2(1, 7);
+            indexRange = new Vector2(1, 8);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -104,6 +104,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[8]);
                 if (Main.dayTime)
                     chat.Add(ChatDictionary[4]);
                 else if (CanSeeStar)
@@ -111,12 +112,53 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
+        private void UpdateTalking()
+        {
+        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
         }
-        private void UpdateTalking()
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
+            rgb = new Vector3(1.35f, 1.43f, 2.37f);
+        }
+        public override void AI()
+        {
+            Projectile.SetPetActive(Owner, BuffType<StarBuff>());
+            Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
+
+            UpdateTalking();
+
+            ControlMovement(Owner);
+
+            GenDust();
+
+            switch (CurrentState)
+            {
+                case States.Blink:
+                    Blink();
+                    break;
+
+                case States.StarMagic:
+                    shouldNotTalking = true;
+                    StarMagic();
+                    break;
+
+                case States.AfterStarMagic:
+                    shouldNotTalking = true;
+                    AfterStarMagic();
+                    break;
+
+                default:
+                    Idle();
+                    break;
+            }
+            if (IsIdleState && ActionCD > 0)
+            {
+                ActionCD--;
+            }
+            UpdateExtraPos();
         }
         private void UpdateExtraPos()
         {
@@ -175,45 +217,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point += new Vector2(0, -40).RotatedBy(MathHelper.ToRadians(360 / 3 * 1) + Main.GlobalTimeWrappedHourly);
             }
             MoveToPoint(point, 7.5f);
-        }
-        public override void AI()
-        {
-            Projectile.SetPetActive(Owner, BuffType<StarBuff>());
-            Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
-
-            UpdateTalking();
-
-            ControlMovement(Owner);
-
-            GenDust();
-
-            switch (CurrentState)
-            {
-                case States.Blink:
-                    Blink();
-                    break;
-
-                case States.StarMagic:
-                    shouldNotTalking = true;
-                    StarMagic();
-                    break;
-
-                case States.AfterStarMagic:
-                    shouldNotTalking = true;
-                    AfterStarMagic();
-                    break;
-
-                default:
-                    Idle();
-                    break;
-            }
-            if (IsIdleState && ActionCD > 0)
-            {
-                ActionCD--;
-            }
-
-            UpdateExtraPos();
-            Lighting.AddLight(Projectile.Center, 1.35f, 1.43f, 2.37f);
         }
         private void Idle()
         {

@@ -96,6 +96,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
+        private void UpdateTalking()
+        {
+        }
         public override void VisualEffectForPreview()
         {
             if (IsIdleState)
@@ -104,8 +107,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 UpdateBackFrame();
             }
         }
-        private void UpdateTalking()
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
+            position += new Vector2(0, -20);
+            rgb = new Vector3(1.95f, 1.64f, 0.67f);
+            inactive = backFrame == 8;
         }
         public override void AI()
         {
@@ -154,10 +160,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;
-            }
-            if (backFrame != 8)
-            {
-                Lighting.AddLight(Projectile.Center + new Vector2(0, 20), 1.95f, 1.64f, 0.67f);
             }
         }
         private void ControlMovement()

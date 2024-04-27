@@ -20,7 +20,7 @@ namespace TouhouPets.Content.NPCs
             NPCID.Sets.SpawnsWithCustomName[Type] = false;
 
             NPCID.Sets.TownNPCBestiaryPriority.Add(Type);
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0);
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new();
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
         }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

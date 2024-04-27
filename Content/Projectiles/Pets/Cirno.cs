@@ -123,10 +123,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-        }
         /// <summary>
         /// 执行对话过程
         /// <br>对话系统原理如下：</br>
@@ -219,6 +215,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(0.57f, 1.61f, 1.84f);
+            inactive = IsHotState;
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<CirnoBuff>());
@@ -267,8 +272,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            Lighting.AddLight(Projectile.Center, 0.57f, 1.61f, 1.84f);
         }
         private void ControlMovement()
         {
