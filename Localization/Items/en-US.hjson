@@ -260,7 +260,7 @@ Mods: {
 			}
 
 			MurasaBailer: {
-				DisplayName: Bottomless Bailer
+				DisplayName: Bottomless Ladle
 				Tooltip: "'It can never be filled...'"
 			}
 		}
