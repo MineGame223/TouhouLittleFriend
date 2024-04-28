@@ -51,11 +51,11 @@ namespace TouhouPets.Content.Buffs
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Yuka>());
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Yukari>());
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Yuyuko>());
-
-            //player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Satori>());
-            //player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Koishi>());
-            //player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Rin>());
-            //player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Utsuho>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Murasa>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Satori>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Koishi>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Rin>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Utsuho>());
         }
     }
 }

@@ -3,3 +3,12 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
+新增：
+加入了数条游戏小提示
+加入了一根漏水的瓢
+
+修改：
+现在衣玖的召唤物亦可通过灾厄模组的桨鱼（皇带鱼）掉落获得
+
+修复：
+修复了恋恋在条件允许的情况下无法隐身的问题

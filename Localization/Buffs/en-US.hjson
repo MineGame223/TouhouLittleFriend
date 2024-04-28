@@ -37,7 +37,7 @@ Mods: {
 			}
 
 			ReimuBuff: {
-				DisplayName: Hakurei's Shrine Maiden
+				DisplayName: Maiden of the Paradise
 				Description: "'...'"
 			}
 
@@ -133,7 +133,7 @@ Mods: {
 
 			AyaBuff: {
 				DisplayName: Crow Tengu
-				Description: "'LORD OF SPEED!'"
+				Description: "'Try to catch my speed!'"
 			}
 
 			YoumuBuff: {
@@ -240,6 +240,11 @@ Mods: {
 			AllPetsBuff: {
 				DisplayName: The Gensokyors
 				Description: "'Gods preferred meeting'"
+			}
+
+			MurasaBuff: {
+				DisplayName: Ghost of ship
+				Description: "'If you want your ship safe, then give her some spinach...?'"
 			}
 		}
 	}

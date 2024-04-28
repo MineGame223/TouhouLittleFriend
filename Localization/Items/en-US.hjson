@@ -258,6 +258,11 @@ Mods: {
 				DisplayName: Customer Service Telephone
 				Tooltip: "'After calling it, you'll get a special service'"
 			}
+
+			MurasaBailer: {
+				DisplayName: Bottomless Bailer
+				Tooltip: "'It can never be filled...'"
+			}
 		}
 	}
 }

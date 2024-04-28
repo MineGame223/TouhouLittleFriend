@@ -241,6 +241,11 @@ Mods: {
 				// DisplayName: The Gensokyors
 				// Description: "'Gods preferred meeting'"
 			}
+
+			MurasaBuff: {
+				// DisplayName: Ghost of ship
+				// Description: "'If you want your ship safe, then give her some spinach...?'"
+			}
 		}
 	}
 }

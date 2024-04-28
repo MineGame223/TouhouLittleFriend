@@ -210,6 +210,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<HecatiaPlanet>());
             shop.Add(ItemType<ReisenGun>());
             shop.Add(ItemType<MinorikoSweetPotato>());
+            shop.Add(ItemType<MurasaBailer>());
             shop.Register();
 
             shop = new(Type, "Shop2");

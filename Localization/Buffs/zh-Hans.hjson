@@ -8,82 +8,82 @@ Mods: {
 
 			UtsuhoBuff: {
 				DisplayName: 地狱鸦
-				Description: "'我就是地狱的太阳！'"
+				Description: “我就是地狱的太阳！”
 			}
 
 			HinaBuff: {
 				DisplayName: 厄运神
-				Description: "'转啊转...'"
+				Description: 转啊转...
 			}
 
 			DaiyouseiBuff: {
 				DisplayName: 大妖精
-				Description: "'是谁大妖精？'"
+				Description: 是谁大妖精？
 			}
 
 			PatchouliBuff: {
 				DisplayName: 魔法使
-				Description: "'不动的小图书馆...?'"
+				Description: 不动的小图书馆...?
 			}
 
 			SekibankiBuff: {
 				DisplayName: 辘轱首
-				Description: "'请不要玩我的头'"
+				Description: “请不要玩我的头。”
 			}
 
 			MarisaBuff: {
 				DisplayName: 人类魔法使
-				Description: "'不能再小偷小摸了'"
+				Description: 不能再小偷小摸了
 			}
 
 			ReimuBuff: {
-				DisplayName: 博丽的巫女
-				Description: "'...'"
+				DisplayName: 乐园的巫女
+				Description: “...”
 			}
 
 			RemiliaBuff: {
 				DisplayName: 吸血鬼姐姐
-				Description: "'献上你的鲜血吧，人类！'"
+				Description: “献上你的鲜血吧，人类！”
 			}
 
 			FlandreBuff: {
 				DisplayName: 吸血鬼妹妹
-				Description: "'请和我一起玩！'"
+				Description: “请和我一起玩！”
 			}
 
 			ScarletBuff: {
 				DisplayName: 红魔之家
-				Description: "'想要与我们共进下午茶吗？'"
+				Description: “想要与我们共进下午茶吗？”
 			}
 
 			JunkoBuff: {
 				DisplayName: 纯粹之神
-				Description: "'心之所在'"
+				Description: 心之所在
 			}
 
 			HecatiaBuff: {
 				DisplayName: 地狱女神
-				Description: "'Welcome ♥ Hell'"
+				Description: Welcome ♥ Hell
 			}
 
 			IkuBuff: {
 				DisplayName: 龙宫使者
-				Description: "'龙鱼电钻！！！'"
+				Description: 龙鱼电钻！！！
 			}
 
 			TenshiBuff: {
 				DisplayName: 天人
-				Description: "'来自天界的坏女孩'"
+				Description: 来自天界的坏女孩
 			}
 
 			SatoriBuff: {
 				DisplayName: 觉妖怪
-				Description: "'我对你的内心一清二楚...'"
+				Description: “我对你的内心一清二楚...”
 			}
 
 			KoishiBuff: {
 				DisplayName: 无意识少女
-				Description: "'她在哪儿？'"
+				Description: 她在哪儿？
 			}
 
 			KomeijiBuff: {
@@ -93,153 +93,158 @@ Mods: {
 
 			SanaeBuff: {
 				DisplayName: 风祝
-				Description: "'见证奇迹吧！'"
+				Description: “见证奇迹吧！”
 			}
 
 			KogasaBuff: {
-				DisplayName: 伞妖怪
-				Description: "'吓你一跳！'"
+				DisplayName: 伞的附丧神
+				Description: “吓你一跳！”
 			}
 
 			NitoriBuff: {
 				DisplayName: 河童工程师
-				Description: "'河童科技天下第一！'"
+				Description: “河童科技天下第一！”
 			}
 
 			RinBuff: {
 				DisplayName: 火车
-				Description: "'尸体什么的就交给咱处理吧！'"
+				Description: “尸体什么的就交给咱处理吧！”
 			}
 
 			LilyBuff: {
 				DisplayName: 春之妖精
-				Description: "'春天来啦！'"
+				Description: “春天来啦！”
 			}
 
 			MystiaBuff: {
 				DisplayName: 夜雀
-				Description: "'迷失在夜雀的歌声中吧！'"
+				Description: “迷失在夜雀的歌声中吧！”
 			}
 
 			WriggleBuff: {
 				DisplayName: 萤火虫妖怪
-				Description: "'一闪一闪亮晶晶'"
+				Description: 一闪一闪亮晶晶
 			}
 
 			YuyukoBuff: {
 				DisplayName: 樱之亡灵
-				Description: "'幽雅地绽放吧，墨染的樱花'"
+				Description: “幽雅地绽放吧，墨染的樱花。”
 			}
 
 			AyaBuff: {
 				DisplayName: 风神少女
-				Description: "'LORD OF SPEED!'"
+				Description: “试着追上我的速度吧！”
 			}
 
 			YoumuBuff: {
 				DisplayName: 小小庭师
-				Description: "'何人来犯？！'"
+				Description: “何人来犯？！”
 			}
 
 			AliceBuff: {
 				DisplayName: 人偶师
-				Description: "'玩弄人偶的少女'"
+				Description: 玩弄人偶的少女
 			}
 
 			RumiaBuff: {
 				DisplayName: 宵暗妖怪
-				Description: "'是~这样吗？'"
+				Description: “是~这样吗？”
 			}
 
 			KoakumaBuff: {
 				DisplayName: 小恶魔
-				Description: "'小恶魔{0}号，为您服务！'"
+				Description: “小恶魔{0}号，为您服务！”
 			}
 
 			WakasagihimeBuff: {
 				DisplayName: 人鱼姬
-				Description: "'咕噜咕噜 .oO'"
+				Description: 咕噜咕噜 .oO
 			}
 
 			YukaBuff: {
 				DisplayName: 花之主
-				Description: "'请不要摘下那朵花'"
+				Description: “请不要摘下那朵花”
 			}
 
 			YukariBuff: {
 				DisplayName: 隙间贤者
-				Description: "'感谢你对幻想乡的支持！'"
+				Description: “感谢你对幻想乡的支持！”
 			}
 
 			KaguyaBuff: {
 				DisplayName: 月之公主
-				Description: 很抱歉但我实在是懒得设计了orz
+				Description: 永远于须臾的罪人
 			}
 
 			MokuBuff: {
 				DisplayName: 不死凤凰
-				Description: "'永远的燃烧！'"
+				Description: 永远的燃烧！
 			}
 
 			MeirinBuff: {
 				DisplayName: 小小门卫
-				Description: "'我就守在这里！'"
+				Description: “我就守在这里！”
 			}
 
 			SakuyaBuff: {
 				DisplayName: 小小女仆
-				Description: "'请问您需要什么？'"
+				Description: “请问您需要什么？”
 			}
 
 			RaikoBuff: {
 				DisplayName: 鼓的附丧神
-				Description: "'一起演奏吧！'"
+				Description: “一起演奏吧！”
 			}
 
 			KeineBuff: {
 				DisplayName: 半白泽
-				Description: "'历史的创造者'"
-				Description_2: "'历史的吞噬者'"
+				Description: 历史的创造者
+				Description_2: 历史的吞噬者
 			}
 
 			LunaBuff: {
 				DisplayName: 月之幼女
-				Description: "'静谧的月之光'"
+				Description: 静谧的月之光
 			}
 
 			StarBuff: {
 				DisplayName: 星之蓝玉
-				Description: "'倾泻而下的星之光'"
+				Description: 倾泻的星之光
 			}
 
 			SunnyBuff: {
 				DisplayName: 日之鲜奶
-				Description: "'闪耀的日之光'"
+				Description: 闪耀的日之光
 			}
 
 			TheThreeFairiesBuff: {
 				DisplayName: 光之三妖精
-				Description: "'赌上性命去恶作剧吧！...不对，妖精不会死'"
+				Description: “赌上性命去恶作剧吧！...不对，妖精不会死”
 			}
 
 			ReisenBuff: {
 				DisplayName: 月兔
-				Description: "'她比较容易紧张...'"
+				Description: 她比较容易紧张...
 			}
 
 			SizuhaBuff: {
 				DisplayName: 红叶之神
-				Description: "'落叶预示着秋天的到来'"
+				Description: 落叶预示着秋天的到来
 			}
 
 			MinorikoBuff: {
 				DisplayName: 丰收之神
-				Description: "'秋天象征着丰收的喜悦'"
+				Description: 秋天象征着丰收的喜悦
 			}
 
 			AllPetsBuff: {
 				DisplayName: 幻想乡联盟
-				Description: "'诸神眷恋的开会现场'"
+				Description: 诸神眷恋的开会现场
+			}
+
+			MurasaBuff: {
+				DisplayName: 船幽灵
+				Description: 给她点菠菜，说不定就不会翻船...？
 			}
 		}
 	}

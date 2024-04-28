@@ -19,14 +19,30 @@ namespace TouhouPets
             if (isHJTimeGod)
                 npcLoot.Add(ItemDropRule.Common(ItemType<SakuyaWatch>()));
         }
+        private void AddCalamityLoot(NPC npc, NPCLoot npcLoot)
+        {
+            bool hasCalMod = ModLoader.TryGetMod("CalamityMod", out Mod result);
+            if (!hasCalMod)
+                return;
+
+            bool isCalOarfish = result.TryFind("OarfishHead", out ModNPC fish) && npc.type == fish.Type;
+
+            if (isCalOarfish)
+                npcLoot.Add(ItemDropRule.Common(ItemType<IkuOarfish>(), 20));
+        }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
                 return;
 
             AddHomewardJourneyLoot(npc, npcLoot);
+            AddCalamityLoot(npc, npcLoot);
 
             int enemiesDropRate = 20;
+            if (npc.type == NPCID.PirateCaptain)
+            {
+                npcLoot.Add(ItemType<MurasaBailer>(), enemiesDropRate - 10);
+            }
             if (npc.type == NPCID.AngryNimbus)
             {
                 npcLoot.Add(ItemType<RaikoDrum>(), enemiesDropRate);
@@ -49,7 +65,7 @@ namespace TouhouPets
             }
             if (npc.type == NPCID.WindyBalloon || npc.type == NPCID.Dandelion)
             {
-                npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate);
+                npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate - 5);
             }
 
             int commonDropRate = 3;

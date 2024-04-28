@@ -3,260 +3,455 @@ Mods: {
 		Items: {
 			CirnoIceShard: {
 				DisplayName: 充满智慧的冰晶
-				Tooltip: "'看起来充满了智慧！'"
+				Tooltip:
+					'''
+					召唤最强的冰之妖精
+					“看起来充满了智慧！”
+					'''
 			}
 
 			UtsuhoEye: {
 				DisplayName: 赤红之瞳
-				Tooltip: "'烫手'"
+				Tooltip:
+					'''
+					召唤地狱鸦
+					“烫手。”
+					'''
 			}
 
 			HinaDoll: {
 				DisplayName: 雏人偶
-				Tooltip: "'他们说这会带走厄运...还是恰好相反呢？'"
+				Tooltip:
+					'''
+					召唤厄运神
+					“他们说这会带走厄运...还是恰好相反呢？”
+					'''
 			}
 
 			DaiyouseiBomb: {
 				DisplayName: BOMB
-				Tooltip: "'一个BOMB'"
+				Tooltip:
+					'''
+					召唤大妖精
+					“一个BOMB。”
+					'''
 			}
 
 			PatchouliMoon: {
 				DisplayName: 金月魔典
-				Tooltip: "'散发着知识的光芒'"
+				Tooltip:
+					'''
+					召唤七色魔法使
+					“散发着知识的光芒。”
+					'''
 			}
 
 			SekibankiBow: {
 				DisplayName: 蓝色蝴蝶结
-				Tooltip: "'这是第九个'"
+				Tooltip:
+					'''
+					召唤辘轱首
+					“这是第九个。”
+					'''
 			}
 
 			MarisaHakkero: {
 				DisplayName: 迷你八卦炉
-				Tooltip: "'温和的燃烧着'"
+				Tooltip:
+					'''
+					召唤人类魔法使
+					“温和的燃烧着。”
+					'''
 			}
 
 			ReimuYinyangOrb: {
 				DisplayName: 阴阳玉
-				Tooltip: "'富有灵气...还挺沉'"
+				Tooltip:
+					'''
+					召唤乐园的巫女
+					“富有灵气...还挺沉。”
+					'''
 			}
 
 			RemiliaRedTea: {
 				DisplayName: 一杯红茶
-				Tooltip: "'下午时刻的享受'"
+				Tooltip:
+					'''
+					召唤吸血鬼姐姐
+					“下午时刻的享受。”
+					'''
 			}
 
 			FlandrePudding: {
 				DisplayName: 樱桃布丁
-				Tooltip: "'看起来很美味的样子！'"
+				Tooltip:
+					'''
+					召唤吸血鬼妹妹
+					“看起来很美味的样子！”
+					'''
 			}
 
 			CakeOfScarlet: {
 				DisplayName: 红魔蛋糕
-				Tooltip: "'只属于红魔馆的下午茶时间'"
+				Tooltip:
+					'''
+					集结红魔一家
+					“只属于红魔馆的下午茶时间。”
+					'''
 			}
 
 			JunkoMooncake: {
 				DisplayName: 纯粹的月饼
-				Tooltip: "'纯粹的五仁馅'"
+				Tooltip:
+					'''
+					召唤纯粹之神
+					“纯粹的五仁馅。”
+					'''
 			}
 
 			HecatiaPlanet: {
 				DisplayName: 奇怪的红色星球
-				Tooltip: "'异界之物'"
+				Tooltip:
+					'''
+					召唤地狱女神
+					“异界之物。”
+					'''
 			}
 
 			IkuOarfish: {
 				DisplayName: 传奇带鱼
-				Tooltip: "'罕见且艳丽'"
+				Tooltip:
+					'''
+					召唤龙宫使者
+					“罕见且艳丽。”
+					'''
 			}
 
 			TenshiKeyStone: {
 				DisplayName: 要石
-				Tooltip: "'既不是陀螺也不是腌菜石！'"
+				Tooltip:
+					'''
+					召唤天人
+					“既不是陀螺也不是腌菜石！”
+					'''
 			}
 
 			SatoriSlippers: {
 				DisplayName: 一双粉色拖鞋
-				Tooltip: "'一定很暖和'"
+				Tooltip:
+					'''
+					召唤觉妖怪
+					“一定很暖和。”
+					'''
 			}
 
 			KoishiTelephone: {
 				DisplayName: 紫色电话筒
 				Tooltip:
 					'''
-					'喂喂？'
+					召唤无意识少女
+					“喂喂？”
 					[c/ff0000:可能会在危急时刻对主人造成致命伤害！]
 					'''
 			}
 
 			TheThirdEye: {
 				DisplayName: 觉之瞳
-				Tooltip: "'窥探你的内心...'"
+				Tooltip:
+					'''
+					集结地底之家
+					“窥探你的内心...”
+					'''
 			}
 
 			SanaeCoin: {
 				DisplayName: 银色的青蛙硬币
-				Tooltip: "'攒够一定数量说不定会出现有意思的事？'"
+				Tooltip:
+					'''
+					召唤风祝
+					“攒够一定数量说不定会出现有意思的事？”
+					'''
 			}
 
 			KogasaUmbrella: {
 				DisplayName: 古怪的伞
-				Tooltip: "'这上面是长了只眼睛吗？！'"
+				Tooltip:
+					'''
+					召唤伞的附丧神
+					“这上面是长了只眼睛吗？！”
+					'''
 			}
 
 			NitoriCucumber: {
 				DisplayName: 黄瓜
-				Tooltip: "'非常滴新鲜'"
+				Tooltip:
+					'''
+					召唤河童工程师
+					“非常滴新鲜。”
+					'''
 			}
 
 			UselessBook: {
 				DisplayName: 毫无卵用的魔法书
 				Tooltip:
 					'''
-					一本非常破旧的书，被做了防水处理
-					上面写满了晦涩的文字，以至于都不能拿来当武器用
+					一本非常破旧的书，被做了防水处理。
+					上面写满了晦涩的文字，以至于都不能拿来当武器用。
 					也许扔进一个闪闪发光的池子里能让它恢复往日的风采？
 					'''
 			}
 
 			RinSkull: {
 				DisplayName: 着魔颅骨
-				Tooltip: "'应该不是给猫玩的...吧？'"
+				Tooltip:
+					'''
+					召唤火车猫妖
+					“应该不是给猫玩的...吧？”
+					'''
 			}
 
 			LilyOneUp: {
 				DisplayName: 1 UP
-				Tooltip: "'残机数量+1！'"
+				Tooltip:
+					'''
+					召唤告春妖精
+					“残机数量+1！”
+					'''
 			}
 
 			MystiaFeather: {
 				DisplayName: 夜雀的羽毛
-				Tooltip: "'闻起来像炸鸡块...？'"
+				Tooltip:
+					'''
+					召唤夜雀妖怪
+					“闻起来像炸鸡块...？”
+					'''
 			}
 
 			WriggleInAJar: {
 				DisplayName: 瓶中夜光虫
-				Tooltip: "'往昔记忆中的光点'"
+				Tooltip:
+					'''
+					召唤萤火虫妖怪
+					“往昔记忆中的光点。”
+					'''
 			}
 
 			AyaCamera: {
 				DisplayName: 老式照相机
-				Tooltip: "'背面印着一片枫叶图案'"
+				Tooltip:
+					'''
+					召唤鸦天狗记者
+					“背面印着一片枫叶图案。”
+					'''
 			}
 
 			YuyukoFan: {
 				DisplayName: 樱花折扇
 				Tooltip:
 					'''
-					"仍旧沾染着一丝春的气息"
+					召唤樱之亡灵
+					“仍旧沾染着一丝春的气息。”
 					请看管好背包里的任何食物！
 					'''
 			}
 
 			YoumuKatana: {
 				DisplayName: 玩具武士刀
-				Tooltip: "'上面附着着一只幽灵'"
+				Tooltip:
+					'''
+					召唤半人半灵的小庭师
+					“上面附着着一只幽灵。”
+					'''
 			}
 
 			AliceDoll: {
 				DisplayName: 精致的人偶
-				Tooltip: "'栩栩如生、活灵活现'"
+				Tooltip:
+					'''
+					召唤人偶师
+					“栩栩如生、活灵活现。”
+					'''
 			}
 
 			RumiaRibbon: {
 				DisplayName: 红丝带
-				Tooltip: "'你没法解开它'"
+				Tooltip:
+					'''
+					召唤宵暗妖怪
+					“你没法解开它。”
+					'''
 			}
 
 			KoakumaPower: {
 				DisplayName: POWER
-				Tooltip: "'其实是一个染色的BOMB...？'"
+				Tooltip:
+					'''
+					从三百只小恶魔中随机召唤一位
+					“其实是一个染色的BOMB...？”
+					'''
 			}
 
 			WakasagihimeFishingRod: {
 				DisplayName: 玩具钓鱼竿
-				Tooltip: "'可以钓上来...某些东西'"
+				Tooltip:
+					'''
+					召唤人鱼姬
+					“可以钓上来...某些东西。”
+					'''
 			}
 
 			YukaSunflower: {
 				DisplayName: 盆栽向日葵
-				Tooltip: "'啊？？'"
+				Tooltip:
+					'''
+					召唤百花之主
+					“啊？？”
+					'''
 			}
 
 			YukarisItem: {
 				DisplayName: 贤者之证
-				Tooltip: "'这是我对你的认可，收下吧'"
+				Tooltip:
+					'''
+					集结隙间贤者与她的随从们
+					“这是我对你的认可，收下吧。”
+					'''
 			}
 
 			KaguyaBranch: {
 				DisplayName: 蓬莱玉枝
-				Tooltip: "'串着各色宝石的普通树枝'"
+				Tooltip:
+					'''
+					召唤月之公主
+					“串着各色宝石的普通树枝。”
+					'''
 			}
 
 			MokuMatch: {
 				DisplayName: 不灭的火柴
-				Tooltip: "'风吹雨打，未曾熄灭'"
+				Tooltip:
+					'''
+					召唤一位永生之人
+					“风吹雨打，未曾熄灭。”
+					'''
 			}
 
 			MeirinPanda: {
 				DisplayName: 熊猫挂坠
-				Tooltip: "'满是熟悉的感觉'"
+				Tooltip:
+					'''
+					召唤小小门卫
+					“满是熟悉的感觉。”
+					'''
 			}
 
 			SakuyaWatch: {
 				DisplayName: 月时计
-				Tooltip: "'指针永远停留在了四点十六分'"
+				Tooltip:
+					'''
+					召唤小小女仆
+					“指针永远停留在了四点十六分。”
+					'''
 			}
 
 			RaikoDrum: {
 				DisplayName: 玩具鼓
-				Tooltip: "'咚咚、锵~'"
+				Tooltip:
+					'''
+					召唤鼓的附丧神
+					“咚咚、锵~”
+					'''
 			}
 
 			KeineLeaf: {
 				DisplayName: 银杏叶
-				Tooltip: "'承载文化，流传千年'"
+				Tooltip:
+					'''
+					召唤半白泽
+					“承载文化，流传千年。”
+					'''
 			}
 
 			LunaMoon: {
 				DisplayName: 安眠月亮
-				Tooltip: "'带着它睡觉就听不见杂音了'"
+				Tooltip:
+					'''
+					召唤月光之妖精
+					“带着它睡觉就听不见杂音了。”
+					'''
 			}
 
 			StarSapphire: {
 				DisplayName: 星耀蓝宝石
-				Tooltip: "'握着它时仿佛能感受到万物'"
+				Tooltip:
+					'''
+					召唤星光之妖精
+					“握着它时仿佛能感受到万物。”
+					'''
 			}
 
 			SunnyMilk: {
 				DisplayName: 阳光牌牛奶
-				Tooltip: "'喝下它后，你感觉整个世界都更灿烂了'"
+				Tooltip:
+					'''
+					召唤日光之妖精
+					“喝下它后，你感觉整个世界都更灿烂了。”
+					'''
 			}
 
 			LightsJewels: {
 				DisplayName: 光之珠宝
-				Tooltip: "'由蓝宝石、金红石、和一块芝士串起来的项链'"
+				Tooltip:
+					'''
+					集结光之三妖精
+					“由蓝宝石、金红石、和一块芝士串起来的项链。”
+					'''
 			}
 
 			ReisenGun: {
 				DisplayName: 兔耳枪
-				Tooltip: "'这究竟是把枪，还是个喇叭？'"
+				Tooltip:
+					'''
+					召唤月兔
+					“这究竟是把枪，还是个喇叭？”
+					'''
 			}
 
 			SizuhaBrush: {
 				DisplayName: 秋色漆刷
-				Tooltip: "'是谁为树叶刷上了秋天的颜色呢？'"
+				Tooltip:
+					'''
+					召唤红叶之神
+					“是谁为树叶刷上了秋天的颜色呢？”
+					'''
 			}
 
 			MinorikoSweetPotato: {
 				DisplayName: 烤红薯
-				Tooltip: "'香香甜甜的，充满秋天的味道！'"
+				Tooltip:
+					'''
+					召唤丰收之神
+					“香香甜甜的，充满秋天的味道！”
+					'''
 			}
 
 			AllPetsTelephone: {
 				DisplayName: 客服电话
-				Tooltip: "'拨通之后，你会得到一个特别服务...'"
+				Tooltip:
+					'''
+					集结所有小伙伴
+					“拨通之后，你会得到一个特别服务...”
+					'''
+			}
+
+			MurasaBailer: {
+				DisplayName: 漏水的舀子
+				Tooltip:
+					'''
+					召唤船幽灵
+					“永远都装不满水...”
+					'''
 			}
 		}
 	}

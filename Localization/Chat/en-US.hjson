@@ -587,6 +587,17 @@ Mods: {
 			Chat8: Too cold...It's making me lethargic...
 		}
 
+		Chat_Murasa: {
+			Chat1: Are ya ready kids?
+			Chat2: I'm the girl who will got the One Piece!
+			Chat3: Feel weak? try to eat some spinach!
+			Chat4: hoist the sails and go!
+			Chat5: Do you like ship? I prefer shipwrecks!
+			Chat6: Call me Captain!
+			Chat7: It's better not to let yourself know your death date. I am exploring the joy of life every moment! ...oh, I was already died...
+			Chat8: With such a soft voice, you dare to drive a warship?
+		}
+
 		Chat_Portal: {
 			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all.
 			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence.
