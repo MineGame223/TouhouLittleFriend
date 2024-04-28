@@ -113,13 +113,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
+        private void UpdateTalking()
+        {
+
+        }
         public override void VisualEffectForPreview()
         {
             UpdateTailFrame();
         }
-        private void UpdateTalking()
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
-
+            float brightness = Main.essScale * (Projectile.wet ? 1f : 2f);
+            rgb = new Vector3(0.87f, 1.64f, 1.55f) * brightness;
         }
         public override void AI()
         {
@@ -151,8 +156,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-            float brightness = Main.essScale * (Projectile.wet ? 1f : 2f);
-            Lighting.AddLight(Projectile.Center, 0.87f * brightness, 1.64f * brightness, 1.55f * brightness);
         }
         private void GenDust()
         {

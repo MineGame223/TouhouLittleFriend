@@ -529,6 +529,7 @@ Mods: {
 			Chat5: Put your head up, and see tonight's stars!
 			Chat6: How about stealing that black-white witch's mushroom?
 			Chat7: Ok, stop it! What about stealing that red-white shrine maiden's money box?
+			Chat8: If you can't stand it anymore, why don't give it a slap!
 		}
 
 		Chat_Sunny: {
@@ -584,6 +585,17 @@ Mods: {
 			Chat6: Eating is the most important thing for humans after all...But there are still many people who like autumn's leaves!
 			Chat7: Then, would you like a baked sweet potato?
 			Chat8: Too cold...It's making me lethargic...
+		}
+
+		Chat_Murasa: {
+			Chat1: Are ya ready kids?
+			Chat2: I'm the girl who will got the One Piece!
+			Chat3: Feel weak? try to eat some spinach!
+			Chat4: hoist the sails and go!
+			Chat5: Do you like ship? I prefer shipwrecks!
+			Chat6: Call me Captain!
+			Chat7: It's better not to let yourself know your death date. I am exploring the joy of life every moment! ...oh, I was already died...
+			Chat8: With such a soft voice, you dare to drive a warship?
 		}
 
 		Chat_Portal: {

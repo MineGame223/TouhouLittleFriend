@@ -216,6 +216,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateWingFrame();
             UpdateClothFrame();
         }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            float r = Main.DiscoR / 255f;
+            float g = Main.DiscoG / 255f;
+            float b = Main.DiscoB / 255f;
+            float strength = 2f;
+            r = (strength + r) / 2f;
+            g = (strength + g) / 2f;
+            b = (strength + b) / 2f;
+            Lighting.AddLight(Projectile.Center, r, g, b);
+
+            rgb = new Vector3(0.90f, 0.31f, 0.68f);
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<FlandreBuff>());
@@ -271,20 +284,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             UpdateMiscData();
-
-            SetFlandreLight();
-        }
-        private void SetFlandreLight()
-        {
-            float r = Main.DiscoR / 255f;
-            float g = Main.DiscoG / 255f;
-            float b = Main.DiscoB / 255f;
-            float strength = 2f;
-            r = (strength + r) / 2f;
-            g = (strength + g) / 2f;
-            b = (strength + b) / 2f;
-            Lighting.AddLight(Projectile.Center, r, g, b);
-            Lighting.AddLight(Projectile.Center, 0.90f, 0.31f, 0.68f);
         }
         private void ControlMovement(Player player)
         {

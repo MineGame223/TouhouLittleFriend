@@ -180,11 +180,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void VisualEffectForPreview()
         {
+            UpdateClothFrame();
             if (IsIdleState)
             {
                 IdleAnimation();
             }
-            UpdateClothFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(0.79f, 2.15f, 2.39f);
         }
         public override void AI()
         {
@@ -224,8 +228,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            Lighting.AddLight(Projectile.Center, 0.79f, 2.15f, 2.39f);
         }
         private void ControlMovement()
         {

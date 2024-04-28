@@ -3,10 +3,12 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-神秘隙间广告位招租辣！如果你有什么想要推广的东方社团，可以于交流群与我联系，名额有限先到先得（请不要直接加Steam好友因为我不知道你加我到底要干啥）
-
 新增：
-俄语翻译已更新
+加入了数条游戏小提示
+加入了一根漏水的瓢
 
 修改：
-更改了妹红的特殊动作
+现在衣玖的召唤物亦可通过灾厄模组的桨鱼（皇带鱼）掉落获得
+
+修复：
+修复了恋恋在条件允许的情况下无法隐身的问题

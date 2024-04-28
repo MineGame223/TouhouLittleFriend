@@ -86,12 +86,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal int mainTimer;
 
         /// <summary>
-        /// 额外的计时器（等同于Projectile.ai），长度为3
-        /// <br/>允许通过netUpdate进行同步
-        /// </summary>
-        internal int[] extraAI = new int[3];
-
-        /// <summary>
         /// 是否开启对话文字震动
         /// <br/>恋恋专用
         /// <br/>!--该属性会反复重置
@@ -481,6 +475,20 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         #endregion
 
+        #region 其他更新方法
+        private void UpdatePetLight()
+        {
+            Vector2 position = Projectile.Center;
+            Vector3 rgb = new Vector3(0, 0, 0);
+            bool inactive = false;
+            SetPetLight(ref position, ref rgb, ref inactive);
+            if (!inactive)
+            {
+                Lighting.AddLight(position, rgb);
+            }
+        }
+        #endregion
+
         #region 自身重写函数
         /// <summary>
         /// 注册对话文本及其索引值
@@ -504,11 +512,11 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         }
         /// <summary>
-        /// 
+        /// 设置宠物照明（于PostDraw中更新）
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rgb"></param>
-        /// <param name="inactive"></param>
+        /// <param name="position">发光位置，默认为宠物中心</param>
+        /// <param name="rgb">颜色，单值最高为2.55、最低为0</param>
+        /// <param name="inactive">何时不会发光，默认为false</param>
         public virtual void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
 
@@ -587,6 +595,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostAI()
         {
+            UpdatePetLight();
             VisualEffectForPreview();
         }
         public override bool? CanCutTiles()
@@ -617,34 +626,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 VisualEffectForPreview();
             }
-            Vector2 position = Vector2.Zero;
-            Vector3 rgb = new Vector3(0, 0, 0);
-            bool inactive = false;
-            SetPetLight(ref position, ref rgb, ref inactive);
-            if (!inactive)
-            {
-                Lighting.AddLight(position, rgb);
-            }
-
             DrawTestInfo();
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             behindProjectiles.Add(index);
-        }
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            for (int i = 0; i < extraAI.Length; i++)
-            {
-                extraAI[i] = reader.ReadInt32();
-            }
-        }
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            for (int i = 0; i < extraAI.Length; i++)
-            {
-                writer.Write(extraAI[i]);
-            }
         }
         #endregion
     }

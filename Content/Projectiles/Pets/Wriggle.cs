@@ -129,11 +129,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void VisualEffectForPreview()
-        {
-            UpdateWingFrame();
-            UpdateAntennaeFrame();
-        }
         private void UpdateTalking()
         {
             if (FindChatIndex(1))
@@ -177,6 +172,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chatRoom.CloseChatRoom();
             }
+        }
+        public override void VisualEffectForPreview()
+        {
+            UpdateWingFrame();
+            UpdateAntennaeFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(1.48f * Main.essScale, 1.44f * Main.essScale, 0.44f * Main.essScale);
+            inactive = CurrentState == States.Cold;
         }
         public override void AI()
         {
@@ -226,9 +231,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            if (CurrentState != States.Cold)
-                Lighting.AddLight(Projectile.Center, 1.48f * Main.essScale, 1.44f * Main.essScale, 0.44f * Main.essScale);
 
             UpdateMiscData();
             AttractInsect();

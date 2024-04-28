@@ -175,6 +175,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (IsIdleState)
                 IdleAnimation();
         }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            float lightStrength = 5 * auraValue;
+            rgb = new Vector3(2.38f + lightStrength, 1.41f + lightStrength, 2.55f + lightStrength);
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<JunkoBuff>());
@@ -210,8 +215,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             UpdateAuraValue();
-
-            Lighting.AddLight(Projectile.Center, 2.38f + 5 * auraValue, 1.41f + 5 * auraValue, 2.55f + 5 * auraValue);
         }
         private void ControlMovement()
         {

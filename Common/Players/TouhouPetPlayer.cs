@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.IO;
+using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items.PetItems;
 using TouhouPets.Content.NPCs;
 
@@ -8,6 +9,8 @@ namespace TouhouPets
 {
     public class TouhouPetPlayer : ModPlayer
     {
+        public bool MurasasCurse => Player.HasBuff<MurasaBuff>() && Main.remixWorld;
+
         public int koakumaNumber;
         public int purchaseValueCount;
         public int totalPurchaseValueCount;
@@ -80,6 +83,19 @@ namespace TouhouPets
                     Player.spelunkerTimer = 0;
                     Main.instance.SpelunkerProjectileHelper.AddSpotToCheck(Player.Center);
                 }
+            }
+        }
+        public override void UpdateEquips()
+        {
+            if (MurasasCurse)
+            {
+                Player.waterWalk = false;
+                Player.accMerman = false;
+
+                if (Player.breathCD > 0 && Player.breath > 0)
+                    Player.breath -= 10;
+
+                Player.breathCD += Player.breathCDMax / 2;
             }
         }
         public override void SaveData(TagCompound tag)

@@ -136,10 +136,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void VisualEffectForPreview()
-        {
-            UpdateMiscFrame();
-        }
         private void UpdateTalking()
         {
             if (FindChatIndex(10, 15))
@@ -307,6 +303,23 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatRoom.CloseChatRoom();
             }
         }
+        public override void VisualEffectForPreview()
+        {
+            UpdateMiscFrame();
+        }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            float r = Main.DiscoR / 255f;
+            float g = Main.DiscoG / 255f;
+            float b = Main.DiscoB / 255f;
+            float strength = 2f;
+            r = (strength + r) / 1.5f;
+            g = (strength + g) / 1.5f;
+            b = (strength + b) / 1.5f;
+            Lighting.AddLight(Projectile.Center, r, g, b);
+
+            rgb = new Vector3(0.40f, 0.31f, 0.48f);
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MeirinBuff>());
@@ -372,8 +385,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             UpdateMiscData();
-
-            SetMeirinLight();
         }
         private void UpdateMiscData()
         {
@@ -415,18 +426,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 _ => Vector2.Zero,
             };
             hairPosOffset.X *= -Projectile.spriteDirection;
-        }
-        private void SetMeirinLight()
-        {
-            float r = Main.DiscoR / 255f;
-            float g = Main.DiscoG / 255f;
-            float b = Main.DiscoB / 255f;
-            float strength = 2f;
-            r = (strength + r) / 1.5f;
-            g = (strength + g) / 1.5f;
-            b = (strength + b) / 1.5f;
-            Lighting.AddLight(Projectile.Center, r, g, b);
-            Lighting.AddLight(Projectile.Center, 0.40f, 0.31f, 0.48f);
         }
         private void ControlMovement(Player player)
         {

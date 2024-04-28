@@ -241,6 +241,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(2.15f, 1.84f, 0.87f);
+        }
         public override void OnSpawn(IEntitySource source)
         {
             base.OnSpawn(source);
@@ -248,9 +252,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Lighting.AddLight(Projectile.Center, 2.15f, 1.84f, 0.87f);
-            Player player = Main.player[Projectile.owner];
-            Projectile.SetPetActive(player, BuffType<MokuBuff>());
+            Projectile.SetPetActive(Owner, BuffType<MokuBuff>());
 
             UpdateTalking();
 

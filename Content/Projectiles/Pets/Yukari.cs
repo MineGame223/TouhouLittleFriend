@@ -172,6 +172,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateGapFrame();
             UpdateMiscFrame();
         }
+        public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+            rgb = new Vector3(1.56f, 0.91f, 2.50f);
+        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<YukariBuff>());
@@ -192,8 +196,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
-            Lighting.AddLight(Projectile.Center, 1.56f, 0.91f, 2.50f);
         }
         private void ControlMovement()
         {

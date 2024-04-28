@@ -178,8 +178,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity, 0, 1);
-
             if (!SetKoishiActive(Owner))
                 return;
 
@@ -256,7 +254,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             bool noSatori = !Owner.HasBuff<SatoriBuff>() && !Owner.HasBuff<KomeijiBuff>();
             if (lowHealth && noSatori)
             {
-                if (mainTimer > 0 && mainTimer % 120 == 0 && Main.rand.NextBool(3) && killCD == 0)
+                if (mainTimer > 0 && mainTimer % 120 == 0 && Main.rand.NextBool(3) && killCD <= 0)
                 {
                     Timer = 0;
                     return true;
@@ -285,7 +283,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             else
             {
                 if (CurrentState != States.Fading && !IsKillingState)
-                    Projectile.Opacity += 0.009f;
+                {
+                    if (Projectile.Opacity < 1)
+                        Projectile.Opacity += 0.009f;
+                }
                 return true;
             }
             return false;
@@ -307,6 +308,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (!OwnerIsMyPlayer)
                 return;
+
             if (killCD > 0)
             {
                 killCD--;
@@ -328,9 +330,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer > 0 && mainTimer % 360 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(1))
+                    if (Main.rand.NextBool(4))
                     {
-                        if (Main.rand.NextBool(1) && !FindPet(ProjectileType<Satori>(), false))
+                        if (Main.rand.NextBool(2) && !FindPet(ProjectileType<Satori>(), false))
                         {
                             RandomCount = Main.rand.Next(1800, 3600);
                             CurrentState = States.Fading;
@@ -368,11 +370,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             Timer++;
             if (Timer > RandomCount - 255 / 2)
             {
-                Projectile.Opacity += 0.01f;
+                if (Projectile.Opacity < 1)
+                    Projectile.Opacity += 0.01f;
             }
             else
             {
-                Projectile.Opacity -= 0.005f;
+                if (Projectile.Opacity > 0)
+                    Projectile.Opacity -= 0.005f;
             }
             if (OwnerIsMyPlayer && Timer > RandomCount)
             {
