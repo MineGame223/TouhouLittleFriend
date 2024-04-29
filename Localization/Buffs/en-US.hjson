@@ -243,8 +243,8 @@ Mods: {
 			}
 
 			MurasaBuff: {
-				DisplayName: Ghost of ship
-				Description: "'If you want your ship safe, then give her some spinach...?'"
+				DisplayName: Ghost of The Ship
+				Description: "'If you want your ship to be safe, then maybe give her some spinach...?'"
 			}
 		}
 	}
