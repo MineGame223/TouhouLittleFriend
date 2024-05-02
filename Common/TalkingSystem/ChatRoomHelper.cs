@@ -33,7 +33,7 @@ namespace TouhouPets
         /// <summary>
         /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空、chatIndex归零
         /// </summary>
-        /// <param name="chatRoom"></param>
+        /// <param name="chatRoom">当前聊天室</param>
         public static void CloseChatRoom(this PetChatRoom chatRoom)
         {
             BasicTouhouPet owner = ToPetClass(chatRoom.initiator);
@@ -52,8 +52,8 @@ namespace TouhouPets
         /// <summary>
         /// 创建聊天室
         /// </summary>
-        /// <param name="initiator"></param>
-        /// <returns></returns>
+        /// <param name="initiator">聊天发起者</param>
+        /// <returns>以当前宠物为发起者的聊天室的索引值</returns>
         public static int CreateChatRoom(this Projectile initiator)
         {
             if (initiator == null)
@@ -84,21 +84,21 @@ namespace TouhouPets
         /// <summary>
         /// 创建聊天室
         /// </summary>
-        /// <param name="initiator"></param>
-        /// <returns></returns>
+        /// <param name="initiator">聊天发起者</param>
+        /// <returns>以当前宠物为发起者的聊天室实例</returns>
         public static PetChatRoom CreateChatRoomDirect(this Projectile initiator)
         {
             int i = CreateChatRoom(initiator);
             return ChatRoom[i];
         }
         /// <summary>
-        /// 宠物当前对话是否已说完
+        /// 宠物当前是否已说完话或尚未准备说话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns></returns>
+        /// <returns>当 chatTimeLeft 小于等于 1 且 chatOpacity 小于等于 0 时返回 true</returns>
         public static bool CurrentDialogFinished(this Projectile projectile)
         {
-            return projectile.ToPetClass().chatTimeLeft <= 1;
+            return projectile.ToPetClass().chatTimeLeft <= 1 && projectile.ToPetClass().chatOpacity <= 0;
         }
         /// <summary>
         /// 关闭当前宠物的对话（将chatTimeLeft设为0）
@@ -141,6 +141,7 @@ namespace TouhouPets
                 config.TyperModeUseTime = Math.Clamp(chat.Length * 5, 0, 150);
             }
             pet.chatIndex = index;
+
             pet.chatBaseY = -24;
             pet.chatScale = 0f;
             pet.chatText = chat;

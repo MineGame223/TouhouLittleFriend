@@ -90,12 +90,9 @@ namespace TouhouPets
             if (MurasasCurse)
             {
                 Player.waterWalk = false;
-                Player.accMerman = false;
 
                 if (Player.breathCD > 0 && Player.breath > 0)
-                    Player.breath -= 10;
-
-                Player.breathCD += Player.breathCDMax / 2;
+                    Player.breath = 0;
             }
         }
         public override void SaveData(TagCompound tag)

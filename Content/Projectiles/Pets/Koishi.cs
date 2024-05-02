@@ -245,8 +245,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            UpdateMiscData();
+            if (killCD > 0)
+            {
+                killCD--;
+            }
         }
         private bool ShouldKillPlayer()
         {
@@ -303,16 +305,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point = new Vector2(-44 * Owner.direction, -80 + Owner.gfxOffY);
             if (!Owner.dead)
                 MoveToPoint(point, 13f);
-        }
-        private void UpdateMiscData()
-        {
-            if (!OwnerIsMyPlayer)
-                return;
-
-            if (killCD > 0)
-            {
-                killCD--;
-            }
         }
         private void Idle()
         {

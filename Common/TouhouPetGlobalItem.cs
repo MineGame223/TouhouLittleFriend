@@ -22,10 +22,6 @@ namespace TouhouPets
             }
             return base.CanUseItem(item, player);
         }
-        public override bool? UseItem(Item item, Player player)
-        {
-            return base.UseItem(item, player);
-        }
         public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
         {
             if (item.type == ItemID.Sapphire && !item.shimmered)
@@ -45,6 +41,7 @@ namespace TouhouPets
                         {
                             item.TurnToAir();
                         }
+
                         ParticleOrchestraSettings settings;
                         for (int z = 0; z < 8; z++)
                         {
@@ -61,6 +58,7 @@ namespace TouhouPets
                             MovementVector = Vector2.Zero,
                         };
                         ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.ShimmerTownNPC, settings);
+
                         Item.NewItem(item.GetSource_FromThis(), item.getRect(), ItemType<StarSapphire>());
                         break;
                     }
