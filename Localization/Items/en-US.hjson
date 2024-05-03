@@ -95,7 +95,7 @@ Mods: {
 				DisplayName: Cake of Scarlet
 				Tooltip: 
                                          '''
-                                         Summons the residents of the Scarlet Devil Mansion
+                                         Assembles the residents of the Scarlet Devil Mansion
                                          "The afternoon teatime, belonging only to the Scarlet Mansion"
                                          '''
 			}
@@ -113,7 +113,7 @@ Mods: {
 				DisplayName: Strange Red Planet
 				Tooltip: 
                                          '''
-                                         Summon the Goddess of Hell
+                                         Summons the Goddess of Hell
                                          "Otherworldly... Thing"
                                          '''
 			}
@@ -122,7 +122,7 @@ Mods: {
 				DisplayName: The Legendary Fish
 				Tooltip: 
                                          '''
-                                         Summon the Dragon Palace's Messenger
+                                         Summons the Dragon Palace's Messenger
                                          "Rare and beautiful"
                                          '''
 			}
@@ -131,7 +131,7 @@ Mods: {
 				DisplayName: Keystone
 				Tooltip: 
                                          '''
-                                         Summon a Celestial delinquent
+                                         Summons a Celestial delinquent
                                          "Neither a gyro nor a pickle stone!"
                                          '''
 			}
@@ -159,7 +159,7 @@ Mods: {
 				DisplayName: The 3rd Eye
 				Tooltip: 
                                          '''
-                                         Summons the residents of Old Hell
+                                         Assembles the residents of Old Hell
                                          "Staring into your mind..."
                                          '''
 			}
@@ -367,7 +367,7 @@ Mods: {
 				DisplayName: Ginkgo Leaf
 				Tooltip: 
                                          '''
-                                         Summons a Half-blood Hakutaku
+                                         Summons a Were-Hakutaku
                                          "Carrying culture for over a thousand years"
                                          '''
 			}
