@@ -12,7 +12,7 @@ namespace TouhouPets.Content.Buffs.PetBuffs
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Luna>());
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Projectiles.Pets.Star>());
 
-            player.GetModPlayer<TouhouPetPlayer>().treasureShine = true;
+            player.GetModPlayer<SpecialAbilityPlayer>().treasureShine = true;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.IO;
-using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items.PetItems;
 using TouhouPets.Content.NPCs;
 
@@ -9,30 +8,16 @@ namespace TouhouPets
 {
     public class TouhouPetPlayer : ModPlayer
     {
-        public bool MurasasCurse => Player.HasBuff<MurasaBuff>() && Main.remixWorld;
-
         public int koakumaNumber;
         public int purchaseValueCount;
         public int totalPurchaseValueCount;
-        public bool treasureShine;
         private void ChangePurchaseCount(int amount)
         {
             totalPurchaseValueCount += amount;
             purchaseValueCount += amount;
-        }
-        private void CommonResetUpdate()
-        {
-            treasureShine = false;
-        }
-        public override void ResetEffects()
-        {
+
             purchaseValueCount = (int)MathHelper.Clamp(purchaseValueCount, 0, int.MaxValue - 1);
             totalPurchaseValueCount = (int)MathHelper.Clamp(totalPurchaseValueCount, 0, int.MaxValue - 1);
-            CommonResetUpdate();
-        }
-        public override void UpdateDead()
-        {
-            CommonResetUpdate();
         }
         public override bool CanBuyItem(NPC vendor, Item[] shopInventory, Item item)
         {
@@ -71,28 +56,6 @@ namespace TouhouPets
                 {
                     ChangePurchaseCount(-item.value);
                 }
-            }
-        }
-        public override void PostUpdateBuffs()
-        {
-            if (treasureShine)
-            {
-                Player.spelunkerTimer++;
-                if (Player.spelunkerTimer >= 10)
-                {
-                    Player.spelunkerTimer = 0;
-                    Main.instance.SpelunkerProjectileHelper.AddSpotToCheck(Player.Center);
-                }
-            }
-        }
-        public override void UpdateEquips()
-        {
-            if (MurasasCurse)
-            {
-                Player.waterWalk = false;
-
-                if (Player.breathCD > 0 && Player.breath > 0)
-                    Player.breath = 0;
             }
         }
         public override void SaveData(TagCompound tag)

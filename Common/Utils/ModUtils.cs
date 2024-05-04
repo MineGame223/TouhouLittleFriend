@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -15,6 +16,19 @@ namespace TouhouPets
     /// </summary>
     internal static class ModUtils
     {
+        /// <summary>
+        /// 打印带有物品贴图的文本
+        /// </summary>
+        /// <param name="id">物品ID</param>
+        /// <returns></returns>
+        public static string ItemText(int id)
+        {
+            StringBuilder result = new ("[i");
+            result.Append(':');
+            result.Append(id);
+            result.Append(']');
+            return result.ToString();
+        }
         public static Vector2 DefaultDrawPetPosition(this Projectile projectile)
         {
             return projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
@@ -197,6 +211,7 @@ namespace TouhouPets
             }
             else
             {
+                //Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
             }

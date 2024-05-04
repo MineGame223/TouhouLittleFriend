@@ -26,7 +26,8 @@ namespace TouhouPets.Content.Items.PetItems
             if (solution == null || solution.IsAir)
                 return;
 
-            if (Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(solution.type))
+            if (Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(solution.type)
+                 && GetInstance<PetAbilitiesConfig>().SpecialAbility)
                 tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.YukaTips"));
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

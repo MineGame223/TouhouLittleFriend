@@ -34,7 +34,7 @@ namespace TouhouPets
         public static Item Solution { get => solution; set => solution = value; }
         public override void PostUpdateProjectiles()
         {
-            if (Main.netMode == NetmodeID.Server)
+            if (Main.netMode == NetmodeID.Server || !GetInstance<PetAbilitiesConfig>().SpecialAbility)
                 return;
 
             if (sprayMode > 1 || sprayMode < 0)

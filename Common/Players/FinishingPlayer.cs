@@ -15,6 +15,7 @@ namespace TouhouPets.Common
 
             if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
                 return;
+
             if (Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish
                 || attempt.rare)
             {

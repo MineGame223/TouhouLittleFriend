@@ -8,7 +8,7 @@ Mods: {
 
 			UtsuhoBuff: {
 				DisplayName: 地狱鸦
-				Description: “我就是地狱的太阳！”
+				Description: “我就是地底太阳！”
 			}
 
 			HinaBuff: {
@@ -22,7 +22,7 @@ Mods: {
 			}
 
 			PatchouliBuff: {
-				DisplayName: 魔法使
+				DisplayName: 七色的魔法使
 				Description: 不动的小图书馆...?
 			}
 
@@ -32,7 +32,7 @@ Mods: {
 			}
 
 			MarisaBuff: {
-				DisplayName: 人类魔法使
+				DisplayName: 寻常魔法使
 				Description: 不能再小偷小摸了
 			}
 
@@ -92,7 +92,7 @@ Mods: {
 			}
 
 			SanaeBuff: {
-				DisplayName: 风祝
+				DisplayName: 奇迹的巫女
 				Description: “见证奇迹吧！”
 			}
 
@@ -112,7 +112,7 @@ Mods: {
 			}
 
 			LilyBuff: {
-				DisplayName: 春之妖精
+				DisplayName: 告春妖精
 				Description: “春天来啦！”
 			}
 
@@ -132,7 +132,7 @@ Mods: {
 			}
 
 			AyaBuff: {
-				DisplayName: 风神少女
+				DisplayName: 鸦天狗记者
 				Description: “试着追上我的速度吧！”
 			}
 
@@ -162,7 +162,7 @@ Mods: {
 			}
 
 			YukaBuff: {
-				DisplayName: 花之主
+				DisplayName: 百花之主
 				Description: “请不要摘下那朵花”
 			}
 

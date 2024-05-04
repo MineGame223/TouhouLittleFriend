@@ -12,7 +12,7 @@ namespace TouhouPets
         public override bool InstancePerEntity => true;
         public override bool CanUseItem(Item item, Player player)
         {
-            if (player.HasBuff<MinorikoBuff>())
+            if (player.HasBuff<MinorikoBuff>() && GetInstance<PetAbilitiesConfig>().SpecialAbility)
             {
                 if (ItemID.Sets.IsFood[item.type] && item.buffType > 0)
                 {

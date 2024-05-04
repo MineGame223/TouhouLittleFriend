@@ -372,7 +372,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         RandomCount = Main.rand.Next(10, 30);
                         CurrentState = States.SwingFan;
                     }
-                    else if (Main.rand.NextBool(3))
+                    else if (Main.rand.NextBool(3) && GetInstance<PetAbilitiesConfig>().SpecialAbility)
                     {
                         FoodSelect(Owner);
                     }
