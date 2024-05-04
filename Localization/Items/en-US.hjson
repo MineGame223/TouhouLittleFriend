@@ -3,146 +3,146 @@ Mods: {
 		Items: {
 			CirnoIceShard: {
 				DisplayName: Ice Shard Full of Wisdom
-				Tooltip: 
-                                         '''
-                                         Summons the Strongest Fairy
-                                         "Looks like it's filled with wisdom!"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Strongest Fairy
+					"Looks like it's filled with wisdom!"
+					'''
 			}
 
 			UtsuhoEye: {
 				DisplayName: Crimson Eye
-				Tooltip: 
-                                         '''
-                                         Summons the Subterranean Sun
-                                         "Hot to the touch"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Hell Raven
+					"Hot to the touch."
+					'''
 			}
 
 			HinaDoll: {
 				DisplayName: Hina Doll
-				Tooltip: 
-                                         '''
-                                         Summons the Goddess of Misfortune
-                                         "They say it can take bad luck away...or does it bring it instead?"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Goddess of Misfortune
+					"They say it can take bad luck away...or does it bring it instead?"
+					'''
 			}
 
 			DaiyouseiBomb: {
 				DisplayName: BOMB
-				Tooltip: 
-                                         '''
-                                         Summons a Great Fairy
-                                         "Its a BOMB"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Great Fairy
+					"Its a BOMB."
+					'''
 			}
 
 			PatchouliMoon: {
 				DisplayName: Gold Moon Grimoire
-				Tooltip: 
-                                         '''
-                                         Summons the Great, Unmoving Library
-                                         "Emitting the shine of knowledge"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Great, Unmoving Library
+					"Emitting the shine of knowledge."
+					'''
 			}
 
 			SekibankiBow: {
 				DisplayName: Blue Bow
-				Tooltip: 
-                                         '''
-                                         Summons a Rokurokubi to follow you
-                                         "This is the ninth bow"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Rokurokubi to follow you
+					"This is the ninth bow."
+					'''
 			}
 
 			MarisaHakkero: {
 				DisplayName: Mini-Hakkero
-				Tooltip: 
-                                         '''
-                                         Summons the Ordinary Magician
-                                         "It burns gently"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Ordinary Magician
+					"It burns gently."
+					'''
 			}
 
 			ReimuYinyangOrb: {
 				DisplayName: Yin-Yang Orb
-				Tooltip: 
-                                         '''
-                                         Summons the Shrine Maiden of Paradise
-                                         "Full of energy...and it's pretty heavy"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Shrine Maiden of Paradise
+					"Full of energy...and it's pretty heavy."
+					'''
 			}
 
 			RemiliaRedTea: {
 				DisplayName: A cup of Red Tea
-				Tooltip: 
-                                         '''
-                                         Summons the Elder Sister
-                                         "A good drink to enjoy in the afternoon"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Elder Vampire Sister
+					"A good drink to enjoy in the afternoon."
+					'''
 			}
 
 			FlandrePudding: {
 				DisplayName: Cherry Pudding
-				Tooltip: 
-                                         '''
-                                         Summons the Younger Sister
-                                         "Looks delicious!"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Younger Vampire Sister
+					"Looks delicious!"
+					'''
 			}
 
 			CakeOfScarlet: {
 				DisplayName: Cake of Scarlet
-				Tooltip: 
-                                         '''
-                                         Assembles the residents of the Scarlet Devil Mansion
-                                         "The afternoon teatime, belonging only to the Scarlet Mansion"
-                                         '''
+				Tooltip:
+					'''
+					Assembles the residents of the Scarlet Devil Mansion
+					"The afternoon teatime, belonging only to the Scarlet Mansion."
+					'''
 			}
 
 			JunkoMooncake: {
 				DisplayName: Pure Mooncake
-				Tooltip: 
-                                         '''
-                                         Summons a Purified Spirit
-                                         "Pure Olive Nut"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Purified Spirit
+					"Pure Olive Nut."
+					'''
 			}
 
 			HecatiaPlanet: {
 				DisplayName: Strange Red Planet
-				Tooltip: 
-                                         '''
-                                         Summons the Goddess of Hell
-                                         "Otherworldly... Thing"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Goddess of Hell
+					"Otherworldly... Thing."
+					'''
 			}
 
 			IkuOarfish: {
 				DisplayName: The Legendary Fish
-				Tooltip: 
-                                         '''
-                                         Summons the Dragon Palace's Messenger
-                                         "Rare and beautiful"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Dragon Palace's Messenger
+					"Rare and beautiful."
+					'''
 			}
 
 			TenshiKeyStone: {
 				DisplayName: Keystone
-				Tooltip: 
-                                         '''
-                                         Summons a Celestial delinquent
-                                         "Neither a gyro nor a pickle stone!"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Celestial
+					"Neither a gyro nor a pickle stone!"
+					'''
 			}
 
 			SatoriSlippers: {
 				DisplayName: A Pair of Pink Slippers
-				Tooltip: 
-                                         '''
-                                         Summons a mind-reader
-                                         "Must be very cozy"
-                                         '''
+				Tooltip:
+					'''
+					Summons a mind-reader
+					"Must be very cozy."
+					'''
 			}
 
 			KoishiTelephone: {
@@ -150,44 +150,46 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a girl lost in her subconscious
-                                        'Moshi moshi?'
-                                        [c/ff0000:MAY CAUSE FATAL DAMAGE TO HER MASTER WHO IN RISK!]
+					'Moshi moshi?'
+					[c/ff0000:MAY CAUSE FATAL DAMAGE TO HER MASTER WHO IN RISK!]
 					'''
 			}
 
 			TheThirdEye: {
 				DisplayName: The 3rd Eye
-				Tooltip: 
-                                         '''
-                                         Assembles the residents of Old Hell
-                                         "Staring into your mind..."
-                                         '''
+				Tooltip:
+					'''
+					Assembles the residents of Old Hell
+					"Staring into your mind..."
+					'''
 			}
 
 			SanaeCoin: {
 				DisplayName: Silver Frog Coin
-				Tooltip: 
-                                         '''
-                                         Summons the Shrine Maiden of Miracles
-                                         "Maybe something interesting will happen if you save enough?"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Shrine Maiden of Miracles
+					"Maybe something interesting will happen if you save enough?"
+					'''
 			}
 
 			KogasaUmbrella: {
 				DisplayName: Odd Umbrella
-				Tooltip: '''
-                                         Summons an Umbrella Tsukumogami
-                                         "Is that an EYE on it ?!"
-                                         '''
+				Tooltip:
+					'''
+					Summons an Umbrella Tsukumogami
+					"Is that an EYE on it ?!"
+					                            
+					'''
 			}
 
 			NitoriCucumber: {
 				DisplayName: Cucumber
-				Tooltip: 
-                                         '''
-                                         Summons a Kappa Engineer
-                                         "Very fresh"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Kappa Engineer
+					"Very fresh."
+					'''
 			}
 
 			UselessBook: {
@@ -202,255 +204,255 @@ Mods: {
 
 			RinSkull: {
 				DisplayName: Possessed Skull
-				Tooltip: 
-                                         '''
-                                         Summons a Corpse-Carting Kasha
-                                         "Maybe this... isn't a fit toy for a cat...?"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Corpse-Carting Kasha
+					"Maybe this... isn't a fit toy for a cat...?"
+					'''
 			}
 
 			LilyOneUp: {
 				DisplayName: 1 UP
-				Tooltip: 
-                                         '''
-                                         Summons a Springtime Fairy
-                                         "Extend!"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Fairy of Spring
+					"Extend!"
+					'''
 			}
 
 			MystiaFeather: {
 				DisplayName: Nightbird's Feather
-				Tooltip: 
-                                         '''
-                                         Summons a Night Sparrow
-                                         "Smells like a chicken nugget...?"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Night Sparrow
+					"Smells like a chicken nugget...?"
+					'''
 			}
 
 			WriggleInAJar: {
 				DisplayName: Nightbug in a Jar
-				Tooltip: 
-                                         '''
-                                         Summons a Firefly Youkai
-                                         "A light from a long-lost memory"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Firefly Youkai
+					"A light from a long-lost memory."
+					'''
 			}
 
 			AyaCamera: {
 				DisplayName: Old style Camera
-				Tooltip: 
-                                         '''
-                                         Summons a Crow Tengu Reporter
-                                         "There is a maple leaf on the back"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Crow Tengu Reporter
+					"There is a maple leaf on the back."
+					'''
 			}
 
 			YuyukoFan: {
 				DisplayName: Cherry Fan
-				Tooltip: 
-                                         '''
-                                         Summons the Ghost of the Cherry Blossoms					
-                                         "Still has the scent of spring on it"
-                                         Please take care of any FOOD in your inventory!
-                                         '''
+				Tooltip:
+					'''
+					Summons the Ghost of the Cherry Blossoms					
+					"Still has the scent of spring on it."
+					Please take care of any FOOD in your inventory!
+					'''
 			}
 
 			YoumuKatana: {
 				DisplayName: Toy Katana
-				Tooltip: 
-                                         '''
-                                         Summons a Half-Phantom Gardener
-                                         "There is a ghost on it"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Half-Phantom Gardener
+					"There is a ghost on it."
+					'''
 			}
 
 			AliceDoll: {
 				DisplayName: Exquisite Puppet
-				Tooltip: 
-                                         '''
-                                         Summons the Seven-Colored Puppeteer
-                                         "Vivid and lively"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Seven-Colored Puppeteer
+					"Vivid and lively."
+					'''
 			}
 
 			RumiaRibbon: {
 				DisplayName: Red Ribbon
-				Tooltip: 
-                                         '''
-                                         Summons the Youkai of The Dusk
-                                         "You can't untie it"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Youkai of The Dusk
+					"You can't untie it."
+					'''
 			}
 
 			KoakumaPower: {
 				DisplayName: POWER
-				Tooltip: 
-                                         '''
-                                         Summons one of the many Little Devils
-                                         "It's... actually a dyed BOMB?"
-                                         '''
+				Tooltip:
+					'''
+					Summons one of the many Little Devils
+					"It's... actually a dyed BOMB?"
+					'''
 			}
 
 			WakasagihimeFishingRod: {
 				DisplayName: Toy Fishing Rod
-				Tooltip: 
-                                         '''
-                                         Reels in a Mermaid Princess
-                                         "It can catch... something"
-                                         '''
+				Tooltip:
+					'''
+					Reels in a Mermaid Princess
+					"It can catch... something."
+					'''
 			}
 
 			YukaSunflower: {
 				DisplayName: Potted Sunflower
-				Tooltip: 
-                                         '''
-                                         Summons the Flower Master of The Four Seasons
-                                         "What??"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Flower Master of The Four Seasons
+					"What??"
+					'''
 			}
 
 			YukarisItem: {
 				DisplayName: Sage's license
-				Tooltip: 
-                                         '''
-                                         Summon the Boundary Sage and her Shikigami
-                                         "This is my sign of approval, just take it"
-                                         '''
+				Tooltip:
+					'''
+					Summon the Boundary Sage and her Shikigami
+					"This is my sign of approval, just take it."
+					'''
 			}
 
 			KaguyaBranch: {
 				DisplayName: Jeweled Branch of Hourai
-				Tooltip: 
-                                         '''
-                                         Summons the Lunar Pincess
-                                         "A seemingly ordinary branch with colorful jewels"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Lunar Pincess
+					"A seemingly ordinary branch with colorful jewels."
+					'''
 			}
 
 			MokuMatch: {
 				DisplayName: Everlasting Match
-				Tooltip: 
-                                         '''
-                                         Summons an Everlasting Flame of Life
-                                         "Raining or blowing, the flame never dies"
-                                         '''
+				Tooltip:
+					'''
+					Summons an Everlasting Flame of Life
+					"Raining or blowing, the flame never dies."
+					'''
 			}
 
 			MeirinPanda: {
 				DisplayName: Panda Pendant
-				Tooltip: 
-                                         '''
-                                         Summons a little gatekeeper
-                                         "From the mysterious Eastern land"
-                                         '''
+				Tooltip:
+					'''
+					Summons a little gatekeeper
+					"From the mysterious Eastern land."
+					'''
 			}
 
 			SakuyaWatch: {
 				DisplayName: Luna Dial
-				Tooltip: 
-                                         '''
-                                         Summons a little maid
-                                         "The hands forever stay at 4:16"
-                                         '''
+				Tooltip:
+					'''
+					Summons a little maid
+					"The hands forever stay at 4:16."
+					'''
 			}
 
 			RaikoDrum: {
 				DisplayName: Toy Drum
-				Tooltip: 
-                                         '''
-                                         Summons a Drum Tsukumogami
-                                         "Badum, psh~"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Drum Tsukumogami
+					"Badum, psh~"
+					'''
 			}
 
 			KeineLeaf: {
 				DisplayName: Ginkgo Leaf
-				Tooltip: 
-                                         '''
-                                         Summons a Were-Hakutaku
-                                         "Carrying culture for over a thousand years"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Were-Hakutaku
+					"Carrying culture for over a thousand years."
+					'''
 			}
 
 			LunaMoon: {
 				DisplayName: Sleeping Moon
-				Tooltip: 
-                                         '''
-                                         Summons the Fairy of Moonlight
-                                         "If you sleep with it, you won't hear any noise"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Fairy of Moonlight
+					"If you sleep with it, you won't hear any noise."
+					'''
 			}
 
 			StarSapphire: {
 				DisplayName: Starry Sapphire
-				Tooltip: 
-                                         '''
-                                         Summons the Fairy of Starlight
-                                         "You feel as if you're feeling everything as you hold it"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Fairy of Starlight
+					"You feel as if you're feeling everything as you hold it."
+					'''
 			}
 
 			SunnyMilk: {
 				DisplayName: Sunshine Milk
-				Tooltip: 
-                                         '''
-                                         Summons the Fairy of Sunlight
-                                         "The whole world becomes more sunny after you drink it"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Fairy of Sunlight
+					"The whole world becomes more sunny after you drink it."
+					'''
 			}
 
 			LightsJewels: {
 				DisplayName: Light's Jewels
-				Tooltip: 
-                                         ''' 
-                                         Summons all three Fairies of Light
-                                         "A necklace loaded with sapphires, rutile, and a bit of cheese"
-                                         '''
+				Tooltip:
+					'''
+					Summons all three Fairies of Light
+					"A necklace loaded with sapphires, rutile, and a bit of cheese."
+					'''
 			}
 
 			ReisenGun: {
 				DisplayName: Lunatic Gun
-				Tooltip: 
-                                         '''
-                                         Summons a Moon Rabbit
-                                         "Is it a gun or a megaphone?"
-                                         '''
+				Tooltip:
+					'''
+					Summons a Moon Rabbit
+					"Is it a gun or a megaphone?"
+					'''
 			}
 
 			SizuhaBrush: {
 				DisplayName: Brush of Autumn
-				Tooltip: 
-                                         '''
-                                         Summons the Goddess of Autumn Leaves
-                                         "Who dyed the leaves with autumn's color?"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Goddess of Autumn Leaves
+					"Who dyed the leaves with autumn's color?"
+					'''
 			}
 
 			MinorikoSweetPotato: {
 				DisplayName: Baked Sweet Potato
-				Tooltip: 
-                                         '''
-                                         Summons the Goddess of Autumn's Harvest
-                                         "Sweet and Tasty, it's full of autumn's flavor!"
-                                         '''
+				Tooltip:
+					'''
+					Summons the Goddess of Autumn's Harvest
+					"Sweet and Tasty, it's full of autumn's flavor!"
+					'''
 			}
 
 			AllPetsTelephone: {
 				DisplayName: Customer Service Telephone
-				Tooltip: 
-                                         '''
-                                         Summons all your friends!
-                                         "After calling it, you'll get a special service"
-                                         '''
+				Tooltip:
+					'''
+					Summons all your friends!
+					"After calling it, you'll get a special service."
+					'''
 			}
 
 			MurasaBailer: {
 				DisplayName: Bottomless Ladle
-				Tooltip: 
-                                         '''
-                                         Summons the Ship Phantom
-                                         "It can never be filled..."
-                                         '''
+				Tooltip:
+					'''
+					Summons the Ship Phantom
+					"It can never be filled..."
+					'''
 			}
 		}
 	}

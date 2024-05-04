@@ -239,12 +239,12 @@ Mods: {
 
 			AllPetsBuff: {
 				// DisplayName: The Gensokyors
-				// Description: "'Gods preferred meeting'"
+				// Description: Gods preferred meeting
 			}
 
 			MurasaBuff: {
-				// DisplayName: Ghost of ship
-				// Description: "'If you want your ship safe, then give her some spinach...?'"
+				// DisplayName: Ship Phantom
+				// Description: "'If you want your ship to be safe, then maybe give her some spinach...?'"
 			}
 		}
 	}

@@ -8,7 +8,7 @@ Mods: {
 
 			UtsuhoBuff: {
 				DisplayName: 地狱鸦
-				Description: “我就是地底太阳！”
+				Description: “我就是地底的太阳！”
 			}
 
 			HinaBuff: {
@@ -22,8 +22,8 @@ Mods: {
 			}
 
 			PatchouliBuff: {
-				DisplayName: 七色的魔法使
-				Description: 不动的小图书馆...?
+				DisplayName: 不动的小图书馆
+				Description: 多多锻炼对身体有好处
 			}
 
 			SekibankiBuff: {
@@ -163,7 +163,7 @@ Mods: {
 
 			YukaBuff: {
 				DisplayName: 百花之主
-				Description: “请不要摘下那朵花”
+				Description: “请不要摘下那朵花。”
 			}
 
 			YukariBuff: {
@@ -219,7 +219,7 @@ Mods: {
 
 			TheThreeFairiesBuff: {
 				DisplayName: 光之三妖精
-				Description: “赌上性命去恶作剧吧！...不对，妖精不会死”
+				Description: “赌上性命去恶作剧吧！...不对，妖精不会死。”
 			}
 
 			ReisenBuff: {

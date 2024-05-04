@@ -13,31 +13,31 @@ Mods: {
 
 			HinaBuff: {
 				DisplayName: Goddess of Misfortune
-				Description: "'Turn and turn...'"
+				Description: Turn and turn...
 			}
 
 			DaiyouseiBuff: {
 				DisplayName: Daiyousei
-				Description: "'Who's Daiyousei?'"
+				Description: Who's Daiyousei?
 			}
 
 			PatchouliBuff: {
-				DisplayName: The Mage
-				Description: "'The little, unmoving library...?'"
+				DisplayName: The Little, Unmoving Library
+				Description: Exercising is good to your body
 			}
 
 			SekibankiBuff: {
-				DisplayName: Dullahan
+				DisplayName: Rokurokubi
 				Description: "'Please don't play with my head'"
 			}
 
 			MarisaBuff: {
-				DisplayName: Human Mage
-				Description: "'She can no longer steal things'"
+				DisplayName: Ordinary Magician
+				Description: She can no longer steal things
 			}
 
 			ReimuBuff: {
-				DisplayName: Maiden of the Paradise
+				DisplayName: Shrine Maiden of Paradise
 				Description: "'...'"
 			}
 
@@ -58,22 +58,22 @@ Mods: {
 
 			JunkoBuff: {
 				DisplayName: The Pure Spirit
-				Description: "'Whereabouts of the heart'"
+				Description: Whereabouts of the heart
 			}
 
 			HecatiaBuff: {
 				DisplayName: Goddess of Hell
-				Description: "'Welcome ♥ Hell'"
+				Description: Welcome ♥ Hell
 			}
 
 			IkuBuff: {
 				DisplayName: Dragon Palace's Messenger
-				Description: "'Arowana DRILL !!!'"
+				Description: Arowana DRILL !!!
 			}
 
 			TenshiBuff: {
 				DisplayName: The Celestial
-				Description: "'A delinquent from the sky'"
+				Description: A delinquent from the sky
 			}
 
 			SatoriBuff: {
@@ -82,7 +82,7 @@ Mods: {
 			}
 
 			KoishiBuff: {
-				DisplayName: Unconscious girl
+				DisplayName: Girl Lost in Her Subconscious
 				Description: "'Where is she?'"
 			}
 
@@ -92,7 +92,7 @@ Mods: {
 			}
 
 			SanaeBuff: {
-				DisplayName: Wind Sorceress
+				DisplayName: Shrine Maiden of Miracles
 				Description: "'Watching for miracles!'"
 			}
 
@@ -123,31 +123,31 @@ Mods: {
 
 			WriggleBuff: {
 				DisplayName: Firefly Youkai
-				Description: "'Twinkle, twinkle, little bug'"
+				Description: Twinkle, twinkle, little bug
 			}
 
 			YuyukoBuff: {
 				DisplayName: Ghost of the Cherry Blossoms
-				Description: "'Border of Life'"
+				Description: Border of Life
 			}
 
 			AyaBuff: {
-				DisplayName: Crow Tengu
+				DisplayName: Crow Tengu Reporter
 				Description: "'Try to catch my speed!'"
 			}
 
 			YoumuBuff: {
-				DisplayName: Little Gardener
+				DisplayName: The Gardener
 				Description: "'WHO'S THERE ?!'"
 			}
 
 			AliceBuff: {
 				DisplayName: Puppeteer
-				Description: "'Master of puppets'"
+				Description: Master of puppets
 			}
 
 			RumiaBuff: {
-				DisplayName: Youkai of Darkness
+				DisplayName: Youkai of The Dusk
 				Description: "'So, nanoka?~'"
 			}
 
@@ -158,27 +158,27 @@ Mods: {
 
 			WakasagihimeBuff: {
 				DisplayName: Mermaid-Hime
-				Description: "'purr purr .oO'"
+				Description: purr purr .oO
 			}
 
 			YukaBuff: {
-				DisplayName: Guardian of Flowers
-				Description: "'Please don't pick that flower'"
+				DisplayName: Flower Master
+				Description: "'Please don't pick that flower.'"
 			}
 
 			YukariBuff: {
-				DisplayName: Sage of the Gap
+				DisplayName: Boundary Sage
 				Description: "'Thank you for supporting Gensokyo!'"
 			}
 
 			KaguyaBuff: {
 				DisplayName: Lunar Princess
-				Description: "'Exiled Princess of The Lunatic Kingdom'"
+				Description: Exiled Princess of The Lunatic Kingdom
 			}
 
 			MokuBuff: {
 				DisplayName: Undying Phoenix
-				Description: "'Burning forever!'"
+				Description: Burning forever!
 			}
 
 			MeirinBuff: {
@@ -192,58 +192,58 @@ Mods: {
 			}
 
 			RaikoBuff: {
-				DisplayName: Drum's Ghost
+				DisplayName: Drum Tsukumogami
 				Description: "'Let's PLAY!'"
 			}
 
 			KeineBuff: {
 				DisplayName: Were-Hakutaku
-				Description: "'Creator of the History'"
-				Description_2: "'Devourer of the History'"
+				Description: Creator of the History
+				Description_2: Devourer of the History
 			}
 
 			LunaBuff: {
 				DisplayName: Luna Child
-				Description: "'The quiet moonlight'"
+				Description: The quiet moonlight
 			}
 
 			StarBuff: {
 				DisplayName: Star Sapphire
-				Description: "'The pouring starlight'"
+				Description: The pouring starlight
 			}
 
 			SunnyBuff: {
 				DisplayName: Sunny Milk
-				Description: "'The shining sunlight'"
+				Description: The shining sunlight
 			}
 
 			TheThreeFairiesBuff: {
 				DisplayName: The Three Light Fairies
-				Description: "'Staking their lives on a prank!...Wait, fairies can't die'"
+				Description: "'Staking their lives on a prank!...Wait, fairies can't die.'"
 			}
 
 			ReisenBuff: {
-				DisplayName: Rabbit of the Moon
-				Description: "'She's a little easy to get nervous...'"
+				DisplayName: Moon Rabbit
+				Description: She's a little easy to get nervous...
 			}
 
 			SizuhaBuff: {
-				DisplayName: Goddess of Red Leaves
-				Description: "'Falling leaves herald the arrival of autumn'"
+				DisplayName: Goddess of Autumn Leaves
+				Description: Falling leaves herald the arrival of autumn
 			}
 
 			MinorikoBuff: {
 				DisplayName: Goddess of Harvest
-				Description: "'Autumn symbolizes the joy of harvest'"
+				Description: Autumn symbolizes the joy of harvest
 			}
 
 			AllPetsBuff: {
 				DisplayName: The Gensokyors
-				Description: "'Gods preferred meeting'"
+				Description: Gods preferred meeting
 			}
 
 			MurasaBuff: {
-				DisplayName: Ghost of The Ship
+				DisplayName: Ship Phantom
 				Description: "'If you want your ship to be safe, then maybe give her some spinach...?'"
 			}
 		}
