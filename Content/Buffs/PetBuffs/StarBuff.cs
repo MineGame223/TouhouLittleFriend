@@ -9,7 +9,7 @@ namespace TouhouPets.Content.Buffs.PetBuffs
         public override void Update(Player player, ref int buffIndex)
         {
             base.Update(player, ref buffIndex);
-            player.GetModPlayer<TouhouPetPlayer>().treasureShine = true;
+            player.GetModPlayer<SpecialAbilityPlayer>().treasureShine = true;
         }
     }
 }

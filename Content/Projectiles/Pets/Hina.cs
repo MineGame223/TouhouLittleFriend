@@ -288,10 +288,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Turning()
         {
-            if (Projectile.frame < 6)
-            {
-                Projectile.frame = 6;
-            }
             if (++Projectile.frameCounter > 7)
             {
                 Projectile.frameCounter = 0;

@@ -237,7 +237,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void SpawnFirefly()
         {
-            if (mainTimer % (CurrentState == States.Swarming ? 15 : 30) == 0 && CanGenFireFly)
+            if (mainTimer % (CurrentState == States.Swarming ? 10 : 30) == 0 && CanGenFireFly)
             {
                 if (OwnerIsMyPlayer)
                 {
@@ -368,7 +368,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Timer % 2 == 0 && Owner.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
                 {
                     Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
-                    if (CheckEmptyPlace(point))
+                    if (CheckEmptyPlace(point) && GetInstance<PetAbilitiesConfig>().SpecialAbility)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), point
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
@@ -445,6 +445,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void AttractInsect()
         {
+            if (!GetInstance<PetAbilitiesConfig>().SpecialAbility)
+                return;
+
             foreach (NPC bug in Main.npc)
             {
                 if (IsFlyInsect().Contains(bug.type))

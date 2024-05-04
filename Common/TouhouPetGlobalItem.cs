@@ -12,7 +12,7 @@ namespace TouhouPets
         public override bool InstancePerEntity => true;
         public override bool CanUseItem(Item item, Player player)
         {
-            if (player.HasBuff<MinorikoBuff>())
+            if (player.HasBuff<MinorikoBuff>() && GetInstance<PetAbilitiesConfig>().SpecialAbility)
             {
                 if (ItemID.Sets.IsFood[item.type] && item.buffType > 0)
                 {
@@ -21,10 +21,6 @@ namespace TouhouPets
                 }
             }
             return base.CanUseItem(item, player);
-        }
-        public override bool? UseItem(Item item, Player player)
-        {
-            return base.UseItem(item, player);
         }
         public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
         {
@@ -45,6 +41,7 @@ namespace TouhouPets
                         {
                             item.TurnToAir();
                         }
+
                         ParticleOrchestraSettings settings;
                         for (int z = 0; z < 8; z++)
                         {
@@ -61,6 +58,7 @@ namespace TouhouPets
                             MovementVector = Vector2.Zero,
                         };
                         ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.ShimmerTownNPC, settings);
+
                         Item.NewItem(item.GetSource_FromThis(), item.getRect(), ItemType<StarSapphire>());
                         break;
                     }
