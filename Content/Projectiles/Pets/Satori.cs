@@ -194,7 +194,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (eyeSparkScale > 0)
                     eyeSparkScale -= 0.02f;
             }
-            else if (GetInstance<PetAbilitiesConfig>().SpecialAbility)
+            else if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
             {
                 Owner.detectCreature = true;
             }

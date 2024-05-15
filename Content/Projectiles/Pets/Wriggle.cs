@@ -368,7 +368,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Timer % 2 == 0 && Owner.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
                 {
                     Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
-                    if (CheckEmptyPlace(point) && GetInstance<PetAbilitiesConfig>().SpecialAbility)
+                    if (CheckEmptyPlace(point) && GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), point
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
@@ -445,7 +445,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void AttractInsect()
         {
-            if (!GetInstance<PetAbilitiesConfig>().SpecialAbility)
+            if (!GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle)
                 return;
 
             foreach (NPC bug in Main.npc)

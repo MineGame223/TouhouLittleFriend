@@ -8,10 +8,6 @@ namespace TouhouPets
         public bool MurasasCurse => Player.HasBuff<MurasaBuff>() && Main.remixWorld;
 
         public bool treasureShine;
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            return GetInstance<PetAbilitiesConfig>().SpecialAbility;
-        }
         private void CommonResetUpdate()
         {
             treasureShine = false;
@@ -26,21 +22,23 @@ namespace TouhouPets
         }
         public override void ModifyLuck(ref float luck)
         {
-            if (Player.HasBuff(BuffType<HinaBuff>()))
+            if (Player.HasBuff(BuffType<HinaBuff>())
+                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Hina)
             {
                 if (luck < 0)
                 {
                     luck = 0;
                 }
             }
-            if (Player.HasBuff(BuffType<TenshiBuff>()))
+            if (Player.HasBuff(BuffType<TenshiBuff>())
+                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Tenshi)
             {
                 luck += 0.5f;
             }
         }
         public override void PostUpdateBuffs()
         {
-            if (treasureShine)
+            if (treasureShine && GetInstance<PetAbilitiesConfig>().SpecialAbility_Star)
             {
                 Player.spelunkerTimer++;
                 if (Player.spelunkerTimer >= 10)
@@ -52,7 +50,7 @@ namespace TouhouPets
         }
         public override void UpdateEquips()
         {
-            if (MurasasCurse)
+            if (MurasasCurse && GetInstance<PetAbilitiesConfig>().SpecialAbility_Murasa)
             {
                 Player.waterWalk = false;
 

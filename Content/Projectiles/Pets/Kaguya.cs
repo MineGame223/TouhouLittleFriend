@@ -431,7 +431,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (OwnerIsMyPlayer)
             {
-                if (Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility)
+                if (Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_MokuAndKaguya)
                 {
                     bool ableToFight = mainTimer % 60 == 0 && Main.rand.NextBool(2)
                         && FindPet(ProjectileType<Moku>(), false, 0, 1);

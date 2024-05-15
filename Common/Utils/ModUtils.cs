@@ -17,18 +17,22 @@ namespace TouhouPets
     internal static class ModUtils
     {
         /// <summary>
-        /// 打印带有物品贴图的文本
+        /// 输出单独控制Alpha值的颜色
         /// </summary>
-        /// <param name="id">物品ID</param>
+        /// <param name="color"></param>
+        /// <param name="alpha">Alpha值</param>
         /// <returns></returns>
-        public static string ItemText(int id)
+        public static Color ModifiedAlphaColor(this Color color, byte alpha = 0)
         {
-            StringBuilder result = new ("[i");
-            result.Append(':');
-            result.Append(id);
-            result.Append(']');
-            return result.ToString();
+            Color result = color;
+            result.A = alpha;
+            return result;
         }
+        /// <summary>
+        /// 宠物们默认的绘制位置
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <returns></returns>
         public static Vector2 DefaultDrawPetPosition(this Projectile projectile)
         {
             return projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
@@ -262,6 +266,19 @@ namespace TouhouPets
 
                 sb.DrawString(font, text, zero, color, rotation, origin, scale, SpriteEffects.None, 0f);
             }
+        }
+        /// <summary>
+        /// 打印带有物品贴图的文本
+        /// </summary>
+        /// <param name="id">物品ID</param>
+        /// <returns></returns>
+        public static string ItemText(int id)
+        {
+            StringBuilder result = new("[i");
+            result.Append(':');
+            result.Append(id);
+            result.Append(']');
+            return result.ToString();
         }
     }
 }

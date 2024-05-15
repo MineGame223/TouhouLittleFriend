@@ -4,23 +4,54 @@ Mods: {
 			PetAbilitiesConfig: {
 				DisplayName: 宠物能力配置
 
-				SpecialAbility: {
-					Label: 宠物拥有特殊能力
-					Tooltip:
-						'''
-						宠物能否拥有一些会对玩家产生影响的能力
-						部分能力如下：
-						[i:TouhouPets/HinaDoll]：防止运气掉到0以下
-						[i:TouhouPets/MinorikoSweetPotato]：吃食物所带来的增益时间延长10%
-						[i:TouhouPets/MurasaBailer]：GFB种子世界下会使玩家的水上行走能力失效、入水时会立刻溺水
-						[i:TouhouPets/SatoriSlippers]：每隔一段时间探查附近的生物
-						[i:TouhouPets/StarSapphire]：令附近的宝藏闪闪发亮
-						[i:TouhouPets/TenshiKeyStone]：增加0.5运气
-						[i:TouhouPets/WriggleInAJar]：每隔一段时间进行一次大范围照亮，可以吸引身边的昆虫
-						[i:TouhouPets/YukaSunflower]：玩家背包内拥有任何环境改造溶液时，可以作为环境改造枪使用
-						[i:TouhouPets/YuyukoFan]：玩家背包内或开启的虚空袋内有未被收藏的食物时，每隔一段时间就会随机吃掉一个
-						[i:TouhouPets/MokuMatch] 和 [i:TouhouPets/KaguyaBranch]：当玩家同时持有这两者、且挂机超过10秒后，两者会进行缠斗
-						'''
+				SpecialAbility_Hina: {
+					Label: "[i:TouhouPets/HinaDoll] {$Mods.TouhouPets.Items.HinaDoll.DisplayName}特殊能力"
+					Tooltip: 防止运气降低到0以下
+				}
+
+				SpecialAbility_Minoriko: {
+					Label: "[i:TouhouPets/MinorikoSweetPotato] {$Mods.TouhouPets.Items.MinorikoSweetPotato.DisplayName}特殊能力"
+					Tooltip: 吃食物所带来的增益时间延长10%
+				}
+
+				SpecialAbility_Murasa: {
+					Label: "[i:TouhouPets/MurasaBailer] {$Mods.TouhouPets.Items.MurasaBailer.DisplayName}特殊能力"
+					Tooltip: GFB种子世界下会使玩家的水上行走能力失效、入水时会立刻溺水
+				}
+
+				SpecialAbility_Satori: {
+					Label: "[i:TouhouPets/SatoriSlippers] {$Mods.TouhouPets.Items.SatoriSlippers.DisplayName}特殊能力"
+					Tooltip: 每隔一段时间探查附近的生物
+				}
+
+				SpecialAbility_Star: {
+					Label: "[i:TouhouPets/StarSapphire] {$Mods.TouhouPets.Items.StarSapphire.DisplayName}特殊能力"
+					Tooltip: 令附近的宝藏闪闪发亮
+				}
+
+				SpecialAbility_Tenshi: {
+					Label: "[i:TouhouPets/TenshiKeyStone] {$Mods.TouhouPets.Items.TenshiKeyStone.DisplayName}特殊能力"
+					Tooltip: 增加0.5运气
+				}
+
+				SpecialAbility_Wriggle: {
+					Label: "[i:TouhouPets/WriggleInAJar] {$Mods.TouhouPets.Items.WriggleInAJar.DisplayName}特殊能力"
+					Tooltip: 每隔一段时间进行一次大范围照亮，可以吸引身边的昆虫
+				}
+
+				SpecialAbility_Yuka: {
+					Label: "[i:TouhouPets/YukaSunflower] {$Mods.TouhouPets.Items.YukaSunflower.DisplayName}特殊能力"
+					Tooltip: 玩家背包内拥有任何环境改造溶液时，可以作为环境改造枪使用
+				}
+
+				SpecialAbility_Yuyuko: {
+					Label: "[i:TouhouPets/YuyukoFan] {$Mods.TouhouPets.Items.YuyukoFan.DisplayName}特殊能力"
+					Tooltip: 玩家背包内或开启的虚空袋内有未被收藏的食物时，每隔一段时间就会随机吃掉一个
+				}
+
+				SpecialAbility_MokuAndKaguya: {
+					Label: "[i:TouhouPets/MokuMatch] & [i:TouhouPets/KaguyaBranch] {$Mods.TouhouPets.Items.MokuMatch.DisplayName}与{$Mods.TouhouPets.Items.KaguyaBranch.DisplayName}的特殊能力"
+					Tooltip: 当玩家同时持有这两者、且挂机超过10秒后，两者会进行缠斗
 				}
 			}
 

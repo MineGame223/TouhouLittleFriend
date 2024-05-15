@@ -3,6 +3,8 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
+关于与灾厄模组的冲突问题，目前可以确认是灾厄单方面的问题，如果造成困扰请在打Boss时暂时卸下宠物
+
 新增：
 加入了数条游戏小提示
 加入了一根漏水的瓢

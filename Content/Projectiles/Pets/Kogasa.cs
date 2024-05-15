@@ -225,10 +225,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Blink()
         {
             Projectile.frame = 0;
-            if (blinkFrame < 14)
-            {
-                blinkFrame = 14;
-            }
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;
@@ -251,10 +247,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void UmbrellaBlink()
         {
             Projectile.frame = 0;
-            if (blinkFrame < 14)
-            {
-                blinkFrame = 14;
-            }
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;

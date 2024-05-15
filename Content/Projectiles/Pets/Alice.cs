@@ -79,12 +79,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawPetConfig config = drawConfig with
             {
                 ShouldUseEntitySpriteDraw = true,
-            };
-            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
+            };      
             for (int i = 0; i < 8; i++)
             {
                 Vector2 spinningpoint = new Vector2(0f, -1f);
-                Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.4f,
+                Color clr = Projectile.GetAlpha(Color.White).ModifiedAlphaColor();
+                Projectile.DrawPet(auraFrame, clr * 0.3f,
                     config with
                     {
                         PositionOffset = spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly
@@ -92,10 +92,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                     , 1);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
-            Projectile.DrawStateNormalizeForPet();
 
-            Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.4f, config, 1);
+            Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.7f, config, 1);
         }
         public override Color ChatTextColor => new Color(185, 228, 255);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)

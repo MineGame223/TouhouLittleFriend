@@ -95,10 +95,10 @@ namespace TouhouPets
         /// 宠物当前是否已说完话或尚未准备说话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns>当 chatTimeLeft 小于等于 1 且 chatOpacity 小于等于 0 时返回 true</returns>
+        /// <returns>当 chatTimeLeft 小于等于 1 时返回 true</returns>
         public static bool CurrentDialogFinished(this Projectile projectile)
         {
-            return projectile.ToPetClass().chatTimeLeft <= 1 && projectile.ToPetClass().chatOpacity <= 0;
+            return projectile.ToPetClass().chatTimeLeft <= 1;
         }
         /// <summary>
         /// 关闭当前宠物的对话（将chatTimeLeft设为0）

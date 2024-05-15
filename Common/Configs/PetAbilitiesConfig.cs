@@ -8,7 +8,33 @@ namespace TouhouPets
         public override ConfigScope Mode => ConfigScope.ServerSide;
 
         [DefaultValue(true)]
-        [ReloadRequired]
-        public bool SpecialAbility;
+        public bool SpecialAbility_Hina;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Minoriko;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Murasa;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Satori;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Star;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Tenshi;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Wriggle;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Yuka;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Yuyuko;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_MokuAndKaguya;
     }
 }
