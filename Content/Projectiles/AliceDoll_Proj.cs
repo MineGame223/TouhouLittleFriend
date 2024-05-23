@@ -53,7 +53,7 @@ namespace TouhouPets.Content.Projectiles
             Vector2 orig = new Vector2(tex.Width / 2, 0);
             float rot = startP.DirectionTo(Projectile.Center).ToRotation() + MathHelper.PiOver2;
             Main.EntitySpriteDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
         }
         Projectile Alice
         {

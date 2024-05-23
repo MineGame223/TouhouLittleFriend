@@ -65,7 +65,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                 });
             Projectile.DrawPet(clothFrame, lightColor, config);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (Projectile.frame == 9)
             {
@@ -76,7 +76,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void DrawUmbrella(Color lightColor)
         {
             int type = ItemID.TragicUmbrella;
-            Main.instance.LoadItem(type);
+            //Main.instance.LoadItem(type);
             Texture2D tex = AltVanillaFunction.ItemTexture(type);
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(13 * Projectile.spriteDirection, -20) + new Vector2(0, 7f * Main.essScale);
             Color clr = Projectile.GetAlpha(lightColor);
@@ -245,7 +245,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (OwnerIsMyPlayer)
             {
-                if (FindPet(out Projectile master, ProjectileType<Remilia>(), -1, 0, false) && !IsSevring)
+                if (FindPet(out Projectile master, ProjectileType<Remilia>(), -1, 0, false)
+                    && CurrentState != States.Serve)
                 {
                     if (ShouldDefense(Projectile))
                     {

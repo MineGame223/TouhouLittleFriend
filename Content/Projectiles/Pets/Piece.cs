@@ -47,7 +47,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                     ShouldUseEntitySpriteDraw = true,
                 });
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             DrawTorch(lightColor);
             return false;
@@ -56,16 +56,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.DrawPet(11, lightColor, drawConfig);
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
+            Color clr = (Color.White * 0.2f).ModifiedAlphaColor();
             for (int i = 0; i < 7; i++)
             {
-                Projectile.DrawPet(11, Color.White * 0.5f,
+                Projectile.DrawPet(11, clr,
                     drawConfig with
                     {
                         PositionOffset = new Vector2(Main.rand.Next(-10, 11) * 0.25f, Main.rand.Next(-10, 11) * 0.25f),
                     });
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
         public override Color ChatTextColor => new Color(255, 119, 187);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)

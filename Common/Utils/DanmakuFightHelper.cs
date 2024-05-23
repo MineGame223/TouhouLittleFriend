@@ -200,11 +200,11 @@ namespace TouhouPets
         }
         public static void HandleHurt(this Projectile projectile, ref int health, bool isPlayerA = true)
         {
-            foreach (Projectile p in Main.projectile)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
                 if (p.TryGetGlobalProjectile(out TouhouPetGlobalProj gp))
                 {
-                    if (p.active && (isPlayerA && gp.belongsToPlayerB || !isPlayerA && gp.belongsToPlayerA))
+                    if (isPlayerA && gp.belongsToPlayerB || !isPlayerA && gp.belongsToPlayerA)
                     {
                         if (projectile.getRect().Intersects(p.getRect()) && p.timeLeft > 0)
                         {

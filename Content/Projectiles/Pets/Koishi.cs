@@ -87,7 +87,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                 });
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (CurrentState == States.Annoying)
                 Projectile.DrawPet(annoyingFrame, lightColor, drawConfig, 1);

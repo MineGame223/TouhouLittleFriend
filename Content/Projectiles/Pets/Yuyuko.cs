@@ -72,7 +72,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
             Projectile.DrawPet(hatFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
@@ -83,7 +83,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                 });
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (!Main.gameMenu)//避免有魂灵Mod冲突
             {
@@ -99,7 +99,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (food.IsAir)
                 return;
 
-            Main.instance.LoadItem(food.type);
             Texture2D t = AltVanillaFunction.ItemTexture(food.type);
             Vector2 pos = Projectile.Center + new Vector2(10 * Projectile.spriteDirection, -3) + new Vector2(extraAdjX, extraAdjY) - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             int height = t.Height / 3;
@@ -573,7 +572,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                     fd = foodList[Main.rand.Next(foodList.Count - 1)];
+
                 food = new Item(fd.type);
+                Main.instance.LoadItem(food.type);
+
                 fd.stack--;
                 if (fd.stack <= 0)
                 {

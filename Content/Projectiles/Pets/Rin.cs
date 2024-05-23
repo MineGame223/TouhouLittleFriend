@@ -70,7 +70,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(swingFrame + 4, lightColor, config, 1);
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.DrawPet(swingFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, Color.White * 0.8f, drawConfig, 2);
             return false;

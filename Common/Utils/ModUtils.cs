@@ -112,17 +112,6 @@ namespace TouhouPets
             tooltips.Insert(index, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
         }
         /// <summary>
-        /// 将宠物的绘制状态重置，防止被染料的Shader影响
-        /// <br>仅需要插在不需要着色的语句之前和执行着色的语句之后</br>
-        /// </summary>
-        public static void DrawStateNormalizeForPet(this Projectile projectile)
-        {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState
-                , DepthStencilState.None, Main.Rasterizer, null
-                , projectile.isAPreviewDummy ? Main.UIScaleMatrix : Main.Transform);
-        }
-        /// <summary>
         /// 获取对话文本
         /// </summary>
         /// <param name="tag">角色对应标签</param>
@@ -196,29 +185,26 @@ namespace TouhouPets
             return false;
         }
         /// <summary>
-        /// 快速设置Additive模式绘制
+        /// 将宠物的绘制状态重置，防止被染料的Shader影响
+        /// <br>仅需要插在不需要着色的语句之前和执行着色的语句之后</br>
+        /// </summary>
+        public static void ResetDrawStateForPet(this Projectile projectile)
+        {
+            Main.spriteBatch.QuickEndAndBegin(true, projectile.isAPreviewDummy);
+        }
+        /// <summary>
+        /// 快速设置End Begin
         /// </summary>
         /// <param name="spriteBatch"></param>
-        /// <param name="start">开启or关闭。设置非默认混合模式时，开启后必须设置关闭</param>
-        /// <param name="state">混合模式，默认为Additive</param>
+        /// <param name="immedaite">是否立刻渲染，必须与默认渲染模式形成闭合</param>
+        /// <param name="state">混合模式，默认为AlphaBlend</param>
         /// <param name="useUIMatrix">是否采用UI矩阵转换</param>
-        public static void QuickToggleAdditiveMode(this SpriteBatch spriteBatch, bool start, bool useUIMatrix = false, BlendState state = default)
+        public static void QuickEndAndBegin(this SpriteBatch spriteBatch, bool immedaite, bool useUIMatrix = false, BlendState state = null)
         {
-            if (state == default)
-            {
-                state = BlendState.Additive;
-            }
-            if (start)
-            {
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, state, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
-            }
-            else
-            {
-                //Main.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
-            }
+            spriteBatch.End();
+            spriteBatch.Begin(immedaite ? SpriteSortMode.Immediate : SpriteSortMode.Deferred, state ?? BlendState.AlphaBlend
+                , Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null
+                , useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
         }
         /// <summary>
         /// 绘制带有边框的文字，允许设置旋转

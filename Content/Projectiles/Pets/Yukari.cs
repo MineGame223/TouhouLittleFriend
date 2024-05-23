@@ -41,7 +41,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
 
             DrawGap(lightColor);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(hairFrame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
@@ -79,7 +79,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                        PositionOffset = gapPos,
                    });
             }
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(gapFrame, Color.White * 0.9f * Main.essScale, drawConfig);
             Projectile.DrawPet(gapFrame, lightColor, config);

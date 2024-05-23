@@ -37,7 +37,7 @@ namespace TouhouPets.Content.Projectiles
 
             Player player = Main.player[Projectile.owner];
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true, false, BlendState.AlphaBlend);
+            Main.spriteBatch.QuickEndAndBegin(true);
 
             DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig,
                 Projectile.scale, SpriteEffects.None, 0);
@@ -50,7 +50,7 @@ namespace TouhouPets.Content.Projectiles
                 data.Draw(Main.spriteBatch);
             }
 
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickEndAndBegin(false);
             return false;
         }
         public override void AI()

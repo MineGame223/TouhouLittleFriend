@@ -73,7 +73,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (CurrentState < States.Flying)
             {

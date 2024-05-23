@@ -36,13 +36,13 @@ namespace TouhouPets.Content.Projectiles
 
             Player player = Main.player[Projectile.owner];
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true, false, BlendState.AlphaBlend);
+            Main.spriteBatch.QuickEndAndBegin(true);
 
             DrawData data = new DrawData(tex, pos, rect, clr, Projectile.rotation, orig, 1f, SpriteEffects.None, 0);
             GameShaders.Armor.Apply(player.cLight, Projectile, data);
             data.Draw(Main.spriteBatch);
 
-            Main.spriteBatch.QuickToggleAdditiveMode(false);
+            Main.spriteBatch.QuickEndAndBegin(false);
             return false;
         }
         public override void AI()

@@ -112,7 +112,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(legFrame, lightColor, config, 2);
             Projectile.DrawPet(legFrame, lightColor, config2, 2);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.DrawPet(Projectile.frame, Projectile.GetAlpha(Color.White * 0.6f), config3);
@@ -124,7 +124,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Projectile.DrawPet(Projectile.frame, lightColor, config2, 0);
             Projectile.DrawPet(clothFrame, lightColor, config2, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
         }
         public override Color ChatTextColor => new Color(255, 10, 10);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)

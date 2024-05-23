@@ -62,7 +62,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PositionOffset = new Vector2(0, 3f * Main.essScale),
                     ShouldUseEntitySpriteDraw = true,
                 }, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 

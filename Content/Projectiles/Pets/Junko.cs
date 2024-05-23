@@ -56,8 +56,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override bool PreDraw(ref Color lightColor)
         {
             DrawTail();
-
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
@@ -83,7 +82,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 pos = Projectile.DefaultDrawPetPosition() + extraPos;
             Vector2 orig = new Vector2(rect.Width / 2, rect.Height);
 
-            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
+            Main.spriteBatch.QuickEndAndBegin(true, Projectile.isAPreviewDummy, BlendState.Additive);
             for (int i = -4; i <= 4; i++)
             {
                 Color clr = Projectile.GetAlpha(Color.White * (1 - Math.Abs(i * 0.12f)));
@@ -95,7 +94,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.EntitySpriteDraw(tex, pos, rect, clr * 0.5f, Projectile.rotation + rot2, orig, scale, SpriteEffects.None);
                 Main.EntitySpriteDraw(tex, pos, rect, clr, Projectile.rotation + rot, orig, scale, SpriteEffects.None);
             }
-            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
+            Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
         }
         public override Color ChatTextColor => new Color(254, 159, 75);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)

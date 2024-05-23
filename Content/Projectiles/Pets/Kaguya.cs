@@ -81,7 +81,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 DrawDanmakuRing();
             }
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(hairFrame, lightColor,
                 drawConfig with
@@ -101,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
 
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (OwnerIsMyPlayer && IsBattleState)
             {
@@ -129,7 +129,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void DrawDanmakuRing()
         {
             Texture2D t = AltVanillaFunction.ExtraTexture(ExtrasID.CultistRitual);
-            Main.instance.LoadProjectile(ProjectileID.CultistRitual);
+            //Main.instance.LoadProjectile(ProjectileID.CultistRitual);
             Texture2D t2 = AltVanillaFunction.ProjectileTexture(ProjectileID.CultistRitual);
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new Rectangle(0, 0, t.Width, t.Height);
@@ -560,17 +560,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (FindPet(ProjectileType<Moku>(), false, (int)States.Lose))
                 {
-                    CombatText.NewText(Projectile.getRect(), Color.Yellow, "WIN!", true, false);
-
                     PlayerA_Source++;
                     Timer = 0;
                     CurrentState = States.Win;
                 }
                 else if (health <= 0)
                 {
-                    Projectile.FailEffect();
-                    CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
-
                     Timer = 0;
                     CurrentState = States.Lose;
                 }
@@ -597,9 +592,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 17;
             }
+            if (Timer == 0)
+            {
+                CombatText.NewText(Projectile.getRect(), Color.Yellow, "WIN!", true, false);
+            }
+            Timer++;
             if (OwnerIsMyPlayer)
             {
-                if (Timer == 0)
+                if (Timer == 30)
                 {
                     int chance = Main.rand.Next(3);
                     switch (chance)
@@ -615,7 +615,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             break;
                     }
                 }
-                if (++Timer > 480 || FindPet(ProjectileType<Moku>(), false, (int)States.BeforeBattle))
+                if (Timer > 480 || FindPet(ProjectileType<Moku>(), false, (int)States.BeforeBattle))
                 {
                     Timer = 0;
                     CurrentState = States.BeforeBattle;
@@ -639,9 +639,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 19;
             }
+            if (Timer == 0)
+            {
+                Projectile.FailEffect();
+                CombatText.NewText(Projectile.getRect(), Color.Gray, "lose...", true, false);
+            }
+            Timer++;
             if (OwnerIsMyPlayer)
             {
-                if (Timer == 0)
+                if (Timer == 30)
                 {
                     int chance = Main.rand.Next(3);
                     switch (chance)
@@ -657,7 +663,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             break;
                     }
                 }
-                if (++Timer > 480 || FindPet(ProjectileType<Moku>(), false, (int)States.BeforeBattle))
+                if (Timer > 480 || FindPet(ProjectileType<Moku>(), false, (int)States.BeforeBattle))
                 {
                     Timer = 0;
                     CurrentState = States.BeforeBattle;
