@@ -79,7 +79,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     PositionOffset = headPosAdj,
                 }, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (CurrentState == States.Blink || ShouldCloseEyes)
                 Projectile.DrawPet(blinkFrame, lightColor, config2, 1);

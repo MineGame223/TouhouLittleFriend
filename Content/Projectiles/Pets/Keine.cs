@@ -43,7 +43,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
             int currentRow = IsAltForm ? 1 : 0;
             Projectile.DrawPet(auraFrame, Color.White, config, currentRow);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(hairFrame, lightColor, drawConfig, currentRow);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig, currentRow);

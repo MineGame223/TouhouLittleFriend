@@ -54,7 +54,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     AltTexture = clothTex,
                 });
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, Color.White * 0.7f,
                 drawConfig with

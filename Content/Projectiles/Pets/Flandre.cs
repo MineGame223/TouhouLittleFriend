@@ -65,7 +65,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
 
             DrawWing(lightColor);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
@@ -92,32 +92,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 PositionOffset = new Vector2(extraAdjX, extraAdjY),
             };
             Projectile.DrawPet(wingFrame, lightColor, config);
-
-            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
-            for (int i = -1; i <= 1; i++)
-            {
-                if (i == 0)
-                    continue;
-
-                Vector2 offset = new Vector2(extraAdjX, extraAdjY);
-                DrawPetConfig config2 = config with
-                {
-                    AltTexture = glowTex,
-                    Scale = 0.95f,
-                    PositionOffset = offset,
-                };
-                Projectile.DrawPet(wingFrame, Color.White * 0.4f,
-                    config2 with
-                    {
-                        PositionOffset = offset + new Vector2(0, i).RotatedBy(Main.GlobalTimeWrappedHourly),
-                    });
-                Projectile.DrawPet(wingFrame, Color.White * 0.4f,
-                    config2 with
-                    {
-                        PositionOffset = offset + new Vector2(i, 0).RotatedBy(Main.GlobalTimeWrappedHourly),
-                    });
-            }
-            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
 
             Projectile.DrawPet(wingFrame, Color.White * 0.6f,
                     config with

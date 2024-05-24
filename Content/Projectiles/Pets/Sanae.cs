@@ -63,21 +63,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (auraScale > 0)
             {
                 float time = Main.GlobalTimeWrappedHourly * 6f;
-                Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
+                Color clr = (Color.SeaGreen * 0.3f).ModifiedAlphaColor();
                 for (int o = 0; o < 8; o++)
                 {
                     for (int i = -1; i <= 1; i++)
                     {
                         Vector2 auraPos = new Vector2(2.5f * auraScale * (float)Math.Sin(time), 0);
-                        DrawSanaeAura(Color.SeaGreen * 0.4f, auraPos.RotatedBy(MathHelper.Pi * i));
+                        DrawSanaeAura(clr, auraPos.RotatedBy(MathHelper.Pi * i));
 
                         auraPos = new Vector2(0, 2.5f * auraScale * (float)Math.Sin(time));
-                        DrawSanaeAura(Color.SeaGreen * 0.4f, auraPos.RotatedBy(MathHelper.Pi * i));
+                        DrawSanaeAura(clr, auraPos.RotatedBy(MathHelper.Pi * i));
                     }
                 }
-                Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
             }
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             DrawSanae(lightColor);
             return false;
@@ -106,7 +105,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     AltTexture = clothTex,
                 });
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (CurrentState < States.Flying)
             {

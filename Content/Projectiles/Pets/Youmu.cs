@@ -62,7 +62,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         ShouldUseEntitySpriteDraw = true,
                     }, 1);
             }
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (Projectile.frame != 4)
                 Projectile.DrawPet(10, lightColor, drawConfig);
@@ -75,7 +75,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config2);
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             Projectile.DrawPet(clothFrame + 4, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (Projectile.frame >= 1 && Projectile.frame <= 4)
             {

@@ -68,7 +68,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     AltTexture = glowTex,
                 });
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -76,7 +76,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     AltTexture = clothTex,
                 });
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             DrawEye();
             return false;

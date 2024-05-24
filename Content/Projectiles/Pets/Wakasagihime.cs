@@ -77,7 +77,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         PositionOffset = new Vector2(0, extraHeight) + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f),
                     });
             }
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(8, lightColor,
                     drawConfig with

@@ -84,7 +84,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     ShouldUseEntitySpriteDraw = true,
                 }, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
@@ -101,23 +101,21 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             if (Projectile.frame == 3)
             {
-                Projectile.DrawStateNormalizeForPet();
+                Projectile.ResetDrawStateForPet();
                 DrawShotSpark();
             }
             return false;
         }
         private void DrawShotSpark()
         {
-            Main.spriteBatch.QuickToggleAdditiveMode(true, Projectile.isAPreviewDummy);
             Texture2D t = AltVanillaFunction.ExtraTexture(ExtrasID.ThePerfectGlow);
             Vector2 pos = Projectile.Center + new Vector2(14 * Projectile.spriteDirection, -10) - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new Rectangle(0, 0, t.Width, t.Height);
             Vector2 orig = rect.Size() / 2;
-            Color clr = Projectile.GetAlpha(Color.White) * flash;
+            Color clr = Projectile.GetAlpha(Color.White * flash).ModifiedAlphaColor();
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Main.spriteBatch.TeaNPCDraw(t, pos, rect, clr, Projectile.rotation, orig, new Vector2(0.4f, 0.5f) * flash * 1.6f, effect, 0f);
             Main.spriteBatch.TeaNPCDraw(t, pos, rect, clr, Projectile.rotation + MathHelper.Pi / 2, orig, new Vector2(0.5f, 1f) * flash * 1.6f, effect, 0f);
-            Main.spriteBatch.QuickToggleAdditiveMode(false, Projectile.isAPreviewDummy);
         }
         public override Color ChatTextColor => new Color(255, 102, 85);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)

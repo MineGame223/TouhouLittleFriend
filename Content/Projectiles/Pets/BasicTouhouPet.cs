@@ -608,7 +608,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostDraw(Color lightColor)
         {
-            Projectile.DrawStateNormalizeForPet();
+            //Projectile.DrawStateNormalizeForPet();
             if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);

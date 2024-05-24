@@ -1,5 +1,7 @@
 global using Terraria.ModLoader;
 global using static Terraria.ModLoader.ModContent;
+using Terraria;
+using Terraria.ID;
 
 namespace TouhouPets
 {
@@ -22,6 +24,17 @@ namespace TouhouPets
             {
                 ShopLookupSupport.Setup(result);
             }
+            LoadVanillaTextures();
+        }
+        private static void LoadVanillaTextures()
+        {
+            if (Main.dedServ)
+                return;
+
+            Main.instance.LoadItem(ItemID.TragicUmbrella);
+            Main.instance.LoadItem(ItemID.Umbrella);
+            Main.instance.LoadFlameRing();
+            Main.instance.LoadProjectile(ProjectileID.CultistRitual);
         }
     }
 }

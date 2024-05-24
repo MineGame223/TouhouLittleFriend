@@ -16,22 +16,30 @@ namespace TouhouPets
         private static int sprayMode;
         private static Projectile yuka;
         private static Item solution;
-        private static int sprayState;
 
         public const int Phase_Spray_Mode1 = 3;
         public const int Phase_Spray_Mode2 = 4;
         public const int Phase_StopSpray = 5;
         public static Item Sprayer => new(ItemID.Clentaminator2);
         public static bool IsSpraying => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
+        public static Item Solution { get => solution; set => solution = value; }
         private static float PetState
         {
             get
             {
-                return (yuka == null) ? 0 : yuka.ai[1];
+                if (yuka == null)
+                    return 0;
+
+                return yuka.ToPetClass().PetState;
             }
-        }
-        public static int SprayState { get => sprayState; set => sprayState = value; }
-        public static Item Solution { get => solution; set => solution = value; }
+            set
+            {
+                if (yuka == null)
+                    return;
+
+                yuka.ToPetClass().PetState = (int)value;
+            }
+        }  
         public override void PostUpdateProjectiles()
         {
             if (Main.netMode == NetmodeID.Server || !GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka)
@@ -105,7 +113,7 @@ namespace TouhouPets
                 return;
 
             if (!IsSpraying)
-                Solution = new Item();
+                solution = new Item();
 
             bool request = false;
             Player player = Main.player[yuka.owner];
@@ -117,20 +125,22 @@ namespace TouhouPets
                 {
                     player.mouseInterface = true;
                     request = true;
-                    Solution = player.ChooseAmmo(Sprayer);
-                    if (yukaRect.Contains(new Point(Main.mouseX, Main.mouseY)) && Solution != null && !Solution.IsAir)
+                    solution = player.ChooseAmmo(Sprayer);
+                    if (yukaRect.Contains(new Point(Main.mouseX, Main.mouseY)) && solution != null && !solution.IsAir)
                     {
                         if (Main.mouseRight && Main.mouseRightRelease)
                         {
                             int targetMode = sprayMode == 0 ? Phase_Spray_Mode1 : Phase_Spray_Mode2;
                             if (PetState != targetMode)
                             {
-                                SprayState = targetMode;
+                                PetState = targetMode;
+                                yuka.netUpdate = true;
                                 AltVanillaFunction.PlaySound(SoundID.MenuOpen, yuka.position);
                             }
                             else
                             {
-                                SprayState = Phase_StopSpray;
+                                PetState = Phase_StopSpray;
+                                yuka.netUpdate = true;
                                 AltVanillaFunction.PlaySound(SoundID.MenuClose, yuka.position);
                             }
                         }
@@ -149,18 +159,18 @@ namespace TouhouPets
         }
         private static void DrawLeftSolution(bool drawRequestText)
         {
-            if (Solution == null || Solution.IsAir)
+            if (solution == null || solution.IsAir)
             {
                 return;
             }
-            Main.instance.LoadItem(Solution.type);
-            Texture2D t = AltVanillaFunction.ItemTexture(Solution.type);
+            Main.instance.LoadItem(solution.type);
+            Texture2D t = AltVanillaFunction.ItemTexture(solution.type);
             Vector2 pos = yuka.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale)
                 + new Vector2(-20, -50);
             Rectangle rect = new(0, 0, t.Width, t.Height);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = SpriteEffects.None;
-            if (Solution.ammo != AmmoID.None)
+            if (solution.ammo != AmmoID.None)
             {
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, 1.3f, effect, 0f);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value

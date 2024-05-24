@@ -68,7 +68,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
 
             Projectile.DrawPet(auraFrame, Color.White, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(hairFrame, lightColor,
                 drawConfig with
@@ -101,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void DrawUmbrella(Color lightColor)
         {
             int type = ItemID.Umbrella;
-            Main.instance.LoadItem(type);
+            //Main.instance.LoadItem(type);
             Texture2D tex = AltVanillaFunction.ItemTexture(type);
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(17 * Projectile.spriteDirection, -20) + new Vector2(0, 7f * Main.essScale);
             Color clr = Projectile.GetAlpha(lightColor);

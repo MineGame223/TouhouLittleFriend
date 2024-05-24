@@ -64,7 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }, 1);
 
             Projectile.DrawPet(backFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 

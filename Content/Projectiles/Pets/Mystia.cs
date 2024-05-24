@@ -77,7 +77,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     ShouldUseEntitySpriteDraw = true,
                 });
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (blackDye)
                 Projectile.DrawPet(clothFrame, lightColor,

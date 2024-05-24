@@ -68,7 +68,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(12, lightColor, drawConfig);
             Projectile.DrawPet(12, lightColor, config);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (CurrentState > States.Idle)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
@@ -78,7 +78,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     ShouldUseEntitySpriteDraw = true,
                 }, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, config);

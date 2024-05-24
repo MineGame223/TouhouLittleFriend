@@ -6,17 +6,17 @@ Mods: {
 
 				SpecialAbility_Hina: {
 					// Label: "[i:TouhouPets/HinaDoll] {$Mods.TouhouPets.Items.HinaDoll.DisplayName}'s Special Ability"
-					// Tooltip: Prevents your luck less than 0
+					// Tooltip: Prevents your luck from falling below 0
 				}
 
 				SpecialAbility_Minoriko: {
 					// Label: "[i:TouhouPets/MinorikoSweetPotato] {$Mods.TouhouPets.Items.MinorikoSweetPotato.DisplayName}'s Special Ability"
-					// Tooltip: Buff time bring by food extend 10%
+					// Tooltip: Food Buff duration increased by 10%
 				}
 
 				SpecialAbility_Murasa: {
 					// Label: "[i:TouhouPets/MurasaBailer] {$Mods.TouhouPets.Items.MurasaBailer.DisplayName}'s Special Ability"
-					// Tooltip: When in GFB World, player can no longer walk on water, and immediately drown when into water
+					// Tooltip: When in a GFB World, the player can no longer walk on water, and will immediately drown when underwater
 				}
 
 				SpecialAbility_Satori: {
@@ -26,7 +26,7 @@ Mods: {
 
 				SpecialAbility_Star: {
 					// Label: "[i:TouhouPets/StarSapphire] {$Mods.TouhouPets.Items.StarSapphire.DisplayName}'s Special Ability"
-					// Tooltip: Makes surrounding treasures shine
+					// Tooltip: Makes nearby treasures shine
 				}
 
 				SpecialAbility_Tenshi: {
@@ -36,22 +36,22 @@ Mods: {
 
 				SpecialAbility_Wriggle: {
 					// Label: "[i:TouhouPets/WriggleInAJar] {$Mods.TouhouPets.Items.WriggleInAJar.DisplayName}'s Special Ability"
-					// Tooltip: Regularly lighten a large area, can attract insects
+					// Tooltip: Regularly illuminates a large area, and can also attract insects
 				}
 
 				SpecialAbility_Yuka: {
 					// Label: "[i:TouhouPets/YukaSunflower] {$Mods.TouhouPets.Items.YukaSunflower.DisplayName}'s Special Ability"
-					// Tooltip: Can be used as a clentaminator while there are any color solutions in inventory
+					// Tooltip: Can be used as a Clentaminator if there are any color solutions in your inventory
 				}
 
 				SpecialAbility_Yuyuko: {
 					// Label: "[i:TouhouPets/YuyukoFan] {$Mods.TouhouPets.Items.YuyukoFan.DisplayName}'s Special Ability"
-					// Tooltip: If there are any foods in inventory or opened void bag, regularly eat one
+					// Tooltip: If there is any food in your inventory or opened Void Bag, one item will be consumed regularly
 				}
 
 				SpecialAbility_MokuAndKaguya: {
 					// Label: "[i:TouhouPets/MokuMatch] & [i:TouhouPets/KaguyaBranch] {$Mods.TouhouPets.Items.MokuMatch.DisplayName} and {$Mods.TouhouPets.Items.KaguyaBranch.DisplayName}'s Special Abilities"
-					// Tooltip: After player AFK longer than 10s, they will fight each other
+					// Tooltip: After the player is AFK for longer than 10s, they will start fighting each other
 				}
 			}
 

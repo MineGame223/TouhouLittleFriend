@@ -72,7 +72,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                 });
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             if (Projectile.frame == 8)
             {
@@ -142,14 +142,6 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (OwnerIsMyPlayer)
-            {
-                if (PetState != SprayState && SprayState > 0)
-                {
-                    PetState = SprayState;
-                    Projectile.netUpdate = true;
-                }
-            }
             switch (CurrentState)
             {
                 case States.Blink:
@@ -240,6 +232,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Solution = Owner.ChooseAmmo(Sprayer);
             if (Solution == null || Solution.IsAir)
             {
+                solutionClone.TurnToAir();
                 CurrentState = States.StopSpraying;
                 return;
             }
@@ -293,12 +286,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                 }
             }
-            if (OwnerIsMyPlayer && Solution.stack <= 0)
-            {
-                Solution.TurnToAir();
-                solutionClone.TurnToAir();
-                CurrentState = States.StopSpraying;
-            }
         }
         private void StopSpraying()
         {
@@ -333,7 +320,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (OwnerIsMyPlayer)
                 {
                     Timer = 0;
-                    SprayState = -1;
                     CurrentState = States.Idle;
                 }
             }

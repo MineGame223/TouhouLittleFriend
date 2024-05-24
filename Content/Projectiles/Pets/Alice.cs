@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -59,7 +60,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
 
             DrawAura();
-            Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
@@ -79,21 +80,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawPetConfig config = drawConfig with
             {
                 ShouldUseEntitySpriteDraw = true,
-            };      
-            for (int i = 0; i < 8; i++)
+            };
+            for (int i = 0; i < 3; i++)
             {
-                Vector2 spinningpoint = new Vector2(0f, -1f);
-                Color clr = Projectile.GetAlpha(Color.White).ModifiedAlphaColor();
-                Projectile.DrawPet(auraFrame, clr * 0.3f,
+                Vector2 spinningpoint = new Vector2(0f, -1.4f);
+                Color clr = (Color.White * 0.3f).ModifiedAlphaColor();
+                Projectile.DrawPet(auraFrame, clr,
                     config with
                     {
                         PositionOffset = spinningpoint.RotatedBy(MathHelper.TwoPi * Main.GlobalTimeWrappedHourly
-                        + MathHelper.TwoPi / 8 * i * 0.6f)
+                        + MathHelper.TwoPi / 3 * i)
                     }
                     , 1);
             }
-
-            Projectile.DrawPet(auraFrame, Projectile.GetAlpha(Color.White) * 0.7f, config, 1);
+            Projectile.DrawPet(auraFrame, Color.White * 0.7f, config, 1);
         }
         public override Color ChatTextColor => new Color(185, 228, 255);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
