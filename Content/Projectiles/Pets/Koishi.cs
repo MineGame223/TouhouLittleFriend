@@ -53,6 +53,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int clothFrame, clothFrameCounter;
         private int annoyingFrame, annoyingFrameCounter;
         private int killCD;
+        private Vector2 eyePosition, eyePositionOffset;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
@@ -69,12 +70,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            float t2 = Main.GlobalTimeWrappedHourly * 2f;
-            Vector2 eyeAdj = new Vector2(1.2f * (float)Math.Cos(t2), 0.35f * (float)Math.Sin(t2)) * 26f;
-            Vector2 eyePos = Projectile.Center - Main.screenPosition + eyeAdj + new Vector2(0, 8);
-
-            if (eyeAdj.Y <= 0)
-                DrawEye(eyePos, lightColor);
+            if (eyePositionOffset.Y <= 0)
+                DrawEye(eyePosition - Main.screenPosition, lightColor);
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
@@ -92,8 +89,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (CurrentState == States.Annoying)
                 Projectile.DrawPet(annoyingFrame, lightColor, drawConfig, 1);
 
-            if (eyeAdj.Y > 0)
-                DrawEye(eyePos, lightColor);
+            if (eyePositionOffset.Y > 0)
+                DrawEye(eyePosition - Main.screenPosition, lightColor);
             return false;
         }
         private void DrawEye(Vector2 eyePos, Color lightColor)
@@ -131,6 +128,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
+            if (Projectile.isAPreviewDummy)
+            {
+                UpdateEyePosition();
+            }
         }
         private void UpdateTalking()
         {
@@ -240,7 +241,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
+            
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;
@@ -249,6 +250,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 killCD--;
             }
+            UpdateEyePosition();
+        }
+        private void UpdateEyePosition()
+        {
+            float time = Main.GlobalTimeWrappedHourly * 2f;
+            eyePositionOffset = new Vector2(1.2f * (float)Math.Cos(time), 0.35f * (float)Math.Sin(time)) * 26f;
+            eyePosition = Projectile.Center + eyePositionOffset + new Vector2(0, 8);
         }
         private bool ShouldKillPlayer()
         {

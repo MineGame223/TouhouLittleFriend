@@ -124,7 +124,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[1]);
                 }
-                if (PetState > 1)
+                if (IsReading)
                 {
                     chat.Add(ChatDictionary[2]);
                     chat.Add(ChatDictionary[3]);

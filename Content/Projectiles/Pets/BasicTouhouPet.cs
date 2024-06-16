@@ -212,7 +212,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         string chara = array2[l].ToString();
                         float xOffset = FontAssets.MouseText.Value.MeasureString(text.Remove(l)).X;
-                        ModUtils.MyDrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
+                        DrawUtils.MyDrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
                             , chara, pos.X + xOffset + Main.rand.Next(-2, 2)
                             , pos.Y + orig.Y / 2 + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale + Main.rand.Next(-2, 2)
                             , color * alpha, boardColor * alpha, orig, chatScale * totalScale);
@@ -608,7 +608,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostDraw(Color lightColor)
         {
-            //Projectile.DrawStateNormalizeForPet();
+            Projectile.ResetDrawStateForPet();
             if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
@@ -627,10 +627,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 VisualEffectForPreview();
             }
             DrawTestInfo();
-        }
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            behindProjectiles.Add(index);
         }
         #endregion
     }
