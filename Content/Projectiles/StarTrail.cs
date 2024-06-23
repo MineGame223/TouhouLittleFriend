@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 
 namespace TouhouPets.Content.Projectiles
@@ -68,7 +69,14 @@ namespace TouhouPets.Content.Projectiles
                 Rectangle rect = new Rectangle(0, 0, line.Width, singleLineLength);
                 Vector2 orig = new Vector2(line.Width / 2, 0);
                 float rot = pos.DirectionTo(Projectile.Center).ToRotation();
-                Main.spriteBatch.TeaNPCDraw(line, pos - Main.screenPosition, rect, lightColor, rot, orig, 1f, SpriteEffects.None, 0);
+
+                Main.spriteBatch.QuickEndAndBegin(true);
+
+                DrawData data = new DrawData(line, pos - Main.screenPosition, rect, lightColor, rot, orig, 1f, SpriteEffects.None, 0);
+                GameShaders.Armor.Apply(Main.player[Projectile.owner].cLight, Projectile, data);
+                data.Draw(Main.spriteBatch);
+
+                Main.spriteBatch.QuickEndAndBegin(false);
             }
             return false;
         }

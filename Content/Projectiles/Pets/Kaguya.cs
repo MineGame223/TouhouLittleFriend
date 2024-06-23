@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -389,9 +390,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void GenDust()
         {
-            Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 34), MyDustId.YellowFx
+            Dust d = Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 34), MyDustId.YellowFx
                 , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
-                , Main.rand.NextFloat(0.75f, 1.5f)).noGravity = true;
+                , Main.rand.NextFloat(0.75f, 1.5f));
+            d.noGravity = true;
+            d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
         }
         private void UpdateMiscData()
         {

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -292,19 +293,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void PrayEffect()
         {
-            int dustType;
-            switch (Main.rand.Next(4))
+            var dustType = Main.rand.Next(4) switch
             {
-                default:
-                    dustType = MyDustId.GreenTrans;
-                    break;
-                case 1:
-                    dustType = MyDustId.TrailingGreen1;
-                    break;
-            }
+                1 => MyDustId.TrailingGreen1,
+                _ => MyDustId.GreenTrans,
+            };
             if (Main.rand.NextBool(3))
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType,
-                    0, Main.rand.Next(-3, -1), 100, default, auraScale * 0.45f).noGravity = true;
+            {
+                Dust d = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType,
+                    0, Main.rand.Next(-3, -1), 100, default, auraScale * 0.45f);
+                d.noGravity = true;
+                d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
+            }
         }
         private void ControlMovement()
         {

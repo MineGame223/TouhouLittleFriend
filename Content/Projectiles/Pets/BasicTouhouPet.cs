@@ -2,7 +2,6 @@
 using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -590,7 +589,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 UpdateChat();
                 UpdateRegularDialog();
             }
-            Projectile.SetPetActive(Owner, BuffType<AllPetsBuff>());
             return base.PreAI();
         }
         public override void PostAI()

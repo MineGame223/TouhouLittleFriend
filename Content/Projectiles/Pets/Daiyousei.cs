@@ -30,7 +30,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.DrawPet(wingFrame, lightColor * 0.5f, drawConfig);
+            Projectile.DrawPet(wingFrame, lightColor * 0.7f, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor,
                 drawConfig with

@@ -65,7 +65,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 AltTexture = clothTex,
                 ShouldUseEntitySpriteDraw = true,
             };
-            Projectile.DrawPet(wingFrame, Projectile.GetAlpha(Color.White * 0.7f), drawConfig);
+            Projectile.DrawPet(wingFrame, lightColor, drawConfig);
+            Projectile.DrawPet(wingFrame, Color.White * 0.5f, drawConfig);
+
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
             if (UseSunnySkin)

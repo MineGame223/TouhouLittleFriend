@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent.Drawing;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -63,7 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 PositionOffset = extraPos,
             };
 
-            Projectile.DrawPet(wingsFrame, lightColor * 0.7f, config, 1);
+            Projectile.DrawPet(wingsFrame, lightColor * 0.8f, config, 1);
 
             Projectile.DrawPet(hairFrame, lightColor, config, 1);
 
@@ -178,17 +179,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             int dustID = MyDustId.BlueMagic;
             if (Main.rand.NextBool(10))
             {
-                Dust.NewDustPerfect(Projectile.Center
+                Dust d = Dust.NewDustPerfect(Projectile.Center
                 + new Vector2(Main.rand.NextFloat(-30f, -10f) * Projectile.spriteDirection, Main.rand.NextFloat(-5f, 25f)), dustID
                 , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(0.8f, 1.2f)), 100, default
-                , Main.rand.NextFloat(1f, 2f)).noGravity = true;
+                , Main.rand.NextFloat(1f, 2f));
+                d.noGravity = true;
+                //d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
             if (Main.rand.NextBool(10))
             {
-                Dust.NewDustPerfect(Projectile.Center
+                Dust d = Dust.NewDustPerfect(Projectile.Center
                     + new Vector2(Main.rand.NextFloat(20f, 22f) * Projectile.spriteDirection, Main.rand.NextFloat(-5f, 25f)), dustID
                     , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(0.8f, 1.2f)), 100, default
-                    , Main.rand.NextFloat(1f, 2f)).noGravity = true;
+                    , Main.rand.NextFloat(1f, 2f));
+                d.noGravity = true;
+                //d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
             if (Projectile.velocity.Length() > 4)
             {
