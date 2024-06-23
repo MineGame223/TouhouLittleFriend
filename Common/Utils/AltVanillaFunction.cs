@@ -62,7 +62,7 @@ namespace TouhouPets
         /// 替换原版GetTexture
         /// </summary>
         /// <param name="postAssetsPath"></param>
-        /// <returns>TeaNPC/Assets/Textures/剩余路径名</returns>
+        /// <returns>ModName/Assets/Textures/剩余路径名</returns>
         public static Texture2D GetTexture(string postAssetsPath)
         {
             return Request<Texture2D>($"{nameof(TouhouPets)}/Assets/Textures/" + postAssetsPath).Value;

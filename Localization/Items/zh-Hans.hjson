@@ -32,7 +32,7 @@ Mods: {
 				DisplayName: BOMB
 				Tooltip:
 					'''
-					召唤大妖精
+					召唤一只大妖精
 					“一个BOMB。”
 					'''
 			}
@@ -306,7 +306,7 @@ Mods: {
 				Tooltip:
 					'''
 					召唤四季的花之主
-					“啊？？”
+					“这合理吗？”
 					'''
 			}
 

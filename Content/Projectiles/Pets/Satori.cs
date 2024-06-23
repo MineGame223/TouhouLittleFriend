@@ -42,7 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
         private float eyeSparkScale;
-        private Vector2 eyePos;
+        private Vector2 eyePostion,eyePositionOffset;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Satori_Cloth");
@@ -58,14 +58,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ShouldUseEntitySpriteDraw = true,
             };
-
-            float time = Main.GlobalTimeWrappedHourly * 2f;
-            Vector2 eyeAdj = new Vector2(1.2f * (float)Math.Cos(time), 0.35f * (float)Math.Sin(time)) * 26f;
-            eyePos = Projectile.Center + eyeAdj + new Vector2(0, 8);
-
-            if (eyeAdj.Y <= 0)
+            if (eyePositionOffset.Y <= 0)
             {
-                DrawEye(eyePos - Main.screenPosition);
+                DrawEye(eyePostion - Main.screenPosition);
                 Projectile.ResetDrawStateForPet();
             }
 
@@ -82,8 +77,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             Projectile.ResetDrawStateForPet();
 
-            if (eyeAdj.Y > 0)
-                DrawEye(eyePos - Main.screenPosition);
+            if (eyePositionOffset.Y > 0)
+                DrawEye(eyePostion - Main.screenPosition);
 
             return false;
         }
@@ -98,18 +93,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             Texture2D glow = AltVanillaFunction.GetExtraTexture("SatoriEyeSpark");
             Texture2D aura = AltVanillaFunction.GetExtraTexture("SatoriEyeAura");
 
-            Color clr = Projectile.GetAlpha(Color.DeepPink * 0.5f).ModifiedAlphaColor();
+            Color clr = Projectile.GetAlpha(Color.DeepPink).ModifiedAlphaColor();
             for (int i = 0; i < 2; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(aura, eyePos + new Vector2(0, 2), null, clr, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.TeaNPCDraw(aura, eyePos + new Vector2(0, 2), null, clr * 0.15f, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
             }
 
             Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(Color.White), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
 
             for (int i = 0; i < 8; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr, Projectile.rotation + MathHelper.PiOver2, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
-                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr, Projectile.rotation, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
             }
         }
         public override Color ChatTextColor => new Color(255, 149, 170);
@@ -140,12 +135,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
+            if (Projectile.isAPreviewDummy)
+            {
+                UpdateEyePosition();
+            }
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
             float lightPlus = 1 + eyeSparkScale;
 
-            position = eyePos;
+            position = eyePostion;
             rgb = new Vector3(1.72f, 0.69f, 0.89f) * lightPlus;
         }
         public override void AI()
@@ -184,6 +183,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             UpdateMiscData();
+            UpdateEyePosition();
         }
         private void UpdateMiscData()
         {
@@ -196,8 +196,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Owner.detectCreature = true;
             }
+
             if (eyeSparkScale < 0)
                 eyeSparkScale = 0;
+        }
+        private void UpdateEyePosition()
+        {
+            float time = Main.GlobalTimeWrappedHourly * 2f;
+            eyePositionOffset = new Vector2(1.2f * (float)Math.Cos(time), 0.35f * (float)Math.Sin(time)) * 26f;
+            eyePostion = Projectile.Center + eyePositionOffset + new Vector2(0, 8);
         }
         private void ControlMovement()
         {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
+using TouhouPets.Content.NPCs;
 
 namespace TouhouPets
 {
@@ -17,14 +18,14 @@ namespace TouhouPets
             Condition inOverworld = Main.remixWorld ?
                 Condition.InUnderworldHeight : Condition.InOverworldHeight;
 
-            //RegisterMerchantInfo(slu, NPCType<YukariPortal>(), inOverworld, Condition.TimeNight, Condition.NotBloodMoon);
+            RegisterMerchantInfo(slu, NPCType<YukariPortal>(), inOverworld, Condition.TimeNight, Condition.NotBloodMoon);
 
             Dictionary<string, LocalizedText> shopLocals = new()
             {
                 { "Shop", Language.GetText(prefix + "PetShop") },
                 { "Shop2", Language.GetText(prefix + "LightPetShop") },
             };
-            //RegisterShopName(slu, NPCType<YukariPortal>(), shopLocals);
+            RegisterShopName(slu, NPCType<YukariPortal>(), shopLocals);
         }
         #region Basic Func
         private static void RegisterMerchantInfo(this Mod slu, int npcType, params Condition[] c)

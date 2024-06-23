@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Enums;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -64,7 +65,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 AltTexture = clothTex,
             };
 
-            Projectile.DrawPet(wingsFrame, lightColor * 0.7f, drawConfig);
+            Projectile.DrawPet(wingsFrame, lightColor * 0.8f, drawConfig);
 
             Projectile.DrawPet(12, lightColor, drawConfig);
             Projectile.DrawPet(12, lightColor, config);
@@ -185,17 +186,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             int dustID = MyDustId.WhiteTransparent;
             if (Main.rand.NextBool(10))
             {
-                Dust.NewDustPerfect(Projectile.Center
+                Dust d = Dust.NewDustPerfect(Projectile.Center
                 + new Vector2(Main.rand.NextFloat(-30f, -10f) * Projectile.spriteDirection, Main.rand.NextFloat(-5f, 25f)), dustID
                 , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(0.8f, 1.2f)), 100, Color.Yellow
-                , Main.rand.NextFloat(0.5f, 0.9f)).noGravity = true;
+                , Main.rand.NextFloat(0.5f, 0.9f));
+                d.noGravity = true;
+                //d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
             if (Main.rand.NextBool(10))
             {
-                Dust.NewDustPerfect(Projectile.Center
+                Dust d = Dust.NewDustPerfect(Projectile.Center
                     + new Vector2(Main.rand.NextFloat(20f, 22f) * Projectile.spriteDirection, Main.rand.NextFloat(-5f, 25f)), dustID
                     , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(0.8f, 1.2f)), 100, Color.LightGoldenrodYellow
-                    , Main.rand.NextFloat(0.5f, 0.9f)).noGravity = true;
+                    , Main.rand.NextFloat(0.5f, 0.9f));
+                d.noGravity = true;
+                //d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
         }
         private void ControlMovement(Player player)

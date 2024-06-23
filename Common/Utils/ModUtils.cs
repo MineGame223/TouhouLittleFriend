@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,51 +12,8 @@ namespace TouhouPets
     /// <summary>
     /// 各种静态拓展方法
     /// </summary>
-    internal static class ModUtils
+    public static class ModUtils
     {
-        /// <summary>
-        /// 输出单独控制Alpha值的颜色
-        /// </summary>
-        /// <param name="color"></param>
-        /// <param name="alpha">Alpha值</param>
-        /// <returns></returns>
-        public static Color ModifiedAlphaColor(this Color color, byte alpha = 0)
-        {
-            Color result = color;
-            result.A = alpha;
-            return result;
-        }
-        /// <summary>
-        /// 宠物们默认的绘制位置
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <returns></returns>
-        public static Vector2 DefaultDrawPetPosition(this Projectile projectile)
-        {
-            return projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-        }
-        /// <summary>
-        /// 绘制宠物的基本方法
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="frame">当前帧</param>
-        /// <param name="lightColor">颜色</param>
-        /// <param name="config">DrawPetConfig</param>
-        /// <param name="currentRow">当前贴图应当采用哪一列</param>
-        public static void DrawPet(this Projectile projectile, int frame, Color lightColor, DrawPetConfig config, int currentRow = 0)
-        {
-            Texture2D t = config.AltTexture ?? AltVanillaFunction.ProjectileTexture(projectile.type);
-            int height = t.Height / Main.projFrames[projectile.type];
-            Vector2 pos = projectile.DefaultDrawPetPosition() + config.PositionOffset;
-            Rectangle rect = new Rectangle(t.Width / config.TextureRow * currentRow, frame * height, t.Width / config.TextureRow, height);
-            Vector2 orig = rect.Size() / 2;
-            float scale = config.Scale;
-            SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (config.ShouldUseEntitySpriteDraw)
-                Main.EntitySpriteDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
-            else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
-        }
         /// <summary>
         /// 将输入价格转换为货币单位价格的文本
         /// </summary>
@@ -108,7 +63,7 @@ namespace TouhouPets
             }
             if (index == -1)
                 return;
-            index++;
+            index += 2;
             tooltips.Insert(index, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
         }
         /// <summary>
@@ -183,75 +138,6 @@ namespace TouhouPets
                 }
             }
             return false;
-        }
-        /// <summary>
-        /// 将宠物的绘制状态重置，防止被染料的Shader影响
-        /// <br>仅需要插在不需要着色的语句之前和执行着色的语句之后</br>
-        /// </summary>
-        public static void ResetDrawStateForPet(this Projectile projectile)
-        {
-            Main.spriteBatch.QuickEndAndBegin(true, projectile.isAPreviewDummy);
-        }
-        /// <summary>
-        /// 快速设置End Begin
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        /// <param name="immedaite">是否立刻渲染，必须与默认渲染模式形成闭合</param>
-        /// <param name="state">混合模式，默认为AlphaBlend</param>
-        /// <param name="useUIMatrix">是否采用UI矩阵转换</param>
-        public static void QuickEndAndBegin(this SpriteBatch spriteBatch, bool immedaite, bool useUIMatrix = false, BlendState state = null)
-        {
-            spriteBatch.End();
-            spriteBatch.Begin(immedaite ? SpriteSortMode.Immediate : SpriteSortMode.Deferred, state ?? BlendState.AlphaBlend
-                , Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null
-                , useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
-        }
-        /// <summary>
-        /// 绘制带有边框的文字，允许设置旋转
-        /// </summary>
-        /// <param name="sb"></param>
-        /// <param name="font">字体</param>
-        /// <param name="text">文本</param>
-        /// <param name="x">x位置</param>
-        /// <param name="y">y位置</param>
-        /// <param name="textColor">文本颜色</param>
-        /// <param name="borderColor">边框颜色</param>
-        /// <param name="origin">绘制中心</param>
-        /// <param name="scale">大小</param>
-        /// <param name="rotation">旋转</param>
-        public static void MyDrawBorderStringFourWay(SpriteBatch sb, DynamicSpriteFont font, string text, float x, float y, Color textColor, Color borderColor, Vector2 origin, float scale = 1f, float rotation = 0f)
-        {
-            Color color = borderColor;
-            Vector2 zero = Vector2.Zero;
-            for (int i = 0; i < 5; i++)
-            {
-                switch (i)
-                {
-                    case 0:
-                        zero.X = x - 2f;
-                        zero.Y = y;
-                        break;
-                    case 1:
-                        zero.X = x + 2f;
-                        zero.Y = y;
-                        break;
-                    case 2:
-                        zero.X = x;
-                        zero.Y = y - 2f;
-                        break;
-                    case 3:
-                        zero.X = x;
-                        zero.Y = y + 2f;
-                        break;
-                    default:
-                        zero.X = x;
-                        zero.Y = y;
-                        color = textColor;
-                        break;
-                }
-
-                sb.DrawString(font, text, zero, color, rotation, origin, scale, SpriteEffects.None, 0f);
-            }
         }
         /// <summary>
         /// 打印带有物品贴图的文本

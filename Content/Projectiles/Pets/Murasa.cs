@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -42,6 +44,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int blinkFrame, blinkFrameCounter;
         private int hairFrame, hairFrameCounter;
         private int legFrame, legFrameCounter;
+        private int shipFrame, shipFrameCounter;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Murasa_Cloth");
@@ -61,7 +64,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                 AltTexture = clothTex,
             };
 
-            Projectile.DrawPet(14, lightColor, config, 1);
+            Projectile.DrawPet(shipFrame, lightColor,
+                config with
+                {
+                    PositionOffset = new Vector2(0, 2)
+                }, 1);
+            DrawAnchor(lightColor);
             Projectile.ResetDrawStateForPet();
 
             Projectile.DrawPet(hairFrame, lightColor, drawConfig, 1);
@@ -74,6 +82,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config2);
             Projectile.DrawPet(legFrame, lightColor, config2, 1);
             return false;
+        }
+        private void DrawAnchor(Color lightColor)
+        {
+            Texture2D tex = AltVanillaFunction.ProjectileTexture(Type);
+            int frameX = tex.Width / 2;
+            int frameY = tex.Height / Main.projFrames[Type];
+            Vector2 pos = Projectile.DefaultDrawPetPosition() + new Vector2(-20 * Projectile.spriteDirection, 20);
+            Rectangle rect = new Rectangle(frameX, frameY * 18, 14, 18);
+
+            float rotation = MathHelper.Clamp(Projectile.velocity.X * 0.1f, -0.9f, 0.9f);
+            rotation += (float)Math.Sin(Main.GlobalTimeWrappedHourly) * 0.1f;
+
+            Main.EntitySpriteDraw(tex, pos, rect, lightColor, rotation, new Vector2(rect.Width / 2, 0)
+                , Projectile.scale, SpriteEffects.None);
         }
         public override Color ChatTextColor => new Color(59, 176, 224);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -105,6 +127,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateHairFrame();
             UpdateLegFrame();
+            UpdateShipFrame();
         }
         public override void AI()
         {
@@ -113,6 +136,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateTalking();
 
             ControlMovement();
+
+            GenDust();
 
             switch (CurrentState)
             {
@@ -154,6 +179,16 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Vector2 point = new Vector2(-50 * Owner.direction, -50 + Owner.gfxOffY);
             MoveToPoint(point, 10.5f);
+        }
+        private void GenDust()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Dust d = Dust.NewDustPerfect(Projectile.Center, MyDustId.BlueParticle, Vector2.Zero, 100);
+                d.position = Projectile.Bottom + new Vector2(Main.rand.Next(-2, 24) * -Projectile.spriteDirection, 10);
+                d.noGravity = true;
+                d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cPet, Owner);
+            }
         }
         private void Idle()
         {
@@ -274,6 +309,22 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (hairFrame > 13)
             {
                 hairFrame = 10;
+            }
+        }
+        private void UpdateShipFrame()
+        {
+            if (shipFrame < 14)
+            {
+                shipFrame = 14;
+            }
+            if (++shipFrameCounter > 3)
+            {
+                shipFrameCounter = 0;
+                shipFrame++;
+            }
+            if (shipFrame > 17)
+            {
+                shipFrame = 14;
             }
         }
         private void UpdateLegFrame()

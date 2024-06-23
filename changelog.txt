@@ -3,7 +3,11 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-关于与灾厄模组的冲突问题，目前可以确认是灾厄单方面的问题，如果造成困扰请在打Boss时暂时卸下宠物
+修改：
+移除了客服电话
+村纱外观更改
 
 修复：
-修复了幽香在溶液用完的情况下无法正常退出喷洒程序的问题
+修复了染料在宠物身上产生不正确渲染的问题
+幽香物品描述修正
+神秘隙间不再受到岩浆伤害

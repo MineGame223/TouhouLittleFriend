@@ -47,6 +47,7 @@ namespace TouhouPets.Content.NPCs
             NPC.dontTakeDamage = true;
             NPC.dontTakeDamageFromHostiles = true;
             NPC.immortal = true;
+            NPC.lavaImmune = true;
             NPC.noGravity = true;
         }
         public override void AI()

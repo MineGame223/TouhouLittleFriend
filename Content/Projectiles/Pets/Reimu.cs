@@ -225,7 +225,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                      && Owner.velocity.Length() == 0 && !Owner.AnyBosses())
                 {
                     int chance = 11;
-                    if (Main.bloodMoon || Main.eclipse)
+                    if (Main.bloodMoon || Main.eclipse || Main.slimeRain)
                     {
                         chance = 30;
                     }
@@ -292,7 +292,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (OwnerIsMyPlayer)
             {
-                if(Projectile.Distance(Owner.position) > 300f)
+                if (Projectile.Distance(Owner.position) > 300f)
                 {
                     RandomCount = Main.rand.Next(2, 4);
                     CurrentState = States.WakeUp;

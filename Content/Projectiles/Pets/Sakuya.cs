@@ -94,7 +94,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 960;
             chance = Owner.HasBuff<ScarletBuff>() ? 30 : 12;
-            whenShouldStop = PetState > 1;
+            whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
         {

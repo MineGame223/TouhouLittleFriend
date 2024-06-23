@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -134,8 +135,6 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
-
             switch (CurrentState)
             {
                 case States.Blink:
@@ -159,13 +158,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void GenDust()
         {
-            if (!Projectile.wet)
-            {
-                int dustID = MyDustId.BlueParticle;
-                Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.NextFloat(-15f, 15f), 28), dustID
-                    , new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-1f, -0.2f)), 100, default
-                    , Main.rand.NextFloat(0.75f, 1.05f)).noGravity = true;
-            }
+
         }
         private void ControlMovement()
         {
