@@ -51,7 +51,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Mystia_Cloth");
         private readonly Texture2D patchTex = AltVanillaFunction.GetExtraTexture("Mystia_EyePatch");
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             bool blackDye = Main.LocalPlayer.miscDyes[0].type == ItemID.BlackDye;
             DrawPetConfig config = drawConfig with

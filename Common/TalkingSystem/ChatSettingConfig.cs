@@ -2,12 +2,8 @@
 
 namespace TouhouPets
 {
-    public struct ChatSettingConfig
+    public struct ChatSettingConfig()
     {
-        public ChatSettingConfig()
-        {
-
-        }
         /// <summary>
         /// 每个字符的剩余时间值，默认为20；文本持续时间为该变量 * 字符数，上限为420刻
         /// </summary>

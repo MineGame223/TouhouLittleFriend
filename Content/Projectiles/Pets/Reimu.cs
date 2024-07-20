@@ -56,7 +56,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             bool isFebrary = DateTime.Now.Month == 2;
             Texture2D cloth = isFebrary ? newYearClothTex : clothTex;

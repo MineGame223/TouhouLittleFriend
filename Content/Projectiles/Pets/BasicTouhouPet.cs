@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using TouhouPets.Content.Buffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -550,6 +549,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         public virtual void VisualEffectForPreview()
         {
         }
+        /// <summary>
+        /// 绘制宠物，替代PreDraw
+        /// </summary>
+        /// <param name="lightColor"></param>
+        /// <returns></returns>
+        public virtual bool DrawPetSelf(ref Color lightColor)
+        {
+            return true;
+        }
         #endregion
 
         #region 原有重写函数
@@ -603,6 +611,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override bool? CanDamage()
         {
             return false;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Projectile.ResetDrawStateForPet();
+            return DrawPetSelf(ref lightColor);
         }
         public override void PostDraw(Color lightColor)
         {

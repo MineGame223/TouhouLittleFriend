@@ -56,7 +56,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             Vector2 extraPos = new Vector2(extraX, extraY);
             DrawPetConfig config = drawConfig with
