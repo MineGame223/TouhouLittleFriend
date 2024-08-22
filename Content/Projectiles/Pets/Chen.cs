@@ -146,7 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         CurrentState = States.Meow;
 
                         if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
-                            Projectile.SetChat(ChatSettingConfig, 3, 20);
+                            Projectile.SetChat(ChatSettingConfig, 1, 20);
                     }
                 }
             }
