@@ -663,38 +663,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (chatTimeLeft <= 0)
             {
-                int chance;
                 if (hasFood)
                 {
-                    chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(ChatSettingConfig, 6, 60);
-                            break;
-                        case 2:
-                            Projectile.SetChat(ChatSettingConfig, 7, 60);
-                            break;
-                        default:
-                            Projectile.SetChat(ChatSettingConfig, 5, 60);
-                            break;
-                    }
+                    Projectile.SetChat(ChatSettingConfig, Main.rand.Next(5, 8), 60);
                 }
                 else
                 {
-                    chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(ChatSettingConfig, 8);
-                            break;
-                        case 2:
-                            Projectile.SetChat(ChatSettingConfig, 9);
-                            break;
-                        default:
-                            Projectile.SetChat(ChatSettingConfig, 10);
-                            break;
-                    }
+                    Projectile.SetChat(ChatSettingConfig, Main.rand.Next(8, 11), 60);
                 }
             }
         }

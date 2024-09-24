@@ -618,6 +618,19 @@ Mods: {
 			Chat9: Wait, you can see THIS? you have found a bug!
 		}
 
+		Chat_Suika: {
+			Chat1: 你说西瓜？我打碎一块石头就和打碎一个西瓜一样简单！
+			Chat2: 下次开宴会得带点好喝的。
+			Chat3: 什么时候才能和她们仨再聚一块儿喝一杯呢？
+			Chat4: 下酒菜？只要不是豆子，什么都好说啦。
+			Chat5: 请不要在我面前拿出插在柊枝上的沙丁鱼头...很难闻的...
+			Chat6: 想不想看我变大变小？
+			Chat7: 你有没有听说过“啤酒之神”？
+			Chat8: 今朝有酒今朝醉，干了！
+			Chat9: 鬼嘛，喝酒才最开心！
+			Chat10: Come on! Look at the Drunken fist! Please dancing with Dionysus!
+		}
+
 		Chat_Template: {
 			Chat1: _
 			Chat2: _

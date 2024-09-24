@@ -237,14 +237,14 @@ Mods: {
 				Description: 秋天象征着丰收的喜悦
 			}
 
-			AllPetsBuff: {
-				DisplayName: 幻想乡联盟
-				Description: 诸神眷恋的开会现场
-			}
-
 			MurasaBuff: {
 				DisplayName: 船幽灵
 				Description: 给她点菠菜，说不定就不会翻船...？
+			}
+
+			SuikaBuff: {
+				DisplayName: 酒鬼
+				Description: 小小的百鬼夜行
 			}
 		}
 	}
