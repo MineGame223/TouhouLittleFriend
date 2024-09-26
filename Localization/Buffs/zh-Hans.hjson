@@ -246,6 +246,21 @@ Mods: {
 				DisplayName: 酒鬼
 				Description: 小小的百鬼夜行
 			}
+
+			EirinBuff: {
+				DisplayName: 药剂师
+				Description: 月之头脑
+			}
+
+			ShinkiBuff: {
+				DisplayName: 魔界之神
+				Description: “亲爱的爱丽丝。”
+			}
+
+			RukotoBuff: {
+				DisplayName: 机器女仆
+				Description: 核能驱动！
+			}
 		}
 	}
 }

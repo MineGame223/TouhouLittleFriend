@@ -246,6 +246,21 @@ Mods: {
 				DisplayName: The Boozer
 				Description: Little hyakkiyako
 			}
+
+			EirinBuff: {
+				DisplayName: The Pharmacist
+				Description: Brain of the moon
+			}
+
+			ShinkiBuff: {
+				DisplayName: Goddess of devil's World
+				Description: Dear Alice.
+			}
+
+			RukotoBuff: {
+				DisplayName: Robot Maid
+				Description: Nuclear powered!
+			}
 		}
 	}
 }

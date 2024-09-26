@@ -236,6 +236,8 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<LunaMoon>());
             shop.Add(ItemType<StarSapphire>());
             shop.Add(ItemType<SizuhaBrush>());
+            shop.Add(ItemType<EirinBow>());
+            shop.Add(ItemType<ShinkiHeart>());
             shop.Register();
         }
         public override void AddShops()

@@ -453,6 +453,33 @@ Mods: {
 					“里面的酒好像永远喝不完。”
 					'''
 			}
+
+			EirinBow: {
+				DisplayName: 玩具弓
+				Tooltip:
+					'''
+					召唤来自月亮的药剂师
+					“警告：请不要对旁人或自己射击。”
+					'''
+			}
+
+			ShinkiHeart: {
+				DisplayName: 魔界之心
+				Tooltip:
+					'''
+					召唤魔界之神
+					“来自过去的爱。”
+					'''
+			}
+
+			RukotoRemote: {
+				DisplayName: 机器人遥控器
+				Tooltip:
+					'''
+					启动一个小小机器女仆
+					“说明书上写着电池不可拆卸。”
+					'''
+			}
 		}
 	}
 }

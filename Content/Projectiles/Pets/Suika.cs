@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Threading;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -43,6 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int bowFrame, bowFrameCounter;
         private int blinkFrame, blinkFrameCounter;
         private int decorFrame, decorFrameCounter;
+        private float extraX, extraY;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Suika_Cloth");
@@ -62,12 +62,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 AltTexture = clothTex,
             };
-            DrawDecor();
+            DrawDecor(lightColor);
 
             Projectile.DrawPet(bowFrame, lightColor, config, 1);
             Projectile.ResetDrawStateForPet();
 
-            Projectile.DrawPet(hairFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(hairFrame, lightColor,
+                drawConfig with
+                {
+                    PositionOffset = new Vector2(extraX, extraY),
+                }, 1);
 
             Projectile.DrawPet(skirtFrame, lightColor, drawConfig);
             Projectile.DrawPet(skirtFrame, lightColor, config2);
@@ -80,13 +84,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config2);
             return false;
         }
-        private void DrawDecor()
+        private void DrawDecor(Color lightColor)
         {
             Vector2 pos = Projectile.DefaultDrawPetPosition() + new Vector2(3 * Projectile.spriteDirection, 1);
             int height = decorTex.Height / 4;
             Rectangle frame = new Rectangle(0, height * decorFrame, decorTex.Width, height);
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Main.EntitySpriteDraw(decorTex, pos, frame, Projectile.GetAlpha(Color.White), Projectile.rotation, frame.Size() / 2, Projectile.scale, effect, 0f);
+            Main.EntitySpriteDraw(decorTex, pos, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, frame.Size() / 2, Projectile.scale, effect, 0f);
         }
         public override Color ChatTextColor => new Color(255, 220, 118);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -153,6 +157,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;
+            }
+            UpdateExtraPos();
+        }
+        private void UpdateExtraPos()
+        {
+            extraX = 0;
+            extraY = 0;
+            if (Projectile.frame >= 3 && Projectile.frame <= 5)
+            {
+                extraY = -2;
             }
         }
         private void ControlMovement()

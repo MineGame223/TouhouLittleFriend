@@ -454,6 +454,33 @@ Mods: {
 					"Seems infinty inside."
 					'''
 			}
+
+			EirinBow: {
+				DisplayName: Toy Bow
+				Tooltip:
+					'''
+					Summons the Pharmacist from the moon
+					"Warning: please don't shoot otherone or yourself."
+					'''
+			}
+
+			ShinkiHeart: {
+				DisplayName: Heart of devil's World
+				Tooltip:
+					'''
+					Summon the Goddess of devil's World
+					“Love from the past.”
+					'''
+			}
+
+			RukotoRemote: {
+				DisplayName: Robot Remote
+				Tooltip:
+					'''
+					Turn on a little robot maid
+					"The instructions said its battery is non removable"
+					'''
+			}
 		}
 	}
 }

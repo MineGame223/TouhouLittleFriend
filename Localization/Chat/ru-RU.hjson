@@ -598,6 +598,43 @@ Mods: {
 			// Chat8: With such a soft voice, you dare to pilot a warship?
 		}
 
+		Chat_Suika: {
+			// Chat1: You say melon? I can smash a rock as easy as smash a melon!
+			// Chat2: I have to bring some nice wine on the next party.
+			// Chat3: When can I have a drink with they three once again?
+			// Chat4: Bar food? It could be anything just not beans.
+			// Chat5: Please don't bring me a sardine head on a branch...It's smelly...
+			// Chat6: Do you wanna see I become BIG or small?
+			// Chat7: Do you know "The God of Beer"?
+			// Chat8: Today's wine I drink today, cheers!
+			// Chat9: Drinking is the happiest thing for oni!
+			// Chat10: Come on! Look at the Drunken fist! Please dancing with Dionysus!
+		}
+
+		Chat_Eirin: {
+			// Chat1: _
+			// Chat2: _
+			// Chat3: _
+			// Chat4: _
+			// Chat5: _
+		}
+
+		Chat_Shinki: {
+			// Chat1: _
+			// Chat2: _
+			// Chat3: _
+			// Chat4: _
+			// Chat5: _
+		}
+
+		Chat_Rukoto: {
+			// Chat1: _
+			// Chat2: _
+			// Chat3: _
+			// Chat4: _
+			// Chat5: _
+		}
+
 		Chat_Portal: {
 			Chat1: Эй, раз уж ты нашёл это, почему бы тебе не купить что-нибудь? Вся выручка идёт в Генсокё!
 			Chat2: Оставь здесь немного монет и возьми то, что нравится. Просто сделай что-нибудь ради существования Генсокё!
@@ -616,19 +653,6 @@ Mods: {
 				'''
 			Chat8: Погоди, ты видишь ЭТО? Ты нашёл баг!
 			Chat9: Погоди, ты видишь ЭТО? Ты нашёл баг!
-		}
-
-		Chat_Suika: {
-			// Chat1: 你说西瓜？我打碎一块石头就和打碎一个西瓜一样简单！
-			// Chat2: 下次开宴会得带点好喝的。
-			// Chat3: 什么时候才能和她们仨再聚一块儿喝一杯呢？
-			// Chat4: 下酒菜？只要不是豆子，什么都好说啦。
-			// Chat5: 请不要在我面前拿出插在柊枝上的沙丁鱼头...很难闻的...
-			// Chat6: 想不想看我变大变小？
-			// Chat7: 你有没有听说过“啤酒之神”？
-			// Chat8: 今朝有酒今朝醉，干了！
-			// Chat9: 鬼嘛，喝酒才最开心！
-			// Chat10: Come on! Look at the Drunken fist! Please dancing with Dionysus!
 		}
 
 		Chat_Template: {
