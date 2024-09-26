@@ -237,14 +237,29 @@ Mods: {
 				Description: "'Осень символизирует радость жатвы'"
 			}
 
-			AllPetsBuff: {
-				// DisplayName: The Gensokyors
-				// Description: Gods preferred meeting
-			}
-
 			MurasaBuff: {
 				// DisplayName: Ship Phantom
-				// Description: "'If you want your ship to be safe, then maybe give her some spinach...?'"
+				// Description: If you want your ship to be safe, then maybe give her some spinach...?
+			}
+
+			SuikaBuff: {
+				// DisplayName: The Boozer
+				// Description: Little hyakkiyako
+			}
+
+			EirinBuff: {
+				// DisplayName: The Pharmacist
+				// Description: Brain of the moon
+			}
+
+			ShinkiBuff: {
+				// DisplayName: Goddess of devil's World
+				// Description: Dear Alice.
+			}
+
+			RukotoBuff: {
+				// DisplayName: Robot Maid
+				// Description: Nuclear powered!
 			}
 		}
 	}

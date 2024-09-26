@@ -39,7 +39,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = false;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             Projectile.DrawPet(tailFrame, lightColor, drawConfig, 1);
 
@@ -146,7 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         CurrentState = States.Meow;
 
                         if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
-                            Projectile.SetChat(ChatSettingConfig, 3, 20);
+                            Projectile.SetChat(ChatSettingConfig, 1, 20);
                     }
                 }
             }

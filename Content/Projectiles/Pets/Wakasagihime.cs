@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             int extraHeight = Projectile.frame == 2 ? -2 : 0;
             DrawPetConfig config = drawConfig with

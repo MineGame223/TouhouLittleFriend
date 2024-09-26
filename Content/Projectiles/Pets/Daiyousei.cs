@@ -28,7 +28,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             Projectile.DrawPet(wingFrame, lightColor * 0.7f, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);

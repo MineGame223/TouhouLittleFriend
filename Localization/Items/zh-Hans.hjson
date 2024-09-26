@@ -311,7 +311,7 @@ Mods: {
 			}
 
 			YukarisItem: {
-				DisplayName: 贤者之证
+				DisplayName: 贤者之车票
 				Tooltip:
 					'''
 					集结隙间贤者与她的式神们
@@ -436,21 +436,48 @@ Mods: {
 					'''
 			}
 
-			AllPetsTelephone: {
-				DisplayName: 客服电话
-				Tooltip:
-					'''
-					集结所有小伙伴
-					“拨通之后，你会得到一个特别服务...”
-					'''
-			}
-
 			MurasaBailer: {
 				DisplayName: 漏水的舀子
 				Tooltip:
 					'''
 					召唤船幽灵
 					“永远都装不满水...”
+					'''
+			}
+
+			SuikaGourd: {
+				DisplayName: 伊吹瓢
+				Tooltip:
+					'''
+					召唤小酒鬼
+					“里面的酒好像永远喝不完。”
+					'''
+			}
+
+			EirinBow: {
+				DisplayName: 玩具弓
+				Tooltip:
+					'''
+					召唤来自月亮的药剂师
+					“警告：请不要对旁人或自己射击。”
+					'''
+			}
+
+			ShinkiHeart: {
+				DisplayName: 魔界之心
+				Tooltip:
+					'''
+					召唤魔界之神
+					“来自过去的爱。”
+					'''
+			}
+
+			RukotoRemote: {
+				DisplayName: 机器人遥控器
+				Tooltip:
+					'''
+					启动一个小小机器女仆
+					“说明书上写着电池不可拆卸。”
 					'''
 			}
 		}

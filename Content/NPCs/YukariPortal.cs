@@ -212,6 +212,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<ReisenGun>());
             shop.Add(ItemType<MinorikoSweetPotato>());
             shop.Add(ItemType<MurasaBailer>());
+            shop.Add(ItemType<SuikaGourd>());
             shop.Register();
 
             shop = new(Type, "Shop2");
@@ -235,6 +236,8 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<LunaMoon>());
             shop.Add(ItemType<StarSapphire>());
             shop.Add(ItemType<SizuhaBrush>());
+            shop.Add(ItemType<EirinBow>());
+            shop.Add(ItemType<ShinkiHeart>());
             shop.Register();
         }
         public override void AddShops()

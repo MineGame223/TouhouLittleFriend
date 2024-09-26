@@ -312,7 +312,7 @@ Mods: {
 			}
 
 			YukarisItem: {
-				DisplayName: Sage's license
+				DisplayName: Sage's Ticket
 				Tooltip:
 					'''
 					Summon the Boundary Sage and her Shikigami
@@ -437,21 +437,48 @@ Mods: {
 					'''
 			}
 
-			AllPetsTelephone: {
-				DisplayName: Customer Service Telephone
-				Tooltip:
-					'''
-					Summons all your friends!
-					"After calling it, you'll get a special service."
-					'''
-			}
-
 			MurasaBailer: {
 				DisplayName: Bottomless Ladle
 				Tooltip:
 					'''
 					Summons the Ship Phantom
 					"It can never be filled..."
+					'''
+			}
+
+			SuikaGourd: {
+				DisplayName: Ibuki Gourd
+				Tooltip:
+					'''
+					Summons a little boozer
+					"Seems infinty inside."
+					'''
+			}
+
+			EirinBow: {
+				DisplayName: Toy Bow
+				Tooltip:
+					'''
+					Summons the Pharmacist from the moon
+					"Warning: please don't shoot otherone or yourself."
+					'''
+			}
+
+			ShinkiHeart: {
+				DisplayName: Heart of devil's World
+				Tooltip:
+					'''
+					Summon the Goddess of devil's World
+					“Love from the past.”
+					'''
+			}
+
+			RukotoRemote: {
+				DisplayName: Robot Remote
+				Tooltip:
+					'''
+					Turn on a little robot maid
+					"The instructions said its battery is non removable"
 					'''
 			}
 		}

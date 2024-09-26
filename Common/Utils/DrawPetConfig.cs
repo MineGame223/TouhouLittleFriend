@@ -3,16 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TouhouPets
 {
-    public struct DrawPetConfig
+    public struct DrawPetConfig(int rowCount)
     {
-        public DrawPetConfig(int rowCount)
-        {
-            TextureRow = rowCount;
-        }
         /// <summary>
         /// 贴图应当划分的总列数
         /// </summary>
-        public int TextureRow;
+        public int TextureRow = rowCount;
         /// <summary>
         /// 替换用贴图
         /// </summary>

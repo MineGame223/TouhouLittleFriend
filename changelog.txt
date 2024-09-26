@@ -3,11 +3,6 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-修改：
-移除了客服电话
-村纱外观更改
-
 修复：
-修复了染料在宠物身上产生不正确渲染的问题
-幽香物品描述修正
-神秘隙间不再受到岩浆伤害
+尝试修复与灾劫模组之间的冲突问题
+修复了橙的一句错误对话

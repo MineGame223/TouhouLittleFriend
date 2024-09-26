@@ -598,6 +598,43 @@ Mods: {
 			Chat8: With such a soft voice, you dare to pilot a warship?
 		}
 
+		Chat_Suika: {
+			Chat1: You say melon? I can smash a rock as easy as smash a melon!
+			Chat2: I have to bring some nice wine on the next party.
+			Chat3: When can I have a drink with they three once again?
+			Chat4: Bar food? It could be anything just not beans.
+			Chat5: Please don't bring me a sardine head on a branch...It's smelly...
+			Chat6: Do you wanna see I become BIG or small?
+			Chat7: Do you know "The God of Beer"?
+			Chat8: Today's wine I drink today, cheers!
+			Chat9: Drinking is the happiest thing for oni!
+			Chat10: Come on! Look at the Drunken fist! Please dancing with Dionysus!
+		}
+
+		Chat_Eirin: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+
+		Chat_Shinki: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+
+		Chat_Rukoto: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+
 		Chat_Portal: {
 			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all.
 			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence.

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using TouhouPets.Content.Buffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -550,6 +549,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         public virtual void VisualEffectForPreview()
         {
         }
+        /// <summary>
+        /// 绘制宠物，替代PreDraw
+        /// </summary>
+        /// <param name="lightColor"></param>
+        /// <returns></returns>
+        public virtual bool DrawPetSelf(ref Color lightColor)
+        {
+            return true;
+        }
         #endregion
 
         #region 原有重写函数
@@ -604,9 +612,15 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             return false;
         }
-        public override void PostDraw(Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
         {
             Projectile.ResetDrawStateForPet();
+            return DrawPetSelf(ref lightColor);
+        }
+        public override void PostDraw(Color lightColor)
+        {
+            //Projectile.ResetDrawStateForPet();
+            Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
             if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);

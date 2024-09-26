@@ -47,7 +47,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             base.OnSpawn(source);
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             Projectile.DrawPet(hairFrame, lightColor, drawConfig);
 

@@ -53,7 +53,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
             {
@@ -100,7 +100,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawSun()
         {
-            Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
+            Vector2 pos = Projectile.DefaultDrawPetPosition();
             for (int i = 0; i < 5; i++)
             {
                 Main.EntitySpriteDraw(sunTex, pos + sunPos + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f), null, Projectile.GetAlpha(Color.White) * 0.5f, -mainTimer * 0.09f, sunTex.Size() / 2, Projectile.scale * 1.02f, SpriteEffects.None, 0f);

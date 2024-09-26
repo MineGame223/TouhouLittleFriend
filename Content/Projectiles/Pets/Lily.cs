@@ -33,7 +33,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Lily_Cloth");
         private readonly Texture2D clothTexAlt = AltVanillaFunction.GetExtraTexture("Lily_Cloth_Alt");
-        public override bool PreDraw(ref Color lightColor)
+        public override bool DrawPetSelf(ref Color lightColor)
         {
             Projectile.DrawPet(wingFrame, Color.White * 0.7f, drawConfig);
 
