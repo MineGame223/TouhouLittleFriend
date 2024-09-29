@@ -151,7 +151,7 @@ Mods: {
 					'''
 					Summons a girl lost in her subconscious
 					'Moshi moshi?'
-					[c/ff0000:MAY CAUSE FATAL DAMAGE TO HER MASTER WHO IN RISK!]
+					[c/ff0000:MAY CAUSE FATAL DAMAGE TO HER MASTER WHO'S AT RISK!]
 					'''
 			}
 
@@ -450,8 +450,8 @@ Mods: {
 				DisplayName: Ibuki Gourd
 				Tooltip:
 					'''
-					Summons a little boozer
-					"Seems infinty inside."
+					Summons a little drunkard
+					"Seems infinite on the inside."
 					'''
 			}
 
@@ -459,16 +459,16 @@ Mods: {
 				DisplayName: Toy Bow
 				Tooltip:
 					'''
-					Summons the Pharmacist from the moon
-					"Warning: please don't shoot otherone or yourself."
+					Summons the Pharmacist from the Moon
+					"Warning: Please don't shoot others or yourself."
 					'''
 			}
 
 			ShinkiHeart: {
-				DisplayName: Heart of devil's World
+				DisplayName: Heart of the Devil's World
 				Tooltip:
 					'''
-					Summon the Goddess of devil's World
+					Summons the Goddess of Makai
 					“Love from the past.”
 					'''
 			}
@@ -477,7 +477,7 @@ Mods: {
 				DisplayName: Robot Remote
 				Tooltip:
 					'''
-					Turn on a little robot maid
+					Turns on a little robot maid
 					"The instructions said its battery is non removable."
 					'''
 			}
@@ -486,7 +486,7 @@ Mods: {
 				DisplayName: A Big Plate of Mochi
 				Tooltip:
 					'''
-					Summons all people from Bamboo Forest of the Lost
+					Summons everyone from the Bamboo Forest of the Lost
 					"Suitable for sharing with family."
 					'''
 			}
