@@ -244,6 +244,9 @@ Mods: {
 			Chat6: Moshi moshi?
 			Chat7: It's me, Koishi...
 			Chat8: I'M AT YOUR BACK NOW...
+			Chat9: What happened, Kokoro-chan?
+			Chat10: I don't know, I just do what I want and don't have many emotion.
+			Chat11: Yeah! You know what is "Confused" now!
 		}
 
 		Chat_Satori: {
@@ -663,6 +666,9 @@ Mods: {
 			Chat4: So rich, people's emotion.
 			Chat5: What kind of emotion is "Speechlessness"?
 			Chat6: *Trying to lift cheek to show a smile.
+			Chat7: My old enemy!
+			Chat8: ...Do you have any other emotion can tell me?
+			Chat9: Can't understand...Ah, Is this "Confused"?
 		}
 
 		Chat_Doremy: {

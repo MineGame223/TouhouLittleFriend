@@ -94,11 +94,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
                 chat.Add(ChatDictionary[4]);
-                if (!FindPet(ProjectileType<Alice>()))
+                if (!Owner.HasBuff<AliceBuff>())
                 {
                     chat.Add(ChatDictionary[5]);
                 }
-                else
+                if (FindPet(ProjectileType<Alice>()))
                 {
                     chat.Add(ChatDictionary[6]);
                 }

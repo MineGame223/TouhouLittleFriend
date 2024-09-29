@@ -59,7 +59,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            for (int i = 1; i < 4; i++)
+            for (int i = 1; i < maskFrame.Length; i++)
             {
                 Main.spriteBatch.QuickEndAndBegin(true, Projectile.isAPreviewDummy, BlendState.Additive);
                 for (int j = 0; j < 6; j++)
@@ -100,11 +100,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 posOffset = Vector2.Zero;
             }
+            float angle = 360 / (maskFrame.Length - 1);
             Projectile.DrawPet(maskFrame[maskIndex] + 8, lightColor,
                 drawConfig with
                 {
                     PositionOffset = new Vector2(24, 0)
-                        .RotatedBy(MathHelper.ToRadians(120 * maskIndex) + Main.GlobalTimeWrappedHourly)
+                        .RotatedBy(MathHelper.ToRadians(angle * maskIndex) + Main.GlobalTimeWrappedHourly)
                         + posOffset
                 }, 1);
         }
@@ -112,12 +113,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Kokoro";
-            indexRange = new Vector2(1, 6);
+            indexRange = new Vector2(1, 9);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 1020;
-            chance = 8;
+            chance = 5;
             whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
@@ -130,11 +131,88 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[4]);
                 chat.Add(ChatDictionary[5]);
                 chat.Add(ChatDictionary[6]);
+                if (FindPet(ProjectileType<Koishi>()))
+                {
+                    chat.Add(ChatDictionary[7]);
+                }
             }
             return chat;
         }
         private void UpdateTalking()
         {
+            if (FindChatIndex(7, 9))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Koishi>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile kokoro = chatRoom.initiator;
+            Projectile koishi = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //秦心：我的宿敌啊！
+                koishi.CloseCurrentDialog();
+
+                if (kokoro.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //恋恋：心酱叫我有何事？
+                koishi.SetChat(ChatSettingConfig, 9, 20);
+
+                if (koishi.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //秦心：...你还有什么可以教会我的情绪吗？
+                kokoro.SetChat(ChatSettingConfig, 8, 20);
+
+                if (kokoro.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                //恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
+                koishi.SetChat(ChatSettingConfig, 10, 20);
+
+                if (koishi.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 3)
+            {
+                //秦心：不是很懂...啊，这就是“困惑”吗？
+                kokoro.SetChat(ChatSettingConfig, 9, 20);
+
+                if (kokoro.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                //恋恋：好欸！学会“困惑”啦~
+                koishi.SetChat(ChatSettingConfig, 11, 20);
+
+                if (koishi.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         public override void VisualEffectForPreview()
         {
@@ -183,7 +261,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SendExtraAI(BinaryWriter writer)
         {
             base.SendExtraAI(writer);
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < maskFrame.Length; i++)
             {
                 writer.Write(maskFrame[i]);
             }
@@ -191,7 +269,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < maskFrame.Length; i++)
             {
                 maskFrame[i] = reader.ReadInt32();
             }
@@ -199,28 +277,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void SetMask(int type)
         {
             maskFrame[0] = type;
-            switch (maskFrame[0])
+            for (int i = 1; i < maskFrame.Length; i++)
             {
-                case 1:
-                    maskFrame[1] = 0;
-                    maskFrame[2] = 2;
-                    maskFrame[3] = 3;
-                    break;
-                case 2:
-                    maskFrame[1] = 1;
-                    maskFrame[2] = 0;
-                    maskFrame[3] = 3;
-                    break;
-                case 3:
-                    maskFrame[1] = 1;
-                    maskFrame[2] = 2;
-                    maskFrame[3] = 0;
-                    break;
-                default:
-                    maskFrame[1] = 1;
-                    maskFrame[2] = 2;
-                    maskFrame[3] = 3;
-                    break;
+                maskFrame[i] = i;
+                maskFrame[type] = 0;
             }
             Projectile.netUpdate = true;
         }

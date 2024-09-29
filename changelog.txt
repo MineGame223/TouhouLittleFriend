@@ -3,6 +3,14 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-修复：
-尝试修复与灾劫模组之间的冲突问题
-修复了橙的一句错误对话
+新增：
+加入了一个酒葫芦
+加入了一把玩具弓
+加入了一颗来自魔界的心
+加入了一个机器人遥控器
+加入了一个面具
+加入了一大盘麻薯
+
+修改：
+为灵梦和魔理沙加入一段新的互动对话
+恋恋的杀人机制现在可以被秦心压制。

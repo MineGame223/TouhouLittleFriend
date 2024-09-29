@@ -239,6 +239,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<SizuhaBrush>());
             shop.Add(ItemType<EirinBow>());
             shop.Add(ItemType<ShinkiHeart>());
+            shop.Add(ItemType<KokoroMask>());
             shop.Register();
         }
         public override void AddShops()

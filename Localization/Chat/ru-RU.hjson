@@ -244,6 +244,9 @@ Mods: {
 			Chat6: Алло?
 			Chat7: Это я, Коиши...
 			Chat8: Я прямо за тобой...
+			// Chat9: What happened, Kokoro-chan?
+			// Chat10: I don't know, I just do what I want and don't have many emotion.
+			// Chat11: Yeah! You know what is "Confused" now!
 		}
 
 		Chat_Satori: {
@@ -657,11 +660,15 @@ Mods: {
 		}
 
 		Chat_Kokoro: {
-			// Chat1: _
-			// Chat2: _
-			// Chat3: _
-			// Chat4: _
-			// Chat5: _
+			// Chat1: Can you tell me what is "Happy"?
+			// Chat2: I'm Hata no Kokoro, the one who are in charge of emotion
+			// Chat3: Ha~ha~ha~...How about my smile?
+			// Chat4: So rich, people's emotion.
+			// Chat5: What kind of emotion is "Speechlessness"?
+			// Chat6: *Trying to lift cheek to show a smile.
+			// Chat7: My old enemy!
+			// Chat8: ...Do you have any other emotion can tell me?
+			// Chat9: Can't understand...Ah, Is this "Confused"?
 		}
 
 		Chat_Doremy: {
