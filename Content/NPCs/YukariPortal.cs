@@ -213,6 +213,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<MinorikoSweetPotato>());
             shop.Add(ItemType<MurasaBailer>());
             shop.Add(ItemType<SuikaGourd>());
+            shop.Add(ItemType<RukotoRemote>());
             shop.Register();
 
             shop = new(Type, "Shop2");

@@ -86,7 +86,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Reimu";
-            indexRange = new Vector2(1, 11);
+            indexRange = new Vector2(1, 12);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -112,6 +112,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     chat.Add(ChatDictionary[1]);
                     chat.Add(ChatDictionary[2]);
                 }
+                if (FindPet(ProjectileType<Marisa>()))
+                {
+                    chat.Add(ChatDictionary[13]);
+                }
             }
             return chat;
         }
@@ -121,6 +125,87 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if (FindChatIndex(13, 16))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<Marisa>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile reimu = chatRoom.initiator;
+            Projectile marisa = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //灵梦：喂，魔理沙？
+                marisa.CloseCurrentDialog();
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //魔理沙：怎么了灵梦？
+                marisa.SetChat(ChatSettingConfig, 15, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //灵梦：你说，如果我们其实是什么人被制造出来的、并且存在的目的是为了哪个世界的延续，你会怎么想？
+                reimu.SetChat(ChatSettingConfig, 14, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 2)
+            {
+                //魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
+                marisa.SetChat(ChatSettingConfig, 16, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 3)
+            {
+                //灵梦：你就说你会怎么想嘛！
+                reimu.SetChat(ChatSettingConfig, 15, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 4)
+            {
+                //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
+                marisa.SetChat(ChatSettingConfig, 17, 20);
+
+                if (marisa.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 5)
+            {
+                //灵梦：也许吧...
+                reimu.SetChat(ChatSettingConfig, 16, 20);
+
+                if (reimu.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
         }
         public override void AI()
         {

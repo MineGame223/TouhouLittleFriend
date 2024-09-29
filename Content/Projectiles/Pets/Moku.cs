@@ -251,6 +251,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MokuBuff>());
+            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
 
             UpdateTalking();
 
@@ -258,7 +259,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             GenDust();
 
-            bool noKaguya = !FindPet(ProjectileType<Kaguya>(), false) || !Owner.HasBuff<KaguyaBuff>();
+            bool noKaguya = !FindPet(ProjectileType<Kaguya>(), false)
+                || (!Owner.HasBuff<KaguyaBuff>() && !Owner.HasBuff<EienteiBuff>());
             if (IsBattleState && (Owner.afkCounter <= 0 || noKaguya))
             {
                 Timer = 0;
@@ -332,7 +334,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (!IsBattleState)
             {
                 Vector2 point = new Vector2(70 * Owner.direction, -30 + Owner.gfxOffY);
-                ChangeDir();
+                if (Owner.HasBuff<EienteiBuff>())
+                {
+                    point = new Vector2(-90 * Owner.direction, 0 + Owner.gfxOffY);
+                }
+                ChangeDir(200);
                 MoveToPoint(point, 15f);
             }
         }

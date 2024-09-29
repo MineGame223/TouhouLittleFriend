@@ -480,6 +480,33 @@ Mods: {
 					“说明书上写着电池不可拆卸。”
 					'''
 			}
+
+			BigPlateMochi: {
+				DisplayName: 一大盘麻薯
+				Tooltip:
+					'''
+					集结迷途竹林的所有人
+					“适合与家人一起分享。”
+					'''
+			}
+
+			DoremyPillow: {
+				DisplayName: 安眠枕头
+				Tooltip:
+					'''
+					召唤一只梦貘
+					“祝你好梦。”
+					'''
+			}
+
+			KokoroMask: {
+				DisplayName: 希望之面
+				Tooltip:
+					'''
+					召唤面灵气
+					“看起来像...某个人。”
+					'''
+			}
 		}
 	}
 }

@@ -7,31 +7,30 @@ using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class EirinBow : ModItem
+    public class RukotoRemote : ModItem
     {
         public override void SetStaticDefaults()
         {
             Item.SacrificeCountNeeded(1);
         }
         public override void SetDefaults()
-        {
-            Item.DefaultToVanitypet(ProjectileType<Eirin>(), BuffType<EirinBuff>());
-            Item.DefaultToVanitypetExtra(40, 40);
+        {            
+            Item.DefaultToVanitypet(ProjectileType<Rukoto>(), BuffType<RukotoBuff>());
+            Item.DefaultToVanitypetExtra(20, 36);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (!player.HasBuff(BuffType<EienteiBuff>()))
-                player.AddBuff(Item.buffType, 2);
+            player.AddBuff(Item.buffType, 2);
             return false;
         }
 
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddRecipeGroup(RecipeGroupID.Wood, 12)
-            .AddIngredient(ItemID.Cobweb, 30)
-            .AddIngredient(ItemID.FallenStar, 5)
-            .AddTile(TileID.WorkBenches)
+            .AddRecipeGroup(RecipeGroupID.IronBar, 8)
+            .AddIngredient(ItemID.Wire, 12)
+            .AddIngredient(ItemID.LihzahrdPowerCell, 1)
+            .AddTile(TileID.MythrilAnvil)
             .DisableDecraft()
             .Register();
         }

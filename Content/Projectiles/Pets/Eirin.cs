@@ -64,7 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             DrawPetConfig config2 = drawConfig with
             {
-                PositionOffset = new Vector2(-34, 3 * Main.essScale),
+                PositionOffset = new Vector2(34 * Projectile.spriteDirection, 3 * Main.essScale),
             };
 
             Projectile.DrawPet(lightFrame, lightColor, config2, 1);
@@ -106,7 +106,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Eirin";
-            indexRange = new Vector2(1, 5);
+            indexRange = new Vector2(1, 8);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -123,6 +123,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[3]);
                 chat.Add(ChatDictionary[4]);
                 chat.Add(ChatDictionary[5]);
+                chat.Add(ChatDictionary[6]);
+                chat.Add(ChatDictionary[7]);
+                chat.Add(ChatDictionary[8]);
             }
             return chat;
         }
@@ -140,6 +143,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<EirinBuff>());
+            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
 
             UpdateTalking();
 
@@ -185,7 +189,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
-            MoveToPoint(point, 12.5f);
+            if (Owner.HasBuff<EienteiBuff>())
+            {
+                point = new Vector2(90 * Owner.direction, -40 + Owner.gfxOffY);
+            }
+            MoveToPoint(point, 15.5f);
         }
         private void UpdateArrow()
         {
@@ -216,9 +224,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     CurrentState = States.Blink;
                 }
-                if (mainTimer > 0 && mainTimer % 560 == 0 && currentChatRoom == null && ActionCD <= 0)
+                if (mainTimer > 0 && mainTimer % 960 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(8))
+                    if (Main.rand.NextBool(7))
                     {
                         RandomCount = Main.rand.Next(120, 180);
                         CurrentState = States.Shooting;
@@ -272,6 +280,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame == 5 && Projectile.frameCounter == 0)
             {
                 showArrow = true;
+                for (float i = 0; i < 2; i += 0.2f)
+                {
+                    Dust d = Dust.NewDustDirect(Projectile.Center, 10, 1, MyDustId.WhiteTrans, 0, 0, 100, default, Main.rand.NextFloat(1, 2));
+                    d.noGravity = true;
+                    d.position += new Vector2(4 * Projectile.spriteDirection, 0);
+                    d.velocity = new Vector2(5 * Projectile.spriteDirection * i, 0)
+                        .RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-6, 6)));
+                }
             }
             if (++Projectile.frameCounter > count)
             {

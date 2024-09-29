@@ -619,7 +619,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostDraw(Color lightColor)
         {
-            //Projectile.ResetDrawStateForPet();
+            Projectile.ResetDrawStateForPet();
             Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
             if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
