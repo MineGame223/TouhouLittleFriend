@@ -202,6 +202,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<KeineBuff>());
+            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
 
             UpdateTalking();
 
@@ -214,7 +215,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
 
                 case States.AltForm:
-                   AltForm();
+                    AltForm();
                     break;
 
                 case States.AltFormBlink:
@@ -231,9 +232,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.007f;
 
-            ChangeDir();
+            ChangeDir(200);
 
             Vector2 point = new Vector2(-50 * Owner.direction, -30 + Owner.gfxOffY);
+            if (Owner.HasBuff<EienteiBuff>())
+            {
+                point = new Vector2(-140 * Owner.direction, 0 + Owner.gfxOffY);
+            }
             MoveToPoint(point, 12f);
         }
         private void Idle()

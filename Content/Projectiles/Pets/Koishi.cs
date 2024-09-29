@@ -105,7 +105,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Koishi";
-            indexRange = new Vector2(1, 8);
+            indexRange = new Vector2(1, 11);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -241,7 +241,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-            
+
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;
@@ -261,7 +261,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private bool ShouldKillPlayer()
         {
             bool lowHealth = !Owner.dead && Owner.statLife < Owner.statLifeMax2 / 10;
-            bool noSatori = !Owner.HasBuff<SatoriBuff>() && !Owner.HasBuff<KomeijiBuff>();
+            bool noSatori = !Owner.HasBuff<SatoriBuff>() && !Owner.HasBuff<KomeijiBuff>() && !Owner.HasBuff<KokoroBuff>();
             if (lowHealth && noSatori)
             {
                 if (mainTimer > 0 && mainTimer % 120 == 0 && Main.rand.NextBool(3) && killCD <= 0)
@@ -332,7 +332,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(4))
                     {
-                        if (Main.rand.NextBool(2) && !FindPet(ProjectileType<Satori>(), false))
+                        if (Main.rand.NextBool(2)
+                            && !FindPet(ProjectileType<Satori>(), false)
+                            && !FindPet(ProjectileType<Kokoro>(), false))
                         {
                             RandomCount = Main.rand.Next(1800, 3600);
                             CurrentState = States.Fading;

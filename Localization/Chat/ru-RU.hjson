@@ -7,7 +7,7 @@ Mods: {
 			// Chat4: Yay! It's rainning now!
 			// Chat5: Jumping in puddles on rainy days is the most interesting thing!
 			// Chat6: Do you have an umbrella? If not, you can take me!
-			// Chat7: 浠沥沥~ 哗啦啦~
+			// Chat7: Lalala~ Lalala~
 		}
 
 		Chat_Cirno: {
@@ -175,6 +175,9 @@ Mods: {
 			Chat12: Почему все говорят 'украла'? Я просто 'одалживаю'!
 			Chat13: Полегче, крайний срок в день моей смерти!
 			Chat14: Тогда как-нибудь потом!
+			// Chat15: What's up, Reimu?
+			// Chat16: Ugh...Why do you suddenly say this? Sounds weird...
+			// Chat17: Eh...Pretty good, I think? It means we are born with great duty daze!
 		}
 
 		Chat_Reimu: {
@@ -189,6 +192,11 @@ Mods: {
 			Chat9: ПРЕКРАТИ УЖЕ!
 			Chat10: Это 'заражение'...
 			Chat11: Спать хочется...
+			// Chat12: *Hakuri swearing
+			// Chat13: Hey, Marisa?
+			// Chat14: If we are actually crafted for a world's existence by somebody, how do you think about?
+			// Chat15: Just tell me how do you think!
+			// Chat16: Perhaps so...
 		}
 
 		Chat_Nitori: {
@@ -236,6 +244,9 @@ Mods: {
 			Chat6: Алло?
 			Chat7: Это я, Коиши...
 			Chat8: Я прямо за тобой...
+			// Chat9: What happened, Kokoro-chan?
+			// Chat10: I don't know, I just do what I want and don't have many emotion.
+			// Chat11: Yeah! You know what is "Confused" now!
 		}
 
 		Chat_Satori: {
@@ -362,6 +373,11 @@ Mods: {
 			Chat8: Боже, она просто стащила одно из моих зелий в последний раз
 			Chat9: ...Пора бы нам её проучить!
 			Chat10: ...? Я сама её найду, не утруждайся...
+			// Chat11: Please don't be so sickening!...Do-do we have any relationship?
+			// Chat12: I'm really unfamiliar with you...
+			// Chat13: ...OK, OK, please stop. I'll call you ma...Ms.Shinki.
+			// Chat14: ("What a complex relation...")
+			// Chat15: No way!
 		}
 
 		Chat_Rumia: {
@@ -612,14 +628,50 @@ Mods: {
 		}
 
 		Chat_Eirin: {
-			// Chat1: _
-			// Chat2: _
-			// Chat3: _
-			// Chat4: _
-			// Chat5: _
+			// Chat1: Am I came to the ground so long? But everything is good if stay with princess.
+			// Chat2: I need a way to make princess get some exercises...
+			// Chat3: Maybe I should let Tei be my guinea pig next time? Udongein looks not good recently.
+			// Chat4: The herbs in here is not so many, but every of them have interesting effects.
+			// Chat5: How about have a talk with that Junko? Otherwise, Udongein can't participate in experiments well
+			// Chat6: Do you know how many potion need dead weed as material?
+			// Chat7: It's about thousands year since I leave the Lunar Capital...Tsukuyomi, will we meet again? Maybe won't...
+			// Chat8: Is Yorihime and Toyohime alright now?...
 		}
 
 		Chat_Shinki: {
+			// Chat1: The so called "Shrine Maid" is just a dog of god~
+			// Chat2: Sara, Yumeko, Luize, and devil world's everybody...How's everything going?
+			// Chat3: I'm the god of devil's world!...of course, god means the one who created it.
+			// Chat4: I heard there are about eight million gods in human's world? The god of there are so low~
+			// Chat5: Pardon me, did you see my dear Alice?
+			// Chat6: Alice-chan~~~
+			// Chat7: Come on! Don't you even know your mom?
+			// Chat8: So sad...My daughter deserts me...
+			// Chat9: Did you just say "Mama"? Ohh, Mom is so glad!
+			// Chat10: One more time please!
+		}
+
+		Chat_Rukoto: {
+			// Chat1: Rukoto the nuclear-powered robot maid, glad to be of service!
+			// Chat2: May I ask what help you need?
+			// Chat3: Just let me do sweeping for you!
+			// Chat4: Nuclear power means active forever!
+			// Chat5: This disc-like thing is a "Sweeping Robot"? I'm the real robot!
+		}
+
+		Chat_Kokoro: {
+			// Chat1: Can you tell me what is "Happy"?
+			// Chat2: I'm Hata no Kokoro, the one who are in charge of emotion
+			// Chat3: Ha~ha~ha~...How about my smile?
+			// Chat4: So rich, people's emotion.
+			// Chat5: What kind of emotion is "Speechlessness"?
+			// Chat6: *Trying to lift cheek to show a smile.
+			// Chat7: My old enemy!
+			// Chat8: ...Do you have any other emotion can tell me?
+			// Chat9: Can't understand...Ah, Is this "Confused"?
+		}
+
+		Chat_Doremy: {
 			// Chat1: _
 			// Chat2: _
 			// Chat3: _
@@ -627,7 +679,7 @@ Mods: {
 			// Chat5: _
 		}
 
-		Chat_Rukoto: {
+		Chat_Tei: {
 			// Chat1: _
 			// Chat2: _
 			// Chat3: _

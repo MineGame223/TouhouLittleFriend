@@ -99,7 +99,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Alice";
-            indexRange = new Vector2(1, 10);
+            indexRange = new Vector2(1, 15);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {

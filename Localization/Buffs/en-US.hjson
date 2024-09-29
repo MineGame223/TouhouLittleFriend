@@ -254,12 +254,27 @@ Mods: {
 
 			ShinkiBuff: {
 				DisplayName: Goddess of devil's World
-				Description: Dear Alice.
+				Description: '''"Dear Alice."'''
 			}
 
 			RukotoBuff: {
 				DisplayName: Robot Maid
 				Description: Nuclear powered!
+			}
+
+			EienteiBuff: {
+				DisplayName: People from Bamboo Forest of the Lost
+				Description: The moon, the eternal, and rabbits
+			}
+
+			DoremyBuff: {
+				DisplayName: Dream Tapir
+				Description: A silly face
+			}
+
+			KokoroBuff: {
+				DisplayName: Mask Tsukumogami
+				Description: She's try her best to smill
 			}
 		}
 	}

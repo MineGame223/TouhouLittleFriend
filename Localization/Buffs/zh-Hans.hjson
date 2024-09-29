@@ -261,6 +261,21 @@ Mods: {
 				DisplayName: 机器女仆
 				Description: 核能驱动！
 			}
+
+			EienteiBuff: {
+				DisplayName: 迷途竹林的大家
+				Description: 月亮、永恒，还有兔子
+			}
+
+			DoremyBuff: {
+				DisplayName: 梦貘
+				Description: 一张蠢脸
+			}
+
+			KokoroBuff: {
+				DisplayName: 面灵气
+				Description: 她已经在很努力地微笑了
+			}
 		}
 	}
 }

@@ -6,16 +6,16 @@ using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class SuikaGourd : ModItem
+    public class KokoroMask : ModItem
     {
         public override void SetStaticDefaults()
         {
             Item.SacrificeCountNeeded(1);
         }
         public override void SetDefaults()
-        {            
-            Item.DefaultToVanitypet(ProjectileType<Suika>(), BuffType<SuikaBuff>());
-            Item.DefaultToVanitypetExtra(28, 28);
+        {
+            Item.DefaultToVanitypet(ProjectileType<Kokoro>(), BuffType<KokoroBuff>());
+            Item.DefaultToVanitypetExtra(30, 34);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

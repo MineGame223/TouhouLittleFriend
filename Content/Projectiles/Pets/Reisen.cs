@@ -164,6 +164,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<ReisenBuff>());
+            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
 
             UpdateTalking();
 
@@ -217,6 +218,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir();
 
             Vector2 point = new Vector2(-50 * Owner.direction, -40 + Owner.gfxOffY);
+            if (Owner.HasBuff<EienteiBuff>())
+            {
+                point = new Vector2(40 * Owner.direction, -70 + Owner.gfxOffY);
+            }
             MoveToPoint(point, 13f);
         }
         private void Idle()

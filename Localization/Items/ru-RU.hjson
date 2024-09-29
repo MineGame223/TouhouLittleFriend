@@ -295,7 +295,34 @@ Mods: {
 				/* Tooltip:
 					'''
 					Turn on a little robot maid
-					"The instructions said its battery is non removable"
+					"The instructions said its battery is non removable."
+					''' */
+			}
+
+			BigPlateMochi: {
+				// DisplayName: A Big Plate of Mochi
+				/* Tooltip:
+					'''
+					Summons all people from Bamboo Forest of the Lost
+					"Suitable for sharing with family."
+					''' */
+			}
+
+			DoremyPillow: {
+				// DisplayName: Nice Sleep Pillow
+				/* Tooltip:
+					'''
+					Summons a dream tapir
+					"Have a nice dream."
+					''' */
+			}
+
+			KokoroMask: {
+				// DisplayName: Mask of Hope
+				/* Tooltip:
+					'''
+					Summons a Mask Tsukumogami
+					"It looks like...somebody."
 					''' */
 			}
 		}

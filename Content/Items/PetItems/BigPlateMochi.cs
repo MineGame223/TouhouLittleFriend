@@ -1,13 +1,12 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
-    public class EirinBow : ModItem
+    public class BigPlateMochi : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -15,24 +14,22 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void SetDefaults()
         {
-            Item.DefaultToVanitypet(ProjectileType<Eirin>(), BuffType<EirinBuff>());
-            Item.DefaultToVanitypetExtra(40, 40);
+            Item.DefaultToVanitypet(ProjectileType<Eirin>(), BuffType<EienteiBuff>());
+            Item.DefaultToVanitypetExtra(26, 32);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (!player.HasBuff(BuffType<EienteiBuff>()))
-                player.AddBuff(Item.buffType, 2);
+            player.AddBuff(Item.buffType, 2);
             return false;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddRecipeGroup(RecipeGroupID.Wood, 12)
-            .AddIngredient(ItemID.Cobweb, 30)
-            .AddIngredient(ItemID.FallenStar, 5)
-            .AddTile(TileID.WorkBenches)
-            .DisableDecraft()
+            .AddIngredient(ItemType<ReisenGun>(), 1)
+            .AddIngredient(ItemType<EirinBow>(), 1)
+            .AddIngredient(ItemType<KaguyaBranch>(), 1)
+            .AddIngredient(ItemType<MokuMatch>(), 1)
+            .AddIngredient(ItemType<KeineLeaf>(), 1)
             .Register();
         }
     }

@@ -67,6 +67,14 @@ namespace TouhouPets
             {
                 npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate - 5);
             }
+            if (npc.type == NPCID.RedDevil)
+            {
+                npcLoot.Add(ItemType<ShinkiHeart>(), enemiesDropRate - 5);
+            }
+            if (npc.type == NPCID.Pumpking)
+            {
+                npcLoot.Add(ItemType<KokoroMask>(), enemiesDropRate - 5);
+            }
 
             int commonDropRate = 3;
             switch (npc.type)
