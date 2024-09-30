@@ -243,17 +243,17 @@ Mods: {
 			}
 
 			SuikaBuff: {
-				// DisplayName: The Boozer
-				// Description: Little hyakkiyako
+				// DisplayName: The Drunkard
+				// Description: Little Night Parade
 			}
 
 			EirinBuff: {
 				// DisplayName: The Pharmacist
-				// Description: Brain of the moon
+				// Description: Brain of The Moon
 			}
 
 			ShinkiBuff: {
-				// DisplayName: Goddess of devil's World
+				// DisplayName: Goddess of The Devil's World
 				// Description: '''"Dear Alice."'''
 			}
 
@@ -263,8 +263,8 @@ Mods: {
 			}
 
 			EienteiBuff: {
-				// DisplayName: People from Bamboo Forest of the Lost
-				// Description: The moon, the eternal, and rabbits
+				// DisplayName: People of the Bamboo Forest of the Lost
+				// Description: The moon, the eternal, and the rabbits
 			}
 
 			DoremyBuff: {
@@ -274,7 +274,7 @@ Mods: {
 
 			KokoroBuff: {
 				// DisplayName: Mask Tsukumogami
-				// Description: She's try her best to smill
+				// Description: She's trying her best to smile
 			}
 		}
 	}
