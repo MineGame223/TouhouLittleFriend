@@ -245,8 +245,8 @@ Mods: {
 			Chat7: It's me, Koishi...
 			Chat8: I'M AT YOUR BACK NOW...
 			Chat9: What happened, Kokoro-chan?
-			Chat10: I don't know, I just do what I want and don't have many emotion.
-			Chat11: Yeah! You know what is "Confused" now!
+			Chat10: I don't know, I just do what I want and don't have many emotions.
+			Chat11: Yeah! You know what "Confused" is now!
 		}
 
 		Chat_Satori: {
@@ -337,7 +337,7 @@ Mods: {
 			Chat13: Youmu-chan is as simple as I thought, we'll just talk this over later.
 			Chat14: Life won't be awesome without alcohol, Cheers!
 			Chat15: A peculiar jungle delicacy with high protein!
-			Chat16: Is a homeland taste...But there is no sea in the Netherworld, right?
+			Chat16: It's a homeland taste...But there is no sea in the Netherworld, right?
 			Chat17: Salute to the legendary commercial food!
 			Chat18: The fries without ketchup or cod are soulless...
 			Chat19: Thank you for your generosity, now let me eat this!
@@ -615,38 +615,38 @@ Mods: {
 		}
 
 		Chat_Suika: {
-			Chat1: You say melon? I can smash a rock as easy as smash a melon!
+			Chat1: Did you say melon? I can smash a rock as easy as I'd smash a melon!
 			Chat2: I have to bring some nice wine on the next party.
-			Chat3: When can I have a drink with they three once again?
-			Chat4: Bar food? It could be anything just not beans.
+			Chat3: When can I have a drink with the other three again?
+			Chat4: Bar food? It could be anything, just not beans.
 			Chat5: Please don't bring me a sardine head on a branch...It's smelly...
-			Chat6: Do you wanna see I become BIG or small?
+			Chat6: Do you wanna see me become BIG or small?
 			Chat7: Do you know "The God of Beer"?
 			Chat8: Today's wine I drink today, cheers!
-			Chat9: Drinking is the happiest thing for oni!
-			Chat10: Come on! Look at the Drunken fist! Please dancing with Dionysus!
+			Chat9: Drinking is the happiest thing for an oni!
+			Chat10: Come on! Look at the Drunken fist! Please dance with Dionysus!
 		}
 
 		Chat_Eirin: {
-			Chat1: Am I came to the ground so long? But everything is good if stay with princess.
-			Chat2: I need a way to make princess get some exercises...
-			Chat3: Maybe I should let Tei be my guinea pig next time? Udongein looks not good recently.
-			Chat4: The herbs in here is not so many, but every of them have interesting effects.
-			Chat5: How about have a talk with that Junko? Otherwise, Udongein can't participate in experiments well
-			Chat6: Do you know how many potion need dead weed as material?
-			Chat7: It's about thousands year since I leave the Lunar Capital...Tsukuyomi, will we meet again? Maybe won't...
-			Chat8: Is Yorihime and Toyohime alright now?...
+			Chat1: Have I been on the ground for too long? Well, everything is good if I stay with the princess.
+			Chat2: I need a way to make the princess get some exercise in...
+			Chat3: Maybe I should let Tei be my guinea pig next time? Udongein hasn't looked too good recently.
+			Chat4: There aren't many herbs in here, but every one of them has interesting effects.
+			Chat5: How about I have a talk with that Junko? Otherwise, Udongein can't participate in experiments very well.
+			Chat6: Do you know how many potions need Deathweed as a material?
+			Chat7: It's been about thousands of years since I left the Lunar Capital...Tsukuyomi, will we meet again? Maybe we won't...
+			Chat8: Are Yorihime and Toyohime alright now?...
 		}
 
 		Chat_Shinki: {
-			Chat1: The so called "Shrine Maid" is just a dog of god~
-			Chat2: Sara, Yumeko, Luize, and devil world's everybody...How's everything going?
-			Chat3: I'm the god of devil's world!...of course, god means the one who created it.
-			Chat4: I heard there are about eight million gods in human's world? The god of there are so low~
-			Chat5: Pardon me, did you see my dear Alice?
+			Chat1: The so called "Shrine Maiden" is just a dog of god~
+			Chat2: Sara, Yumeko, Luize, and everyone else in Makai...How's everything going?
+			Chat3: I'm the god of Makai!...Of course, god means the one who created it.
+			Chat4: I heard there are about eight million gods in human's world? The gods there are so low~
+			Chat5: Pardon me, have you seen my dear Alice?
 			Chat6: Alice-chan~~~
-			Chat7: Come on! Don't you even know your mom?
-			Chat8: So sad...My daughter deserts me...
+			Chat7: Come on! Don't you remember your mother?
+			Chat8: So sad...My daughter deserted me...
 			Chat9: Did you just say "Mama"? Ohh, Mom is so glad!
 			Chat10: One more time please!
 		}
@@ -654,21 +654,21 @@ Mods: {
 		Chat_Rukoto: {
 			Chat1: Rukoto the nuclear-powered robot maid, glad to be of service!
 			Chat2: May I ask what help you need?
-			Chat3: Just let me do sweeping for you!
-			Chat4: Nuclear power means active forever!
+			Chat3: Just let me do the sweeping for you!
+			Chat4: Nuclear power means I'll be active forever!
 			Chat5: This disc-like thing is a "Sweeping Robot"? I'm the real robot!
 		}
 
 		Chat_Kokoro: {
-			Chat1: Can you tell me what is "Happy"?
-			Chat2: I'm Hata no Kokoro, the one who are in charge of emotion
+			Chat1: Can you tell me what "Happy" means?
+			Chat2: I'm Hata no Kokoro, the one who's in charge of emotions.
 			Chat3: Ha~ha~ha~...How about my smile?
-			Chat4: So rich, people's emotion.
+			Chat4: So rich, people's emotions.
 			Chat5: What kind of emotion is "Speechlessness"?
 			Chat6: *Trying to lift cheek to show a smile.
 			Chat7: My old enemy!
-			Chat8: ...Do you have any other emotion can tell me?
-			Chat9: Can't understand...Ah, Is this "Confused"?
+			Chat8: ...Do you have any other emotions you can tell me about?
+			Chat9: I don't understand...Ah, Is this "Confusion"?
 		}
 
 		Chat_Doremy: {
@@ -700,7 +700,7 @@ Mods: {
 				'''
 			Chat7:
 				'''
-				You haven't bought anything here, but it's never too late to do.
+				You haven't bought anything here, but it's never too late to do so.
 				By the way, selling items here will reduce the wealth count.
 				'''
 			Chat8: Wait, you can see THIS? you have found a bug!
