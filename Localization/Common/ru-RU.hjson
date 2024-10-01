@@ -21,6 +21,6 @@ Mods: {
 		QQGroup: _
 		GoodsShop: _
 		CraftCondition_StarSapphire: Выбросьте ингредиенты на землю
-		// MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
+		MurasaTips: "[c/ff0000:НЕ ВХОДИТЕ В ВОДУ С НЕЙ!]"
 	}
 }

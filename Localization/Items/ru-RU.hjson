@@ -200,7 +200,7 @@ Mods: {
 			}
 
 			MeirinPanda: {
-				DisplayName: Клон Панды
+				DisplayName: Кулон Панды
 				Tooltip: "'Из загадочных восточных земель'"
 			}
 
@@ -245,7 +245,7 @@ Mods: {
 			}
 
 			SizuhaBrush: {
-				DisplayName: Кисть осени
+				DisplayName: Кисть Осени
 				Tooltip: "'Кто же красит листву в осенние цвета?'"
 			}
 
@@ -255,75 +255,75 @@ Mods: {
 			}
 
 			MurasaBailer: {
-				// DisplayName: Bottomless Ladle
-				/* Tooltip:
+				DisplayName: Бездонный Ковш
+				Tooltip:
 					'''
-					Summons the Ship Phantom
-					"It can never be filled..."
-					''' */
+					Призывает призрак моряка
+					"Его не заполнить..."
+					'''
 			}
 
 			SuikaGourd: {
-				// DisplayName: Ibuki Gourd
-				/* Tooltip:
+				DisplayName: Горлянка Ибуки
+				Tooltip:
 					'''
-					Summons a little drunkard
-					"Seems infinite on the inside."
-					''' */
+					Призывает маленькую пьянчугу
+					"Выглядит бесконченой внутри."
+					'''
 			}
 
 			EirinBow: {
-				// DisplayName: Toy Bow
-				/* Tooltip:
+				DisplayName: Игрушечный Лук
+				Tooltip:
 					'''
-					Summons the Pharmacist from the Moon
-					"Warning: Please don't shoot others or yourself."
-					''' */
+					Призывает лунного фармацевта 
+					"Осторожно: Пожалуйста, не стреляйте в других или себя."
+					''' 
 			}
 
 			ShinkiHeart: {
-				// DisplayName: Heart of the Devil's World
-				/* Tooltip:
+				DisplayName: Сердце Макайского Дьявола
+				Tooltip:
 					'''
-					Summons the Goddess of Makai
-					“Love from the past.”
-					''' */
+					Призывает богиню Макая
+					“С любовью из прошлого.”
+					''' 
 			}
 
 			RukotoRemote: {
-				// DisplayName: Robot Remote
-				/* Tooltip:
+				DisplayName: Пульт Управления Роботом
+				Tooltip:
 					'''
-					Turns on a little robot maid
-					"The instructions said its battery is non removable."
-					''' */
+					Включает маленькую робогорничную
+					"Инструкция гласит что батарея не удаляется."
+					'''
 			}
 
 			BigPlateMochi: {
-				// DisplayName: A Big Plate of Mochi
-				/* Tooltip:
+				DisplayName: Большая Тарелка Моти
+				Tooltip:
 					'''
-					Summons everyone from the Bamboo Forest of the Lost
-					"Suitable for sharing with family."
-					''' */
+					Призывает всех жителей Пропащего Бамбукового Леса
+					"Удобно для того чтобы разделить на семью."
+					''' 
 			}
 
 			DoremyPillow: {
-				// DisplayName: Nice Sleep Pillow
-				/* Tooltip:
+				DisplayName: Мягкая Подушка Для Сна
+				Tooltip:
 					'''
-					Summons a dream tapir
-					"Have a nice dream."
-					''' */
+					Призывает тапира из мира снов
+					"Сладких снов."
+					''' 
 			}
 
 			KokoroMask: {
-				// DisplayName: Mask of Hope
-				/* Tooltip:
+				DisplayName: Маска Надежды
+				Tooltip:
 					'''
-					Summons a Mask Tsukumogami
-					"It looks like...somebody."
-					''' */
+					Призывает Цукумогами Масок
+					"Выглядит как... а кто это?"
+					'''
 			}
 		}
 	}

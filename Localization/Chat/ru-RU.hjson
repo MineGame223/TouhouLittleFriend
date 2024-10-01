@@ -3,11 +3,11 @@ Mods: {
 		Chat_Kogasa: {
 			Chat1: ляля ляля~
 			Chat2: БУ!
-			// Chat3: I'm not cute, I'm SCARY!
-			// Chat4: Yay! It's rainning now!
-			// Chat5: Jumping in puddles on rainy days is the most interesting thing!
-			// Chat6: Do you have an umbrella? If not, you can take me!
-			// Chat7: Lalala~ Lalala~
+			Chat3: Я не милая, я СТРАШНАЯ!
+			Chat4: Ййей! Дождик!
+			Chat5: Прыгать по лужам в дождливый день это самое весёлое!
+			Chat6: У тебя есть зонтик? Если нет, можешь взять меня!
+			Chat7: Ля-ля-ля~ Ля-ля-ля~
 		}
 
 		Chat_Cirno: {
@@ -175,9 +175,9 @@ Mods: {
 			Chat12: Почему все говорят 'украла'? Я просто 'одалживаю'!
 			Chat13: Полегче, крайний срок в день моей смерти!
 			Chat14: Тогда как-нибудь потом!
-			// Chat15: What's up, Reimu?
-			// Chat16: Ugh...Why do you suddenly say this? Sounds weird...
-			// Chat17: Eh...Pretty good, I think? It means we are born with great duty daze!
+			Chat15: Что такое, Рейму?
+			Chat16: Ух... Почему ты внезапно подняла эту тему? Звучит стрёмно...
+			Chat17: Эм... Круто, наверное? Это означает мы родились с великой целью, дазе~!
 		}
 
 		Chat_Reimu: {
@@ -192,11 +192,11 @@ Mods: {
 			Chat9: ПРЕКРАТИ УЖЕ!
 			Chat10: Это 'заражение'...
 			Chat11: Спать хочется...
-			// Chat12: *Hakuri swearing
-			// Chat13: Hey, Marisa?
-			// Chat14: If we are actually crafted for a world's existence by somebody, how do you think about?
-			// Chat15: Just tell me how do you think!
-			// Chat16: Perhaps so...
+			Chat12: *Ругается на Хакурейском
+			Chat13: Эй, Мариса?
+			Chat14: Если мы были созданы кем-то в этом мире... Что ты об этом думаешь?
+			Chat15: Просто скажи что думаешь!
+			Chat16: Наверное...
 		}
 
 		Chat_Nitori: {
@@ -229,10 +229,10 @@ Mods: {
 			Chat8: ЧО——ХЕН——ШИН——! ! !
 			Chat9: ......
 			Chat10: ...Ээ, ты ничего не слышал!
-			// Chat11: Let us "be the one"!
-			// Chat12: Don't believe any "logic" blindly, trust your instincts firmly.
-			// Chat13: Sympathy is a lie, romance is the key.
-			// Chat14: When you're alive, you can get both the good and the bad.
+			Chat11: Дай нам стать "тем самым"!
+			Chat12: Не следуй ни за какой "логикой" в слепую. Строго доверяйся инстинктам.
+			Chat13: Симпатия это ложь, романс это ключ.
+			Chat14: Пока ты жив, ты можешь получить как хорошее так и плохое.
 		}
 
 		Chat_Koishi: {
@@ -244,9 +244,9 @@ Mods: {
 			Chat6: Алло?
 			Chat7: Это я, Коиши...
 			Chat8: Я прямо за тобой...
-			// Chat9: What happened, Kokoro-chan?
-			// Chat10: I don't know, I just do what I want and don't have many emotions.
-			// Chat11: Yeah! You know what "Confused" is now!
+			Chat9: Что случилось, Кокоро-чан?
+			Chat10: Не знаю, я просто делаю что хочу и не особо даюсь эмоциям.
+			Chat11: Да! Теперь ты знаешь что такое "Запутанность"!
 		}
 
 		Chat_Satori: {
@@ -275,7 +275,7 @@ Mods: {
 			Chat3: ...Что я только что хотела сказать?
 			Chat4: Тут совсем как у меня дома!
 			Chat5: Сатори-сама лучшая на свете!
-			Chat6: Расслабься и оставь это мне!
+			Chat6: Расслабься и оставь это на меня!
 		}
 
 		Chat_Lily: {
@@ -335,18 +335,16 @@ Mods: {
 			Chat11: Ёму-чан, что у нас на поесть сегодня?
 			Chat12: У Ёму-чан есть какие-нибудь планы на будущее?
 			Chat13: Ёму-чан столь же проста сколь и кажется. Обговорим это позже
-			// Chat14: Life won't be awesome without alcohol, Cheers!
-			// Chat15: A peculiar jungle delicacy with high protein!
-			// Chat16: It's a homeland taste...But there is no sea in the Netherworld, right?
-			// Chat17: Salute to the legendary commercial food!
-			// Chat18: The fries without ketchup or cod are soulless...
-			// Chat19: Thank you for your generosity, now let me eat this!
-			// Chat20: No matter if it's shucks, or something else, just eat them together.
-			// Chat21: An apple a day keeps the doctor... wait, do I need a doctor?
-			// Chat22: These won't explode, right?
-			// Chat23: I've hidden all the pineapples...
-			// Chat24: Could it be a pie?
-			// Chat25: It's tasty if there are no small bones!
+			Chat14: Жизнь была бы невесела без алкоголя, ура!
+			Chat15: Аутентичная изысканность джунглей с поышенным содержанием протеина!
+			Chat16: Домашний вкус... Но в Нижнем Мире нет моря, правда?
+			Chat17: Приветствуем легендарную еду из рекламы!
+			Chat18: Фри без кетчупа или трески это бездушно...
+			Chat19: Спасибо за вашу щедрость, теперь дайте мне это съесть!
+			Chat20: Без разницы есть ли там шелуха или что-то ещё, просто ешь прямо с ней.
+			Chat21: По яблоку в день и доктор... Подожди, а мне нужен доктор?
+			Chat22: Они не взорвутся, верно?
+			Chat23: Я спрята!
 		}
 
 		Chat_Youmu: {
@@ -373,11 +371,11 @@ Mods: {
 			Chat8: Боже, она просто стащила одно из моих зелий в последний раз
 			Chat9: ...Пора бы нам её проучить!
 			Chat10: ...? Я сама её найду, не утруждайся...
-			// Chat11: Please don't be so sickening!...Do-do we have any relationship?
-			// Chat12: I'm really unfamiliar with you...
-			// Chat13: ...OK, OK, please stop. I'll call you ma...Ms.Shinki.
-			// Chat14: ("What a complex relation...")
-			// Chat15: No way!
+			Chat11: Пожалуйста, не будь такой занудой!... У-у нас какие-то отношения?
+			Chat12: Я действительно с тобой незнакома...
+			Chat13: ...Ладно, ладно, хватит. Я буду звать тебя ма... мисс Шинки.
+			Chat14: ("Какие сложные отношения...")
+			Chat15: Да ну!
 		}
 
 		Chat_Rumia: {
@@ -545,7 +543,7 @@ Mods: {
 			Chat5: Подними голову и увидишь сегодняшние звёзды!
 			Chat6: Как насчёт украсть гриб у той чёрно-белой ведьмы?
 			Chat7: Ладно, хватит...? Тогда как насчёт украсть ящик для пожертвований у той красно-белой жрицы?
-			// Chat8: If you can't stand it anymore, why don't give it a slap!
+			Chat8: Если не можешь больше терпеть, почему бы просто не дать пощёчину!
 		}
 
 		Chat_Sunny: {
@@ -604,71 +602,73 @@ Mods: {
 		}
 
 		Chat_Murasa: {
-			// Chat1: Are ya ready kids?
-			// Chat2: I'm the girl who'll find the One Piece!
-			// Chat3: Feel weak? Try eating some spinach!
-			// Chat4: Hoist the sails and go!
-			// Chat5: Do you like ships? I prefer shipwrecks!
-			// Chat6: Call me Captain!
-			// Chat7: It's better not to let yourself know your death date. I am exploring the joy of life every moment! ...Oh wait, I'm already dead...
-			// Chat8: With such a soft voice, you dare to pilot a warship?
+			Chat1: Вы готовы дети?
+			Chat2: Я - та, кто отыщет Ван Пис!
+			Chat3: Чувствуешь слабость? Попробуй шпината!
+			//Three lines with reference in a row. Now that's a quality
+			Chat4: Поднять паруса, полный вперёд!
+			Chat5: Нравятся корабли? Я предпочитаю кораблекрушения!
+			Chat6: Зови меня Капитан!
+			Chat7: Лучше бы не знать дату своей смерти. Я наслаждаюсь каждым моментом своей жизни! ...Погоди, я уже мертва...
+			Chat8: Ты смеешь стоять у штурвала боевого корабля со столь слабым, робким голоском?
 		}
 
 		Chat_Suika: {
-			// Chat1: Did you say melon? I can smash a rock as easy as I'd smash a melon!
-			// Chat2: I have to bring some nice wine on the next party.
-			// Chat3: When can I have a drink with the other three again?
-			// Chat4: Bar food? It could be anything, just not beans.
-			// Chat5: Please don't bring me a sardine head on a branch...It's smelly...
-			// Chat6: Do you wanna see me become BIG or small?
-			// Chat7: Do you know "The God of Beer"?
-			// Chat8: Today's wine I drink today, cheers!
-			// Chat9: Drinking is the happiest thing for an oni!
-			// Chat10: Come on! Look at the Drunken fist! Please dance with Dionysus!
+			Chat1: Ты сказал арбуз? Я ломаю камни также легко как и арбузы!
+			Chat2: Надо бы притащить побольше отборного винца на следующую вечеринку.
+			Chat3: Когдя я уже смогу выпить с теми тремя?
+			Chat4: Еда из бара? Что угодно, лишь бы не бобы.
+			Chat5: Пожалуйста давай без башки сардины на палочке... Воняет...
+			Chat6: Хочешь увидеть как я стану БОЛЬШЕ или меньше?
+			Chat7: Ты знаешь "Пивного Бога"?
+			Chat8: На каждый день своё вино, выпьем!
+			Chat9: Напиться - лучшее занятие для они!
+			Chat10: Давай! Посмотри на кулак пьянчуги! Пожалуйста станцуй с Дионисом!
 		}
 
 		Chat_Eirin: {
-			// Chat1: Have I been on the ground for too long? Well, everything is good if I stay with the princess.
-			// Chat2: I need a way to make the princess get some exercise in...
-			// Chat3: Maybe I should let Tei be my guinea pig next time? Udongein hasn't looked too good recently.
-			// Chat4: There aren't many herbs in here, but every one of them has interesting effects.
-			// Chat5: How about I have a talk with that Junko? Otherwise, Udongein can't participate in experiments very well.
-			// Chat6: Do you know how many potions need Deathweed as a material?
-			// Chat7: It's been about thousands of years since I left the Lunar Capital...Tsukuyomi, will we meet again? Maybe we won't...
-			// Chat8: Are Yorihime and Toyohime alright now?...
+			Chat1: Не долговато ли я на земле? Ну, всё ничего пока я с принцессой.
+			Chat2: Нужно найти способ заставить принцессу делать зарядку...
+			Chat3: Возможно мне стоит в следующий раз сделать подопытным кроликом Теви? Удоншейн в последнее время нездорово выглядит.
+			Chat4: Здесь не так много лекарственных трав, но у каждой интересный эффект.
+			Chat5: Как насчёт поговорить с Дзюнко? Иначе Рейсен не сможет нормально учавствовать в экспериментах.
+			Chat6: Ты знаешь как много зелий требуют Мёртвую Траву в качестве материала?
+			Chat7: Уже тысячи лет прошли с тех пор как я покинула столицу... Встретимся ли мы вновь, Цукуёми? Возможно нет...
+			Chat8: Тоёхиме и Ёрихиме сейчас в порядке?...
 		}
 
 		Chat_Shinki: {
-			// Chat1: The so called "Shrine Maiden" is just a dog of god~
-			// Chat2: Sara, Yumeko, Luize, and everyone else in Makai...How's everything going?
-			// Chat3: I'm the god of Makai!...Of course, god means the one who created it.
-			// Chat4: I heard there are about eight million gods in human's world? The gods there are so low~
-			// Chat5: Pardon me, have you seen my dear Alice?
-			// Chat6: Alice-chan~~~
-			// Chat7: Come on! Don't you remember your mother?
-			// Chat8: So sad...My daughter deserted me...
-			// Chat9: Did you just say "Mama"? Ohh, Mom is so glad!
-			// Chat10: One more time please!
+			Chat1: Так значит так называемая "Храмовая жрица" это просто божья шавка~
+			Chat2: Сара, Юмеко, Луиза и остальные в Макае... Как там дела?
+			Chat3: Я бог Макая!... Разумеется, это подразумевает что я создала его.
+			Chat4: Я слышала в человеческом мире около восьми миллионов богов? Эти боги столь низки~
+			Chat5: Извини, ты не видела там мою дорогую Алису?
+			Chat6: Алисочка~~~
+			Chat7: Да ладно! Ты не помнишь свою мать?
+			Chat8: Как грустно... Моя дочь отвергла меня...
+			Chat9: Ты только что сказала "Мама"? Оу, мамочка так рада!
+			Chat10: Ещё раз пожалуйста!
 		}
 
 		Chat_Rukoto: {
-			// Chat1: Rukoto the nuclear-powered robot maid, glad to be of service!
-			// Chat2: May I ask what help you need?
-			// Chat3: Just let me do the sweeping for you!
-			// Chat4: Nuclear power means I'll be active forever!
-			// Chat5: This disc-like thing is a "Sweeping Robot"? I'm the real robot!
+			Chat1: Рюкото, питающаяся ядерной энергией робо-горничная, рада услужить!
+			Chat2: Могу я узнать чем вам помочь?
+			Chat3: Просто дайте мне протереть за вами!
+			Chat4: Ядерная энергия означает что я буду работать вечно!
+			//See ya after Plutonuium halflife in 20 years
+			Chat5: Эта дископодобная штука это "Робот-палесос"? Я настоящий робот!
 		}
 
 		Chat_Kokoro: {
-			// Chat1: Can you tell me what "Happy" means?
-			// Chat2: I'm Hata no Kokoro, the one who's in charge of emotions.
-			// Chat3: Ha~ha~ha~...How about my smile?
-			// Chat4: So rich, people's emotions.
-			// Chat5: What kind of emotion is "Speechlessness"?
-			// Chat6: *Trying to lift cheek to show a smile.
-			// Chat7: My old enemy!
-			// Chat8: ...Do you have any other emotions you can tell me about?
-			// Chat9: I don't understand...Ah, Is this "Confusion"?
+			Chat1: Можешь объяснить что значит "счастливый"?
+			Chat2: Я Хата-но Кокро, главная по эмоциям.
+			Chat3: Ха~ха~ха~ ... Как тебе моя улыбка?
+			Chat4: Людские эмоции столь разнообразны.
+			Chat5: Что это за эмоция такая - "Безмолвие"?
+			Chat6: *Пытается поднять щёку чтобы улыбнуться.
+			Chat7: Мой старый враг!
+			Chat8: ...Есть ещё какие-нибудь эмоции о которых ты бы могла мне рассказать?
+			Chat9: Я не понимаю... А, это и есть "Запутанность"?
 		}
 
 		Chat_Doremy: {
@@ -695,7 +695,7 @@ Mods: {
 			Chat5: Спасибо за то что поддерживали Генсокё всё это время. Вот, вы заслужили это.
 			Chat6:
 				'''
-				Вы ожертвовали {0}, да прибудет с вами Генсокё.
+				Вы пожертвовали {0}, да прибудет с вами Генсокё.
 				Как бы то ни было, продажа предметов здесь понизит выручку.
 				'''
 			Chat7:

@@ -238,43 +238,43 @@ Mods: {
 			}
 
 			MurasaBuff: {
-				// DisplayName: Ship Phantom
-				// Description: If you want your ship to be safe, then maybe give her some spinach...?
+				DisplayName: Призрак Моряка
+				Description: Если вы хотите обезопасить корабль, вероятно лучше дать её побольше шпината...?
 			}
 
 			SuikaBuff: {
-				// DisplayName: The Drunkard
-				// Description: Little Night Parade
+				DisplayName: Пьянчуга
+				Description: Маленький ночной парад
 			}
 
 			EirinBuff: {
-				// DisplayName: The Pharmacist
-				// Description: Brain of The Moon
+				DisplayName: Фармацевт
+				Description: Мозги луны
 			}
 
 			ShinkiBuff: {
-				// DisplayName: Goddess of The Devil's World
-				// Description: '''"Dear Alice."'''
+				DisplayName: Богиня Мира Дьявола
+				Description: '''"Дорогая Алиса."'''
 			}
 
 			RukotoBuff: {
-				// DisplayName: Robot Maid
-				// Description: Nuclear powered!
+				DisplayName: Робо-горничная
+				Description: Работает на ядерной энергии!
 			}
 
 			EienteiBuff: {
-				// DisplayName: People of the Bamboo Forest of the Lost
-				// Description: The moon, the eternal, and the rabbits
+				DisplayName: Жители Пропащего Бамбукового Леса
+				Description: Луна, вечные и кролики
 			}
 
 			DoremyBuff: {
-				// DisplayName: Dream Tapir
-				// Description: A silly face
+				DisplayName: Тапир Из Мира Грёз
+				Description: Глупая Мордашка
 			}
 
 			KokoroBuff: {
-				// DisplayName: Mask Tsukumogami
-				// Description: She's trying her best to smile
+				DisplayName: Масочный Цукумогами
+				Description: Она старается улыбаться изо всех сил
 			}
 		}
 	}
