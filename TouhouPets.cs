@@ -24,9 +24,9 @@ namespace TouhouPets
             {
                 ShopLookupSupport.Setup(result);
             }
-            LoadVanillaTextures();
+            LoadClient();
         }
-        private static void LoadVanillaTextures()
+        private static void LoadClient()
         {
             if (Main.dedServ)
                 return;

@@ -1,6 +1,19 @@
 Mods: {
 	TouhouPets: {
 		Projectiles: {
+			WriggleFirefly.DisplayName: 萤火虫
+			YuyukoButterfly.DisplayName: 蝴蝶
+			AliceDoll_Proj.DisplayName: 上海人偶
+			WakasagihimeBubble.DisplayName: 泡泡
+			KaguyaBullet.DisplayName: 子弹
+			MokuBullet.DisplayName: 子弹
+			MokuFireball.DisplayName: 火球
+			KaguyaWave.DisplayName: 满月光波
+			SakuyaKnife.DisplayName: 飞刀
+			StarTrail.DisplayName: 星轨
+			SizuhaLeaf.DisplayName: 落叶
+			MokuFlame.DisplayName: 火焰
+
 			Cirno.DisplayName: 琪露诺
 			Daiyousei.DisplayName: 大妖精
 			Flandre.DisplayName: 芙兰朵露·斯卡雷特
@@ -25,47 +38,36 @@ Mods: {
 			Lily.DisplayName: 莉莉霍瓦特
 			Mystia.DisplayName: 米斯蒂娅·萝蕾拉
 			Wriggle.DisplayName: 莉格露·奈特巴格
-			WriggleFirefly.DisplayName: 萤火虫
 			Aya.DisplayName: 射命丸 文
-			Yuyuko.DisplayName: 西行寺 幽幽子
-			YuyukoButterfly.DisplayName: 蝴蝶
+			Yuyuko.DisplayName: 西行寺 幽幽子		
 			Youmu.DisplayName: 魂魄 妖梦
-			Alice.DisplayName: 爱丽丝·玛格特洛依德
-			AliceDoll_Proj.DisplayName: 上海人偶
+			Alice.DisplayName: 爱丽丝·玛格特洛依德		
 			Rumia.DisplayName: 露米娅
 			Koakuma.DisplayName: 小恶魔{0}号
-			Wakasagihime.DisplayName: 若鹭姬
-			WakasagihimeBubble.DisplayName: 泡泡
+			Wakasagihime.DisplayName: 若鹭姬		
 			Yuka.DisplayName: 风见 幽香
 			Chen.DisplayName: 橙
 			Ran.DisplayName: 八云 蓝
 			Yukari.DisplayName: 八云 紫
 			Kaguya.DisplayName: 蓬莱山 辉夜
 			Moku.DisplayName: 藤原 妹红
-			KaguyaBullet.DisplayName: 子弹
-			MokuBullet.DisplayName: 子弹
-			MokuFireball.DisplayName: 火球
-			KaguyaWave.DisplayName: 满月光波
 			Meirin.DisplayName: 红美铃
-			Sakuya.DisplayName: 十六夜 咲夜
-			SakuyaKnife.DisplayName: 飞刀
+			Sakuya.DisplayName: 十六夜 咲夜		
 			Raiko.DisplayName: 堀川 雷鼓
 			Keine.DisplayName: 上白泽 慧音
 			Luna.DisplayName: 露娜·切露德
-			Star.DisplayName: 斯塔·萨菲娅
-			StarTrail.DisplayName: 星轨
+			Star.DisplayName: 斯塔·萨菲娅		
 			Sunny.DisplayName: 桑尼·米尔克
 			Reisen.DisplayName: 铃仙·优昙华院·因幡
-			Sizuha.DisplayName: 秋 静叶
-			SizuhaLeaf.DisplayName: 落叶
-			Minoriko.DisplayName: 秋 穰子
-			MokuFlame.DisplayName: 火焰
+			Sizuha.DisplayName: 秋 静叶		
+			Minoriko.DisplayName: 秋 穰子		
 			Murasa.DisplayName: 村纱 水蜜
 			Suika.DisplayName: 伊吹 萃香
 			Eirin.DisplayName: 八意 永琳
 			Shinki.DisplayName: 神绮
 			Rukoto.DisplayName: 留琴
 			Kokoro.DisplayName: 秦心
+			Doremy.DisplayName: 哆来咪·苏伊特
 		}
 	}
 }

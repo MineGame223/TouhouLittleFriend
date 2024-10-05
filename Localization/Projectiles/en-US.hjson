@@ -1,6 +1,19 @@
 Mods: {
 	TouhouPets: {
 		Projectiles: {
+			WriggleFirefly.DisplayName: Firefly
+			YuyukoButterfly.DisplayName: Butterfly
+			AliceDoll_Proj.DisplayName: Shanghai Doll
+			WakasagihimeBubble.DisplayName: Bubble
+			KaguyaBullet.DisplayName: Bullet
+			MokuBullet.DisplayName: Bullet
+			MokuFireball.DisplayName: Fireball
+			KaguyaWave.DisplayName: Fullmoon Wave
+			SakuyaKnife.DisplayName: Knife
+			StarTrail.DisplayName: Star Trail
+			SizuhaLeaf.DisplayName: Falling Leaf
+			MokuFlame.DisplayName: Flame
+
 			Cirno.DisplayName: Cirno
 			Daiyousei.DisplayName: Daiyousei
 			Flandre.DisplayName: Flandre Scarlet
@@ -25,47 +38,36 @@ Mods: {
 			Lily.DisplayName: Lilywhite
 			Mystia.DisplayName: Mystia Lorelei
 			Wriggle.DisplayName: Wriggle Nightbug
-			WriggleFirefly.DisplayName: Firefly
 			Aya.DisplayName: Aya Shameimaru
 			Yuyuko.DisplayName: Yuyuko Saigyougi
-			YuyukoButterfly.DisplayName: Butterfly
 			Youmu.DisplayName: Youmu Konpaku
 			Alice.DisplayName: Alice Margatroid
-			AliceDoll_Proj.DisplayName: Shanghai Doll
 			Rumia.DisplayName: Rumia
 			Koakuma.DisplayName: Koakuma No. {0}
 			Wakasagihime.DisplayName: Wakasagihime
-			WakasagihimeBubble.DisplayName: Bubble
 			Yuka.DisplayName: Yuka Kazami
 			Chen.DisplayName: Chen
 			Ran.DisplayName: Ran Yakumo
 			Yukari.DisplayName: Yukari Yakumo
 			Kaguya.DisplayName: Kaguya Houraisan
 			Moku.DisplayName: Fujiwara no Mokou
-			KaguyaBullet.DisplayName: Bullet
-			MokuBullet.DisplayName: Bullet
-			MokuFireball.DisplayName: Fireball
-			KaguyaWave.DisplayName: Fullmoon Wave
 			Meirin.DisplayName: Meirin Hong
 			Sakuya.DisplayName: Sakuya Izayoi
-			SakuyaKnife.DisplayName: Knife
 			Raiko.DisplayName: Raiko Horikawa
 			Keine.DisplayName: Keine Kamishirasawa
 			Luna.DisplayName: Luna Child
 			Star.DisplayName: Star Sapphire
-			StarTrail.DisplayName: Star Trail
 			Sunny.DisplayName: Sunny Milk
 			Reisen.DisplayName: Reisen Udongein Inaba
 			Sizuha.DisplayName: Shizuha Aki
-			SizuhaLeaf.DisplayName: Falling Leaf
 			Minoriko.DisplayName: Minoriko Aki
-			MokuFlame.DisplayName: Flame
 			Murasa.DisplayName: Minamistu Murasa
 			Suika.DisplayName: Suika Ibuki
 			Eirin.DisplayName: Eirin Yagokoro
 			Shinki.DisplayName: Shinki
 			Rukoto.DisplayName: Rukoto
 			Kokoro.DisplayName: Hata no Kokoro
+			Doremy.DisplayName: Doremy Sweet
 		}
 	}
 }

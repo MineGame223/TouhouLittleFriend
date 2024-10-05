@@ -672,11 +672,19 @@ Mods: {
 		}
 
 		Chat_Doremy: {
-			Chat1: _
-			Chat2: _
-			Chat3: _
-			Chat4: _
-			Chat5: _
+			Chat1: Do you always dreaming?
+			Chat2: Have a nice dream is everyone's wish, right?
+			Chat3: Did you ever see me in your dream? I guess you did.
+			Chat4: Just go to bed when you want to sleep, It's more important than any other thing.
+			Chat5: Will you count sheep while having insomnia?
+			Chat6: Only don't snooze too much in daytime, can you have a nice sleep in night.
+			Chat7: Ugh... Interesting...
+			Chat8: One sheep, two sheep, baa baa baa...
+			Chat9: Did anyone... know that I'm... actually working now?
+			Chat10: How could I fall asleep in such a night...
+			Chat11: So tired...
+			Chat12: Can those monsters be quiet for a while?
+			Chat13: Although the environment now is suitable for sleeping, You can't promise to get a safety dream.
 		}
 
 		Chat_Tei: {

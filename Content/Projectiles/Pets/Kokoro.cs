@@ -67,7 +67,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     DrawMask(Color.Cyan * 0.7f, i, new Vector2(4, 0)
                         .RotatedBy(MathHelper.ToRadians(60 * j) + Main.GlobalTimeWrappedHourly * 2));
                 }
-                Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
+                Projectile.ResetDrawStateForPet();
 
                 DrawMask(lightColor, i);
             }

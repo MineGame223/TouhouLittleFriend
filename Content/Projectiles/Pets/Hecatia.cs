@@ -26,7 +26,6 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private int blinkFrame, blinkFrameCounter;
 
-        private Color myColor;
         private float[] bodyAlpha = new float[3];
         private Vector2[] plantePos = new Vector2[3];
 
@@ -62,7 +61,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             });
             return false;
         }
-        public override Color ChatTextColor => myColor;
+        public override Color ChatTextColor
+        {
+            get
+            {
+                return PlanteState switch
+                {
+                    1 => new Color(79, 215, 239),
+                    2 => new Color(255, 249, 137),
+                    _ => new Color(255, 120, 120),
+                };
+            }
+        }
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Hecatia";
@@ -264,7 +274,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 bodyAlpha[0] -= 0.02f;
                 bodyAlpha[1] += 0.02f;
                 bodyAlpha[2] -= 0.02f;
-                myColor = new Color(79, 215, 239);
             }
             else if (PlanteState == 2)
             {
@@ -290,7 +299,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 bodyAlpha[0] -= 0.02f;
                 bodyAlpha[1] -= 0.02f;
                 bodyAlpha[2] += 0.02f;
-                myColor = new Color(255, 249, 137);
             }
             else
             {
@@ -316,7 +324,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 bodyAlpha[0] += 0.02f;
                 bodyAlpha[1] -= 0.02f;
                 bodyAlpha[2] -= 0.02f;
-                myColor = new Color(255, 120, 120);
             }
             for (int i = 0; i <= 2; i++)
             {

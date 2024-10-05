@@ -57,6 +57,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
+        private readonly Texture2D whiteTex = AltVanillaFunction.GetExtraTexture("Koishi_White");
+        private readonly Texture2D whiteClothTex = AltVanillaFunction.GetExtraTexture("Koishi_White_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 18;
@@ -65,29 +67,45 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
+            bool useWhiteStyle =
+                Main.LocalPlayer.miscDyes[0].type == ItemID.SilverDye
+                || Main.LocalPlayer.miscDyes[0].type == ItemID.BrightSilverDye;
+
+            Texture2D tex = null;
+            Texture2D cloth = clothTex;
+            if (useWhiteStyle)
+            {
+                tex = whiteTex;
+                cloth = whiteClothTex;
+            }
+
             DrawPetConfig config = drawConfig with
             {
-                ShouldUseEntitySpriteDraw = true,
+                AltTexture = tex,
+            };
+            DrawPetConfig config2 = config with
+            {
+                ShouldUseEntitySpriteDraw = !useWhiteStyle,
             };
 
             if (eyePositionOffset.Y <= 0)
                 DrawEye(eyePosition - Main.screenPosition, lightColor);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
 
             if (CurrentState == States.Blink)
-                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
+                Projectile.DrawPet(blinkFrame, lightColor, config, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
-                config with
+                config2 with
                 {
-                    AltTexture = clothTex,
+                    AltTexture = cloth,
                 });
-            Projectile.DrawPet(clothFrame, lightColor, config, 1);
+            Projectile.DrawPet(clothFrame, lightColor, config2, 1);
             Projectile.ResetDrawStateForPet();
 
             if (CurrentState == States.Annoying)
-                Projectile.DrawPet(annoyingFrame, lightColor, drawConfig, 1);
+                Projectile.DrawPet(annoyingFrame, lightColor, config, 1);
 
             if (eyePositionOffset.Y > 0)
                 DrawEye(eyePosition - Main.screenPosition, lightColor);
