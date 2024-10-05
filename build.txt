@@ -1,5 +1,5 @@
 displayName = 东方小伙伴 ~ Adventure with cute partners
 author = 中学生
-version = 1.1.4
+version = 1.1.4.1
 includeSource = true
 buildIgnore = OtherFiles/*
