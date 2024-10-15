@@ -276,6 +276,16 @@ Mods: {
 				DisplayName: Mask Tsukumogami
 				Description: She's trying her best to smile
 			}
+
+			TewiBuff: {
+				DisplayName: Rabbit of Luck
+				Description: '''"Lucky is such a simple thing, but happiness isn't only so."'''
+			}
+
+			MomoyoBuff: {
+				DisplayName: Bug Hime
+				Description: Did you say "Mine & Craft"?
+			}
 		}
 	}
 }

@@ -36,5 +36,8 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool SpecialAbility_MokuAndKaguya;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Tewi;
     }
 }

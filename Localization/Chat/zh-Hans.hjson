@@ -347,6 +347,7 @@ Mods: {
 			Chat23: 我已经把菠萝都藏起来了...
 			Chat24: 能不能做成派呢？
 			Chat25: 没有碎骨更好吃！
+			Chat26: 请不要喂我垃圾...
 		}
 
 		Chat_Youmu: {
@@ -687,7 +688,15 @@ Mods: {
 			Chat13: 虽然现在的天象很适合睡觉，但能不能睡得安稳就不好说咯。
 		}
 
-		Chat_Tei: {
+		Chat_Tewi: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+
+		Chat_Momoyo: {
 			Chat1: _
 			Chat2: _
 			Chat3: _

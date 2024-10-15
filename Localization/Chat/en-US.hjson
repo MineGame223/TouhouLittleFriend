@@ -347,6 +347,7 @@ Mods: {
 			Chat23: I've hidden all the pineapples...
 			Chat24: Could it be a pie?
 			Chat25: It's tasty if there are no small bones!
+			Chat26: Please don't feed me junk...
 		}
 
 		Chat_Youmu: {
@@ -687,7 +688,15 @@ Mods: {
 			Chat13: Although the environment now is suitable for sleeping, You can't promise to get a safety dream.
 		}
 
-		Chat_Tei: {
+		Chat_Tewi: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+
+		Chat_Momoyo: {
 			Chat1: _
 			Chat2: _
 			Chat3: _

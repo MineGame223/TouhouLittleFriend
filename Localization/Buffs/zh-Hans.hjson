@@ -276,6 +276,16 @@ Mods: {
 				DisplayName: 面灵气
 				Description: 她已经在很努力地微笑了
 			}
+
+			TewiBuff: {
+				DisplayName: 幸运之白兔
+				Description: “所谓幸运其实很简单，而幸福可不止如此。”
+			}
+
+			MomoyoBuff: {
+				DisplayName: 虫姬
+				Description: 你刚刚说“矿蚣”？
+			}
 		}
 	}
 }

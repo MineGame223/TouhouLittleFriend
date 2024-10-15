@@ -35,6 +35,12 @@ namespace TouhouPets
             {
                 luck += 0.5f;
             }
+
+            if (Player.HasBuff(BuffType<TewiBuff>())
+                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Tewi)
+            {
+                luck += 0.3f;
+            }
         }
         public override void PostUpdateBuffs()
         {

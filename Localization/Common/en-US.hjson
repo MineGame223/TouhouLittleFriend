@@ -22,5 +22,6 @@ Mods: {
 		GoodsShop: _
 		CraftCondition_StarSapphire: Drop the ingredients on the ground
 		MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
+		FeedYuyuko: Feed
 	}
 }
