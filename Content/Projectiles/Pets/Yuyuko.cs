@@ -69,7 +69,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Item food = Owner.inventory[Owner.selectedItem];
             if (food.stack > 0 && ItemID.Sets.IsFood[food.type])
             {
-                if (!IsEattingState)
+                if (!IsEattingState && GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuyuko)
                 {
                     Owner.cursorItemIconEnabled = true;
                     Owner.cursorItemIconText = Language.GetTextValue($"Mods.TouhouPets.FeedYuyuko");

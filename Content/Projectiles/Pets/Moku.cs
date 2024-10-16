@@ -251,7 +251,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MokuBuff>());
-            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
 
             UpdateTalking();
 

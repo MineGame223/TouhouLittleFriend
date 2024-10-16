@@ -263,7 +263,7 @@ Mods: {
 			}
 
 			EienteiBuff: {
-				// DisplayName: People of the Bamboo Forest of the Lost
+				// DisplayName: The Family of Eientei
 				// Description: The moon, the eternal, and the rabbits
 			}
 
@@ -275,6 +275,16 @@ Mods: {
 			KokoroBuff: {
 				// DisplayName: Mask Tsukumogami
 				// Description: She's trying her best to smile
+			}
+
+			TewiBuff: {
+				// DisplayName: Rabbit of Luck
+				// Description: '''"Lucky is such a simple thing, but happiness isn't only so."'''
+			}
+
+			MomoyoBuff: {
+				// DisplayName: Bug Hime
+				// Description: Did you say "Mine & Craft"?
 			}
 		}
 	}

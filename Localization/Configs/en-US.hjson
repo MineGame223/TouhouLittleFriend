@@ -11,7 +11,7 @@ Mods: {
 
 				SpecialAbility_Minoriko: {
 					Label: "[i:TouhouPets/MinorikoSweetPotato] {$Mods.TouhouPets.Items.MinorikoSweetPotato.DisplayName}'s Special Ability"
-					Tooltip: Food Buff duration increased by 10%
+					Tooltip: Food Buff duration increased by 3%
 				}
 
 				SpecialAbility_Murasa: {
@@ -46,12 +46,21 @@ Mods: {
 
 				SpecialAbility_Yuyuko: {
 					Label: "[i:TouhouPets/YuyukoFan] {$Mods.TouhouPets.Items.YuyukoFan.DisplayName}'s Special Ability"
-					Tooltip: If there is any food in your inventory or opened Void Bag, one item will be consumed regularly
+					Tooltip:
+						'''
+						If there is any food in your inventory or opened Void Bag, one item will be consumed regularly
+						While holding a food, right click the pet can feed her
+						'''
 				}
 
 				SpecialAbility_MokuAndKaguya: {
 					Label: "[i:TouhouPets/MokuMatch] & [i:TouhouPets/KaguyaBranch] {$Mods.TouhouPets.Items.MokuMatch.DisplayName} and {$Mods.TouhouPets.Items.KaguyaBranch.DisplayName}'s Special Abilities"
 					Tooltip: After the player is AFK for longer than 10s, they will start fighting each other
+				}
+
+				SpecialAbility_Tewi: {
+					Label: "[i:TouhouPets/TewiCarrot] {$Mods.TouhouPets.Items.TewiCarrot.DisplayName}'s Special Ability"
+					Tooltip: Increases luck by 0.3
 				}
 			}
 
@@ -90,6 +99,15 @@ Mods: {
 				AllowGapToSpawn: {
 					Label: Allow the Mysterious Gap to spawn at night
 					Tooltip: Toggle whether or not the Mysterious Gap can spawn at night
+				}
+
+				GensokyoModDropRule: {
+					Label: "[Indev] Gensokyo Mod's Drop Rule"
+					Tooltip:
+						'''
+						While enable, some pet's drop rule will changed. Enable Gensokyo Mod is required.
+						Currently unavailable.
+						'''
 				}
 			}
 		}

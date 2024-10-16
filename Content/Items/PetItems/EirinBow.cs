@@ -29,7 +29,7 @@ namespace TouhouPets.Content.Items.PetItems
         {
             CreateRecipe()
             .AddRecipeGroup(RecipeGroupID.Wood, 12)
-            .AddIngredient(ItemID.Cobweb, 30)
+            .AddIngredient(ItemID.WhiteString, 1)
             .AddIngredient(ItemID.FallenStar, 5)
             .AddTile(TileID.WorkBenches)
             .DisableDecraft()

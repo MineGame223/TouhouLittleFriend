@@ -305,7 +305,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             GenDust();
 
             bool noMoku = !FindPet(ProjectileType<Moku>(), false)
-                || (!Owner.HasBuff<MokuBuff>() && !Owner.HasBuff<EienteiBuff>());
+                || (!Owner.HasBuff<MokuBuff>());
             if (IsBattleState && (Owner.afkCounter <= 0 || noMoku))
             {
                 Timer = 0;
@@ -386,7 +386,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Vector2 point = new Vector2(-60 * Owner.direction, -30 + Owner.gfxOffY);
                 if (Owner.HasBuff<EienteiBuff>())
                 {
-                    point = new Vector2(-20 * Owner.direction, -90 + Owner.gfxOffY);
+                    point = new Vector2(-90 * Owner.direction, -60 + Owner.gfxOffY);
                 }
                 ChangeDir(200);
                 MoveToPoint(point, 15f);

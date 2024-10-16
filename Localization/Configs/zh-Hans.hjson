@@ -11,7 +11,7 @@ Mods: {
 
 				SpecialAbility_Minoriko: {
 					Label: "[i:TouhouPets/MinorikoSweetPotato] {$Mods.TouhouPets.Items.MinorikoSweetPotato.DisplayName}特殊能力"
-					Tooltip: 吃食物所带来的增益时间延长10%
+					Tooltip: 吃食物所带来的增益时间延长3%
 				}
 
 				SpecialAbility_Murasa: {
@@ -46,12 +46,21 @@ Mods: {
 
 				SpecialAbility_Yuyuko: {
 					Label: "[i:TouhouPets/YuyukoFan] {$Mods.TouhouPets.Items.YuyukoFan.DisplayName}特殊能力"
-					Tooltip: 玩家背包内或开启的虚空袋内有未被收藏的食物时，每隔一段时间就会随机吃掉一个
+					Tooltip:
+						'''
+						玩家背包内或开启的虚空袋内有未被收藏的食物时，每隔一段时间就会随机吃掉一个
+						可在手持食物时右键点击宠物主动投喂
+						'''
 				}
 
 				SpecialAbility_MokuAndKaguya: {
 					Label: "[i:TouhouPets/MokuMatch] & [i:TouhouPets/KaguyaBranch] {$Mods.TouhouPets.Items.MokuMatch.DisplayName}与{$Mods.TouhouPets.Items.KaguyaBranch.DisplayName}的特殊能力"
 					Tooltip: 当玩家同时持有这两者、且挂机超过10秒后，两者会进行缠斗
+				}
+
+				SpecialAbility_Tewi: {
+					Label: "[i:TouhouPets/TewiCarrot] {$Mods.TouhouPets.Items.TewiCarrot.DisplayName}特殊能力"
+					Tooltip: 增加0.3运气
 				}
 			}
 
@@ -81,7 +90,7 @@ Mods: {
 					Label: 宠物可通过钓鱼获取
 					Tooltip:
 						'''
-						部分宠物是否可以通过钓鱼手段掉落
+						部分宠物是否可以通过钓鱼手段获得
 						受影响的物品有：
 						[i:TouhouPets/HinaDoll] [i:TouhouPets/WakasagihimeFishingRod] [i:TouhouPets/IkuOarfish] [i:TouhouPets/UselessBook]
 						'''
@@ -90,6 +99,15 @@ Mods: {
 				AllowGapToSpawn: {
 					Label: 允许神秘隙间生成
 					Tooltip: 神秘隙间是否可以在夜晚时生成
+				}
+
+				GensokyoModDropRule: {
+					Label: "[开发中]幻想乡模组掉落模式"
+					Tooltip:
+						'''
+						启用后，部分宠物的获取方式将更改，需要首先启用幻想乡模组
+						目前不生效
+						'''
 				}
 			}
 		}

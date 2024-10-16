@@ -17,7 +17,7 @@ namespace TouhouPets
                 if (ItemID.Sets.IsFood[item.type] && item.buffType > 0)
                 {
                     int defaultTime = item.buffTime;
-                    item.buffTime += (int)(defaultTime * 0.1f);
+                    item.buffTime += (int)(defaultTime * 0.03f);
                 }
             }
             return base.CanUseItem(item, player);

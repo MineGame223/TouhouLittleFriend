@@ -106,6 +106,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<TewiBuff>());
+            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
 
             UpdateTalking();
 
@@ -145,6 +146,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             ChangeDir();
 
             Vector2 point = new Vector2(-40 * Owner.direction, -40 + Owner.gfxOffY);
+            if (Owner.HasBuff<EienteiBuff>())
+            {
+                point = new Vector2(-40 * Owner.direction, -70 + Owner.gfxOffY);
+            }
             MoveToPoint(point, 12f);
         }
         private void Idle()
@@ -210,11 +215,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (Projectile.frame == 9)
-            {
-                Projectile.frame = 10;
-            }
-            if (Projectile.frame > 10)
+            if (Projectile.frame > 8)
             {
                 Projectile.frame = 0;
                 if (OwnerIsMyPlayer)
@@ -241,11 +242,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 earFrame = 3;
             }
 
-            if (clothFrame < 3)
+            if (clothFrame < 7)
             {
-                clothFrame = 3;
+                clothFrame = 7;
             }
-            count = 8;
+            count = 5;
             if (++clothFrameCounter > count)
             {
                 clothFrameCounter = 0;
