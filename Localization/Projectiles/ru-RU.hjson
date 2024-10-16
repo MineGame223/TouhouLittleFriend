@@ -13,7 +13,6 @@ Mods: {
 			StarTrail.DisplayName: Звёздный след
 			SizuhaLeaf.DisplayName: Опавший Лист
 			MokuFlame.DisplayName: Flame
-
 			Cirno.DisplayName: Чирно
 			Daiyousei.DisplayName: Дэйсей
 			Flandre.DisplayName: Фландр Скарлет
@@ -67,7 +66,8 @@ Mods: {
 			// Shinki.DisplayName: Shinki
 			// Rukoto.DisplayName: Rukoto
 			// Kokoro.DisplayName: Hata no Kokoro
-			// Doremy.DisplayName: Doremy
+			// Doremy.DisplayName: Doremy Sweet
+			// Tewi.DisplayName: Tewi
 		}
 	}
 }

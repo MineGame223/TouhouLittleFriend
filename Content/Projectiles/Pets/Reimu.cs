@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -18,6 +20,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             WakeUp,
             WakeUp2,
             AfterWakeUp,
+            Shining,
             Flying,
             FlyingBlink,
         }
@@ -44,17 +47,32 @@ namespace TouhouPets.Content.Projectiles.Pets
         private bool IsIdleState => CurrentState <= States.Blink;
         private bool IsNapState => CurrentState >= States.BeforeNap && CurrentState <= States.AfterWakeUp;
 
-        private DrawPetConfig drawConfig = new(1);
+        private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Reimu_Cloth");
         private readonly Texture2D newYearClothTex = AltVanillaFunction.GetExtraTexture("Reimu_Cloth_NewYear");
 
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
+        private int itemFrame, itemFrameCounter;
         private int flyTimeleft = 0;
+        private bool seeCoin = false;
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 18;
+            Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
+        }
+        public override bool OnMouseHover()
+        {
+            Item coin = Owner.inventory[Owner.selectedItem];
+            if ((coin.type == ItemID.GoldCoin || coin.type == ItemID.PlatinumCoin)
+                && coin.stack > 0)
+            {
+                seeCoin = true;
+
+                if (IsIdleState)
+                    CurrentState = States.Shining;
+            }
+            return false;
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -70,16 +88,24 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
             if (CurrentState == States.Blink || CurrentState == States.FlyingBlink)
-                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState < States.Flying)
+            if (CurrentState >= States.Flying)
+                return false;
+
+            if (CurrentState != States.Shining)
             {
-                Projectile.DrawPet(clothFrame, lightColor, drawConfig);
-                Projectile.DrawPet(clothFrame, lightColor, config);
+                Projectile.DrawPet(itemFrame, lightColor,
+                    config with
+                    {
+                        ShouldUseEntitySpriteDraw = false,
+                    }, 1);
             }
+            Projectile.DrawPet(clothFrame, lightColor, config, 1);
+
             return false;
         }
         public override Color ChatTextColor => new Color(255, 120, 120);
@@ -121,7 +147,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void VisualEffectForPreview()
         {
-            UpdateClothFrame();
+            UpdateMiscFrame();
         }
         private void UpdateTalking()
         {
@@ -260,6 +286,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AfterWakeUp();
                     break;
 
+                case States.Shining:
+                    shouldNotTalking = true;
+                    Shining();
+                    break;
+
                 case States.Flying:
                     Flying();
                     break;
@@ -283,11 +314,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 flyTimeleft--;
             }
+
+            seeCoin = false;
         }
         private void ControlMovement()
         {
             Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.012f;
+            if (CurrentState != States.Shining)
+            {
+                Projectile.rotation = Projectile.velocity.X * 0.012f;
+            }
 
             if (CurrentState == States.Nap)
                 return;
@@ -336,18 +372,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Blink()
         {
             Projectile.frame = 0;
-            if (blinkFrame < 13)
-            {
-                blinkFrame = 13;
-            }
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;
                 blinkFrame++;
             }
-            if (blinkFrame > 15)
+            if (blinkFrame > 2)
             {
-                blinkFrame = 13;
+                blinkFrame = 0;
                 CurrentState = States.Idle;
             }
         }
@@ -355,6 +387,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.velocity *= 0.5f;
             Projectile.frame = 1;
+
+            if (seeCoin)
+            {
+                CurrentState = States.Idle;
+                return;
+            }
 
             Timer++;
             if (OwnerIsMyPlayer && Timer > RandomCount)
@@ -377,7 +415,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (OwnerIsMyPlayer)
             {
-                if (Projectile.Distance(Owner.position) > 300f)
+                if (Projectile.Distance(Owner.position) > 300f || seeCoin)
                 {
                     RandomCount = Main.rand.Next(2, 4);
                     CurrentState = States.WakeUp;
@@ -454,50 +492,74 @@ namespace TouhouPets.Content.Projectiles.Pets
                 CurrentState = States.Idle;
             }
         }
+        private void Shining()
+        {
+            if (++Projectile.frameCounter > 5)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame < 9)
+            {
+                Projectile.frame = 9;
+            }
+            if (Projectile.frame > 11)
+            {
+                Projectile.frame = 10;
+            }
+            if (OwnerIsMyPlayer && !seeCoin)
+            {
+                if (Projectile.frame >= 11)
+                    CurrentState = States.Idle;
+            }
+        }
         private void Flying()
         {
-            if (OwnerIsMyPlayer && flyTimeleft <= 0)
+            if (OwnerIsMyPlayer)
             {
-                ActionCD = 600;
-                CurrentState = States.Idle;
-                return;
+                if (flyTimeleft <= 0)
+                {
+                    ActionCD = 600;
+                    CurrentState = States.Idle;
+                    return;
+                }
+                if (mainTimer % 270 == 0 && CurrentState == States.Flying)
+                {
+                    CurrentState = States.FlyingBlink;
+                }
             }
-            if (Projectile.frame < 16)
+            if (Projectile.frame < 12)
             {
-                Projectile.frame = 16;
+                Projectile.frame = 12;
             }
             if (++Projectile.frameCounter > 3)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (Projectile.frame > 17)
+            if (Projectile.frame > 13)
             {
-                Projectile.frame = 16;
+                Projectile.frame = 12;
             }
         }
         private void FlyingBlink()
         {
-            if (blinkFrame < 13)
-            {
-                blinkFrame = 13;
-            }
             if (++blinkFrameCounter > 3)
             {
                 blinkFrameCounter = 0;
                 blinkFrame++;
             }
-            if (blinkFrame > 15)
+            if (blinkFrame > 2)
             {
-                blinkFrame = 13;
+                blinkFrame = 0;
                 CurrentState = States.Flying;
             }
         }
-        private void UpdateClothFrame()
+        private void UpdateMiscFrame()
         {
-            if (clothFrame < 9)
+            if (clothFrame < 3)
             {
-                clothFrame = 9;
+                clothFrame = 3;
             }
             int count = 5;
             if (++clothFrameCounter > count)
@@ -505,9 +567,24 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrameCounter = 0;
                 clothFrame++;
             }
-            if (clothFrame > 12)
+            if (clothFrame > 6)
             {
-                clothFrame = 9;
+                clothFrame = 3;
+            }
+
+            if (itemFrame < 7)
+            {
+                itemFrame = 7;
+            }
+            count = 8;
+            if (++itemFrameCounter > count)
+            {
+                itemFrameCounter = 0;
+                itemFrame++;
+            }
+            if (itemFrame > 10)
+            {
+                itemFrame = 7;
             }
         }
     }

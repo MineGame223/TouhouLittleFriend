@@ -16,5 +16,9 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool AllowGapToSpawn;
+
+        [DefaultValue(false)]
+        [ReloadRequired]
+        public bool GensokyoModDropRule;
     }
 }

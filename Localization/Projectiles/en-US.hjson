@@ -13,7 +13,6 @@ Mods: {
 			StarTrail.DisplayName: Star Trail
 			SizuhaLeaf.DisplayName: Falling Leaf
 			MokuFlame.DisplayName: Flame
-
 			Cirno.DisplayName: Cirno
 			Daiyousei.DisplayName: Daiyousei
 			Flandre.DisplayName: Flandre Scarlet
@@ -68,6 +67,7 @@ Mods: {
 			Rukoto.DisplayName: Rukoto
 			Kokoro.DisplayName: Hata no Kokoro
 			Doremy.DisplayName: Doremy Sweet
+			Tewi.DisplayName: Tewi
 		}
 	}
 }

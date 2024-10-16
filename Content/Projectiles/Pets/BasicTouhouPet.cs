@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameInput;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -485,6 +486,28 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Lighting.AddLight(position, rgb);
             }
         }
+        private void UpdateMouseEntered()
+        {
+            if (!PlayerInput.IgnoreMouseInterface && OwnerIsMyPlayer)
+            {
+                Vector2 projPos = Projectile.position - Main.screenPosition;
+                Rectangle projRect = new((int)projPos.X, (int)projPos.Y, Projectile.width, Projectile.height);
+                if (projRect.Contains(new Point(Main.mouseX, Main.mouseY)))
+                {
+                    if (!OnMouseHover())
+                        return;
+
+                    if (Main.mouseRight && Main.mouseRightRelease)
+                    {
+                        OnMouseClick(false, true);
+                    }
+                    if (Main.mouseLeft && Main.mouseLeftRelease)
+                    {
+                        OnMouseClick(true, false);
+                    }
+                }
+            }
+        }
         #endregion
 
         #region 自身重写函数
@@ -516,6 +539,25 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="rgb">颜色，单值最高为2.55、最低为0</param>
         /// <param name="inactive">何时不会发光，默认为false</param>
         public virtual void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
+        {
+
+        }
+        /// <summary>
+        /// 鼠标置于宠物之上时执行的方法，可控制是否能点击宠物（于PostDraw中更新）
+        /// <br/>仅在本地端更新
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool OnMouseHover()
+        {
+            return true;
+        }
+        /// <summary>
+        /// 点击宠物时执行的方法，需要OnMouseHover返回true才能执行
+        /// <br/>仅在本地端更新
+        /// </summary>
+        /// <param name="leftMouse">左键点击</param>
+        /// <param name="rightMouse">右键点击</param>
+        public virtual void OnMouseClick(bool leftMouse, bool rightMouse)
         {
 
         }
@@ -639,6 +681,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 VisualEffectForPreview();
             }
             DrawTestInfo();
+
+            UpdateMouseEntered();
         }
         #endregion
     }

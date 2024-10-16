@@ -10,9 +10,7 @@ namespace TouhouPets.Content.Buffs.PetBuffs
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Kaguya>());
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Eirin>());
             player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Reisen>());
-
-            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Moku>());
-            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Keine>());
+            player.SpawnPetAndSetBuffTime(buffIndex, ProjectileType<Tewi>());
         }
     }
 }

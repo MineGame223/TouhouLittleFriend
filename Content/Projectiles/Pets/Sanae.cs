@@ -123,15 +123,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 offset = posOffset ?? Vector2.Zero;
             DrawPetConfig config = drawConfig with
             {
+                ShouldUseEntitySpriteDraw = false,
+            };
+            DrawPetConfig config2 = config with
+            {
                 PositionOffset = new Vector2(0, extraAdjY) + offset,
             };
-            Projectile.DrawPet(hairFrame, lightColor, config, 1);
+            Projectile.DrawPet(hairFrame, lightColor, config2, 1);
             Projectile.DrawPet(Projectile.frame, lightColor,
-                drawConfig with
+                config with
                 {
                     PositionOffset = offset,
                 });
-            Projectile.DrawPet(clothFrame, lightColor, config);
+            Projectile.DrawPet(clothFrame, lightColor, config2);
         }
         public override Color ChatTextColor => new Color(83, 241, 146);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -303,7 +307,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Dust d = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, dustType,
                     0, Main.rand.Next(-3, -1), 100, default, auraScale * 0.45f);
                 d.noGravity = true;
-                d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
+                //d.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
         }
         private void ControlMovement()
@@ -398,11 +402,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Flying()
         {
-            if (OwnerIsMyPlayer && flyTimeleft <= 0)
+            if (OwnerIsMyPlayer)
             {
-                ActionCD = 600;
-                CurrentState = States.Idle;
-                return;
+                if (flyTimeleft <= 0)
+                {
+                    ActionCD = 600;
+                    CurrentState = States.Idle;
+                    return;
+                }
+                if (mainTimer % 270 == 0 && CurrentState == States.Flying)
+                {
+                    CurrentState = States.FlyingBlink;
+                }
             }
             if (Projectile.frame < 5)
             {

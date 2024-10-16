@@ -486,7 +486,7 @@ Mods: {
 				DisplayName: A Big Plate of Mochi
 				Tooltip:
 					'''
-					Summons everyone from the Bamboo Forest of the Lost
+					Summons everyone from the House of Eternity
 					"Suitable for sharing with family."
 					'''
 			}
@@ -506,6 +506,24 @@ Mods: {
 					'''
 					Summons a Mask Tsukumogami
 					"It looks like...somebody."
+					'''
+			}
+
+			TewiCarrot: {
+				DisplayName: Lucky Carrot Pendant
+				Tooltip:
+					'''
+					Summon a rabbit of luck
+					"Actually it's eatable"
+					'''
+			}
+
+			MomoyoPickaxe: {
+				DisplayName: Mini Gold Pickaxe
+				Tooltip:
+					'''
+					Summon the Bug Hime
+					“It's too small as a tool, but fit for somebody.”
 					'''
 			}
 		}

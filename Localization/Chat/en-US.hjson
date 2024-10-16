@@ -347,6 +347,7 @@ Mods: {
 			Chat23: I've hidden all the pineapples...
 			Chat24: Could it be a pie?
 			Chat25: It's tasty if there are no small bones!
+			Chat26: Please don't feed me junk...
 		}
 
 		Chat_Youmu: {
@@ -687,7 +688,15 @@ Mods: {
 			Chat13: Although the environment now is suitable for sleeping, You can't promise to get a safety dream.
 		}
 
-		Chat_Tei: {
+		Chat_Tewi: {
+			Chat1: Lucky is actually pretty simple, but happiness isn't only so Usa~
+			Chat2: Reisen didn't fell into the hole I dug yesterday, that's too boring! I'd better make it bigger.
+			Chat3: People always say they can be lucky if they found me, but do they know that able to found me is a kind of lucky too?
+			Chat4: If you get lost in bamboo forest, I'll not promise to bring you out safely, haha~
+			Chat5: The rabbits in here is more weak than the rabbits in the Bamboo Forest of Lost.
+		}
+
+		Chat_Momoyo: {
 			Chat1: _
 			Chat2: _
 			Chat3: _

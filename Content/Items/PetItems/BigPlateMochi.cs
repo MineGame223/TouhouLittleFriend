@@ -28,8 +28,7 @@ namespace TouhouPets.Content.Items.PetItems
             .AddIngredient(ItemType<ReisenGun>(), 1)
             .AddIngredient(ItemType<EirinBow>(), 1)
             .AddIngredient(ItemType<KaguyaBranch>(), 1)
-            .AddIngredient(ItemType<MokuMatch>(), 1)
-            .AddIngredient(ItemType<KeineLeaf>(), 1)
+            .AddIngredient(ItemType<TewiCarrot>(), 1)
             .Register();
         }
     }
