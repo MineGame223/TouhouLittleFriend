@@ -215,6 +215,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<SuikaGourd>());
             shop.Add(ItemType<RukotoRemote>());
             shop.Add(ItemType<TewiCarrot>());
+            shop.Add(ItemType<MomoyoPickaxe>());
             shop.Register();
 
             shop = new(Type, "Shop2");

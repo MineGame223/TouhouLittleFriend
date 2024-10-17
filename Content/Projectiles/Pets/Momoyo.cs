@@ -7,14 +7,14 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Tewi : BasicTouhouPet
+    public class Momoyo : BasicTouhouPet
     {
         private enum States
         {
             Idle,
             Blink,
-            Eating,
-            AfterEating,
+            Choose,
+            AfterChoose,
         }
         private States CurrentState
         {
@@ -38,12 +38,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool IsIdleState => CurrentState <= States.Blink;
 
-        private int earFrame, earFrameCounter;
+        private int hairFrame, hairFrameCounter;
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
 
         private DrawPetConfig drawConfig = new(2);
-        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Tewi_Cloth");
+        private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Momoyo_Cloth");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
@@ -58,8 +58,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 AltTexture = clothTex,
             };
 
+            Projectile.DrawPet(hairFrame, lightColor, drawConfig, 1);
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
-            Projectile.DrawPet(earFrame, lightColor, drawConfig, 1);
 
             if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
@@ -72,15 +72,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 159, 179);
+        public override Color ChatTextColor => new Color(156, 172, 181);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
-            name = "Tewi";
-            indexRange = new Vector2(1, 5);
+            name = "Momoyo";
+            indexRange = new Vector2(1, 9);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 640;
+            timePerDialog = 960;
             chance = 12;
             whenShouldStop = !IsIdleState;
         }
@@ -93,6 +93,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[3]);
                 chat.Add(ChatDictionary[4]);
                 chat.Add(ChatDictionary[5]);
+                chat.Add(ChatDictionary[6]);
+                chat.Add(ChatDictionary[7]);
+                chat.Add(ChatDictionary[8]);
+                if (Owner.ZoneRockLayerHeight || Owner.ZoneDirtLayerHeight)
+                {
+                    chat.Add(ChatDictionary[9]);
+                }
             }
             return chat;
         }
@@ -105,8 +112,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            Projectile.SetPetActive(Owner, BuffType<TewiBuff>());
-            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
+            Projectile.SetPetActive(Owner, BuffType<MomoyoBuff>());
 
             UpdateTalking();
 
@@ -118,14 +124,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Blink();
                     break;
 
-                case States.Eating:
+                case States.Choose:
                     shouldNotTalking = true;
-                    Eating();
+                    Choose();
                     break;
 
-                case States.AfterEating:
+                case States.AfterChoose:
                     shouldNotTalking = true;
-                    AfterEating();
+                    AfterChoose();
                     break;
 
                 default:
@@ -141,16 +147,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void ControlMovement()
         {
             Projectile.tileCollide = false;
-            Projectile.rotation = Projectile.velocity.X * 0.01f;
+            Projectile.rotation = Projectile.velocity.X * 0.013f;
 
             ChangeDir();
 
-            Vector2 point = new Vector2(-40 * Owner.direction, -40 + Owner.gfxOffY);
-            if (Owner.HasBuff<EienteiBuff>())
-            {
-                point = new Vector2(-40 * Owner.direction, -70 + Owner.gfxOffY);
-            }
-            MoveToPoint(point, 12f);
+            Vector2 point = new Vector2(-60 * Owner.direction, -54 + Owner.gfxOffY);
+            MoveToPoint(point, 13.5f);
         }
         private void Idle()
         {
@@ -167,7 +169,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (Main.rand.NextBool(7))
                     {
                         RandomCount = Main.rand.Next(6, 12);
-                        CurrentState = States.Eating;
+                        CurrentState = States.Choose;
                     }
                 }
             }
@@ -186,27 +188,37 @@ namespace TouhouPets.Content.Projectiles.Pets
                 CurrentState = States.Idle;
             }
         }
-        private void Eating()
+        private void Choose()
         {
-            if (++Projectile.frameCounter > 5)
+            int count = 6;
+            if (Projectile.frame > 2)
+            {
+                count = 3;
+            }
+            if (++Projectile.frameCounter > count)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (Projectile.frame > 6)
+            if (Projectile.frame > 5)
             {
-                Projectile.frame = 5;
+                Projectile.frame = 2;
                 Timer++;
             }
             if (OwnerIsMyPlayer && Timer > RandomCount)
             {
                 Timer = 0;
-                CurrentState = States.AfterEating;
+                CurrentState = States.AfterChoose;
             }
         }
-        private void AfterEating()
+        private void AfterChoose()
         {
-            if (++Projectile.frameCounter > 7)
+            int count = 6;
+            if (Projectile.frame == 6)
+            {
+                count = 60;
+            }
+            if (++Projectile.frameCounter > count)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
@@ -216,26 +228,26 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 0;
                 if (OwnerIsMyPlayer)
                 {
-                    ActionCD = 900;
+                    ActionCD = 1200;
                     CurrentState = States.Idle;
                 }
             }
         }
         private void UpdateMiscFrame()
         {
-            if (earFrame < 3)
+            if (hairFrame < 3)
             {
-                earFrame = 3;
+                hairFrame = 3;
             }
             int count = 6;
-            if (++earFrameCounter > count)
+            if (++hairFrameCounter > count)
             {
-                earFrameCounter = 0;
-                earFrame++;
+                hairFrameCounter = 0;
+                hairFrame++;
             }
-            if (earFrame > 6)
+            if (hairFrame > 6)
             {
-                earFrame = 3;
+                hairFrame = 3;
             }
 
             if (clothFrame < 7)
