@@ -697,11 +697,15 @@ Mods: {
 		}
 
 		Chat_Momoyo: {
-			// Chat1: _
-			// Chat2: _
-			// Chat3: _
-			// Chat4: _
-			// Chat5: _
+			// Chat1: Diamond? Could it taste better than dragon ball?
+			// Chat2: You say why is gold pickaxe? because it looks nice!
+			// Chat3: You don't know how expensive the dirt is in foreign.
+			// Chat4: Dragon tastes good, dragon ball tastes good, human tastes...Ah sorry, not you.
+			// Chat5: Pickaxe and shovel is the soul of a miner.
+			// Chat6: Watch out your back when you are focusing on mining.
+			// Chat7: Sometimes, keep slience can save your life in caves.
+			// Chat8: There's no diamond tools?!
+			// Chat9: Ah, the cave, a familier place.
 		}
 
 		Chat_Portal: {

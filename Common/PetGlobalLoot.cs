@@ -88,6 +88,10 @@ namespace TouhouPets
             {
                 npcLoot.Add(ItemType<KokoroMask>(), enemiesDropRate - 5);
             }
+            if (npc.type == NPCID.UndeadMiner)
+            {
+                npcLoot.Add(ItemType<MomoyoPickaxe>(), enemiesDropRate - 5);
+            }
             if (npc.type == NPCID.CorruptBunny || npc.type == NPCID.CrimsonBunny)
             {
                 npcLoot.Add(ItemType<TewiCarrot>(), enemiesDropRate - 3);
@@ -180,81 +184,6 @@ namespace TouhouPets
             bool hasGensokyo = ModLoader.TryGetMod("Gensokyo", out Mod _);
             if (!hasGensokyo)
                 return;
-
-            int enemiesDropRate = 20;
-            if (npc.type == NPCID.AngryNimbus)
-            {
-                npcLoot.Add(ItemType<RaikoDrum>(), enemiesDropRate);
-            }
-            if (npc.type == NPCID.BloodNautilus)
-            {
-                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 15, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
-            }
-            if (npc.type == NPCID.Harpy)
-            {
-                npcLoot.Add(ItemType<MystiaFeather>(), enemiesDropRate);
-            }
-            if (npc.type == NPCID.Werewolf)
-            {
-                npcLoot.Add(ItemType<LunaMoon>(), enemiesDropRate);
-            }
-            if (npc.type == NPCID.Pixie)
-            {
-                npcLoot.Add(ItemType<SunnyMilk>(), enemiesDropRate);
-            }
-            if (npc.type == NPCID.WindyBalloon || npc.type == NPCID.Dandelion)
-            {
-                npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate - 5);
-            }
-            if (npc.type == NPCID.RedDevil)
-            {
-                npcLoot.Add(ItemType<ShinkiHeart>(), enemiesDropRate - 5);
-            }
-            if (npc.type == NPCID.Pumpking)
-            {
-                npcLoot.Add(ItemType<KokoroMask>(), enemiesDropRate - 5);
-            }
-            if (npc.type == NPCID.CorruptBunny || npc.type == NPCID.CrimsonBunny)
-            {
-                npcLoot.Add(ItemType<TewiCarrot>(), enemiesDropRate - 3);
-            }
-
-            int commonDropRate = 3;
-            switch (npc.type)
-            {
-                case NPCID.EyeofCthulhu:
-                    npcLoot.Add(new NotDownedEoC(), new DownedEoC(), ItemType<KogasaUmbrella>(), commonDropRate);
-                    break;
-
-                case NPCID.QueenBee:
-                    npcLoot.Add(new NotDownedQueenBee(), new DownedQueenBee(), ItemType<WriggleInAJar>(), commonDropRate);
-                    break;
-
-                case NPCID.QueenSlimeBoss:
-                    npcLoot.Add(new NotDownedQueenSlime(), new DownedQueenSlime(), ItemType<PatchouliMoon>(), commonDropRate);
-                    break;
-
-                case NPCID.Plantera:
-                    npcLoot.Add(new NotDownedPrime(), new DownedPrime(), ItemType<YukaSunflower>(), commonDropRate);
-                    break;
-
-                case NPCID.DukeFishron:
-                    npcLoot.Add(new NotDownedFishron(), new DownedFishron(), ItemType<IkuOarfish>(), commonDropRate);
-                    break;
-
-                case NPCID.CultistBoss:
-                    npcLoot.Add(new NotDownedCultist(), new DownedCultist(), commonDropRate,
-                        ItemType<ReimuYinyangOrb>(), ItemType<MarisaHakkero>(), ItemType<SanaeCoin>());
-                    break;
-
-                case NPCID.MoonLordCore:
-                    npcLoot.Add(new NotDownedMoonLord(), new DownedMoonLord(), commonDropRate,
-                        ItemType<HecatiaPlanet>(), ItemType<JunkoMooncake>());
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 }
