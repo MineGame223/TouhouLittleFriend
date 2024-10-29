@@ -274,12 +274,12 @@ Mods: {
 
 			KokoroBuff: {
 				DisplayName: Mask Tsukumogami
-				Description: She's trying her best to smile
+				Description: She's trying her best to smile.
 			}
 
 			TewiBuff: {
-				DisplayName: Rabbit of Luck
-				Description: '''"Lucky is such a simple thing, but happiness isn't only so."'''
+				DisplayName: Luckly Rabbit
+				Description: '''"Luck is such a simple thing, but happiness isn't quite so."'''
 			}
 
 			MomoyoBuff: {
