@@ -281,13 +281,23 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
+            if (Projectile.frame >= 6)
+            {
+                if (Projectile.Center.Distance(Owner.Center) < 200)
+                {
+                    if (Owner.sleeping.isSleeping && Projectile.velocity.Y < 3)
+                    {
+                        Projectile.velocity.Y += 0.02f;
+                    }
+                }
+                else
+                {
+                    Projectile.velocity *= 0.95f;
+                }
+            }
             if (Projectile.frame > 7)
             {
                 Projectile.frame = 6;
-                if (Owner.sleeping.isSleeping && Projectile.velocity.Y < 10)
-                {
-                    Projectile.velocity.Y += 0.2f;
-                }
             }
 
             if (OwnerIsMyPlayer && !CanDreaming)

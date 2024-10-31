@@ -42,7 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 DrawShinki(Color.Purple * 0.8f, new Vector2(6 * Main.essScale, 0)
                     .RotatedBy(MathHelper.ToRadians(90 * i) + Main.GlobalTimeWrappedHourly));
             }
-            Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
+            Projectile.ResetDrawStateForPet();
 
             DrawShinki(lightColor, Vector2.Zero);
             return false;
