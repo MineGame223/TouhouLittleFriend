@@ -312,7 +312,7 @@ Mods: {
 
 		Chat_Aya: {
 			Chat1: The wind's so noisy today!
-			Chat2: Can you reach my speed?
+			Chat2: Can you keep up with my speed?
 			Chat3: Material...Where is today's story material...
 			Chat4: I'm not a 'Fake news reporter', I just 'exaggerate' it a bit, to make it more interesting!
 			Chat5: This'll make for some BIG news!
@@ -501,9 +501,9 @@ Mods: {
 			Chat5: Enjoy the tea, Remilia-sama.
 			Chat6: The day with Remilia-sama is my vacation, and you also don't have "vacation" right?
 			Chat7: What?
-			Chat8: You read comic during your work time?
+			Chat8: You read comics during your work time?
 			Chat9: I'll be giving you a heavy punishment tonight!...Also, let me see the comic...
-			Chat10: The storage of alcohol in the mansion is not enough...
+			Chat10: The amount of alcohol in the mansion is not enough...
 		}
 
 		Chat_Raiko: {
@@ -664,7 +664,7 @@ Mods: {
 			Chat1: Can you tell me what "Happy" means?
 			Chat2: I'm Hata no Kokoro, the one who's in charge of emotions.
 			Chat3: Ha~ha~ha~...How about my smile?
-			Chat4: So rich, people's emotions.
+			Chat4: People's emotions... they're so rich.
 			Chat5: What kind of emotion is "Speechlessness"?
 			Chat6: *Trying to lift cheek to show a smile.
 			Chat7: My old enemy!
@@ -673,37 +673,37 @@ Mods: {
 		}
 
 		Chat_Doremy: {
-			Chat1: Do you always dreaming?
-			Chat2: Have a nice dream is everyone's wish, right?
+			Chat1: Are you always dreaming?
+			Chat2: Having a nice dream is everyone's wish, right?
 			Chat3: Did you ever see me in your dream? I guess you did.
 			Chat4: Just go to bed when you want to sleep, It's more important than any other thing.
 			Chat5: Will you count sheep while having insomnia?
-			Chat6: Only don't snooze too much in daytime, can you have a nice sleep in night.
+			Chat6: Just don't snooze too much in the daytime, then you can sleep well at night.
 			Chat7: Ugh... Interesting...
 			Chat8: One sheep, two sheep, baa baa baa...
 			Chat9: Did anyone... know that I'm... actually working now?
-			Chat10: How could I fall asleep in such a night...
+			Chat10: How could I fall asleep on such a night...
 			Chat11: So tired...
 			Chat12: Can those monsters be quiet for a while?
-			Chat13: Although the environment now is suitable for sleeping, You can't promise to get a safety dream.
+			Chat13: Although the environment now is suitable for sleeping, you can't be sure to get a safe dream.
 		}
 
 		Chat_Tewi: {
-			Chat1: Lucky is actually pretty simple, but happiness isn't only so Usa~
-			Chat2: Reisen didn't fell into the hole I dug yesterday, that's too boring! I'd better make it bigger.
-			Chat3: People always say they can be lucky if they found me, but do they know that able to found me is a kind of lucky too?
-			Chat4: If you get lost in bamboo forest, I'll not promise to bring you out safely, haha~
-			Chat5: The rabbits in here is more weak than the rabbits in the Bamboo Forest of Lost.
+			Chat1: Luck is actually pretty simple, but happiness isn't so easy Usa~
+			Chat2: Reisen didn't fall into the hole I dug yesterday, that's too boring! I'd better make it bigger.
+			Chat3: People always say they can be lucky if they found me, but do they know that being able to find me is a kind of luck too?
+			Chat4: If you get lost in the bamboo forest, I won't promise to bring you out safely, haha~
+			Chat5: The rabbits in here are weaker than the rabbits in the Bamboo Forest of Lost.
 		}
 
 		Chat_Momoyo: {
-			Chat1: Diamond? Could it taste better than dragon ball?
-			Chat2: You say why is gold pickaxe? because it looks nice!
-			Chat3: You don't know how expensive the dirt is in foreign.
-			Chat4: Dragon tastes good, dragon ball tastes good, human tastes...Ah sorry, not you.
+			Chat1: Diamond? Could it taste better than a dragon gem?
+			Chat2: You're asking why I use a Gold Pickaxe? Because it looks nice!
+			Chat3: You don't know how expensive the dirt is in foreign lands.
+			Chat4: Dragons taste good, dragon gems taste good, humans taste...Ah sorry, not you.
 			Chat5: Pickaxe and shovel is the soul of a miner.
-			Chat6: Watch out your back when you are focusing on mining.
-			Chat7: Sometimes, keep slience can save your life in caves.
+			Chat6: Watch your back when you're focusing on mining.
+			Chat7: Sometimes, keeping slient can save your life in caves.
 			Chat8: There's no diamond tools?!
 			Chat9: Ah, the cave, a familier place.
 		}
