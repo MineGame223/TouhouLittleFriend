@@ -330,8 +330,8 @@ Mods: {
 				// DisplayName: Lucky Carrot Pendant
 				/* Tooltip:
 					'''
-					Summon a rabbit of luck
-					"Actually it's eatable"
+					Summons a lucky rabbit
+					"Actually, it's edible"
 					''' */
 			}
 
@@ -339,8 +339,8 @@ Mods: {
 				// DisplayName: Mini Gold Pickaxe
 				/* Tooltip:
 					'''
-					Summon the Bug Hime
-					“It's too small as a tool, but fit for somebody.”
+					Summons the Bug Hime
+					“It's too small as a tool, but it's fit for somebody.”
 					''' */
 			}
 		}
