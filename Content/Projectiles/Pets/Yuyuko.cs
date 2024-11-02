@@ -55,6 +55,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private Item food = new();
         private List<Item> foodList = [];
         private int hungerPoint;
+        private bool feeded;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuyuko_Cloth");
@@ -101,9 +102,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
 
-            UpdateEattingText(food);
-            CurrentState = States.BeforeEatting;
+            feeded = true;
             hungerPoint += 10800;
+            UpdateEattingText(food);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -155,7 +156,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Yuyuko";
-            indexRange = new Vector2(1, 26);
+            indexRange = new Vector2(1, 27);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -348,6 +349,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 hungerPoint--;
             }
+
+            if (feeded)
+            {
+                CurrentState = States.BeforeEatting;
+            }
+            feeded = false;
+
             UpdatePositionOffset();
         }
         public override void ReceiveExtraAI(BinaryReader reader)
@@ -721,7 +729,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (hasFood)
                 {
-                    Projectile.SetChat(ChatSettingConfig, Main.rand.Next(5, 8), 60);
+                    if (feeded)
+                    {
+                        Projectile.SetChat(ChatSettingConfig, 27, 60);
+                    }
+                    else
+                    {
+                        Projectile.SetChat(ChatSettingConfig, Main.rand.Next(5, 8), 60);
+                    }
                 }
                 else
                 {

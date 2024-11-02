@@ -68,9 +68,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 && coin.stack > 0)
             {
                 seeCoin = true;
-
-                if (IsIdleState)
-                    CurrentState = States.Shining;
             }
             return false;
         }
@@ -315,6 +312,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 flyTimeleft--;
             }
 
+            if (seeCoin && IsIdleState)
+            {
+                CurrentState = States.Shining;
+            }
             seeCoin = false;
         }
         private void ControlMovement()
