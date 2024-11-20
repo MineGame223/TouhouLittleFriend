@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -90,6 +91,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <br/>!--该属性会反复重置
         /// </summary>
         internal bool textShaking;
+
+        /// <summary>
+        /// 是否发现Boss
+        /// <br/>该变量会自动更新，无需手动更改
+        /// </summary>
+        internal bool findBoss;
 
         /// <summary>
         /// 对话字典
@@ -475,6 +482,27 @@ namespace TouhouPets.Content.Projectiles.Pets
         #endregion
 
         #region 其他更新方法
+        private bool UpdateFindBoss()
+        {
+            bool ok = false;
+            foreach (NPC b in Main.ActiveNPCs)
+            {
+                if ((b.boss || b.type == NPCID.EaterofWorldsHead) && (b.target == Owner.whoAmI || Vector2.Distance(b.Center, Owner.Center) <= 1280))
+                {
+                    if (!findBoss)
+                    {
+                        OnFindBoss(b);
+                        findBoss = true;
+                    }
+                    ok = true;
+                }
+            }
+            if (!ok && findBoss)
+            {
+                findBoss = false;
+            }
+            return ok;
+        }
         private void UpdatePetLight()
         {
             Vector2 position = Projectile.Center;
@@ -562,6 +590,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         }
         /// <summary>
+        /// 当Boss出场的一刻间执行的方法
+        /// </summary>
+        /// <param name="boss"></param>
+        public virtual void OnFindBoss(NPC boss)
+        {
+
+        }
+        /// <summary>
         /// 对话文本边框颜色，默认为黑色
         /// </summary>
         public virtual Color ChatTextBoardColor
@@ -634,9 +670,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 mainTimer = 0;
             }
+
             if (OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 UpdateChat();
+
+                if (UpdateFindBoss())
+                {
+                    shouldNotTalking = true;
+                    return base.PreAI();
+                }
+
                 UpdateRegularDialog();
             }
             return base.PreAI();

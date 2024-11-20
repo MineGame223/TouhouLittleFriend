@@ -88,7 +88,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Youmu";
-            indexRange = new Vector2(1, 10);
+            indexRange = new Vector2(1, 11);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -109,13 +109,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[1]);
                     chat.Add(ChatDictionary[2]);
-                    if (CurrentState == States.FindEnemy || CurrentState == States.FindEnemyBlink)
-                    {
-                        chat.Add(ChatDictionary[3]);
-                    }
                 }
             }
             return chat;
+        }
+        public override void OnFindBoss(NPC boss)
+        {
+            if (FindPet(ProjectileType<Yuyuko>(), false))
+            {
+                Projectile.SetChat(ChatSettingConfig, 11);
+            }
+            else
+            {
+                Projectile.SetChat(ChatSettingConfig, 3);
+            }
         }
         private void UpdateTalking()
         {
@@ -206,16 +213,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             bool hasBoss = false;
             if (Owner.active && !Owner.dead)
             {
-                foreach (NPC n in Main.npc)
+                foreach (NPC b in Main.ActiveNPCs)
                 {
-                    if (n.active && !n.friendly
-                        && (n.target == Owner.whoAmI || Vector2.Distance(n.Center, Owner.Center) <= 1280))
+                    if (b.boss && (b.target == Owner.whoAmI || Vector2.Distance(b.Center, Owner.Center) <= 1280))
                     {
-                        if (n.boss)
-                        {
-                            hasBoss = true;
-                            Projectile.spriteDirection = (n.position.X > Projectile.position.X) ? 1 : -1;
-                        }
+                        hasBoss = true;
+                        Projectile.spriteDirection = (b.position.X > Projectile.position.X) ? 1 : -1;
                     }
                 }
             }

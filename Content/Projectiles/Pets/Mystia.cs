@@ -47,13 +47,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
         private int extraAdjX, extraAdjY;
+        private bool blackDye;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Mystia_Cloth");
         private readonly Texture2D patchTex = AltVanillaFunction.GetExtraTexture("Mystia_EyePatch");
         public override bool DrawPetSelf(ref Color lightColor)
         {
-            bool blackDye = Main.LocalPlayer.miscDyes[0].type == ItemID.BlackDye;
             DrawPetConfig config = drawConfig with
             {
                 PositionOffset = new Vector2(extraAdjX, extraAdjY),
@@ -151,6 +151,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ActionCD--;
             }
             UpdateMiscData();
+            blackDye = Owner.miscDyes[0].type == ItemID.BlackDye;
         }
         private void ControlMovement()
         {

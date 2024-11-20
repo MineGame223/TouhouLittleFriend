@@ -54,6 +54,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int annoyingFrame, annoyingFrameCounter;
         private int killCD;
         private Vector2 eyePosition, eyePositionOffset;
+        private bool whiteDye;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
@@ -67,13 +68,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
-            bool useWhiteStyle =
-                Main.LocalPlayer.miscDyes[0].type == ItemID.SilverDye
-                || Main.LocalPlayer.miscDyes[0].type == ItemID.BrightSilverDye;
-
             Texture2D tex = null;
             Texture2D cloth = clothTex;
-            if (useWhiteStyle)
+            if (whiteDye)
             {
                 tex = whiteTex;
                 cloth = whiteClothTex;
@@ -85,7 +82,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             };
             DrawPetConfig config2 = config with
             {
-                ShouldUseEntitySpriteDraw = !useWhiteStyle,
+                ShouldUseEntitySpriteDraw = !whiteDye,
             };
 
             if (eyePositionOffset.Y <= 0)
@@ -269,6 +266,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 killCD--;
             }
             UpdateEyePosition();
+
+            whiteDye = 
+                Owner.miscDyes[0].type == ItemID.SilverDye
+                || Owner.miscDyes[0].type == ItemID.BrightSilverDye;
         }
         private void UpdateEyePosition()
         {

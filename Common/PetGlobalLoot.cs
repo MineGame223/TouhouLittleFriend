@@ -134,9 +134,6 @@ namespace TouhouPets
                     break;
 
                 case NPCID.Retinazer:
-                    npcLoot.Add(new KomeijiSister_NotDownedTwins(), new KomeijiSister_DownedTwins(), commonDropRate,
-                        ItemType<SatoriSlippers>(), ItemType<KoishiTelephone>());
-                    break;
                 case NPCID.Spazmatism:
                     npcLoot.Add(new KomeijiSister_NotDownedTwins(), new KomeijiSister_DownedTwins(), commonDropRate,
                         ItemType<SatoriSlippers>(), ItemType<KoishiTelephone>());

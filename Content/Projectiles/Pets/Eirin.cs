@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -15,6 +16,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Blink,
             Shooting,
             AfterShooting,
+            OwnerIsDead,
         }
         private States CurrentState
         {
@@ -37,6 +39,42 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => Projectile.localAI[2] = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
+        private bool OwnerHasDebuff
+        {
+            get
+            {
+                for (int i = 0; i < Player.MaxBuffs; i++)
+                {
+                    int buff = Owner.buffType[i];
+                    if (Main.debuff[buff] && Owner.buffTime[i] > 60
+                         && buff != BuffID.Tipsy
+                          && buff != BuffID.PotionSickness
+                          && buff != BuffID.NeutralHunger
+                          && buff != BuffID.BrainOfConfusionBuff)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        private bool OwnerHasTooManyBuffs
+        {
+            get
+            {
+                int buffCount = 0;
+                for (int i = 0; i < Player.MaxBuffs; i++)
+                {
+                    int buff = Owner.buffType[i];
+                    if (!Main.debuff[buff] && Owner.buffTime[i] > 60
+                         && !Main.persistentBuff[buff] && !Main.meleeBuff[buff] && !Main.buffNoTimeDisplay[buff])
+                    {
+                        buffCount++;
+                    }
+                }
+                return buffCount >= 10;
+            }
+        }
 
         private int blinkFrame, blinkFrameCounter;
         private int lightFrame, lightFrameCounter;
@@ -54,6 +92,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            ChatDictionary[99] = ModUtils.GetChatText("Eirin", "99", Owner.name);
+            base.OnSpawn(source);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -78,7 +121,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
 
-            if (CurrentState == States.Blink)
+            if (CurrentState == States.Blink || CurrentState == States.OwnerIsDead)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
@@ -106,7 +149,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Eirin";
-            indexRange = new Vector2(1, 8);
+            indexRange = new Vector2(1, 17);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -116,6 +159,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override string GetRegularDialogText()
         {
+            float healthPercentage = (float)Owner.statLife / Owner.statLifeMax;
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
                 chat.Add(ChatDictionary[1]);
@@ -126,6 +170,38 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[6]);
                 chat.Add(ChatDictionary[7]);
                 chat.Add(ChatDictionary[8]);
+                if (healthPercentage >= 0.9f && healthPercentage < 1)
+                {
+                    chat.Add(ChatDictionary[9]);
+                }
+                if (healthPercentage >= 0.75f && healthPercentage < 0.9f)
+                {
+                    chat.Add(ChatDictionary[10]);
+                }
+                if (healthPercentage >= 0.5f && healthPercentage < 0.75f)
+                {
+                    chat.Add(ChatDictionary[11], 5);
+                }
+                if (healthPercentage >= 0.15f && healthPercentage < 0.5f)
+                {
+                    chat.Add(ChatDictionary[12], 7);
+                }
+                if (healthPercentage > 0 && healthPercentage <= 0.15f)
+                {
+                    chat.Add(ChatDictionary[13], 10);
+                }
+                if (OwnerHasDebuff)
+                {
+                    chat.Add(ChatDictionary[15], 4);
+                }
+                if (Owner.HasBuff(BuffID.PotionSickness))
+                {
+                    chat.Add(ChatDictionary[16], 4);
+                }
+                if (OwnerHasTooManyBuffs)
+                {
+                    chat.Add(ChatDictionary[17], 4);
+                }
             }
             return chat;
         }
@@ -140,10 +216,42 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             rgb = new Vector3(0.73f, 1.76f, 2.32f);
         }
+        private bool SetEirinActive(Player player)
+        {
+            Projectile.timeLeft = 2;
+
+            if (CurrentState != States.OwnerIsDead && player.dead)
+            {
+                Timer = 0;
+                Projectile.CloseCurrentDialog();
+                if (player.difficulty == PlayerDifficultyID.Hardcore)
+                {
+                    Projectile.SetChat(ChatSettingConfig, 99);
+                }
+                else
+                {
+                    Projectile.SetChat(ChatSettingConfig, 14);
+                }
+                CurrentState = States.OwnerIsDead;
+            }
+            if (CurrentState == States.OwnerIsDead && !player.dead)
+            {
+                CurrentState = States.Idle;
+            }
+
+            bool noActiveBuff = !player.HasBuff(BuffType<EirinBuff>()) && !player.HasBuff(BuffType<EienteiBuff>());
+            bool shouldInactiveNormally = noActiveBuff && CurrentState != States.OwnerIsDead;
+
+            if (shouldInactiveNormally)
+            {
+                Projectile.active = false;
+                Projectile.netUpdate = true;
+            }
+            return false;
+        }
         public override void AI()
         {
-            Projectile.SetPetActive(Owner, BuffType<EirinBuff>());
-            Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
+            SetEirinActive(Owner);
 
             UpdateTalking();
 
@@ -163,6 +271,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 case States.AfterShooting:
                     shouldNotTalking = true;
                     AfterShooting();
+                    break;
+
+                case States.OwnerIsDead:
+                    shouldNotTalking = true;
+                    OwnerIsDead();
                     break;
 
                 default:
@@ -302,6 +415,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                     ActionCD = 1800;
                     CurrentState = States.Idle;
                 }
+            }
+        }
+        private void OwnerIsDead()
+        {
+            blinkFrame = 11;
+            Projectile.frame = 0;
+            Projectile.velocity *= 0;
+            if (++Timer > 600)
+            {
+                Projectile.Opacity -= 0.009f;
+            }
+            if (Projectile.Opacity <= 0)
+            {
+                Projectile.active = false;
+                Projectile.netUpdate = true;
             }
         }
         private void UpdateMiscFrame()

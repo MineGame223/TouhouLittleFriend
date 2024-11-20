@@ -46,6 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int hairFrame, hairFrameCounter;
         private int legFrame, legFrameCounter;
         private float eyeScale = 1;
+        private bool blackDye;
 
         private DrawPetConfig drawConfig = new(3);
         private readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Reisen_Glow");
@@ -90,7 +91,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawReisen(Color lightColor, float scale = 1, Vector2? posOffset = default)
         {
-            bool blackDye = Main.LocalPlayer.miscDyes[0].type == ItemID.BlackDye;
             DrawPetConfig config = drawConfig with
             {
                 Scale = scale,
@@ -153,7 +153,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        Color myColor = new Color(255, 10, 10);
         private void UpdateTalking()
         {
         }
@@ -209,6 +208,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ActionCD--;
                 eyeScale = 1f;
             }
+            blackDye = Owner.miscDyes[0].type == ItemID.BlackDye;
         }
         private void ControlMovement()
         {

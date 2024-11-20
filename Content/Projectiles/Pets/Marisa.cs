@@ -79,7 +79,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Marisa";
-            indexRange = new Vector2(1, 14);
+            indexRange = new Vector2(1, 35);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -111,6 +111,69 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
             return chat;
+        }
+        public override void OnFindBoss(NPC boss)
+        {
+            switch (boss.type)
+            {
+                case NPCID.KingSlime:
+                    Projectile.SetChat(ChatSettingConfig, 18);
+                    break;
+                case NPCID.EyeofCthulhu:
+                    Projectile.SetChat(ChatSettingConfig, 19);
+                    break;
+                case NPCID.EaterofWorldsHead:
+                    Projectile.SetChat(ChatSettingConfig, 20);
+                    break;
+                case NPCID.BrainofCthulhu:
+                    Projectile.SetChat(ChatSettingConfig, 21);
+                    break;
+                case NPCID.QueenBee:
+                    Projectile.SetChat(ChatSettingConfig, 22);
+                    break;
+                case NPCID.SkeletronHead:
+                    Projectile.SetChat(ChatSettingConfig, 23);
+                    break;
+                case NPCID.Deerclops:
+                    Projectile.SetChat(ChatSettingConfig, 24);
+                    break;
+                case NPCID.WallofFlesh:
+                    Projectile.SetChat(ChatSettingConfig, 25);
+                    break;
+                case NPCID.QueenSlimeBoss:
+                    Projectile.SetChat(ChatSettingConfig, 26);
+                    break;
+                case NPCID.TheDestroyer:
+                    Projectile.SetChat(ChatSettingConfig, 28);
+                    break;
+                case NPCID.Retinazer:
+                case NPCID.Spazmatism:
+                    Projectile.SetChat(ChatSettingConfig, 27);
+                    break;
+                case NPCID.SkeletronPrime:
+                    Projectile.SetChat(ChatSettingConfig, 29);
+                    break;
+                case NPCID.Plantera:
+                    Projectile.SetChat(ChatSettingConfig, 30);
+                    break;
+                case NPCID.Golem:
+                    Projectile.SetChat(ChatSettingConfig, 31);
+                    break;
+                case NPCID.DukeFishron:
+                    Projectile.SetChat(ChatSettingConfig, 32);
+                    break;
+                case NPCID.HallowBoss:
+                    Projectile.SetChat(ChatSettingConfig, 33);
+                    break;
+                case NPCID.CultistBoss:
+                    Projectile.SetChat(ChatSettingConfig, 34);
+                    break;
+                case NPCID.MoonLordCore:
+                    Projectile.SetChat(ChatSettingConfig, 35);
+                    break;
+                default:
+                    break;
+            }
         }
         private void UpdateTalking()
         {
@@ -278,7 +341,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer > 0 && mainTimer % 120 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(9))
+                    if (Main.rand.NextBool(9) && !findBoss)
                     {
                         RandomCount = Main.rand.Next(10, 20);
                         CurrentState = States.Happy;
@@ -316,7 +379,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 4;
                 Timer++;
             }
-            if (OwnerIsMyPlayer && Timer > RandomCount)
+            if (OwnerIsMyPlayer && Timer > RandomCount || findBoss)
             {
                 Timer = 0;
                 CurrentState = States.AfterHappy;

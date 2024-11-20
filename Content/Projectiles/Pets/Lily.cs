@@ -28,6 +28,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
+        private bool useDye, blackDye;
 
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Lily_Cloth");
@@ -45,9 +46,9 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Texture2D tex = clothTex;
             int clothFrame = Projectile.frame;
-            if (!Main.LocalPlayer.miscDyes[1].IsAir)
+            if (useDye)
             {
-                if (Main.LocalPlayer.miscDyes[1].type == ItemID.BlackDye)
+                if (blackDye)
                     clothFrame += 4;
                 tex = clothTexAlt;
             }
@@ -114,6 +115,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
+            useDye = !Owner.miscDyes[1].IsAir;
+            blackDye = Owner.miscDyes[1].type == ItemID.BlackDye;
         }
         private void ControlMovement()
         {

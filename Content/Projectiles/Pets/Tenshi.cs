@@ -91,7 +91,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Tenshin";
-            indexRange = new Vector2(1, 3);
+            indexRange = new Vector2(1, 9);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -106,8 +106,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
+                chat.Add(ChatDictionary[4]);
+                chat.Add(ChatDictionary[5]);
+                chat.Add(ChatDictionary[6]);
+                chat.Add(ChatDictionary[9]);
             }
             return chat;
+        }
+        public override void OnFindBoss(NPC boss)
+        {
+            Projectile.SetChat(ChatSettingConfig, 8);
         }
         public override void VisualEffectForPreview()
         {
