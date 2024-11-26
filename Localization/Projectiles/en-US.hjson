@@ -42,7 +42,7 @@ Mods: {
 			Youmu.DisplayName: Youmu Konpaku
 			Alice.DisplayName: Alice Margatroid
 			Rumia.DisplayName: Rumia
-			Koakuma.DisplayName: Koakuma No. {0}
+			Koakuma.DisplayName: Koakuma No.{0}
 			Wakasagihime.DisplayName: Wakasagihime
 			Yuka.DisplayName: Yuka Kazami
 			Chen.DisplayName: Chen
@@ -69,6 +69,7 @@ Mods: {
 			Doremy.DisplayName: Doremy Sweet
 			Tewi.DisplayName: Tei Inaba
 			Momoyo.DisplayName: Momoyo Himemushi
+			AliceOld.DisplayName: Alice
 		}
 	}
 }

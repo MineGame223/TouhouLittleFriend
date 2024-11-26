@@ -103,15 +103,6 @@ Mods: {
 					Label: Загадочный разрыв может появиться ночью
 					Tooltip: Переключает, может ли загадочный разрыв появится ночью
 				}
-
-				GensokyoModDropRule: {
-					// Label: "[Indev] Gensokyo Mod's Drop Rule"
-					/* Tooltip:
-						'''
-						While enable, some pet's drop rule will changed. Enable Gensokyo Mod is required.
-						Currently unavailable.
-						''' */
-				}
 			}
 		}
 	}

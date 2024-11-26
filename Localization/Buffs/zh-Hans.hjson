@@ -286,6 +286,11 @@ Mods: {
 				DisplayName: 虫姬
 				Description: 你刚刚说“矿蚣”？
 			}
+
+			AliceOldBuff: {
+				DisplayName: 魔法之国的少女
+				Description: 死与魔法的气息
+			}
 		}
 	}
 }

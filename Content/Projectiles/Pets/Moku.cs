@@ -170,7 +170,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Moku";
-            indexRange = new Vector2(1, 15);
+            indexRange = new Vector2(1, 18);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -184,7 +184,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
-                if (FindPet(ProjectileType<Keine>(), false, 2, 3))
+                if (FindPet(ProjectileType<Keine>(), true, 2, 3))
                 {
                     chat.Add(ChatDictionary[9]);
                 }

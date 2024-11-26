@@ -8,7 +8,7 @@ Mods: {
 
 			UtsuhoBuff: {
 				DisplayName: Hell Raven
-				Description: "'I'm hell's Subterranean Sun!'"
+				Description: "'I'm the Subterranean Sun!'"
 			}
 
 			HinaBuff: {
@@ -285,6 +285,11 @@ Mods: {
 			MomoyoBuff: {
 				DisplayName: Bug Hime
 				Description: Did you say "Mine & Craft"?
+			}
+
+			AliceOldBuff: {
+				DisplayName: Girl from Magic land
+				Description: A smell of death and magic
 			}
 		}
 	}

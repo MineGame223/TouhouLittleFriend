@@ -100,15 +100,6 @@ Mods: {
 					Label: Allow the Mysterious Gap to spawn at night
 					Tooltip: Toggle whether or not the Mysterious Gap can spawn at night
 				}
-
-				GensokyoModDropRule: {
-					Label: "[Indev] Gensokyo Mod's Drop Rule"
-					Tooltip:
-						'''
-						While enable, some pet's drop rule will changed. Enable Gensokyo Mod is required.
-						Currently unavailable.
-						'''
-				}
 			}
 		}
 	}

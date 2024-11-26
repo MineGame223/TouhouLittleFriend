@@ -343,6 +343,15 @@ Mods: {
 					“It's too small as a tool, but it's fit for somebody.”
 					''' */
 			}
+
+			AliceOldDoll: {
+				// DisplayName: Old Puppet
+				/* Tooltip:
+					'''
+					Summons a girl from magic land.
+					“Looks like somebody's old toy.”
+					''' */
+			}
 		}
 	}
 }

@@ -38,14 +38,6 @@ namespace TouhouPets
             AddHomewardJourneyLoot(npc, npcLoot);
             AddCalamityLoot(npc, npcLoot);
 
-            /*if (GetInstance<PetObtainConfig>().GensokyoModDropRule)
-            {
-                GensokyoLoot(npc, npcLoot);
-            }
-            else
-            {
-                CommonLoot(npc, npcLoot);
-            }*/
             CommonLoot(npc, npcLoot);
         }
 
@@ -134,9 +126,6 @@ namespace TouhouPets
                     break;
 
                 case NPCID.Retinazer:
-                    npcLoot.Add(new KomeijiSister_NotDownedTwins(), new KomeijiSister_DownedTwins(), commonDropRate,
-                        ItemType<SatoriSlippers>(), ItemType<KoishiTelephone>());
-                    break;
                 case NPCID.Spazmatism:
                     npcLoot.Add(new KomeijiSister_NotDownedTwins(), new KomeijiSister_DownedTwins(), commonDropRate,
                         ItemType<SatoriSlippers>(), ItemType<KoishiTelephone>());
@@ -178,12 +167,6 @@ namespace TouhouPets
                 default:
                     break;
             }
-        }
-        private static void GensokyoLoot(NPC npc, NPCLoot npcLoot)
-        {
-            bool hasGensokyo = ModLoader.TryGetMod("Gensokyo", out Mod _);
-            if (!hasGensokyo)
-                return;
         }
     }
 }

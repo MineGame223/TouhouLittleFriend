@@ -152,12 +152,19 @@ Mods: {
 			Chat1: Я докажу тебе что нет никого сильнее чем я!
 			Chat2: Устроим большой взрыв сегодня!
 			Chat3: На небесах так скучно... Так, так, я - великий небожитель, снизошла с небес чтобы позаботиться о тебе!
+			// Chat4: Celestial's advice? I'm not a boring people like them!
+			// Chat5: Do you dare battle with me?
+			// Chat6: That's not fun that eat peach everyday...Hey, Do you know anything taste good on the ground?
+			// Chat7: Another me? She looks strong too!
+			// Chat8: You are gonna fight with a powerful existence, right?
+			// Chat9: The thing I ride is a "Keystone", not a pickle stone!
 		}
 
 		Chat_Junko: {
 			Chat1: Как тебе такое, Чанъе?...
 			Chat2: ......
 			Chat3: Удон-чан~ Как дела?
+			// Chat4: The disgusting moon finally comes to the ground.
 		}
 
 		Chat_Marisa: {
@@ -178,6 +185,24 @@ Mods: {
 			// Chat15: What's up, Reimu?
 			// Chat16: Ugh...Why do you suddenly say this? Sounds weird...
 			// Chat17: Eh...Pretty good, I think? It means we are born with great duty daze!
+			// Chat18: What a HUGE lump of slime! That golden crown must be valuable.
+			// Chat19: An eyeball which flying in the sky? So cool!
+			// Chat20: Ugh...Gross worm.
+			// Chat21: That's a really gaint brain...It must be very smart, right?
+			// Chat22: How much honey can such a big bee produce?
+			// Chat23: This skeleton lack at least 300 bones.
+			// Chat24: You told me that's a deer? What the hell!
+			// Chat25: I don't want to see that meat monster anymore...
+			// Chat26: A sparkling huge lump of slime daze!
+			// Chat27: Two eyes' sight is better than one's
+			// Chat28: Ugh...Metal worm.
+			// Chat29: This is really "bones of iron" daze!
+			// Chat30: A pot can never grown such a big, brute flower.
+			// Chat31: Guard golem? Looks like some kind of large toy.
+			// Chat32: The pig is flying!
+			// Chat33: How large should the bottle be if I want to catch this fairy...
+			// Chat34: The ritual is really cool, but I don't get a good feeling...
+			// Chat35: The moon monster incoming!
 		}
 
 		Chat_Reimu: {
@@ -197,6 +222,31 @@ Mods: {
 			// Chat14: If we are actually crafted for a world's existence by somebody, how do you think about?
 			// Chat15: Just tell me how do you think!
 			// Chat16: Perhaps so...
+			// Chat17: That ice fairy call herself the strongest one...Where did that baka got such a confidence?
+			// Chat18: Why I remember this tapir used to be in my dream?
+			// Chat19: Brain of the moon? Is that really so?
+			// Chat20: A madness vampire who is more horrible than her eler sister...
+			// Chat21: If I can keep a dragon palace messager like her in my home, I won't worry for tomorrow's weather right?
+			// Chat22: A horrific god of pure, it's so lucky that she has no animosity to the Gensokyo...
+			// Chat23: She is just a mask, but she want to learn emotion, interesting.
+			// Chat24: I don't want to see these three fairies causing trouble next time...
+			// Chat25: If you know less about her, you'll never know this sleepy guard is a youkai rather than a human.
+			// Chat26: I used to admire the immortal, but now look at her...Just forget it.
+			// Chat27: It would be good if those kappa can give me some discount.
+			// Chat28: Everytime I see that guy get close to Marisa, I feel a bit angry...Just a purple nerd...
+			// Chat29: Moriya stuff should keep a distance with me...
+			// Chat30: She is hated by every ground people because she can mind-reading, but actually I want that ability.
+			// Chat31: God of Makai? Just a stupid mother...
+			// Chat32: It's all her effort to make the Autumn beautiful, although I prefer get her younger sister's help.
+			// Chat33: Sometimes you'll feel being stared if you watch the star, is that her ability's explain?
+			// Chat34: If you see sun light directly, you'll see nothing, is that her ability's explain?
+			// Chat35: The night will be more slient under the moon light, is that her ability's explain?
+			// Chat36: If I can have a crow like her, I won't need to worry about heating right?
+			// Chat37: *Swallow...That fish's tail looks delicious...
+			// Chat38: If she can only control firefly, I may like her.
+			// Chat39: Can't believe that she has to manage such a big yard while taking care of her hungry master...
+			// Chat40: If you see her, you'll know that the spring is coming.
+			// Chat41: This kid let me remember that puppeteer...I suddenly want a maid now.
 		}
 
 		Chat_Nitori: {
@@ -362,6 +412,7 @@ Mods: {
 			Chat8: Вы ели всего 5 минут назад, Ююко-сама
 			Chat9: Но вы уже мертвы, Ююко-сама! Вы тоже не можете переродиться
 			Chat10: Мне хватает оставаться с Ююко-самой
+			// Chat11: Let me protect Yuyuko-sama!
 		}
 
 		Chat_Alice: {
@@ -380,6 +431,8 @@ Mods: {
 			// Chat13: ...OK, OK, please stop. I'll call you ma...Ms.Shinki.
 			// Chat14: ("What a complex relation...")
 			// Chat15: No way!
+			// Chat16: Who are you? You looks so familier...
+			// Chat17: Me from the...past? The past...Ugh, headache...
 		}
 
 		Chat_Rumia: {
@@ -412,6 +465,9 @@ Mods: {
 			Chat1: Самое лучше время всегда связано с цветением
 			Chat2: Очередной скушный мирный день...
 			Chat3: Каждый цветок живёт короткую, но яркую жизнь. Лучше бы тебе не трогать их
+			// Chat4: This kid looks familier...Is she comes from the Makai?
+			// Chat5: I'm not a lunatic who only seek might, I'm just a youkai who like flowers.
+			// Chat6: Sunflowers don't turn in search of sunligh. But they are still be thought as a symbol of the sun.
 		}
 
 		Chat_Yukari: {
@@ -455,6 +511,12 @@ Mods: {
 			Chat13: БЛИН!!!
 			Chat14: Ты жульничала!
 			Chat15: Я исполню твоё желание в следующем поединке-- УМРИ!
+			// Chat16: Do...do I? You must got something wrong...
+			// Chat17: The surroundings are boring except there...Wait, I mean, I didn't do that!
+			// Chat18: Hey, your secret keeping doesn't very good, isn't it?
+			// Chat19: Eirin heard that I went to human's village, and she just scolded me...
+			// Chat20: You say what? Do you want to fight?!
+			// Chat21: Wait wait wait!...
 		}
 
 		Chat_Moku: {
@@ -473,6 +535,9 @@ Mods: {
 			Chat13: Я не проиграю следующий поединок!
 			Chat14: Я через чур беззаботна...
 			Chat15: Это последний раз когда ты будешь столь самодовльной...
+			// Chat16: What? What are you talking about?...
+			// Chat17: Hahahaha! It serve yous right.
+			// Chat18: Then I'll not bring you on next time.
 		}
 
 		Chat_Meirin: {
@@ -638,6 +703,18 @@ Mods: {
 			// Chat6: Do you know how many potions need Deathweed as a material?
 			// Chat7: It's been about thousands of years since I left the Lunar Capital...Tsukuyomi, will we meet again? Maybe we won't...
 			// Chat8: Are Yorihime and Toyohime alright now?...
+			// Chat9: Looks like you have a minor injury.
+			// Chat10: You wound is a little big, but everything is under control now.
+			// Chat11: You health state is not that good...
+			// Chat12: I advise you to have a treatment now.
+			// Chat13: Are you joking? You are gonna die!
+			// Chat14: Let's mourn for...Wait, you'll back soon.
+			// Chat15: You are in suffer of some bad state...Are you OK?
+			// Chat16: In a sense, potion sickness is also a good thing, at least you don't need to worry about effect decrease due to over drinking.
+			// Chat17: My god! How many potion you have drink? Can you hold on?
+			// Chat18: Princess, I saw you went to human's village last time.
+			// Chat19: *Sigh...Indeed I have told you that always stay at home is not good, but the village is not where we can go too.
+			// Chat99: Let's mourn for {0} forever...
 		}
 
 		Chat_Shinki: {
@@ -707,6 +784,16 @@ Mods: {
 			// Chat7: Sometimes, keeping slient can save your life in caves.
 			// Chat8: There's no diamond tools?!
 			// Chat9: Ah, the cave, a familier place.
+		}
+
+		Chat_AliceOld: {
+			// Chat1: Nobody can cross over Alice!...What? It's not the trail edition now?
+			// Chat2: This book contains the ultimate power!
+			// Chat3: Puppet? What are you saying? I don't know how to make that.
+			// Chat4: With great power comes great cost...And Alice doesn't like those guys!
+			// Chat5: I feel...I'm being stared at by annoying eyes...
+			// Chat6: I don't know, maybe is you from the past.
+			// Chat7: This shrine maiden let me remind some bad memory...
 		}
 
 		Chat_Portal: {

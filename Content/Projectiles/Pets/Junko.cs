@@ -100,7 +100,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Junko";
-            indexRange = new Vector2(1, 3);
+            indexRange = new Vector2(1, 4);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -123,6 +123,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
             return chat;
+        }
+        public override void OnFindBoss(NPC boss)
+        {
+            if (boss.type == NPCID.MoonLordCore)
+            {
+                Projectile.SetChat(ChatSettingConfig, 4);
+            }
         }
         private void UpdateTalking()
         {
