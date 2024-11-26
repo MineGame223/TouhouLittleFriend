@@ -90,7 +90,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "AliceOld";
-            indexRange = new Vector2(1, 5);
+            indexRange = new Vector2(1, 7);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -109,6 +109,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (FindPet(ProjectileType<Yuka>(), false))
                 {
                     chat.Add(ChatDictionary[5]);
+                }
+                if (FindPet(ProjectileType<Reimu>(), false))
+                {
+                    chat.Add(ChatDictionary[7]);
                 }
             }
             return chat;
@@ -224,10 +228,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                         CurrentState = States.AfterReading;
                     }
                 }
-            }
-            else
-            {
-                blinkFrame = 7;
             }
         }
         private void ReadingBlink()

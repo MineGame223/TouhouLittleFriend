@@ -246,6 +246,7 @@ Mods: {
 			// Chat38: If she can only control firefly, I may like her.
 			// Chat39: Can't believe that she has to manage such a big yard while taking care of her hungry master...
 			// Chat40: If you see her, you'll know that the spring is coming.
+			// Chat41: This kid let me remember that puppeteer...I suddenly want a maid now.
 		}
 
 		Chat_Nitori: {
@@ -430,6 +431,8 @@ Mods: {
 			// Chat13: ...OK, OK, please stop. I'll call you ma...Ms.Shinki.
 			// Chat14: ("What a complex relation...")
 			// Chat15: No way!
+			// Chat16: Who are you? You looks so familier...
+			// Chat17: Me from the...past? The past...Ugh, headache...
 		}
 
 		Chat_Rumia: {
@@ -462,6 +465,9 @@ Mods: {
 			Chat1: Самое лучше время всегда связано с цветением
 			Chat2: Очередной скушный мирный день...
 			Chat3: Каждый цветок живёт короткую, но яркую жизнь. Лучше бы тебе не трогать их
+			// Chat4: This kid looks familier...Is she comes from the Makai?
+			// Chat5: I'm not a lunatic who only seek might, I'm just a youkai who like flowers.
+			// Chat6: Sunflowers don't turn in search of sunligh. But they are still be thought as a symbol of the sun.
 		}
 
 		Chat_Yukari: {
@@ -505,12 +511,12 @@ Mods: {
 			Chat13: БЛИН!!!
 			Chat14: Ты жульничала!
 			Chat15: Я исполню твоё желание в следующем поединке-- УМРИ!
-			// Chat16: 有、有吗？一定是你看错了吧...
-			// Chat17: 这附近除了那边都好没意思的...欸不是，我是说、我没有！
-			// Chat18: 我说，你保密工作做得不太行啊？
-			// Chat19: 我去人里玩的事情被永琳发现了，刚刚训了我一顿...
-			// Chat20: 你说什么？想干架是嘛？！
-			// Chat21: 欸欸欸别！...
+			// Chat16: Do...do I? You must got something wrong...
+			// Chat17: The surroundings are boring except there...Wait, I mean, I didn't do that!
+			// Chat18: Hey, your secret keeping doesn't very good, isn't it?
+			// Chat19: Eirin heard that I went to human's village, and she just scolded me...
+			// Chat20: You say what? Do you want to fight?!
+			// Chat21: Wait wait wait!...
 		}
 
 		Chat_Moku: {
@@ -529,9 +535,9 @@ Mods: {
 			Chat13: Я не проиграю следующий поединок!
 			Chat14: Я через чур беззаботна...
 			Chat15: Это последний раз когда ты будешь столь самодовльной...
-			// Chat16: 啊？你在胡说什么...
-			// Chat17: 哈哈哈哈！你活该呗。
-			// Chat18: 下次我可就不带你去了。
+			// Chat16: What? What are you talking about?...
+			// Chat17: Hahahaha! It serve yous right.
+			// Chat18: Then I'll not bring you on next time.
 		}
 
 		Chat_Meirin: {
@@ -706,8 +712,8 @@ Mods: {
 			// Chat15: You are in suffer of some bad state...Are you OK?
 			// Chat16: In a sense, potion sickness is also a good thing, at least you don't need to worry about effect decrease due to over drinking.
 			// Chat17: My god! How many potion you have drink? Can you hold on?
-			// Chat18: 公主大人，上次我又看到您偷偷跑去人里了。
-			// Chat19: 唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
+			// Chat18: Princess, I saw you went to human's village last time.
+			// Chat19: *Sigh...Indeed I have told you that always stay at home is not good, but the village is not where we can go too.
 			// Chat99: Let's mourn for {0} forever...
 		}
 
@@ -781,10 +787,13 @@ Mods: {
 		}
 
 		Chat_AliceOld: {
-			// Chat1: _
-			// Chat2: _
-			// Chat3: _
-			// Chat4: _
+			// Chat1: Nobody can cross over Alice!...What? It's not the trail edition now?
+			// Chat2: This book contains the ultimate power!
+			// Chat3: Puppet? What are you saying? I don't know how to make that.
+			// Chat4: With great power comes great cost...And Alice doesn't like those guys!
+			// Chat5: I feel...I'm being stared at by annoying eyes...
+			// Chat6: I don't know, maybe is you from the past.
+			// Chat7: This shrine maiden let me remind some bad memory...
 		}
 
 		Chat_Portal: {
