@@ -105,7 +105,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            DrawPetConfig config2 = drawConfig with
+            /*DrawPetConfig config2 = drawConfig with
             {
                 PositionOffset = new Vector2(34 * Projectile.spriteDirection, 3 * Main.essScale),
             };
@@ -115,7 +115,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 config2 with
                 {
                     AltTexture = glowTex,
-                }, 1);
+                }, 1);*/
 
             Projectile.DrawPet(hairFrame, lightColor, drawConfig, 1);
 
@@ -149,7 +149,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Eirin";
-            indexRange = new Vector2(1, 17);
+            indexRange = new Vector2(1, 19);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -170,6 +170,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[6]);
                 chat.Add(ChatDictionary[7]);
                 chat.Add(ChatDictionary[8]);
+                if (FindPet(ProjectileType<Kaguya>()))
+                {
+                    chat.Add(ChatDictionary[18]);
+                }
                 if (healthPercentage >= 0.9f && healthPercentage < 1)
                 {
                     chat.Add(ChatDictionary[9]);
@@ -207,6 +211,66 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
+            if (FindChatIndex(18, 19))
+            {
+                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
+            }
+        }
+        private void Chatting1(PetChatRoom chatRoom, int index)
+        {
+            int type = ProjectileType<Kaguya>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile eirin = chatRoom.initiator;
+            Projectile kaguya = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (index >= 18 && index <= 19)
+            {
+                if (turn == -1)
+                {
+                    //永琳：公主大人，上次我又看到您偷偷跑去人里了。
+                    kaguya.CloseCurrentDialog();
+
+                    if (eirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //辉夜：有、有吗？一定是你看错了吧...
+                    kaguya.SetChat(ChatSettingConfig, 16, 20);
+
+                    if (kaguya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
+                    eirin.SetChat(ChatSettingConfig, 19, 20);
+
+                    if (eirin.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    //辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
+                    kaguya.SetChat(ChatSettingConfig, 17, 20);
+
+                    if (kaguya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
         }
         public override void VisualEffectForPreview()
         {

@@ -130,7 +130,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void DrawDanmakuRing()
         {
             Texture2D t = AltVanillaFunction.ExtraTexture(ExtrasID.CultistRitual);
-            //Main.instance.LoadProjectile(ProjectileID.CultistRitual);
             Texture2D t2 = AltVanillaFunction.ProjectileTexture(ProjectileID.CultistRitual);
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new Rectangle(0, 0, t.Width, t.Height);
@@ -147,7 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Kaguya";
-            indexRange = new Vector2(1, 15);
+            indexRange = new Vector2(1, 21);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -164,6 +163,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (FindPet(ProjectileType<Moku>()))
                 {
                     chat.Add(ChatDictionary[7]);
+                    chat.Add(ChatDictionary[18]);
                 }
             }
             return chat;
@@ -174,7 +174,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
             }
-            if (FindChatIndex(7, 9))
+            if (FindChatIndex(7, 9) || FindChatIndex(18, 21))
             {
                 Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
             }
@@ -272,6 +272,69 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     //辉夜：要你管！
                     kaguya.SetChat(ChatSettingConfig, 6, 20);
+
+                    if (kaguya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else
+                {
+                    chatRoom.CloseChatRoom();
+                }
+            }
+            else if (index >= 18 && index <= 21)
+            {
+                if (turn == -1)
+                {
+                    //辉夜：我说，你保密工作做得不太行啊？
+                    moku.CloseCurrentDialog();
+
+                    if (kaguya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 0)
+                {
+                    //妹红：啊？你在胡说什么...
+                    moku.SetChat(ChatSettingConfig, 16, 20);
+
+                    if (moku.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 1)
+                {
+                    //辉夜：我去人里玩的事情被永琳发现了，刚刚训了我一顿...
+                    kaguya.SetChat(ChatSettingConfig, 19, 20);
+
+                    if (kaguya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 2)
+                {
+                    //妹红：哈哈哈哈！你活该呗。
+                    moku.SetChat(ChatSettingConfig, 17, 20);
+
+                    if (moku.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 3)
+                {
+                    //辉夜：你说什么？想干架是嘛？！
+                    kaguya.SetChat(ChatSettingConfig, 20, 20);
+
+                    if (kaguya.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 4)
+                {
+                    //妹红：下次我可就不带你去了。
+                    moku.SetChat(ChatSettingConfig, 18, 20);
+
+                    if (moku.CurrentDialogFinished())
+                        chatRoom.chatTurn++;
+                }
+                else if (turn == 5)
+                {
+                    //辉夜：欸欸欸别！...
+                    kaguya.SetChat(ChatSettingConfig, 21, 20);
 
                     if (kaguya.CurrentDialogFinished())
                         chatRoom.chatTurn++;

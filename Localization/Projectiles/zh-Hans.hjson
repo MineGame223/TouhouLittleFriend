@@ -69,6 +69,7 @@ Mods: {
 			Doremy.DisplayName: 哆来咪·苏伊特
 			Tewi.DisplayName: 因潘 帝
 			Momoyo.DisplayName: 姬虫 百百世
+			// AliceOld.DisplayName: Alice Old
 		}
 	}
 }

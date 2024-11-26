@@ -99,7 +99,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Alice";
-            indexRange = new Vector2(1, 15);
+            indexRange = new Vector2(1, 17);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -118,6 +118,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[4]);
                 }
+                if (FindPet(ProjectileType<AliceOld>()))
+                {
+                    chat.Add(ChatDictionary[16]);
+                }
             }
             return chat;
         }
@@ -131,6 +135,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindChatIndex(4, 7))
             {
                 Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
+            }
+            if (FindChatIndex(16, 17))
+            {
+                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
             }
         }
         private void Chatting1(PetChatRoom chatRoom)
@@ -201,6 +209,51 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 //爱丽丝：你！......
                 alice.SetChat(ChatSettingConfig, 7, 20);
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+            }
+        }
+        private void Chatting2(PetChatRoom chatRoom)
+        {
+            int type = ProjectileType<AliceOld>();
+            if (FindPet(out Projectile member, type))
+            {
+                chatRoom.member[0] = member;
+                member.ToPetClass().currentChatRoom = chatRoom;
+            }
+            else
+            {
+                chatRoom.CloseChatRoom();
+                return;
+            }
+            Projectile alice = chatRoom.initiator;
+            Projectile ecila = chatRoom.member[0];
+            int turn = chatRoom.chatTurn;
+            if (turn == -1)
+            {
+                //爱丽丝：你是谁？总感觉有点眼熟...
+                ecila.CloseCurrentDialog();
+
+                if (alice.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 0)
+            {
+                //爱丽丝：不知道哦，可能是过去的你吧。
+                ecila.SetChat(ChatSettingConfig, 6, 20);
+
+                if (ecila.CurrentDialogFinished())
+                    chatRoom.chatTurn++;
+            }
+            else if (turn == 1)
+            {
+                //爱丽丝：过去的...我？过去的时候...呃啊，头疼...
+                alice.SetChat(ChatSettingConfig, 17, 20);
 
                 if (alice.CurrentDialogFinished())
                     chatRoom.chatTurn++;

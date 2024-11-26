@@ -286,6 +286,11 @@ Mods: {
 				// DisplayName: Bug Hime
 				// Description: Did you say "Mine & Craft"?
 			}
+
+			AliceOldBuff: {
+				// DisplayName: Girl from Magic land
+				// Description: A smell of death and magic
+			}
 		}
 	}
 }

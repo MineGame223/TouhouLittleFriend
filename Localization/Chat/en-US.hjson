@@ -152,19 +152,19 @@ Mods: {
 			Chat1: I'm gonna to prove to you all that I'm the most powerful!
 			Chat2: Let's make a big bang today!
 			Chat3: Heaven is too boring... So, I, the greatest celestial came down here to give you some care!
-			Chat4: 天人的忠告？我才不是那种无聊的天人呢！
-			Chat5: 敢不敢跟我比划比划？
-			Chat6: 天天吃桃子感觉也不是个事儿...喂，你知不知道地上有什么其他好吃的？
-			Chat7: 另一个我？看上去也很强啊！
-			Chat8: 你正要和一个强大的存在搏斗，嗯哼？
-			Chat9: 是“全人类的绯想天”，不是全人类都飞上天！不过我倒想看看，那一定很有意思哈哈！
+			Chat4: Celestial's advice? I'm not a boring people like them!
+			Chat5: Do you dare battle with me?
+			Chat6: That's not fun that eat peach everyday...Hey, Do you know anything taste good on the ground?
+			Chat7: Another me? She looks strong too!
+			Chat8: You are gonna fight with a powerful existence, right?
+			Chat9: The thing I ride is a "Keystone", not a pickle stone!
 		}
 
 		Chat_Junko: {
 			Chat1: Are you watching, Chang'e?...
 			Chat2: ......
 			Chat3: Udon-chan~ How're you doing?
-			Chat4: 那可憎的月亮终于还是降临大地了。
+			Chat4: The disgusting moon finally comes to the ground.
 		}
 
 		Chat_Marisa: {
@@ -185,24 +185,24 @@ Mods: {
 			Chat15: What's up, Reimu?
 			Chat16: Ugh...Why do you suddenly say this? Sounds weird...
 			Chat17: Eh...Pretty good, I think? It means we are born with great duty daze!
-			Chat18: 好大一坨史莱姆！那顶金皇冠肯定很值钱吧。
-			Chat19: 飞在天上的大眼球，太酷了！
-			Chat20: 噫呦...好恶心的虫子。
-			Chat21: 真是一个巨型脑子...它一定很聪明吧？
-			Chat22: 这么大的蜜蜂，能产多少蜜啊？
-			Chat23: 这骷髅至少缺了三百块骨头。
-			Chat24: 这是鹿？开什么玩笑！
-			Chat25: 我不想再看那个血肉怪物一眼...
-			Chat26: 是闪闪发亮的大坨史莱姆Daze！
-			Chat27: 两只眼睛的视力总比一只好。
-			Chat28: 噫呦...铁虫子。
-			Chat29: 这是真正的钢筋“铁骨”Daze！
-			Chat30: 花盆里绝对种不出这么大、这么凶残的花来。
-			Chat31: 守护神像？看起来像是某种大号玩具。
-			Chat32: 猪飞起来了！
-			Chat33: 想关住这只妖精得需要多大的玻璃瓶啊。
-			Chat34: 虽然它的仪式很酷，但我总有种不好的预感...
-			Chat35: 月亮妖怪降临！
+			Chat18: What a HUGE lump of slime! That golden crown must be valuable.
+			Chat19: An eyeball which flying in the sky? So cool!
+			Chat20: Ugh...Gross worm.
+			Chat21: That's a really gaint brain...It must be very smart, right?
+			Chat22: How much honey can such a big bee produce?
+			Chat23: This skeleton lack at least 300 bones.
+			Chat24: You told me that's a deer? What the hell!
+			Chat25: I don't want to see that meat monster anymore...
+			Chat26: A sparkling huge lump of slime daze!
+			Chat27: Two eyes' sight is better than one's
+			Chat28: Ugh...Metal worm.
+			Chat29: This is really "bones of iron" daze!
+			Chat30: A pot can never grown such a big, brute flower.
+			Chat31: Guard golem? Looks like some kind of large toy.
+			Chat32: The pig is flying!
+			Chat33: How large should the bottle be if I want to catch this fairy...
+			Chat34: The ritual is really cool, but I don't get a good feeling...
+			Chat35: The moon monster incoming!
 		}
 
 		Chat_Reimu: {
@@ -222,30 +222,31 @@ Mods: {
 			Chat14: If we are actually crafted for a world's existence by somebody, how do you think about?
 			Chat15: Just tell me how do you think!
 			Chat16: Perhaps so...
-			Chat17: 自称最强妖精的冰之妖精...明明就是个笨蛋却有股迷之自信。
-			Chat18: 怎么感觉这头貘好像闯入过我的梦境里？
-			Chat19: 月之头脑？真的有那么夸张吗。
-			Chat20: 有些疯疯癫癫的吸血鬼，比她的那个姐姐还可怕...
-			Chat21: 如果能抓一个像她这样的龙宫使者养在家里，就不用担心第二天的天气了吧？
-			Chat22: 恐怖的纯粹之神，她对幻想乡没有敌意真是万幸...
-			Chat23: 只是一个面具，却要学习感情，真有意思。
-			Chat24: 下次别再让我逮到这三个家伙捣乱...
-			Chat25: 不稍加了解的话，真看不出来这个见天儿打瞌睡的门卫是个妖怪而不是人类。
-			Chat26: 我曾也幻想过永生，不过看那家伙的情况...还是算了吧。
-			Chat27: 要是这些河童卖东西时能打折就好了。
-			Chat28: 看到魔理沙和那家伙关系不错就感觉莫名不爽...区区一个紫色豆芽菜...
-			Chat29: 守矢什么的还是离我远点吧...
-			Chat30: 因为读心能力而被地上人所厌恶，但其实我也挺想拥有这个能力的。
-			Chat31: 什么魔界之神啊，就是个傻呵呵的老妈子...
-			Chat32: 秋天能那么漂亮还得感谢她呢，虽然我更希望她妹妹能帮帮我。
-			Chat33: 有时候仰望星空，会感觉自己正在被无数星星注视，难道这就是感知万物能力的阐释吗？
-			Chat34: 如果直视太阳，只会什么都看不见，难道这就是扰乱光线能力的阐释吗？
-			Chat35: 在月光的照耀下，夜的寂静会更加明显，难道这就是屏蔽声音能力的阐释吗？
-			Chat36: 要是我也能养一只这样的乌鸦，就不愁烧炉子的柴火了吧。
-			Chat37: *咽口水...那鱼尾巴好肥美...
-			Chat38: 倘若她只能操纵萤火虫，我倒可能会挺喜欢她。
-			Chat39: 不敢想象她一个人要照顾一个大胃王的同时还要管理那么大的院子...
-			Chat40: 只要见到这家伙，就知道春天要来了。
+			Chat17: That ice fairy call herself the strongest one...Where did that baka got such a confidence?
+			Chat18: Why I remember this tapir used to be in my dream?
+			Chat19: Brain of the moon? Is that really so?
+			Chat20: A madness vampire who is more horrible than her eler sister...
+			Chat21: If I can keep a dragon palace messager like her in my home, I won't worry for tomorrow's weather right?
+			Chat22: A horrific god of pure, it's so lucky that she has no animosity to the Gensokyo...
+			Chat23: She is just a mask, but she want to learn emotion, interesting.
+			Chat24: I don't want to see these three fairies causing trouble next time...
+			Chat25: If you know less about her, you'll never know this sleepy guard is a youkai rather than a human.
+			Chat26: I used to admire the immortal, but now look at her...Just forget it.
+			Chat27: It would be good if those kappa can give me some discount.
+			Chat28: Everytime I see that guy get close to Marisa, I feel a bit angry...Just a purple nerd...
+			Chat29: Moriya stuff should keep a distance with me...
+			Chat30: She is hated by every ground people because she can mind-reading, but actually I want that ability.
+			Chat31: God of Makai? Just a stupid mother...
+			Chat32: It's all her effort to make the Autumn beautiful, although I prefer get her younger sister's help.
+			Chat33: Sometimes you'll feel being stared if you watch the star, is that her ability's explain?
+			Chat34: If you see sun light directly, you'll see nothing, is that her ability's explain?
+			Chat35: The night will be more slient under the moon light, is that her ability's explain?
+			Chat36: If I can have a crow like her, I won't need to worry about heating right?
+			Chat37: *Swallow...That fish's tail looks delicious...
+			Chat38: If she can only control firefly, I may like her.
+			Chat39: Can't believe that she has to manage such a big yard while taking care of her hungry master...
+			Chat40: If you see her, you'll know that the spring is coming.
+			Chat41: This kid let me remember that puppeteer...I suddenly want a maid now.
 		}
 
 		Chat_Nitori: {
@@ -430,6 +431,8 @@ Mods: {
 			Chat13: ...OK, OK, please stop. I'll call you ma...Ms.Shinki.
 			Chat14: ("What a complex relation...")
 			Chat15: No way!
+			Chat16: Who are you? You looks so familier...
+			Chat17: Me from the...past? The past...Ugh, headache...
 		}
 
 		Chat_Rumia: {
@@ -462,6 +465,9 @@ Mods: {
 			Chat1: The most beautiful time is always when the flowers are in full bloom.
 			Chat2: Another peaceful and boring day...
 			Chat3: Every flower has a short and colorful life, you'd best not bother them.
+			Chat4: This kid looks familier...Is she comes from the Makai?
+			Chat5: I'm not a lunatic who only seek might, I'm just a youkai who like flowers.
+			Chat6: Sunflowers don't turn in search of sunligh. But they are still be thought as a symbol of the sun.
 		}
 
 		Chat_Yukari: {
@@ -505,6 +511,12 @@ Mods: {
 			Chat13: DAMN!!!
 			Chat14: You must cheated!
 			Chat15: I'll grant your wish in the next round-- DIE!
+			Chat16: Do...do I? You must got something wrong...
+			Chat17: The surroundings are boring except there...Wait, I mean, I didn't do that!
+			Chat18: Hey, your secret keeping doesn't very good, isn't it?
+			Chat19: Eirin heard that I went to human's village, and she just scolded me...
+			Chat20: You say what? Do you want to fight?!
+			Chat21: Wait wait wait!...
 		}
 
 		Chat_Moku: {
@@ -523,6 +535,9 @@ Mods: {
 			Chat13: I won't lose the next round!
 			Chat14: I'm too careless...
 			Chat15: This'll be the last time you'll be this complacent...
+			Chat16: What? What are you talking about?...
+			Chat17: Hahahaha! It serve yous right.
+			Chat18: Then I'll not bring you on next time.
 		}
 
 		Chat_Meirin: {
@@ -688,16 +703,18 @@ Mods: {
 			Chat6: Do you know how many potions need Deathweed as a material?
 			Chat7: It's been about thousands of years since I left the Lunar Capital...Tsukuyomi, will we meet again? Maybe we won't...
 			Chat8: Are Yorihime and Toyohime alright now?...
-			Chat9: 你好像受了点小伤。
-			Chat10: 你的伤口似乎有点大，不过一切都在可控范围内。
-			Chat11: 你的身体状况似乎不容乐观...
-			Chat12: 我觉得你现在最好接受治疗。
-			Chat13: 开什么玩笑？你快死了！
-			Chat14: 让我们永远悼念...等等，待会儿你就会回来了。
-			Chat15: 某种异常状态正在折磨着你...你还好吗？
-			Chat16: 某种意义上来讲抗药性也是好事，不必担心过量饮用导致药效下降的问题。
-			Chat17: 天哪，你喝了多少药？身体真的承受得了吗？
-			Chat99: 让我们永远悼念{0}...
+			Chat9: Looks like you have a minor injury.
+			Chat10: You wound is a little big, but everything is under control now.
+			Chat11: You health state is not that good...
+			Chat12: I advise you to have a treatment now.
+			Chat13: Are you joking? You are gonna die!
+			Chat14: Let's mourn for...Wait, you'll back soon.
+			Chat15: You are in suffer of some bad state...Are you OK?
+			Chat16: In a sense, potion sickness is also a good thing, at least you don't need to worry about effect decrease due to over drinking.
+			Chat17: My god! How many potion you have drink? Can you hold on?
+			Chat18: Princess, I saw you went to human's village last time.
+			Chat19: *Sigh...Indeed I have told you that always stay at home is not good, but the village is not where we can go too.
+			Chat99: Let's mourn for {0} forever...
 		}
 
 		Chat_Shinki: {
@@ -767,6 +784,15 @@ Mods: {
 			Chat7: Sometimes, keeping slient can save your life in caves.
 			Chat8: There's no diamond tools?!
 			Chat9: Ah, the cave, a familier place.
+		}
+
+		Chat_AliceOld: {
+			Chat1: Nobody can cross over Alice!...What? It's not the trail edition now?
+			Chat2: This book contains the ultimate power!
+			Chat3: Puppet? What are you saying? I don't know how to make that.
+			Chat4: With great power comes great cost...And Alice doesn't like those guys!
+			Chat5: I feel...I'm being stared at by annoying eyes...
+			Chat6: I don't know, maybe is you from the past.
 		}
 
 		Chat_Portal: {

@@ -110,7 +110,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Reimu";
-            indexRange = new Vector2(1, 41);
+            indexRange = new Vector2(1, 41 + 1);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -169,6 +169,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AddDialogToPets(chat, ProjectileType<Wriggle>(), 38);
                     AddDialogToPets(chat, ProjectileType<Youmu>(), 39);
                     AddDialogToPets(chat, ProjectileType<Lily>(), 40);
+                    AddDialogToPets(chat, ProjectileType<AliceOld>(), 41);
                 }
             }
             return chat;

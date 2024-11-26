@@ -26,10 +26,9 @@ namespace TouhouPets
         {
             if (item.type == ItemID.Sapphire && !item.shimmered)
             {
-                foreach (Item i in Main.item)
+                foreach (Item i in Main.ActiveItems)
                 {
-                    if (i != null && i.active
-                        && i.type == ItemID.FallenStar && i.getRect().Intersects(item.getRect()) && !i.shimmered)
+                    if (i.type == ItemID.FallenStar && i.getRect().Intersects(item.getRect()) && !i.shimmered)
                     {
                         i.stack--;
                         item.stack--;
