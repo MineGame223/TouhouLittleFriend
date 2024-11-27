@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TouhouPets.Content.Projectiles
 {
@@ -25,6 +26,15 @@ namespace TouhouPets.Content.Projectiles
         {
             return false;
         }
+        private void DrawFlame(DrawData data, Texture2D tex, int height)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                data.sourceRect = new Rectangle(0, Main.rand.Next(3) * height, tex.Width, height);
+                data.position += new Vector2(Main.rand.NextFloat(-1.2f, 1.2f), Main.rand.NextFloat(-1.2f, 1.2f));
+                data.Draw(Main.spriteBatch);
+            }
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D tex = AltVanillaFunction.ProjectileTexture(Type);
@@ -36,19 +46,18 @@ namespace TouhouPets.Content.Projectiles
             Vector2 orig = rect.Size() / 2;
 
             Player player = Main.player[Projectile.owner];
+            DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig, Projectile.scale, SpriteEffects.None, 0);
+
+            if (GetInstance<MiscConfig>().CompatibilityMode)
+            {
+                DrawFlame(data, tex, height);
+                return false;
+            }
 
             Main.spriteBatch.QuickEndAndBegin(true);
 
-            DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig,
-                Projectile.scale, SpriteEffects.None, 0);
             GameShaders.Armor.Apply(player.cLight, Projectile, data);
-
-            for (int i = 0; i < 3; i++)
-            {
-                data.sourceRect = new Rectangle(0, Main.rand.Next(3) * height, tex.Width, height);
-                data.position += new Vector2(Main.rand.NextFloat(-1.2f, 1.2f), Main.rand.NextFloat(-1.2f, 1.2f));
-                data.Draw(Main.spriteBatch);
-            }
+            DrawFlame(data, tex, height);
 
             Main.spriteBatch.QuickEndAndBegin(false);
             return false;

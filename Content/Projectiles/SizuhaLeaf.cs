@@ -34,9 +34,16 @@ namespace TouhouPets.Content.Projectiles
             Color clr = Projectile.GetAlpha(lightColor);
             Vector2 orig = rect.Size() / 2;
 
-            Main.spriteBatch.QuickEndAndBegin(true);
-
             DrawData data = new DrawData(tex, pos, rect, clr, Projectile.rotation, orig, 1f, SpriteEffects.None, 0);
+            
+            if (GetInstance<MiscConfig>().CompatibilityMode)
+            {
+                data.Draw(Main.spriteBatch);
+                return false;
+            }
+
+            Main.spriteBatch.QuickEndAndBegin(true);
+        
             GameShaders.Armor.Apply(Main.player[Projectile.owner].cLight, Projectile, data);
             data.Draw(Main.spriteBatch);
 

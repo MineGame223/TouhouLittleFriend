@@ -36,13 +36,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         public override bool DrawPetSelf(ref Color lightColor)
         {
-            Main.spriteBatch.QuickEndAndBegin(true, Projectile.isAPreviewDummy, BlendState.Additive);
             for (int i = 0; i < 4; i++)
             {
-                DrawShinki(Color.Purple * 0.8f, new Vector2(6 * Main.essScale, 0)
+                Color clr = Color.Purple * 0.8f;
+                clr.A *= 0;
+                DrawShinki(clr, new Vector2(6 * Main.essScale, 0)
                     .RotatedBy(MathHelper.ToRadians(90 * i) + Main.GlobalTimeWrappedHourly));
             }
-            Projectile.ResetDrawStateForPet();
+            Projectile.ResetDrawStateForPet();//用于让染料正常工作，因为上面的DrawShinki没有进行闭环操作
 
             DrawShinki(lightColor, Vector2.Zero);
             return false;

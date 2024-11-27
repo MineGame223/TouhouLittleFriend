@@ -79,7 +79,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.ResetDrawStateForPet();
 
-            if (blackDye)
+            if (blackDye && !GetInstance<MiscConfig>().CompatibilityMode)
                 Projectile.DrawPet(clothFrame, lightColor,
                     config with
                     {

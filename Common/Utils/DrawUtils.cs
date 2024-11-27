@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System.Drawing.Drawing2D;
 using Terraria;
+using tModPorter;
 
 namespace TouhouPets
 {
@@ -46,7 +47,7 @@ namespace TouhouPets
             Vector2 orig = rect.Size() / 2;
             float scale = config.Scale;
             SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            if (config.ShouldUseEntitySpriteDraw)
+            if (config.ShouldUseEntitySpriteDraw && !GetInstance<MiscConfig>().CompatibilityMode)
                 Main.EntitySpriteDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
             else
                 Main.spriteBatch.TeaNPCDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
@@ -57,6 +58,9 @@ namespace TouhouPets
         /// </summary>
         public static void ResetDrawStateForPet(this Projectile projectile)
         {
+            if (GetInstance<MiscConfig>().CompatibilityMode)
+                return;
+
             Main.spriteBatch.QuickEndAndBegin(true, projectile.isAPreviewDummy);
         }
         /// <summary>
