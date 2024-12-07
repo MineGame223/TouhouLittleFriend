@@ -34,7 +34,7 @@ Mods: {
 			Kogasa.DisplayName: Kogasa Tatara
 			Nitori.DisplayName: Nitori Kawashiro
 			Rin.DisplayName: Rin Kaenbyou
-			Lily.DisplayName: Lilywhite
+			Lily.DisplayName: Lily White
 			Mystia.DisplayName: Mystia Lorelei
 			Wriggle.DisplayName: Wriggle Nightbug
 			Aya.DisplayName: Aya Shameimaru
@@ -50,7 +50,7 @@ Mods: {
 			Yukari.DisplayName: Yukari Yakumo
 			Kaguya.DisplayName: Kaguya Houraisan
 			Moku.DisplayName: Fujiwara no Mokou
-			Meirin.DisplayName: Meirin Hong
+			Meirin.DisplayName: Hong Meirin
 			Sakuya.DisplayName: Sakuya Izayoi
 			Raiko.DisplayName: Raiko Horikawa
 			Keine.DisplayName: Keine Kamishirasawa
@@ -70,6 +70,7 @@ Mods: {
 			Tewi.DisplayName: Tei Inaba
 			Momoyo.DisplayName: Momoyo Himemushi
 			AliceOld.DisplayName: Alice
+			Letty.DisplayName: Letty Whiterock
 		}
 	}
 }

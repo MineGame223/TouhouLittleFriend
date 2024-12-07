@@ -80,10 +80,6 @@ namespace TouhouPets
             {
                 npcLoot.Add(ItemType<KokoroMask>(), enemiesDropRate - 5);
             }
-            if (npc.type == NPCID.UndeadMiner)
-            {
-                npcLoot.Add(ItemType<MomoyoPickaxe>(), enemiesDropRate - 5);
-            }
             if (npc.type == NPCID.CorruptBunny || npc.type == NPCID.CrimsonBunny)
             {
                 npcLoot.Add(ItemType<TewiCarrot>(), enemiesDropRate - 3);
@@ -123,6 +119,7 @@ namespace TouhouPets
                     break;
 
                 case NPCID.TheDestroyer:
+                    npcLoot.Add(new NotDownedDestroyer(), new DownedDestroyer(), ItemType<MomoyoPickaxe>(), commonDropRate);
                     break;
 
                 case NPCID.Retinazer:

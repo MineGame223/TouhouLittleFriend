@@ -11,6 +11,20 @@ namespace TouhouPets
         public int koakumaNumber;
         public int purchaseValueCount;
         public int totalPurchaseValueCount;
+
+        public bool lettyCold;
+        private void CommonUpdate()
+        {
+            lettyCold = false;
+        }
+        public override void ResetEffects()
+        {
+            CommonUpdate();
+        }
+        public override void UpdateDead()
+        {
+            CommonUpdate();
+        }
         private void ChangePurchaseCount(int amount)
         {
             totalPurchaseValueCount += amount;

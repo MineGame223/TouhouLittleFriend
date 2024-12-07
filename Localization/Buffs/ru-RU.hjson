@@ -291,6 +291,11 @@ Mods: {
 				// DisplayName: Girl from Magic land
 				// Description: A smell of death and magic
 			}
+
+			LettyBuff: {
+				// DisplayName: Youkai of The Winter
+				// Description: The Winter is coming!
+			}
 		}
 	}
 }
