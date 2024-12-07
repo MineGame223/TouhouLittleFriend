@@ -22,6 +22,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => PetState = (int)value;
         }
         private bool IsIdleState => PetState <= 1;
+        private bool FeelCold => Owner.ZoneSnow || Owner.GetModPlayer<TouhouPetPlayer>().lettyCold;
 
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
@@ -35,7 +36,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
-
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -231,7 +231,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (OwnerIsMyPlayer)
             {
-                if (Owner.ZoneSnow)
+                if (FeelCold)
                 {
                     CurrentState = States.Cold;
                 }
@@ -264,7 +264,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 11;
             if (OwnerIsMyPlayer)
             {
-                if (!Owner.ZoneSnow)
+                if (!FeelCold)
                 {
                     CurrentState = States.Idle;
                 }

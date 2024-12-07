@@ -39,6 +39,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => Projectile.localAI[2] = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
+        private bool FeelCold => Owner.ZoneSnow || Owner.GetModPlayer<TouhouPetPlayer>().lettyCold;
         private bool AntennaeActive
         {
             get => Projectile.ai[2] == 0;
@@ -191,7 +192,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (Owner.ZoneSnow)
+            if (FeelCold)
             {
                 CurrentState = States.Cold;
             }
@@ -403,7 +404,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.frame = 4;
             shake = new Vector2(Main.rand.NextFloat(-1f, 1f), 0);
-            if (OwnerIsMyPlayer && !Owner.ZoneSnow)
+            if (OwnerIsMyPlayer && !FeelCold)
             {
                 CurrentState = States.Idle;
             }

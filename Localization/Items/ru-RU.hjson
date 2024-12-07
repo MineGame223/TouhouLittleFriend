@@ -352,6 +352,17 @@ Mods: {
 					“Looks like somebody's old toy.”
 					''' */
 			}
+
+			LettyGlobe: {
+				// DisplayName: Snow Globe
+				/* Tooltip:
+					'''
+					Summons a forgotten youkai of winter
+					“North country sence,”
+					“A hundred leagues locked in ice,”
+					“A thousand leagues of whriling snow.”
+					''' */
+			}
 		}
 	}
 }

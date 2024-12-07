@@ -61,13 +61,13 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             for (int i = 1; i < maskFrame.Length; i++)
             {
-                Main.spriteBatch.QuickEndAndBegin(true, Projectile.isAPreviewDummy, BlendState.Additive);
                 for (int j = 0; j < 6; j++)
                 {
-                    DrawMask(Color.Cyan * 0.7f, i, new Vector2(4, 0)
+                    Color clr = Color.Cyan * 0.7f;
+                    clr.A *= 0;
+                    DrawMask(clr, i, new Vector2(4, 0)
                         .RotatedBy(MathHelper.ToRadians(60 * j) + Main.GlobalTimeWrappedHourly * 2));
                 }
-                Projectile.ResetDrawStateForPet();
 
                 DrawMask(lightColor, i);
             }

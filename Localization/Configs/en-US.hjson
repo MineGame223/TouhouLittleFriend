@@ -101,6 +101,19 @@ Mods: {
 					Tooltip: Toggle whether or not the Mysterious Gap can spawn at night
 				}
 			}
+
+			MiscConfig: {
+				DisplayName: Misc Function Config
+
+				CompatibilityMode: {
+					Label: Compatibility Mode
+					Tooltip:
+						'''
+						Disable pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
+						Some pet's special dye effect won't be affected
+						'''
+				}
+			}
 		}
 	}
 }

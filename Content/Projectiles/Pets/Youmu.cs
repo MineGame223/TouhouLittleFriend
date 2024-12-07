@@ -55,7 +55,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             for (int i = 0; i < 4; i++)
             {
-                Projectile.DrawPet(8, Color.White * 0.5f,
+                Color clr = Color.White * 0.8f;
+                Projectile.DrawPet(8, clr,
                     drawConfig with
                     {
                         PositionOffset = new Vector2(Main.rand.Next(-10, 11) * 0.15f, Main.rand.Next(-10, 11) * 0.15f),

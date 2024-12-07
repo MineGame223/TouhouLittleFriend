@@ -796,6 +796,18 @@ Mods: {
 			Chat7: This shrine maiden let me remind some bad memory...
 		}
 
+		Chat_Letty: {
+			Chat1: Only the silver day is coming, then I shall approaching.
+			Chat2: Do you like snowing?
+			Chat3: Winter is the season that everything get a break.
+			Chat4: People always say that winter means wither, but without the snow, where is next year's harvest comes from?
+			Chat5: Don't try to find me in other seasons, I'm being with the winter.
+			Chat6: Both sides of the Great Wall, one single white immensity. The yellow river's swift current, is still from end to end.
+			Chat7: Snowflakes are floating~ North wind is blowing~
+			Chat8: ...So hot...
+			Chat9: Why that crow got the power of the sun?
+		}
+
 		Chat_Portal: {
 			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all.
 			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence.

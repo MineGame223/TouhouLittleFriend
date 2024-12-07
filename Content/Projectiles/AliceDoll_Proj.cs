@@ -40,7 +40,14 @@ namespace TouhouPets.Content.Projectiles
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
             tex = AltVanillaFunction.GetExtraTexture("AliceDoll_Proj_Cloth");
-            Main.EntitySpriteDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
+            if (GetInstance<MiscConfig>().CompatibilityMode)
+            {
+                Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
+            }
+            else
+            {
+                Main.EntitySpriteDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
+            }
             return false;
         }
         private void DrawLine(Color lightColor)
@@ -52,7 +59,14 @@ namespace TouhouPets.Content.Projectiles
             Color clr = Projectile.GetAlpha(Lighting.GetColor(Projectile.Center.ToTileCoordinates(), lightColor));
             Vector2 orig = new Vector2(tex.Width / 2, 0);
             float rot = startP.DirectionTo(Projectile.Center).ToRotation() + MathHelper.PiOver2;
-            Main.EntitySpriteDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
+            if (GetInstance<MiscConfig>().CompatibilityMode)
+            {
+                Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
+            }
+            else
+            {
+                Main.EntitySpriteDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
+            }
             Projectile.ResetDrawStateForPet();
         }
         Projectile Alice

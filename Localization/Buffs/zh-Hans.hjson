@@ -291,6 +291,11 @@ Mods: {
 				DisplayName: 魔法之国的少女
 				Description: 死与魔法的气息
 			}
+
+			LettyBuff: {
+				DisplayName: 冬之妖怪
+				Description: 凛冬将至！
+			}
 		}
 	}
 }

@@ -70,9 +70,16 @@ namespace TouhouPets.Content.Projectiles
                 Vector2 orig = new Vector2(line.Width / 2, 0);
                 float rot = pos.DirectionTo(Projectile.Center).ToRotation();
 
-                Main.spriteBatch.QuickEndAndBegin(true);
-
                 DrawData data = new DrawData(line, pos - Main.screenPosition, rect, lightColor, rot, orig, 1f, SpriteEffects.None, 0);
+
+                if (GetInstance<MiscConfig>().CompatibilityMode)
+                {
+                    data.Draw(Main.spriteBatch);
+                    return false;
+                }
+
+                Main.spriteBatch.QuickEndAndBegin(true);
+                
                 GameShaders.Armor.Apply(Main.player[Projectile.owner].cLight, Projectile, data);
                 data.Draw(Main.spriteBatch);
 

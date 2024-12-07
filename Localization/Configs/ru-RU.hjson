@@ -104,6 +104,19 @@ Mods: {
 					Tooltip: Переключает, может ли загадочный разрыв появится ночью
 				}
 			}
+
+			MiscConfig: {
+				// DisplayName: Misc Function Config
+
+				CompatibilityMode: {
+					// Label: Compatibility Mode
+					/* Tooltip:
+						'''
+						Disable pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
+						Some pet's special dye effect won't be affected
+						''' */
+				}
+			}
 		}
 	}
 }
