@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.IO;
+using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items.PetItems;
 using TouhouPets.Content.NPCs;
 
@@ -13,17 +14,12 @@ namespace TouhouPets
         public int totalPurchaseValueCount;
 
         public bool lettyCold;
-        private void CommonUpdate()
-        {
-            lettyCold = false;
-        }
         public override void ResetEffects()
         {
-            CommonUpdate();
-        }
-        public override void UpdateDead()
-        {
-            CommonUpdate();
+            if (!Player.HasBuff<LettyBuff>() || !GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty)
+            {
+                lettyCold = false;
+            }
         }
         private void ChangePurchaseCount(int amount)
         {

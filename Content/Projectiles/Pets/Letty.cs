@@ -140,7 +140,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 CurrentState = States.Hot;
             }
-            else if (!InHotZone)
+            else if (!InHotZone && GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty)
             {
                 Owner.GetModPlayer<TouhouPetPlayer>().lettyCold = true;
             }

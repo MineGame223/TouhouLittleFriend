@@ -29,7 +29,7 @@ Mods: {
 					Tooltip: 令附近的宝藏闪闪发亮
 				}
 
-				SpecialAbility_Tenshi: {
+				SpecialAbility_Tenshin: {
 					Label: "[i:TouhouPets/TenshiKeyStone] {$Mods.TouhouPets.Items.TenshiKeyStone.DisplayName}特殊能力"
 					Tooltip: 增加0.5运气
 				}
@@ -61,6 +61,16 @@ Mods: {
 				SpecialAbility_Tewi: {
 					Label: "[i:TouhouPets/TewiCarrot] {$Mods.TouhouPets.Items.TewiCarrot.DisplayName}特殊能力"
 					Tooltip: 增加0.3运气
+				}
+
+				SpecialAbility_Letty: {
+					Label: "[i:TouhouPets/LettyGlobe] {$Mods.TouhouPets.Items.LettyGlobe.DisplayName}特殊能力"
+					Tooltip:
+						'''
+						引发部分宠物怕冷的反应
+						受影响的宠物有：
+						[i:TouhouPets/SizuhaBrush] [i:TouhouPets/WriggleInAJar]
+						'''
 				}
 			}
 

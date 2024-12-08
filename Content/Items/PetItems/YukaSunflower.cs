@@ -22,12 +22,17 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Item solution = Main.LocalPlayer.ChooseAmmo(new Item(ItemID.Clentaminator2));
-            if (solution == null || solution.IsAir)
+            if (!GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka)
                 return;
 
-            if (Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(solution.type)
-                 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka)
+            Item solution = Main.LocalPlayer.ChooseAmmo(new Item(ItemID.Clentaminator2));
+            if (solution == null || solution.IsAir)
+            {
+                tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.YukaTips2"));
+                return;
+            }
+
+            if (Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(solution.type))
                 tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.YukaTips"));
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

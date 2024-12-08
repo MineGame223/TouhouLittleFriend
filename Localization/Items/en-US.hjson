@@ -251,9 +251,8 @@ Mods: {
 				DisplayName: Cherry Fan
 				Tooltip:
 					'''
-					Summons the Ghost of the Cherry Blossoms					
+					Summons the Ghost of the Cherry Blossoms
 					"Still has the scent of spring on it."
-					Please take care of any FOOD in your inventory!
 					'''
 			}
 
@@ -317,6 +316,7 @@ Mods: {
 					'''
 					Summon the Boundary Sage and her Shikigami
 					"This is my sign of approval, just take it."
+					[c/ffff33:A reward after you contribute enough to the Gensokyo]
 					'''
 			}
 
@@ -324,7 +324,7 @@ Mods: {
 				DisplayName: Jeweled Branch of Hourai
 				Tooltip:
 					'''
-					Summons the Lunar Pincess
+					Summons the Lunar Princess
 					"A seemingly ordinary branch with colorful jewels."
 					'''
 			}
