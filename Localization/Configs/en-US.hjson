@@ -29,7 +29,7 @@ Mods: {
 					Tooltip: Makes nearby treasures shine
 				}
 
-				SpecialAbility_Tenshi: {
+				SpecialAbility_Tenshin: {
 					Label: "[i:TouhouPets/TenshiKeyStone] {$Mods.TouhouPets.Items.TenshiKeyStone.DisplayName}'s Special Ability"
 					Tooltip: Increases luck by 0.5
 				}
@@ -61,6 +61,16 @@ Mods: {
 				SpecialAbility_Tewi: {
 					Label: "[i:TouhouPets/TewiCarrot] {$Mods.TouhouPets.Items.TewiCarrot.DisplayName}'s Special Ability"
 					Tooltip: Increases luck by 0.3
+				}
+
+				SpecialAbility_Letty: {
+					Label: "[i:TouhouPets/LettyGlobe] {$Mods.TouhouPets.Items.LettyGlobe.DisplayName}'s Special Ability"
+					Tooltip:
+						'''
+						Make some pets feel cold
+						They include: 
+						[i:TouhouPets/SizuhaBrush] [i:TouhouPets/WriggleInAJar]
+						'''
 				}
 			}
 

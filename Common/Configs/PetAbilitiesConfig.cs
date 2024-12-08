@@ -23,7 +23,7 @@ namespace TouhouPets
         public bool SpecialAbility_Star;
 
         [DefaultValue(true)]
-        public bool SpecialAbility_Tenshi;
+        public bool SpecialAbility_Tenshin;
 
         [DefaultValue(true)]
         public bool SpecialAbility_Wriggle;
@@ -39,5 +39,8 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool SpecialAbility_Tewi;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Letty;
     }
 }

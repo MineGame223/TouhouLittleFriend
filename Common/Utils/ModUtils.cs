@@ -54,7 +54,7 @@ namespace TouhouPets
         /// <summary>
         /// 快速设置toolTip描述(允许添加变量)
         /// </summary>
-        public static void MyTooltipLine(this List<TooltipLine> tooltips, string text)
+        public static void MyTooltipLine(this List<TooltipLine> tooltips, string text, int line = -1)
         {
             int index = tooltips.FindLastIndex((TooltipLine x) => x.Name.StartsWith("EachLine") && x.Mod == nameof(TouhouPets));
             if (index == -1)
@@ -63,8 +63,14 @@ namespace TouhouPets
             }
             if (index == -1)
                 return;
-            index += 2;
+
+            if (line < 0)
+            {
+                line = 0;
+            }
+            index += line;
             tooltips.Insert(index, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
+
         }
         /// <summary>
         /// 获取对话文本

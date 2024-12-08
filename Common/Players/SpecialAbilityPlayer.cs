@@ -31,7 +31,7 @@ namespace TouhouPets
                 }
             }
             if (Player.HasBuff(BuffType<TenshiBuff>())
-                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Tenshi)
+                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Tenshin)
             {
                 luck += 0.5f;
             }

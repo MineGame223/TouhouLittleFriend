@@ -21,7 +21,21 @@ Mods: {
 		QQGroup: _
 		GoodsShop: _
 		CraftCondition_StarSapphire: Drop the ingredients on the ground
-		MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
 		FeedYuyuko: Feed
+		MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
+		HinaTips: "[c/009966:Keep you away from bad luck]"
+		VampireTips: "[c/ff3366:Please do NOT let her under the sun!]"
+		TenshinTips: "[c/33ccff:Bring you super luck of the Celestial]"
+		SatoriTips: "[c/cc33cc:Detect nearby life]"
+		WriggleTips: "[c/ccff99:Lighten the dark corner with firefly]"
+		YuyukoTips: "[c/ff66ff:Please take care of any Food in your inventory!]"
+		KaguyaTips: "[c/ff6600:She eager to defeat the everlasting flame]"
+		MokuTips: "[c/ff6699:She try hard to knock out the lunar princess]"
+		StarTips: "[c/0033ff:Show nearby treasures]"
+		MinorikoTips: "[c/ff9900:Make you eat more fully]"
+		TewiTips: "[c/ff9999:Meet her can make you lucky]"
+		YukaTips2: "[c/33ff33:She has the power to change the environment]"
+		LettyTips: "[c/ccccff:Will bring winter's cold to other partners]"
+		KokoroTips: "[c/cc33cc:Restrain somebody's unconscious actions]"
 	}
 }

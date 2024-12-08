@@ -31,6 +31,7 @@ namespace TouhouPets.Content.Items.PetItems
             .AddIngredient(ItemID.OrangePaint, 1)
             .AddIngredient(ItemID.YellowPaint, 1)
             .AddTile(TileID.CrystalBall)
+            .DisableDecraft()
             .Register();
         }
     }
