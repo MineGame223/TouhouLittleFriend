@@ -41,7 +41,7 @@ Mods: {
 
 				SpecialAbility_Yuka: {
 					Label: "[i:TouhouPets/YukaSunflower] {$Mods.TouhouPets.Items.YukaSunflower.DisplayName}'s Special Ability"
-					Tooltip: Can be used as a Clentaminator if there are any color solutions in your inventory
+					Tooltip: Can be used as a Clentaminator if there are any colored solutions in your inventory
 				}
 
 				SpecialAbility_Yuyuko: {
@@ -67,7 +67,7 @@ Mods: {
 					Label: "[i:TouhouPets/LettyGlobe] {$Mods.TouhouPets.Items.LettyGlobe.DisplayName}'s Special Ability"
 					Tooltip:
 						'''
-						Make some pets feel cold
+						Makes some pets feel cold
 						They include: 
 						[i:TouhouPets/SizuhaBrush] [i:TouhouPets/WriggleInAJar]
 						'''
