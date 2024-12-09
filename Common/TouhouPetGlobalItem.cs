@@ -16,71 +16,72 @@ namespace TouhouPets
         {
             if (item.type == ItemType<KokoroMask>())
             {
-                tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.KokoroTips"));
+                tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.KokoroTips"));
             }
             if (item.type == ItemType<RemiliaRedTea>() || item.type == ItemType<FlandrePudding>())
             {
-                tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.VampireTips"));
+                tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.VampireTips"));
             }
+
             if (item.type == ItemType<MurasaBailer>())
             {
                 if (Main.remixWorld && GetInstance<PetAbilitiesConfig>().SpecialAbility_Murasa)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.MurasaTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.MurasaTips"));
             }
             if (item.type == ItemType<HinaDoll>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Hina)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.HinaTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.HinaTips"));
             }
             if (item.type == ItemType<TenshiKeyStone>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Tenshin)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.TenshinTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.TenshinTips"));
             }
             if (item.type == ItemType<SatoriSlippers>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.SatoriTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.SatoriTips"));
             }
             if (item.type == ItemType<WriggleInAJar>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.WriggleTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.WriggleTips"));
             }
             if (item.type == ItemType<YuyukoFan>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuyuko)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.YuyukoTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.YuyukoTips"));
             }
             if (item.type == ItemType<KaguyaBranch>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_MokuAndKaguya)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.KaguyaTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.KaguyaTips"));
             }
             if (item.type == ItemType<MokuMatch>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_MokuAndKaguya)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.MokuTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.MokuTips"));
             }
             if (item.type == ItemType<StarSapphire>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Star)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.StarTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.StarTips"));
             }
             if (item.type == ItemType<MinorikoSweetPotato>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Minoriko)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.MinorikoTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.MinorikoTips"));
             }
             if (item.type == ItemType<TewiCarrot>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Tewi)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.TewiTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.TewiTips"));
             }
             if (item.type == ItemType<LettyGlobe>())
             {
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty)
-                    tooltips.MyTooltipLine(Language.GetTextValue("Mods.TouhouPets.LettyTips"));
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.LettyTips"));
             }
         }
         public override bool CanUseItem(Item item, Player player)

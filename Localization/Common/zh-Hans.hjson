@@ -26,7 +26,7 @@ Mods: {
 		HinaTips: "[c/009966:令你免受厄运的侵扰]"
 		VampireTips: "[c/ff3366:请不要将她置于阳光之下！]"
 		TenshinTips: "[c/33ccff:为你带来天人的强运]"
-		SatoriTips: "[c/cc33cc:感应附近的活物]"
+		SatoriTips: "[c/ff66cc:感应附近的活物]"
 		WriggleTips: "[c/ccff99:用萤火虫点亮黑暗的角落]"
 		YuyukoTips: "[c/ff66ff:请看管好背包里的任何食物！]"
 		KaguyaTips: "[c/ff6600:她渴望打倒永生之火]"
@@ -36,6 +36,6 @@ Mods: {
 		TewiTips: "[c/ff9999:相传遇见她可以变得幸运]"
 		YukaTips2: "[c/33ff33:她拥有可以改造环境的力量]"
 		LettyTips: "[c/ccccff:会为其他伙伴带去寒冷]"
-		KokoroTips: "[c/cc33cc:抑制无意识的活动]"
+		KokoroTips: "[c/ff66cc:抑制无意识的活动]"
 	}
 }
