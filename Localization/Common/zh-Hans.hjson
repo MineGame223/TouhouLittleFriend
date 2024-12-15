@@ -37,5 +37,7 @@ Mods: {
 		YukaTips2: "[c/33ff33:她拥有可以改造环境的力量]"
 		LettyTips: "[c/ccccff:会为其他伙伴带去寒冷]"
 		KokoroTips: "[c/ff66cc:抑制无意识的活动]"
+		KoishiTelephone1: "[c/9dffce:你接听了恋恋的电话，还好无事发生...]"
+		KoishiTelephone2: "[c/ff0000:现在再行动似乎已经太晚了。]"
 	}
 }

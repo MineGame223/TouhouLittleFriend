@@ -37,5 +37,7 @@ Mods: {
 		YukaTips2: "[c/33ff33:She has the power to change the environment]"
 		LettyTips: "[c/ccccff:Will bring winter's cold to other partners]"
 		KokoroTips: "[c/cc33cc:Restrain somebody's unconscious actions]"
+		KoishiTelephone1: "[c/9dffce:You answered Koishi's call and luckily, nothing happened...]"
+		KoishiTelephone2: "[c/ff0000:It's too late to make action now.]"
 	}
 }
