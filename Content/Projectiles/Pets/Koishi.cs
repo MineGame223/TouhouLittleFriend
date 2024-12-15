@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
+using TouhouPets.Content.Buffs;
 using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
@@ -271,6 +272,24 @@ namespace TouhouPets.Content.Projectiles.Pets
                 default:
                     Idle();
                     break;
+            }
+
+            if (OwnerIsMyPlayer)
+            {
+                if (CurrentState >= States.Calling && CurrentState <= States.CallingFadeIn)
+                {
+                    if (!Owner.HasBuff<KoishiCalling>())
+                    {
+                        Owner.AddBuff(BuffType<KoishiCalling>(), 1);
+                    }
+                }
+                else if (CurrentState >= States.CallingFadeOut && CurrentState <= States.KILL)
+                {
+                    if (!Owner.HasBuff<KoishiKILL>())
+                    {
+                        Owner.AddBuff(BuffType<KoishiKILL>(), 1);
+                    }
+                }
             }
 
             if (IsIdleState && ActionCD > 0)

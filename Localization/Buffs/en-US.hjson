@@ -296,6 +296,16 @@ Mods: {
 				DisplayName: Youkai of The Winter
 				Description: The Winter is coming!
 			}
+
+			KoishiCalling: {
+				DisplayName: Ms.Koishi's Calling
+				Description: Hurry to answer the phone!(Using the Purple Telephone)
+			}
+
+			KoishiKILL: {
+				DisplayName: Ms.Koishi's Calling
+				Description: TOO LATE
+			}
 		}
 	}
 }
