@@ -431,7 +431,7 @@ Mods: {
 			// Chat13: ...OK, OK, please stop. I'll call you ma...Ms.Shinki.
 			// Chat14: ("What a complex relation...")
 			// Chat15: No way!
-			// Chat16: Who are you? You looks so familier...
+			// Chat16: Who are you? You look so familiar...
 			// Chat17: Me from the...past? The past...Ugh, headache...
 		}
 
@@ -783,29 +783,29 @@ Mods: {
 			// Chat6: Watch your back when you're focusing on mining.
 			// Chat7: Sometimes, keeping slient can save your life in caves.
 			// Chat8: There's no diamond tools?!
-			// Chat9: Ah, the cave, a familier place.
+			// Chat9: Ah, the cave, a familiar place.
 		}
 
 		Chat_AliceOld: {
 			// Chat1: Nobody can cross over Alice!...What? It's not the trail edition now?
 			// Chat2: This book contains the ultimate power!
-			// Chat3: Puppet? What are you saying? I don't know how to make that.
+			// Chat3: Puppet? What are you saying? I don't know how to make those.
 			// Chat4: With great power comes great cost...And Alice doesn't like those guys!
 			// Chat5: I feel...I'm being stared at by annoying eyes...
-			// Chat6: I don't know, maybe is you from the past.
-			// Chat7: This shrine maiden let me remind some bad memory...
+			// Chat6: I don't know, maybe I'm you from the past.
+			// Chat7: This shrine maiden gives me some bad memories...
 		}
 
 		Chat_Letty: {
-			// Chat1: Only the silver day is coming, then I shall approaching.
-			// Chat2: Do you like snowing?
-			// Chat3: Winter is the season that everything get a break.
-			// Chat4: People always say that winter means wither, but without the snow, where is next year's harvest comes from?
-			// Chat5: Don't try to find me in other seasons, I'm being with the winter.
+			// Chat1: Only when the silver day is coming, shall I be approaching.
+			// Chat2: Do you like the snow?
+			// Chat3: Winter's the season where everything gets a break.
+			// Chat4: People always say that winter means withering, but without the snow, where's next year's harvest coming from?
+			// Chat5: Don't try to find me in the other seasons, I stay with the winter.
 			// Chat6: Both sides of the Great Wall, one single white immensity. The yellow river's swift current, is still from end to end.
 			// Chat7: Snowflakes are floating~ North wind is blowing~
 			// Chat8: ...So hot...
-			// Chat9: Why that crow got the power of the sun?
+			// Chat9: Why does that crow have the power of the sun?
 		}
 
 		Chat_Portal: {

@@ -296,6 +296,16 @@ Mods: {
 				DisplayName: 冬之妖怪
 				Description: 凛冬将至！
 			}
+
+			KoishiCalling: {
+				DisplayName: 恋小姐的来电
+				Description: 快接电话！（使用紫色电话筒）
+			}
+
+			KoishiKILL: {
+				DisplayName: 恋小姐的来电
+				Description: 太· 晚· 了
+			}
 		}
 	}
 }

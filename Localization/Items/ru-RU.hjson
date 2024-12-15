@@ -348,7 +348,7 @@ Mods: {
 				// DisplayName: Old Puppet
 				/* Tooltip:
 					'''
-					Summons a girl from magic land.
+					Summons a girl from a magic land.
 					“Looks like somebody's old toy.”
 					''' */
 			}
@@ -360,7 +360,7 @@ Mods: {
 					Summons a forgotten youkai of winter
 					“North country sence,”
 					“A hundred leagues locked in ice,”
-					“A thousand leagues of whriling snow.”
+					“A thousand leagues of whirling snow.”
 					''' */
 			}
 		}
