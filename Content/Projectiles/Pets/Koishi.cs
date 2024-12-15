@@ -198,7 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 0)
             {
                 //觉：姐姐现在就在看着你呢...
-                satori.SetChat(ChatSettingConfig, 5, 20);
+                satori.SetChat(ChatSettingConfig, 4, 20);
 
                 if (satori.CurrentDialogFinished())
                     chatRoom.chatTurn++;
@@ -370,8 +370,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     if (Main.rand.NextBool(4))
                     {
                         if (Main.rand.NextBool(2)
-                            && !FindPet(ProjectileType<Satori>(), false)
-                            && !FindPet(ProjectileType<Kokoro>(), false))
+                            && !Owner.HasBuff<SatoriBuff>()
+                            && !Owner.HasBuff<KokoroBuff>())
                         {
                             RandomCount = Main.rand.Next(1800, 3600);
                             CurrentState = States.Fading;
@@ -617,7 +617,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 13;
                 if (OwnerIsMyPlayer)
                 {
-                    Owner.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", Owner.name)), 0, 0, false);
+                    Owner.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", Owner.name)), 514, 0, false);
                     killCD = 3600;
                     CurrentState = States.AfterKill;
                     Projectile.CloseCurrentDialog();

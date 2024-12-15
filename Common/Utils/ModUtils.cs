@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Terraria;
 using Terraria.ID;
@@ -14,6 +15,15 @@ namespace TouhouPets
     /// </summary>
     public static class ModUtils
     {
+        /// <summary>
+        /// 判断是否为特定语言
+        /// </summary>
+        /// <param name="lang"></param>
+        /// <returns></returns>
+        public static bool IsSpecificLanguage(GameCulture.CultureName lang)
+        {
+            return Language.ActiveCulture.LegacyId == (int)lang;
+        }
         /// <summary>
         /// 将输入价格转换为货币单位价格的文本
         /// </summary>
@@ -52,11 +62,13 @@ namespace TouhouPets
             }
         }
         /// <summary>
-        /// 快速设置toolTip描述(允许添加变量)
+        /// 在已有物品描述后插入新描述(允许添加变量)
         /// </summary>
-        public static void MyTooltipLine(this List<TooltipLine> tooltips, string text, int line = -1)
+        public static void InsertTooltipLine(this List<TooltipLine> tooltips, string text)
         {
-            int index = tooltips.FindLastIndex((TooltipLine x) => x.Name.StartsWith("EachLine") && x.Mod == nameof(TouhouPets));
+            int index = tooltips.FindLastIndex((TooltipLine x) =>
+            x.Name.StartsWith("Tooltip") && x.Mod == "Terraria");
+
             if (index == -1)
             {
                 index = tooltips.FindIndex((TooltipLine x) => x.Name == "Tooltip0" && x.Mod == "Terraria");
@@ -64,13 +76,7 @@ namespace TouhouPets
             if (index == -1)
                 return;
 
-            if (line < 0)
-            {
-                line = 0;
-            }
-            index += line;
-            tooltips.Insert(index, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
-
+            tooltips.Insert(index + 1, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
         }
         /// <summary>
         /// 获取对话文本

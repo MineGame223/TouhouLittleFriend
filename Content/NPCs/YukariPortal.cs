@@ -147,7 +147,7 @@ namespace TouhouPets.Content.NPCs
             }
             else if (topic == 2)
             {
-                if (Language.ActiveCulture.LegacyId == (int)GameCulture.CultureName.Chinese)
+                if (ModUtils.IsSpecificLanguage(GameCulture.CultureName.Chinese))
                 {
                     buttonText = Language.GetTextValue("Mods.TouhouPets.QQGroup");
                     topic++;

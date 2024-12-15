@@ -14,10 +14,24 @@ namespace TouhouPets
             if (!hasHJMod)
                 return;
 
-            bool isHJTimeGod = result.TryFind("TheOverwatcher", out ModNPC god) && npc.type == god.Type;
-
-            if (isHJTimeGod)
+            bool isTimeGod = result.TryFind("TheOverwatcher", out ModNPC n) && npc.type == n.Type;
+            if (isTimeGod)
                 npcLoot.Add(ItemDropRule.Common(ItemType<SakuyaWatch>()));
+        }
+        private static void AddThoriumLoot(NPC npc, NPCLoot npcLoot)
+        {
+            bool hasThoMod = ModLoader.TryGetMod("ThoriumMod", out Mod result);
+            if (!hasThoMod)
+                return;
+
+            bool isViscount = result.TryFind("Viscount", out ModNPC n) && npc.type == n.Type;
+            if (isViscount)
+                npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
+
+            bool isStrier = (result.TryFind("BoreanStrider", out n) && npc.type == n.Type
+                || result.TryFind("BoreanStriderPopped", out n) && npc.type == n.Type);
+            if (isStrier)
+                npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<LettyGlobe>()));
         }
         private static void AddCalamityLoot(NPC npc, NPCLoot npcLoot)
         {
@@ -25,9 +39,8 @@ namespace TouhouPets
             if (!hasCalMod)
                 return;
 
-            bool isCalOarfish = result.TryFind("OarfishHead", out ModNPC fish) && npc.type == fish.Type;
-
-            if (isCalOarfish)
+            bool isOarfish = result.TryFind("OarfishHead", out ModNPC n) && npc.type == n.Type;
+            if (isOarfish)
                 npcLoot.Add(ItemDropRule.Common(ItemType<IkuOarfish>(), 20));
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -36,6 +49,7 @@ namespace TouhouPets
                 return;
 
             AddHomewardJourneyLoot(npc, npcLoot);
+            AddThoriumLoot(npc, npcLoot);
             AddCalamityLoot(npc, npcLoot);
 
             CommonLoot(npc, npcLoot);

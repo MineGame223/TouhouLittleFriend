@@ -4,13 +4,15 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入了一个陈旧的人偶
-新增了部分宠物的互动（包括对Boss、对其他宠物）
-加入了兼容模式，以规避与灾厄模组系列的冲突问题
+加入了一颗雪景球
+
+修改：
+百百世的金镐现在由毁灭者掉落而非不死矿工
+对恋恋使用黄黑染料会产生新的外观
+现在拥有特殊能力的宠物的召唤物物品描述将会拥有一条提示，当能力被关闭时该提示也会被隐藏。
 
 修复：
-使灵梦和幽幽子的互动效果在多人模式下可以被客机看到
-修复了部分宠物的特殊染色外观在客机无法正常显示的问题
-修复了魔理沙与灵梦之间的一个对话会导致错误的问题
+修复了秋静叶的召唤物能够被微光分解的问题
 
-English optimization will be added soon.
+English optimization updated.
+Russian translation updated.
