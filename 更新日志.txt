@@ -7,6 +7,8 @@ v1.1.4.4：
 
 
 修复：
+修复了英文翻译中大妖精部分对话不正确的问题
+Fixed some English chat texts of Daiyousei that incorrect.
 
 ----------
 v1.1.4.3：

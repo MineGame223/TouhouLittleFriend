@@ -96,7 +96,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// 是否发现Boss
         /// <br/>该变量会自动更新，无需手动更改
         /// </summary>
-        internal bool findBoss;
+        private bool findBoss;
 
         /// <summary>
         /// 对话字典
@@ -128,6 +128,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.ai[1] = value;
                 Projectile.netUpdate = true;
+            }
+        }
+        /// <summary>
+        /// 宠物所属玩家是否被Boss锁定为目标或其附近是否存在Boss
+        /// </summary>
+        public bool FindBoss
+        {
+            get
+            {
+                return findBoss;
             }
         }
         /// <summary>

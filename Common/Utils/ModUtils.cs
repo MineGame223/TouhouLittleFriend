@@ -1,7 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Terraria;
 using Terraria.ID;
@@ -128,28 +126,6 @@ namespace TouhouPets
             {
                 projectile.timeLeft = 2;
             }
-        }
-        /// <summary>
-        /// 检测玩家是否被Boss锁定为目标或附近是否存在Boss
-        /// </summary>
-        /// <param name="player"></param>
-        /// <returns></returns>
-        public static bool AnyBosses(this Player player)
-        {
-            if (player.active && !player.dead)
-            {
-                foreach (NPC n in Main.npc)
-                {
-                    if (n.active && !n.friendly && (n.target == player.whoAmI || Vector2.Distance(n.Center, player.Center) <= 1280))
-                    {
-                        if (n.boss)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
         }
         /// <summary>
         /// 打印带有物品贴图的文本
