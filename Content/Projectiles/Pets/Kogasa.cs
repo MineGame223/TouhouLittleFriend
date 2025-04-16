@@ -141,7 +141,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (Owner.AnyBosses())
+            if (FindBoss)
             {
                 CurrentState = States.Afraid;
             }
@@ -298,7 +298,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 5;
             umbrellaFrame = 14;
             handFrame = 13;
-            if (OwnerIsMyPlayer && !Owner.AnyBosses())
+            if (OwnerIsMyPlayer && !FindBoss)
             {
                 CurrentState = States.Idle;
             }

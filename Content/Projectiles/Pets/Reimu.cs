@@ -274,7 +274,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (IsNapState && Owner.AnyBosses())
+            if (IsNapState && FindBoss)
             {
                 CurrentState = States.Idle;
             }
@@ -380,7 +380,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     CurrentState = States.Blink;
                 }
                 if (mainTimer > 0 && mainTimer % 240 == 0 && currentChatRoom == null && ActionCD <= 0
-                     && Owner.velocity.Length() == 0 && !Owner.AnyBosses())
+                     && Owner.velocity.Length() == 0 && !FindBoss)
                 {
                     int chance = 11;
                     if (Main.bloodMoon || Main.eclipse || Main.slimeRain)

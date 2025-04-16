@@ -32,7 +32,7 @@ namespace TouhouPets
                 || result.TryFind("BoreanStriderPopped", out n) && npc.type == n.Type);
             if (isStrier)
                 npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<LettyGlobe>()));
-        }
+        } 
         private static void AddCalamityLoot(NPC npc, NPCLoot npcLoot)
         {
             bool hasCalMod = ModLoader.TryGetMod("CalamityMod", out Mod result);
@@ -54,7 +54,6 @@ namespace TouhouPets
 
             CommonLoot(npc, npcLoot);
         }
-
         private static void CommonLoot(NPC npc, NPCLoot npcLoot)
         {
             int enemiesDropRate = 20;

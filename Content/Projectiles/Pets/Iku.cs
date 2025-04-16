@@ -111,7 +111,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         chat.Add(ChatDictionary[4]);
                     }
-                    else if (!Owner.AnyBosses())
+                    else if (!FindBoss)
                     {
                         chat.Add(ChatDictionary[5]);
                         if (BirthdayParty.PartyIsUp)
