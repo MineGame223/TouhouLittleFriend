@@ -523,7 +523,7 @@ Mods: {
 				Tooltip:
 					'''
 					Summons the Bug Hime
-					“It's too small as a tool, but it's fit for somebody.”
+					"It's too small as a tool, but it's fit for somebody."
 					'''
 			}
 
@@ -532,7 +532,7 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a girl from a magic land.
-					“Looks like somebody's old toy.”
+					"Looks like somebody's old toy."
 					'''
 			}
 
@@ -541,9 +541,45 @@ Mods: {
 				Tooltip:
 					'''
 					Summons a forgotten youkai of winter
-					“North country sence,”
-					“A hundred leagues locked in ice,”
-					“A thousand leagues of whirling snow.”
+					"North country sence,"
+					"A hundred leagues locked in ice,"
+					"A thousand leagues of whirling snow."
+					'''
+			}
+
+			LunasaViolin: {
+				DisplayName: Haunted Violin
+				Tooltip:
+					'''
+					Summons a poltergeist violinist
+					"Will not buzz when monster appears."
+					'''
+			}
+
+			MerlinTrumpet: {
+				DisplayName: Haunted Trumpet
+				Tooltip:
+					'''
+					Summons a poltergeist trumpeter
+					"Dududa du da du~"
+					'''
+			}
+
+			LyricaKeyboard: {
+				DisplayName: Haunted Keyboard
+				Tooltip:
+					'''
+					Summons a poltergeist keyboardist
+					"Not to be confused with piano."
+					'''
+			}
+
+			PoltergeistAlbum: {
+				DisplayName: Record of Poltergeist
+				Tooltip:
+					'''
+					Summons the poltergeist's band
+					“Album of the Prismriver Ensemble”
 					'''
 			}
 		}

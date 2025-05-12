@@ -244,6 +244,9 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<ShinkiHeart>());
             shop.Add(ItemType<KokoroMask>());
             shop.Add(ItemType<DoremyPillow>());
+            shop.Add(ItemType<LunasaViolin>());
+            shop.Add(ItemType<MerlinTrumpet>());
+            shop.Add(ItemType<LyricaKeyboard>());
             shop.Register();
         }
         public override void AddShops()

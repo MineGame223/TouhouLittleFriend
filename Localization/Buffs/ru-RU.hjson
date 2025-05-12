@@ -306,6 +306,26 @@ Mods: {
 				// DisplayName: Ms.Koishi's Calling
 				// Description: TOO LATE
 			}
+
+			LunasaBuff: {
+				// DisplayName: Poltergeist Violinist
+				// Description: Listening to the notes of melancholic
+			}
+
+			MerlinBuff: {
+				// DisplayName: Poltergeist Trumpeter
+				// Description: Listening to the notes of maniac
+			}
+
+			LyricaBuff: {
+				// DisplayName: Poltergeist Keyboardist
+				// Description: Listening to the notes of illusionary
+			}
+
+			PoltergeistBuff: {
+				// DisplayName: Poltergeist's Band
+				// Description: Ensemble from the nether!
+			}
 		}
 	}
 }

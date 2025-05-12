@@ -144,7 +144,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            if (FindBoss())
+            if (YoumuFindBoss())
             {
                 CurrentState = States.FindEnemy;
             }
@@ -209,7 +209,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        private bool FindBoss()
+        private bool YoumuFindBoss()
         {
             bool hasBoss = false;
             if (Owner.active && !Owner.dead)
@@ -248,7 +248,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.frame = 4;
             handFrame = 9;
-            if (!FindBoss())
+            if (!YoumuFindBoss())
             {
                 if (OwnerIsMyPlayer)
                 {

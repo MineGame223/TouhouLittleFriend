@@ -181,7 +181,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 int textLength = (int)Math.Clamp(timeToType / (totalTimeToType / text.Length), 0, text.Length);
                 _text = text.Remove(textLength);
             }
-            string[] array = Utils.WordwrapString(_text, font, 210, 10, out int chatLine);
+            string[] array = DrawUtils.MyWordwrapString(_text, font, 210, 10, out int chatLine);
             chatLine++;
             for (int i = 0; i < chatLine; i++)
             {
@@ -214,7 +214,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             float totalScale = 0.9f;
-            string[] array = Utils.WordwrapString(text, font, 240, 10, out int chatLine);
+            string[] array = DrawUtils.MyWordwrapString(text, font, 240, 10, out int chatLine);
             chatLine++;
             for (int i = 0; i < chatLine; i++)
             {
