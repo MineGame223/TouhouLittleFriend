@@ -119,13 +119,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (CurrentState == States.Win || CurrentState == States.Lose)
             {
-                Projectile.DrawIndividualSource(PlayerA_Source);
+                Projectile.DrawIndividualScore(PlayerA_Score);
             }
             if (CurrentState == States.BeforeBattle)
             {
                 DrawBattleRound();
             }
-            //DrawBattleSource();
         }
         private void DrawDanmakuRing()
         {
@@ -630,7 +629,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (FindPet(ProjectileType<Moku>(), false, (int)States.Lose))
                 {
-                    PlayerA_Source++;
+                    PlayerA_Score++;
                     Timer = 0;
                     CurrentState = States.Win;
                 }

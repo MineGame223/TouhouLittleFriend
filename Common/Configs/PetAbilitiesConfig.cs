@@ -42,5 +42,8 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool SpecialAbility_Letty;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Prismriver;
     }
 }

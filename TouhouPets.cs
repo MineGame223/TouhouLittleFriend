@@ -24,7 +24,7 @@ namespace TouhouPets
             {
                 ShopLookupSupport.Setup(result);
             }
-            if(ModLoader.TryGetMod("Gensokyo", out result))
+            if (ModLoader.TryGetMod("Gensokyo", out result))
             {
                 GensokyoSupport.Setup(result);
             }

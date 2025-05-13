@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using TouhouPets.Content.Items;
 using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets
@@ -100,6 +101,7 @@ namespace TouhouPets
             if (npc.type == NPCID.Ghost || npc.type == NPCID.DungeonSpirit)
             {
                 npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 5, ItemType<PoltergeistAlbum>()));
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 2, ItemType<HauntedTicket>()));
             }
 
             int commonDropRate = 3;

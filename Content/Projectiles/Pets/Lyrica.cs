@@ -15,6 +15,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             Blink,
             Playing,
             AfterPlaying,
+            BeforeBand,
+            InBand,
         }
         private States CurrentState
         {
@@ -36,7 +38,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[2];
             set => Projectile.localAI[2] = value;
         }
+        private bool BandOn
+        {
+            get => Owner.GetModPlayer<BandPlayer>().prismriverBand && Owner.HasBuff<PoltergeistBuff>();
+        }
         private bool IsIdleState => CurrentState <= States.Blink;
+        private bool IsBandState => CurrentState >= States.BeforeBand && CurrentState <= States.InBand;
 
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
@@ -122,6 +129,18 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
+            if (IsBandState && !BandOn)
+            {
+                Timer = 0;
+                CurrentState = States.AfterPlaying;
+            }
+            if (BandOn && !IsBandState)
+            {
+                Timer = BandPlayer.BAND_COUNTDOWN_TIME;
+                RandomCount = 2;
+                CurrentState = States.BeforeBand;
+            }
+
             switch (CurrentState)
             {
                 case States.Blink:
@@ -129,6 +148,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
 
                 case States.Playing:
+                case States.InBand:
                     shouldNotTalking = true;
                     Playing();
                     break;
@@ -136,6 +156,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 case States.AfterPlaying:
                     shouldNotTalking = true;
                     AfterPlaying();
+                    break;
+
+                case States.BeforeBand:
+                    shouldNotTalking = true;
+                    BeforeBand();
                     break;
 
                 default:
@@ -157,8 +182,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 point = new Vector2(50 * player.direction, -30 + player.gfxOffY);
             if (player.HasBuff<PoltergeistBuff>())
             {
-                point = new Vector2(60 * player.direction, -70 + player.gfxOffY);
-                point += new Vector2(0, -40).RotatedBy(MathHelper.ToRadians(360 / 3 * 3) + Main.GlobalTimeWrappedHourly);
+                if (IsBandState)
+                {
+                    point = new Vector2(-160 * player.direction, -90 + player.gfxOffY);
+                }
+                else
+                {
+                    point = new Vector2(60 * player.direction, -70 + player.gfxOffY);
+                    point += new Vector2(0, -40).RotatedBy(MathHelper.ToRadians(360 / 3 * 3) + Main.GlobalTimeWrappedHourly);
+                }
             }
             MoveToPoint(point, 6.5f);
         }
@@ -171,7 +203,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     CurrentState = States.Blink;
                 }
-                if (mainTimer > 0 && mainTimer % 660 == 0
+                if (mainTimer > 0 && mainTimer % 840 == 0
                     && currentChatRoom == null && ActionCD <= 0)
                 {
                     if (Main.rand.NextBool(5))
@@ -198,7 +230,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Playing()
         {
-            if (++Projectile.frameCounter > 9)
+            if (++Projectile.frameCounter > 5)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
@@ -206,9 +238,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 11)
             {
                 Projectile.frame = 4;
-                Timer++;
+                if (CurrentState != States.InBand)
+                {
+                    Timer++;
+                }
             }
-            if (Timer > 0 && Projectile.frameCounter == 0 && Main.rand.NextBool(3))
+            if (Timer > 0 && Projectile.frameCounter == 0 && Main.rand.NextBool(4) && !IsBandState)
             {
                 Gore.NewGoreDirect(Projectile.GetSource_FromAI()
                     , Projectile.Center + new Vector2(24 * Projectile.spriteDirection, -14)
@@ -237,6 +272,29 @@ namespace TouhouPets.Content.Projectiles.Pets
                     ActionCD = 10800;
                     CurrentState = States.Idle;
                 }
+            }
+        }
+        private void BeforeBand()
+        {
+            if (Timer >= BandPlayer.BAND_COUNTDOWN_TIME)
+            {
+                Projectile.frame = 0;
+            }
+            if (++Projectile.frameCounter > 6)
+            {
+                Projectile.frameCounter = 0;
+                Projectile.frame++;
+            }
+            if (Projectile.frame > 4)
+            {
+                Projectile.frame = 4;
+            }
+            Timer--;
+
+            if (OwnerIsMyPlayer && Timer <= 0)
+            {
+                Timer = 1;
+                CurrentState = States.InBand;
             }
         }
         private void UpdateMiscFrame()

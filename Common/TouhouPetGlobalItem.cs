@@ -83,6 +83,16 @@ namespace TouhouPets
                 if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty)
                     tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.LettyTips"));
             }
+            if (item.type == ItemType<PoltergeistAlbum>())
+            {
+                if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver)
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.PoltergeistTips"));
+            }
+            if (item.type == ItemType<RaikoDrum>())
+            {
+                if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver)
+                    tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.RaikoTips"));
+            }
         }
         public override bool CanUseItem(Item item, Player player)
         {
