@@ -60,17 +60,32 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
+            for (int i = 0; i < 4; i++)
+            {
+                Color clr = Color.PaleVioletRed * 0.8f;
+                clr.A *= 0;
+                DrawLunasa(clr, new Vector2(2, 0).RotatedBy(MathHelper.ToRadians(90 * i)));
+            }
+            DrawLunasa(lightColor, Vector2.Zero);
+            return false;
+        }
+        private void DrawLunasa(Color lightColor, Vector2 extraPos)
+        {
             DrawPetConfig config = drawConfig with
+            {
+                PositionOffset = extraPos,
+            };
+            DrawPetConfig config2 = config with
             {
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            Projectile.DrawPet(hairFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(hairFrame, lightColor, config, 1);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
 
             if (CurrentState == States.Blink)
-                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
+                Projectile.DrawPet(blinkFrame, lightColor, config, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
                 drawConfig with
@@ -78,9 +93,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                     ShouldUseEntitySpriteDraw = true,
                 });
-            Projectile.DrawPet(clothFrame, lightColor, config, 1);
-            Projectile.DrawPet(3, lightColor, config, 1);
-            return false;
+            Projectile.DrawPet(clothFrame, lightColor, config2, 1);
+            Projectile.DrawPet(3, lightColor, config2, 1);
+            Projectile.ResetDrawStateForPet();
+
+            Projectile.DrawPet(Projectile.frame, lightColor, config, 2);
         }
         public override Color ChatTextColor => new Color(240, 88, 116);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -102,7 +119,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
                 chat.Add(ChatDictionary[4]);
-                chat.Add(ChatDictionary[5]);
+                if (Main.raining)
+                {
+                    chat.Add(ChatDictionary[5], 3);
+                }
             }
             return chat;
         }
@@ -192,7 +212,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
-                bool useTicket = Owner.GetModPlayer<BandPlayer>().ticketUsed;
+                bool useTicket = Owner.GetModPlayer<BandPlayer>().manualStartBand;
                 if ((Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver) || useTicket)
                 {
                     bool readyForBand = (mainTimer % 60 == 0 && Main.rand.NextBool(2) || useTicket)

@@ -59,17 +59,32 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
+            for (int i = 0; i < 4; i++)
+            {
+                Color clr = Color.LimeGreen * 0.8f;
+                clr.A *= 0;
+                DrawLyrica(clr, new Vector2(2, 0).RotatedBy(MathHelper.ToRadians(90 * i)));
+            }
+            DrawLyrica(lightColor, Vector2.Zero);
+            return false;
+        }
+        private void DrawLyrica(Color lightColor, Vector2 extraPos)
+        {
             DrawPetConfig config = drawConfig with
+            {
+                PositionOffset = extraPos,
+            };
+            DrawPetConfig config2 = config with
             {
                 ShouldUseEntitySpriteDraw = true,
             };
 
-            Projectile.DrawPet(hairFrame, lightColor, drawConfig, 1);
+            Projectile.DrawPet(hairFrame, lightColor, config, 1);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
 
             if (CurrentState == States.Blink)
-                Projectile.DrawPet(blinkFrame, lightColor, drawConfig, 1);
+                Projectile.DrawPet(blinkFrame, lightColor, config, 1);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
                 drawConfig with
@@ -77,12 +92,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                     AltTexture = clothTex,
                     ShouldUseEntitySpriteDraw = true,
                 });
-            Projectile.DrawPet(clothFrame, lightColor, config, 1);
-            Projectile.DrawPet(3, lightColor, config, 1);
+            Projectile.DrawPet(clothFrame, lightColor, config2, 1);
+            Projectile.DrawPet(3, lightColor, config2, 1);
             Projectile.ResetDrawStateForPet();
 
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig, 2);
-            return false;
+            Projectile.DrawPet(Projectile.frame, lightColor, config, 2);
         }
         public override Color ChatTextColor => new Color(141, 225, 134);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -93,7 +107,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 640;
-            chance = 9;
+            chance = 7;
             whenShouldStop = !IsIdleState;
         }
         public override string GetRegularDialogText()
@@ -104,7 +118,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
                 chat.Add(ChatDictionary[4]);
-                chat.Add(ChatDictionary[5]);
+                if (Owner.ZoneDungeon)
+                {
+                    chat.Add(ChatDictionary[5], 3);
+                }
             }
             return chat;
         }

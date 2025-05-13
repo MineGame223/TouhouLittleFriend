@@ -583,12 +583,13 @@ Mods: {
 					'''
 			}
 
-			HauntedTicket: {
-				DisplayName: Haunted Concert Ticket
+			SupportStick: {
+				DisplayName: Haunted Support Stick
 				Tooltip:
 					'''
-					Allows you to enjoy poltergeist's band's concert in anytime
+					Allows you to enjoy poltergeist's band's concert while not AFK
 					Left click to start or end the concert, right click to switch random tracks
+					"Proof of being a member of the Prismriver Ensemble Fan Club"
 					'''
 			}
 		}

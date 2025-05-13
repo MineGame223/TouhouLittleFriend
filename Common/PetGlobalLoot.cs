@@ -101,7 +101,7 @@ namespace TouhouPets
             if (npc.type == NPCID.Ghost || npc.type == NPCID.DungeonSpirit)
             {
                 npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 5, ItemType<PoltergeistAlbum>()));
-                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 2, ItemType<HauntedTicket>()));
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 2, ItemType<SupportStick>()));
             }
 
             int commonDropRate = 3;

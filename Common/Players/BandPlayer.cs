@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Items;
 using TouhouPets.Content.Projectiles;
 
 namespace TouhouPets
@@ -12,7 +13,7 @@ namespace TouhouPets
         public const int BAND_COUNTDOWN_TIME = 204;
 
         public bool prismriverBand = false;
-        public bool ticketUsed = false;
+        public bool manualStartBand = false;
         public bool rerollMusic = false;
 
         private int bandCountdown = 0;
@@ -72,23 +73,36 @@ namespace TouhouPets
                 rocket.tileCollide = false;
                 rocket.netUpdate = true;
             }
+            if (bandTimer > 2000)
+            {
+                bandTimer = 2000;
+            }
         }
         public override void PostUpdateMiscEffects()
         {
             if (!Player.HasBuff<PoltergeistBuff>())
             {
-                ticketUsed = false;
+                manualStartBand = false;
             }
-            if (!ticketUsed && Player.afkCounter <= 0 || !Player.HasBuff<PoltergeistBuff>())
+            if ((!manualStartBand && Player.afkCounter <= 0) || !Player.HasBuff<PoltergeistBuff>())
             {
                 prismriverBand = false;
+            }
+            //防止因为手动开启演唱会导致已有演唱会被中断
+            if (Player.HeldItem.type == ItemType<SupportStick>() && Player.itemAnimation > 0
+                && manualStartBand && (bandCountdown > 0 || bandTimer > 0))
+            {
+                prismriverBand = true;
             }
             if (prismriverBand)
             {
                 bandCountdown = (int)MathHelper.Clamp(bandCountdown - 1, 0, BAND_COUNTDOWN_TIME);
                 if (bandCountdown <= 0)
                 {
-                    bandTimer++;
+                    if (Player.IsStandingStillForSpecialEffects)
+                    {
+                        bandTimer++;
+                    }
                     if (!rerollMusic)
                     {
                         musicID = Main.rand.Next(MusicID.OtherworldlyRain, MusicID.OtherworldlyHallow + 1);
@@ -102,7 +116,7 @@ namespace TouhouPets
                 bandCountdown = BAND_COUNTDOWN_TIME;
                 rerollMusic = false;
             }
-            if (bandCountdown <= 0)
+            if (bandCountdown <= 0 && Player.IsStandingStillForSpecialEffects)
             {
                 ConcertVisualEffect();
             }
