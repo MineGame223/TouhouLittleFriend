@@ -306,6 +306,26 @@ Mods: {
 				DisplayName: 恋小姐的来电
 				Description: 太· 晚· 了
 			}
+
+			LunasaBuff: {
+				DisplayName: 骚灵小提琴手
+				Description: 聆听怅然的忧郁之音
+			}
+
+			MerlinBuff: {
+				DisplayName: 骚灵小号手
+				Description: 聆听激昂的狂躁之音
+			}
+
+			LyricaBuff: {
+				DisplayName: 骚灵键盘手
+				Description: 聆听超然的幻想之音
+			}
+
+			PoltergeistBuff: {
+				DisplayName: 骚灵乐团
+				Description: 来自冥界的合奏！
+			}
 		}
 	}
 }

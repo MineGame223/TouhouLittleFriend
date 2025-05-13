@@ -28,8 +28,8 @@ namespace TouhouPets.Content.Items.PetItems
             CreateRecipe()
             .AddRecipeGroup(RecipeGroupID.IronBar, 3)
             .AddRecipeGroup(RecipeGroupID.Wood, 5)
-            .AddIngredient(ItemID.Ectoplasm, 3)
             .AddTile(TileID.Anvils)
+            .AddCondition(Condition.InGraveyard)
             .DisableDecraft()
             .Register();
         }

@@ -22,29 +22,19 @@ namespace TouhouPets
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = amountNeeded;
         }
         /// <summary>
-        /// 替换原版PlaySound
-        /// <br/>SoundStyle种类的type
-        /// <br/>Vector2类型坐标
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="position"></param>
-        public static void PlaySound(SoundStyle type, Vector2 position)
-        {
-            SoundEngine.PlaySound(type, position);
-        }
-        /// <summary>
         /// 替换原版PlaySound，允许编辑
         /// <br/>SoundStyle种类的type
         /// <br/>Vector2类型坐标
         /// </summary>
         /// <param name="type"></param>
         /// <param name="position"></param>
-        public static void PlaySound(SoundStyle type, Vector2 position, float volume = 1f, float pitchVariance = 0f)
+        public static void PlaySound(SoundStyle type, Vector2 position, float volume = 1f, float pitch = 0f, float pitchVariance = 0f)
         {
             SoundStyle sound = type with
             {
                 Volume = volume,
-                PitchVariance = pitchVariance,
+                Pitch = MathHelper.Clamp(pitch, -1, 1),
+                PitchVariance = MathHelper.Clamp(pitchVariance, 0, 1),
             };
             SoundEngine.PlaySound(sound, position);
         }
@@ -54,7 +44,7 @@ namespace TouhouPets
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static Texture2D GetTextureWithOutCertainPath(string path)
+        public static Texture2D GetTextureFreePath(string path)
         {
             return Request<Texture2D>(path).Value;
         }

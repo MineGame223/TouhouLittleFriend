@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
@@ -8,8 +9,8 @@ namespace TouhouPets
 {
     public static class DanmakuFightHelper
     {
-        private static int playerA_Source;
-        private static int playerB_Source;
+        private static int playerA_Score;
+        private static int playerB_Score;
         private static int round;
         private static int roundTimer;
 
@@ -21,15 +22,15 @@ namespace TouhouPets
         {
             get => myEssScale;
         }
-        public static int PlayerA_Source
+        public static int PlayerA_Score
         {
-            get => playerA_Source; 
-            set => playerA_Source = value;
+            get => playerA_Score; 
+            set => playerA_Score = value;
         }
-        public static int PlayerB_Source
+        public static int PlayerB_Score
         {
-            get => playerB_Source; 
-            set => playerB_Source = value;
+            get => playerB_Score; 
+            set => playerB_Score = value;
         }
         public static int Round
         {
@@ -61,8 +62,8 @@ namespace TouhouPets
         }
         public static void InitializeFightData()
         {
-            PlayerA_Source = 0;
-            PlayerB_Source = 0;
+            PlayerA_Score = 0;
+            PlayerB_Score = 0;
             Round = 0;
             RoundTimer = 0;
         }
@@ -75,31 +76,32 @@ namespace TouhouPets
                 d.velocity = new Vector2(0, -Main.rand.NextFloat(2, 5)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
             }
         }
-        public static void DrawIndividualSource(this Projectile projectile, int source, int offsetY = 36)
+        public static void DrawIndividualScore(this Projectile projectile, int score, int offsetY = 36)
         {
-            string sourceText = "Win: " + source.ToString();
+            string sourceText = "Win: " + score.ToString();
             Vector2 pos = new Vector2(projectile.Center.X - FontAssets.MouseText.Value.MeasureString(sourceText).X / 2, projectile.Center.Y + offsetY) - Main.screenPosition;
             Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, sourceText
                 , pos.X, pos.Y, Color.White, Color.Black, Vector2.Zero, 1f);
         }
-        public static void DrawBattleSource()
+        [Obsolete]
+        public static void DrawBattleScore()
         {
             Player player = Main.LocalPlayer;
-            string source = PlayerB_Source + " : " + PlayerA_Source;
+            string score = PlayerB_Score + " : " + PlayerA_Score;
             Color clr = Color.Yellow;
-            Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(source).X / 2, player.Center.Y - Main.screenHeight / 2) - Main.screenPosition;
-            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, source
+            Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(score).X / 2, player.Center.Y - Main.screenHeight / 2) - Main.screenPosition;
+            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, score
             , pos.X, pos.Y, clr, Color.Black, Vector2.Zero, 1f);
 
-            source = "Round " + Round.ToString();
+            score = "Round " + Round.ToString();
             clr = Color.AliceBlue;
-            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, source
+            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, score
             , pos.X + 14, pos.Y + 52, clr, Color.Black, Vector2.Zero, 1f);
         }
         public static void DrawBattleRound()
         {
             Player player = Main.LocalPlayer;
-            string source = "Round " + Round.ToString();
+            string roundText = "Round " + Round.ToString();
             Color clr = Color.SkyBlue;
             int xOffset = 0;
             int yOffset = 0;
@@ -136,27 +138,27 @@ namespace TouhouPets
             }
             if (RoundTimer > 180 && RoundTimer <= 300)
             {
-                source = "READY...";
+                roundText = "READY...";
                 clr = Color.Yellow;
             }
             else if (RoundTimer > 300)
             {
-                source = "FIGHT!";
+                roundText = "FIGHT!";
                 clr = Color.Red;
                 xOffset = Main.rand.Next(-1, 1);
                 yOffset = Main.rand.Next(-1, 1);
             }
-            Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(source).X / 2 * textScale
-                , player.Center.Y - FontAssets.DeathText.Value.MeasureString(source).Y / 2 * textScale - 202) - Main.screenPosition;
+            Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(roundText).X / 2 * textScale
+                , player.Center.Y - FontAssets.DeathText.Value.MeasureString(roundText).Y / 2 * textScale - 202) - Main.screenPosition;
             if (RoundTimer > 180)
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, source
+                    Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, roundText
                     , pos.X + Main.rand.Next(-5, 5), pos.Y + Main.rand.Next(-5, 5), clr * 0.4f * textAlpha, Color.Black * 0.2f * textAlpha, Vector2.Zero, textScale);
                 }
             }
-            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, source
+            Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.DeathText.Value, roundText
                 , pos.X + xOffset, pos.Y + yOffset, clr * textAlpha, Color.Black * 0.5f * textAlpha, Vector2.Zero, textScale);
         }
         public static void HandleDanmakuCollide(this Projectile projectile)

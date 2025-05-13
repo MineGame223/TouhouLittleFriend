@@ -149,7 +149,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (CurrentState == States.Win || CurrentState == States.Lose)
             {
-                Projectile.DrawIndividualSource(PlayerB_Source);
+                Projectile.DrawIndividualScore(PlayerB_Score);
             }
         }
         private void DrawDanmakuRing()
@@ -528,7 +528,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (FindPet(ProjectileType<Kaguya>(), false, (int)States.Lose))
                 {
-                    PlayerB_Source++;
+                    PlayerB_Score++;
                     Timer = 0;
                     CurrentState = States.Win;
                 }

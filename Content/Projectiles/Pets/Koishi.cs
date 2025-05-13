@@ -636,7 +636,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 13;
                 if (OwnerIsMyPlayer)
                 {
-                    Owner.KillMe(PlayerDeathReason.ByCustomReason(Language.GetTextValue("Mods.TouhouPets.DeathReason.KilledByKoishi", Owner.name)), 514, 0, false);
+                    Owner.KillMe(PlayerDeathReason.ByCustomReason(NetworkText.FromKey("Mods.TouhouPets.DeathReason.KilledByKoishi", Owner.name)), 514, 0, false);
                     killCD = 3600;
                     CurrentState = States.AfterKill;
                     Projectile.CloseCurrentDialog();

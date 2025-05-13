@@ -808,6 +808,30 @@ Mods: {
 			Chat9: Why does that crow have the power of the sun?
 		}
 
+		Chat_Lunasa: {
+			Chat1: Noises are not allowed in a performance, they should be erased.
+			Chat2: If you don't calm down a little more, even what's been determined won't settle.
+			Chat3: Be calm, you always appear quite manic.
+			Chat4: If we don't practice hard, even the familar melody will off key.
+			Chat5: Raining day is a good day to play sorrowful songs...
+		}
+
+		Chat_Merlin: {
+			Chat1: After listening to my performance,can you still standing here peacefully?
+			Chat2: Hey, if you listen to my performance you'll be happy!
+			Chat3: No matter what the situation, never forget your happy soul!
+			Chat4: What comes out of a trumpet isn't a laser but a happy sound.
+			Chat5: There are countless monsters under the dark, should I make them more exciting?
+		}
+
+		Chat_Lyrica: {
+			Chat1: Let's listening to the notes of illusionary!
+			Chat2: The soul of this keyboard is already packed with sounds that have passed away.
+			Chat3: I wonder what kind of sound the sound of a ghost is?
+			Chat4: Did you know if you strain your ears in magical forests that you can hear the sound of mushrooms growing?
+			Chat5: Although here is the place of dying, the only sound in here is infinity wrath.
+		}
+
 		Chat_Portal: {
 			Chat1: Hey, since you found this, why don't you buy something? It's all for Gensokyo, after all.
 			Chat2: Leave some coins here and pick your favorite. Just do something for Gensokyo's existence.

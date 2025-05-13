@@ -341,7 +341,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer > 0 && mainTimer % 120 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(9) && !findBoss)
+                    if (Main.rand.NextBool(9) && !FindBoss)
                     {
                         RandomCount = Main.rand.Next(10, 20);
                         CurrentState = States.Happy;
@@ -379,7 +379,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 4;
                 Timer++;
             }
-            if (OwnerIsMyPlayer && Timer > RandomCount || findBoss)
+            if (OwnerIsMyPlayer && Timer > RandomCount || FindBoss)
             {
                 Timer = 0;
                 CurrentState = States.AfterHappy;

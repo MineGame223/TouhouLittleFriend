@@ -543,6 +543,52 @@ Mods: {
 					“北国风光，千里冰封，万里雪飘。”
 					'''
 			}
+
+			LunasaViolin: {
+				DisplayName: 闹鬼的小提琴
+				Tooltip:
+					'''
+					召唤骚灵小提琴手
+					“并不会在怪物出现时发出蜂鸣。”
+					'''
+			}
+
+			MerlinTrumpet: {
+				DisplayName: 闹鬼的小号
+				Tooltip:
+					'''
+					召唤骚灵小号手
+					“嘟嘟哒嘟哒嘟~”
+					'''
+			}
+
+			LyricaKeyboard: {
+				DisplayName: 闹鬼的键盘
+				Tooltip:
+					'''
+					召唤骚灵键盘手
+					“请不要和钢琴混淆。”
+					'''
+			}
+
+			PoltergeistAlbum: {
+				DisplayName: 骚灵唱片
+				Tooltip:
+					'''
+					集结骚灵乐团
+					“普莉兹姆利巴乐团的专辑。”
+					'''
+			}
+
+			SupportStick: {
+				DisplayName: 闹鬼的应援棒
+				Tooltip:
+					'''
+					允许你在非挂机状态下欣赏骚灵乐团的演出
+					左键使用开始/结束演出，右键使用切换随机曲目
+					“身为普莉兹姆利巴乐团粉丝俱乐部会员的证明。”
+					'''
+			}
 		}
 	}
 }

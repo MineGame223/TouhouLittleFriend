@@ -72,6 +72,11 @@ Mods: {
 						[i:TouhouPets/SizuhaBrush] [i:TouhouPets/WriggleInAJar]
 						''' */
 				}
+
+				SpecialAbility_Prismriver: {
+					// Label: "[i:TouhouPets/PoltergeistAlbum] {$Mods.TouhouPets.Items.PoltergeistAlbum.DisplayName}特殊能力"
+					// Tooltip: After the player is AFK for longer than 10s, they will performance together
+				}
 			}
 
 			PetDialogConfig: {

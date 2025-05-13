@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using TouhouPets.Content.Items;
 using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets
@@ -32,7 +33,7 @@ namespace TouhouPets
                 || result.TryFind("BoreanStriderPopped", out n) && npc.type == n.Type);
             if (isStrier)
                 npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<LettyGlobe>()));
-        } 
+        }
         private static void AddCalamityLoot(NPC npc, NPCLoot npcLoot)
         {
             bool hasCalMod = ModLoader.TryGetMod("CalamityMod", out Mod result);
@@ -96,6 +97,11 @@ namespace TouhouPets
             if (npc.type == NPCID.CorruptBunny || npc.type == NPCID.CrimsonBunny)
             {
                 npcLoot.Add(ItemType<TewiCarrot>(), enemiesDropRate - 3);
+            }
+            if (npc.type == NPCID.Ghost || npc.type == NPCID.DungeonSpirit)
+            {
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 5, ItemType<PoltergeistAlbum>()));
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 2, ItemType<SupportStick>()));
             }
 
             int commonDropRate = 3;

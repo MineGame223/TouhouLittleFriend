@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using Terraria;
 using tModPorter;
@@ -123,6 +124,97 @@ namespace TouhouPets
 
                 sb.DrawString(font, text, zero, color, rotation, origin, scale, SpriteEffects.None, 0f);
             }
+        }
+        /// <summary>
+        /// 自用WordwrapString方法，针对中文取消连字符
+        /// </summary>
+        /// <param name="text">文本内容</param>
+        /// <param name="font">字体</param>
+        /// <param name="maxWidth">文本最大宽度</param>
+        /// <param name="maxLines">文本最大行数</param>
+        /// <param name="lineAmount">当前行数</param>
+        /// <returns></returns>
+        public static string[] MyWordwrapString(string text, DynamicSpriteFont font, int maxWidth, int maxLines, out int lineAmount)
+        {
+            string[] array = new string[maxLines];
+            int num = 0;
+            List<string> list = new List<string>(text.Split('\n'));
+            List<string> list2 = new List<string>(list[0].Split(' '));
+            for (int i = 1; i < list.Count && i < maxLines; i++)
+            {
+                list2.Add("\n");
+                list2.AddRange(list[i].Split(' '));
+            }
+
+            bool flag = true;
+            while (list2.Count > 0)
+            {
+                string text2 = list2[0];
+                string text3 = " ";
+                if (list2.Count == 1)
+                    text3 = "";
+
+                if (text2 == "\n")
+                {
+                    array[num++] += text2;
+                    flag = true;
+                    if (num >= maxLines)
+                        break;
+
+                    list2.RemoveAt(0);
+                }
+                else if (flag)
+                {
+                    if (font.MeasureString(text2).X > (float)maxWidth)
+                    {
+                        string text4 = text2[0].ToString() ?? "";
+                        int num2 = 1;
+                        while (font.MeasureString(text4 + text2[num2] + "-").X <= (float)maxWidth)
+                        {
+                            text4 += text2[num2++];
+                        }
+
+                        if (!ModUtils.IsSpecificLanguage(Terraria.Localization.GameCulture.CultureName.Chinese))
+                        {
+                            text4 += "-";
+                        }
+                        array[num++] = text4 + " ";
+                        if (num >= maxLines)
+                            break;
+
+                        list2.RemoveAt(0);
+                        list2.Insert(0, text2.Substring(num2));
+                    }
+                    else
+                    {
+                        ref string reference = ref array[num];
+                        reference = reference + text2 + text3;
+                        flag = false;
+                        list2.RemoveAt(0);
+                    }
+                }
+                else if (font.MeasureString(array[num] + text2).X > (float)maxWidth)
+                {
+                    num++;
+                    if (num >= maxLines)
+                        break;
+
+                    flag = true;
+                }
+                else
+                {
+                    ref string reference2 = ref array[num];
+                    reference2 = reference2 + text2 + text3;
+                    flag = false;
+                    list2.RemoveAt(0);
+                }
+            }
+
+            lineAmount = num;
+            if (lineAmount == maxLines)
+                lineAmount--;
+
+            return array;
         }
     }
 }

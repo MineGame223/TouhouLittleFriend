@@ -28,9 +28,9 @@ namespace TouhouPets.Content.Items.PetItems
             CreateRecipe()
             .AddIngredient(ItemID.Silk, 10)
             .AddRecipeGroup(RecipeGroupID.Wood, 5)
-            .AddIngredient(ItemID.Ectoplasm, 3)
             .AddIngredient(ItemID.ButterflyDust, 1)
             .AddTile(TileID.Loom)
+            .AddCondition(Condition.InGraveyard)
             .DisableDecraft()
             .Register();
         }
