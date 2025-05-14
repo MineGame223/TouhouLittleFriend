@@ -1,14 +1,16 @@
 global using Terraria.ModLoader;
 global using static Terraria.ModLoader.ModContent;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using static TouhouPets.CustomMusicManager;
 
 namespace TouhouPets
 {
     public class TouhouPets : Mod
     {
-        private static TouhouPets instance;
         public static PetChatRoom[] ChatRoom = new PetChatRoom[ChatRoomSystem.MaxChatRoom];
+        private static TouhouPets instance;
         public static TouhouPets Instance { get => instance; set => instance = value; }
         public override void Load()
         {
@@ -39,6 +41,13 @@ namespace TouhouPets
             Main.instance.LoadItem(ItemID.Umbrella);
             Main.instance.LoadFlameRing();
             Main.instance.LoadProjectile(ProjectileID.CultistRitual);
+
+            LoadCustomMusic();
+        }
+        private static void LoadCustomMusic()
+        {
+            EnsureMusicFolder();
+            Initialize(fullPath);
         }
     }
 }

@@ -40,8 +40,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool BandOn
         {
-            get => Owner.GetModPlayer<BandPlayer>().prismriverBand && Owner.HasBuff<PoltergeistBuff>();
-            set => Owner.GetModPlayer<BandPlayer>().prismriverBand = value;
+            get => Owner.GetModPlayer<ConcertPlayer>().prismriverBand && Owner.HasBuff<PoltergeistBuff>();
+            set => Owner.GetModPlayer<ConcertPlayer>().prismriverBand = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
         private bool IsBandState => CurrentState >= States.BeforeBand && CurrentState <= States.InBand;
@@ -212,14 +212,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
-                bool useTicket = Owner.GetModPlayer<BandPlayer>().manualStartBand;
+                bool useTicket = Owner.GetModPlayer<ConcertPlayer>().manualStartBand;
                 if ((Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver) || useTicket)
                 {
                     bool readyForBand = (mainTimer % 60 == 0 && Main.rand.NextBool(2) || useTicket)
                         && Owner.HasBuff<PoltergeistBuff>() && !IsBandState;
                     if (readyForBand)
                     {
-                        Timer = BandPlayer.BAND_COUNTDOWN_TIME;
+                        Timer = ConcertPlayer.BAND_COUNTDOWN_TIME;
                         RandomCount = 2;
                         CurrentState = States.BeforeBand;
                         BandOn = true;
@@ -303,7 +303,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void BeforeBand()
         {
-            if (Timer >= BandPlayer.BAND_COUNTDOWN_TIME)
+            if (Timer >= ConcertPlayer.BAND_COUNTDOWN_TIME)
             {
                 Projectile.frame = 0;
             }

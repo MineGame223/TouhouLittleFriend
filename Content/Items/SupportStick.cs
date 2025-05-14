@@ -6,10 +6,14 @@ namespace TouhouPets.Content.Items
 {
     public class SupportStick : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ItemType<CustomSupportStick>();
+        }
         public override void SetDefaults()
         {
-            Item.width = 36;
-            Item.height = 36;
+            Item.width = 32;
+            Item.height = 32;
             Item.rare = ItemRarityID.Blue;
             Item.value = 0;
             Item.useTime = Item.useAnimation = 20;
@@ -25,10 +29,13 @@ namespace TouhouPets.Content.Items
         }
         public override bool CanUseItem(Player player)
         {
-            BandPlayer bp = player.GetModPlayer<BandPlayer>();
-            if (player.altFunctionUse == 2 && bp.manualStartBand)
+            ConcertPlayer bp = player.GetModPlayer<ConcertPlayer>();
+            if (player.altFunctionUse == 2)
             {
-                bp.rerollMusic = false;
+                if (bp.manualStartBand)
+                {
+                    bp.musicRerolled = false;
+                }
             }
             else
             {
