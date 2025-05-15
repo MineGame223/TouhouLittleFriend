@@ -1,15 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace TouhouPets.Content.Items
 {
     public class SupportStick : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ItemType<CustomSupportStick>();
-        }
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -18,6 +16,15 @@ namespace TouhouPets.Content.Items
             Item.value = 0;
             Item.useTime = Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Swing;
+        }
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            string text = Language.GetTextValue("Mods.TouhouPets.PressShift");
+            if (Main.keyState.PressingShift())
+            {
+                text = Language.GetTextValue("Mods.TouhouPets.CustomModeDescrip");
+            }
+            ModUtils.InsertTooltipLine(tooltips, text);
         }
         public override Color? GetAlpha(Color lightColor)
         {
@@ -30,16 +37,13 @@ namespace TouhouPets.Content.Items
         public override bool CanUseItem(Player player)
         {
             ConcertPlayer bp = player.GetModPlayer<ConcertPlayer>();
-            if (player.altFunctionUse == 2)
-            {
-                if (bp.manualStartBand)
-                {
-                    bp.musicRerolled = false;
-                }
-            }
-            else
+            if (player.altFunctionUse != 2)
             {
                 bp.manualStartBand = !bp.manualStartBand;
+            }
+            if (bp.manualStartBand && (bp.musicRerolled || player.altFunctionUse == 2))
+            {
+                bp.musicRerolled = false;
             }
             return true;
         }

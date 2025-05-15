@@ -1,9 +1,7 @@
 global using Terraria.ModLoader;
 global using static Terraria.ModLoader.ModContent;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using static TouhouPets.CustomMusicManager;
 
 namespace TouhouPets
 {
@@ -41,13 +39,6 @@ namespace TouhouPets
             Main.instance.LoadItem(ItemID.Umbrella);
             Main.instance.LoadFlameRing();
             Main.instance.LoadProjectile(ProjectileID.CultistRitual);
-
-            LoadCustomMusic();
-        }
-        private static void LoadCustomMusic()
-        {
-            EnsureMusicFolder();
-            Initialize(fullPath);
         }
     }
 }

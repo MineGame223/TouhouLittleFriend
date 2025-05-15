@@ -22,6 +22,29 @@ Mods: {
 		GoodsShop: _
 		CraftCondition_StarSapphire: Drop the ingredients on the ground
 		FeedYuyuko: Feed
+		KoishiTelephone1: "[c/9dffce:You answered Koishi's call and luckily, nothing happened...]"
+		KoishiTelephone2: "[c/ff0000:It's too late to make action now.]"
+		NoCustomMusicNotice: There's no custom music now, please put the files into designated folder and reload your mod.
+		CustomNotAllowedNotic: This function can only be activated in Single-Player Mode!
+		CustomMusicDisabledNotice: The custom music option has been disabled, you can enable it in Mod Configs.
+		PressShift: "[c/9b9b9b:Press Shift to read more]"
+		CustomModeDescrip:
+			'''
+			The custom music mode is described as follows:
+			This function can only be activited in Single-Player Mode, you can open the control buttons when hold this item
+			When loading mod, it will create a folder called "TouhouPetCustomMusic" under the path "Terreria/tModLoader/Mods", this folder is where you put your music files
+			The available file formats include [c/ffff33:.ogg .mp3 .wav], You should reload the mod after put files in
+			Too many or too large files may make mod loading slowly, please take attention
+			Please don't delete any music files during playing, in order to avoid any errors
+			'''
+		RandomLoop: Random Loop
+		ListLoop: List Loop
+		SingleLoop: Single Loop
+		LoopDisplay: Play Mode: {0}
+		CustomDisplay: Custom Mode: {0}
+		BackAudioDisplay: Background Audio: {0}
+		TurnOn: On
+		TurnOff: Off
 		MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
 		HinaTips: "[c/009966:Keeps you away from bad luck]"
 		VampireTips: "[c/ff3366:Please do NOT let her under the sun!]"
@@ -39,7 +62,5 @@ Mods: {
 		KokoroTips: "[c/cc33cc:Restrain somebody's unconscious actions]"
 		PoltergeistTips: "[c/65efc6:Maybe will hold a concert]"
 		RaikoTips: "[c/ff6080:Makes the concert more colorful]"
-		KoishiTelephone1: "[c/9dffce:You answered Koishi's call and luckily, nothing happened...]"
-		KoishiTelephone2: "[c/ff0000:It's too late to make action now.]"
 	}
 }

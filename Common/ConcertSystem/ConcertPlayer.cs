@@ -12,6 +12,7 @@ namespace TouhouPets
     public class ConcertPlayer : ModPlayer
     {
         public const int BAND_COUNTDOWN_TIME = 204;
+        public const int MAX_BANDTIME = 2040;
 
         public bool prismriverBand = false;
         public bool manualStartBand = false;
@@ -20,18 +21,30 @@ namespace TouhouPets
 
         private int bandCountdown = 0;
         private int bandTimer = 0;
+        private int bandTimerForVisual = 0;
+        private bool firstRoll = false;
+
         private int musicID = -1;
         private int lastMusicID = -1;
-        private int lastCustomMusicID = -1;
         private List<int> musicList;
 
         private readonly List<int> constantMusicList = [MusicID.Title, MusicID.ConsoleMenu, MusicID.Credits];
-        private readonly List<int> bannedMusicList = [MusicID.RainSoundEffect];
+        private readonly List<int> bannedMusicList = [MusicID.RainSoundEffect, 45];
         public int BandMusicID { get => musicID; }
         public bool ShouldBandPlaying { get => bandTimer > 0; }
+        public bool RolledFirstTime { get => firstRoll; }
+        public bool IsConcertStarted { get => prismriverBand; }
+        private void UpdateVisualTimer()
+        {
+            if (++bandTimerForVisual > 4800)
+            {
+                bandTimerForVisual = 0;
+            }
+        }
         private void ConcertVisualEffect()
         {
-            if (Main.rand.NextBool(5) && bandTimer % 10 == 0)
+            UpdateVisualTimer();
+            if (Main.rand.NextBool(5) && bandTimerForVisual % 10 == 0)
             {
                 Gore.NewGoreDirect(Player.GetSource_FromAI()
                 , Player.Center + new Vector2(Main.rand.Next(-240, 240), -100 + Main.rand.Next(-80, 40))
@@ -62,7 +75,7 @@ namespace TouhouPets
             {
                 return;
             }
-            if (Main.rand.NextBool(10) && bandTimer > 1080 && bandTimer % 5 == 0)
+            if (Main.rand.NextBool(10) && bandTimer > 1080 && bandTimerForVisual % 5 == 0)
             {
                 Vector2 p = Player.Center + new Vector2(Main.rand.Next(-270, 270), -180 + Main.rand.Next(-180, -160));
                 if (Player.ownedProjectileCounts[ProjectileType<BandSpotlight>()] < 10)
@@ -72,7 +85,7 @@ namespace TouhouPets
                     ray.netUpdate = true;
                 }
             }
-            if (bandTimer > 1440 && bandTimer % 30 == 0 && Main.rand.NextBool(6))
+            if (bandTimer > 1440 && bandTimerForVisual % 30 == 0 && Main.rand.NextBool(6))
             {
                 Vector2 p = Player.Center + new Vector2(Main.rand.Next(-270, 270), -70 + Main.rand.Next(10, 20));
                 Projectile rocket = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), p, new Vector2(0, -8)
@@ -80,10 +93,6 @@ namespace TouhouPets
                     , 0, 0f, Main.myPlayer);
                 rocket.tileCollide = false;
                 rocket.netUpdate = true;
-            }
-            if (bandTimer > 2000)
-            {
-                bandTimer = 2000;
             }
         }
         private void RerollMusic()
@@ -146,19 +155,19 @@ namespace TouhouPets
         }
         private void RerollMusic_Custom()
         {
-            musicList = [];
-            int max = CustomMusicManager.LoadedSounds.Count;
+            /*musicList = [];
+            int max = LoadedSounds.Count;
             for (int i = 0; i < max; i++)
             {
-                if (i == lastCustomMusicID && max > 1)
+                if (i == LastCustomMusic && max > 1)
                 {
                     continue;
                 }
                 musicList.Add(i);
             }
             int randomID = Main.rand.NextFromCollection(musicList);
-            lastCustomMusicID = randomID;
-            CustomMusicManager.PlayMusic(randomID);
+            LastCustomMusic = randomID;
+            PlayMusic(randomID);*/
         }
         public override void PostUpdateMiscEffects()
         {
@@ -171,14 +180,12 @@ namespace TouhouPets
                 prismriverBand = false;
             }
             //防止因为手动开启演唱会导致已有演唱会被中断，或者使用右键手动开启演唱会
-            bool leftClickUsingDuringConcert = (bandCountdown > 0 || bandTimer > 0)
-                 && Player.itemAnimation > 0
-                 && Player.altFunctionUse != 2;
+            bool duringConcert = (bandCountdown > 0 && bandCountdown < BAND_COUNTDOWN_TIME) || ShouldBandPlaying;
+            bool playerUsingItem = Player.itemAnimation > 0 && Player.altFunctionUse != 2;
 
-            bool holdStick = Player.HeldItem.type == ItemType<CustomSupportStick>()
-                || (Player.HeldItem.type == ItemType<SupportStick>() && manualStartBand);
+            bool holdStick = Player.HeldItem.type == ItemType<SupportStick>() && manualStartBand;
 
-            if (holdStick && leftClickUsingDuringConcert)
+            if (holdStick && duringConcert && playerUsingItem)
             {
                 prismriverBand = true;
             }
@@ -189,27 +196,30 @@ namespace TouhouPets
                 {
                     if (Player.IsStandingStillForSpecialEffects)
                     {
-                        bandTimer++;
+                        bandTimer = (int)MathHelper.Clamp(bandTimer + 1, 0, MAX_BANDTIME);
                     }
                     if (!musicRerolled)
                     {
                         if (customMode)
                         {
-                            RerollMusic_Custom();
+                            CustomMusicManager.RerollMusic();
                         }
                         else
                         {
                             RerollMusic();
                         }
                         musicRerolled = true;
+                        firstRoll = true;
                     }
                 }
             }
             else
             {
                 bandTimer = 0;
+                bandTimerForVisual = 0;
                 bandCountdown = BAND_COUNTDOWN_TIME;
                 musicRerolled = false;
+                firstRoll = false;
             }
             if (bandCountdown <= 0 && Player.IsStandingStillForSpecialEffects)
             {
