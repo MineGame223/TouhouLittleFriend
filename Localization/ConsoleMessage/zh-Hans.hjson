@@ -1,0 +1,8 @@
+Mods: {
+	TouhouPets: {
+		ConsoleMessage: {
+			FileNotExist: 错误：文件 {0} 不存在！
+			FailedToPlay: "{0} 播放失败：{1}"
+		}
+	}
+}

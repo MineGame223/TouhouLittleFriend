@@ -45,6 +45,8 @@ Mods: {
 		BackAudioDisplay: 后台播放：{0}
 		TurnOn: 开启
 		TurnOff: 关闭
+		FileNotExist: 错误：文件 {0} 不存在！
+		FailedToPlayAudio: "{0} 播放失败：{1}"
 		MurasaTips: "[c/ff0000:千万不要随她一起下水！]"
 		HinaTips: "[c/009966:令你免受厄运的侵扰]"
 		VampireTips: "[c/ff3366:请不要将她置于阳光之下！]"

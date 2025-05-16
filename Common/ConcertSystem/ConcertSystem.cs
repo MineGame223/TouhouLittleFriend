@@ -34,6 +34,7 @@ namespace TouhouPets
         public override void PreSaveAndQuit()
         {
             Stop();
+            PostStop();
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
@@ -97,10 +98,6 @@ namespace TouhouPets
                             else if (PlayMode == PlayModeID.RandomLoop)
                             {
                                 PlayMode = PlayModeID.ListLoop;
-                                if (bp.ShouldBandPlaying)
-                                {
-                                    CurrentMusicID++;
-                                }
                             }
                             else if (PlayMode == PlayModeID.ListLoop)
                             {
@@ -122,8 +119,27 @@ namespace TouhouPets
 
                     if (Main.mouseLeft && Main.mouseLeftRelease)
                     {
-                        bp.customMode = !bp.customMode;
-                        bp.musicRerolled = false;
+                        bool canClick = true;
+                        if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
+                        {
+                            Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomMusicDisabledNotice"), Color.Yellow);
+                            canClick = false;
+                        }
+                        if (Main.netMode != NetmodeID.SinglePlayer)
+                        {
+                            Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomNotAllowedNotic"), Color.Yellow);
+                            canClick = false;
+                        }
+                        if (NoCustomMusic)
+                        {
+                            Main.NewText(Language.GetTextValue("Mods.TouhouPets.NoCustomMusicNotice"), Color.Yellow);
+                            canClick = false;
+                        }
+                        if (canClick)
+                        {
+                            bp.customMode = !bp.customMode;
+                            bp.musicRerolled = false;
+                        }
                     }
                     string stateText;
                     if (bp.customMode)

@@ -44,6 +44,7 @@ namespace TouhouPets.Content.Items
             if (bp.manualStartBand && (bp.musicRerolled || player.altFunctionUse == 2))
             {
                 bp.musicRerolled = false;
+                bp.manualRerolled = true;
             }
             return true;
         }

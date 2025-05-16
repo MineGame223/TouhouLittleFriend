@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Terraria;
 using Terraria.ID;
@@ -14,21 +16,6 @@ namespace TouhouPets
     /// </summary>
     public static class ModUtils
     {
-        /// <summary>
-        /// 打印文本
-        /// </summary>
-        /// <param name="value">内容</param>
-        public static void WriteLineOrNewTextNotice(Color noticeColor, params object[] values)
-        {
-            if (Main.gameMenu)
-            {
-                Console.WriteLine(values);
-            }
-            else
-            {
-                Main.NewText(values, noticeColor);
-            }
-        }
         /// <summary>
         /// 打印文本
         /// </summary>

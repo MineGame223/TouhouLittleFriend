@@ -6,13 +6,14 @@ using System.Linq;
 using XPT.Core.Audio.MP3Sharp;
 using NVorbis;
 using Terraria;
+using Terraria.Localization;
 using Microsoft.Xna.Framework;
 
 namespace TouhouPets
 {
     /// <summary>
     /// 自制简易音乐播放器
-    /// <br>感谢全知全能DeepSeek老师的大恩大德</br>
+    /// <br>感谢全知全能DeepSeek老师大恩大德提供的转码方法</br>
     /// </summary>
     public static class CustomMusicManager
     {
@@ -31,21 +32,70 @@ namespace TouhouPets
             /// </summary>
             ListLoop,
         }
+        /// <summary>
+        /// 当前音乐的实例
+        /// </summary>
         private static SoundEffectInstance _currentSoundInstance;
+        private static float _soundFade = 1f;
+        /// <summary>
+        /// 已加载音乐的列表
+        /// </summary>
         private static List<SoundEffect> _loadedSounds = [];
+        /// <summary>
+        /// 已加载音乐的路径列表
+        /// </summary>
         private static List<string> _loadedSoundFiles = [];
-        private static List<int> _rolledRandomIndex = [];
+        /// <summary>
+        /// 一轮循环中播放过的音乐
+        /// </summary>
+        private static List<int> _rolledSoundIndex = [];
+        /// <summary>
+        /// 上次播放的音乐索引值
+        /// </summary>
+        private static int _lastPlayedSound = 0;
+        /// <summary>
+        /// 是否未检测到任何音乐文件
+        /// </summary>
         private static bool _noSoundFile = false;
+        /// <summary>
+        /// 是否开启后台播放
+        /// </summary>
         private static bool _backgroundAudio = false;
+        /// <summary>
+        /// 是否已退出播放
+        /// </summary>
+        private static bool _exitPlay = false;
+        /// <summary>
+        /// 播放模式
+        /// </summary>
         private static PlayModeID _playMode = PlayModeID.SingleLoop;
-        private static int currentListIndex = 0;
-        private static bool isSingleLooping = false;
+        /// <summary>
+        /// 获取已加载音乐
+        /// </summary>
         public static List<SoundEffect> LoadedSounds { get => _loadedSounds; }
-        public static bool NoMusicFile { get => _noSoundFile; }
+        /// <summary>
+        /// 设置是否开启后台播放
+        /// </summary>
         public static bool EnableBackgroundAudio { get => _backgroundAudio; set => _backgroundAudio = value; }
+        /// <summary>
+        /// 设置播放模式
+        /// </summary>
         public static PlayModeID PlayMode { get => _playMode; set => _playMode = value; }
-        public static int CurrentMusicID { get => currentListIndex; set => currentListIndex = value; }
+        /// <summary>
+        /// 获取是否未检测到任何音乐文件
+        /// </summary>
+        public static bool NoCustomMusic { get => _noSoundFile; }
+        /// <summary>
+        /// 指定文件夹的完整路径
+        /// </summary>
         public static string FullPath { get => Path.Combine(ModLoader.ModPath, "TouhouPetCustomMusic"); }
+        /// <summary>
+        /// 控制台信息头
+        /// </summary>
+        private static string _consoleMessageHead { get => $"[{DateTime.Now}] [TouhouPets]: "; }
+        /// <summary>
+        /// 确保文件夹存在
+        /// </summary>
         public static void EnsureMusicFolder()
         {
             if (!Directory.Exists(FullPath))
@@ -54,17 +104,14 @@ namespace TouhouPets
             }
         }
         /// <summary>
-        /// 初始化并加载 Musics 文件夹中的所有音频文件
+        /// 初始化并加载指定文件夹中的所有音频文件
         /// </summary>
         public static void Initialize(string musicsFolderPath)
         {
             if (!Directory.Exists(musicsFolderPath))
             {
-                Console.WriteLine($"错误：文件夹 {musicsFolderPath} 不存在！现已生成新的文件夹。");
-                if (!Directory.Exists(musicsFolderPath))
-                {
-                    Directory.CreateDirectory(musicsFolderPath);
-                }
+                Console.WriteLine($"{_consoleMessageHead}文件夹 {musicsFolderPath} 未找到！现已生成新的文件夹，请重新加载模组。");
+                Directory.CreateDirectory(musicsFolderPath);
                 return;
             }
 
@@ -75,37 +122,40 @@ namespace TouhouPets
             }
             _loadedSounds.Clear();
             _loadedSoundFiles.Clear();
-            _rolledRandomIndex.Clear();
+            _rolledSoundIndex.Clear();
             _noSoundFile = false;
+
 
             // 加载所有支持的音频文件
             string[] supportedExtensions = [".mp3", ".ogg", ".wav"];
-            foreach (string file in Directory.GetFiles(musicsFolderPath))
+            IEnumerable<string> allFolder = Directory.EnumerateFiles(musicsFolderPath, ".", SearchOption.AllDirectories);
+            foreach (string file in allFolder)
             {
+                string fileName = Path.GetFileName(file);
                 string extension = Path.GetExtension(file).ToLower();
                 if (!supportedExtensions.Contains(extension))
                     continue;
 
                 try
                 {
-                    Console.WriteLine($"正在加载音频: {Path.GetFileName(file)}");
+                    Console.WriteLine($"{_consoleMessageHead}正在加载 {fileName}");
                     SoundEffect sound = LoadSoundEffect(file, extension);
                     if (sound != null)
                     {
                         _loadedSounds.Add(sound);
                         _loadedSoundFiles.Add(file);
-                        Console.WriteLine($"已加载: {Path.GetFileName(file)}");
+                        Console.WriteLine($"{_consoleMessageHead}已加载 {fileName}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"加载文件 {file} 失败: {ex.Message}");
+                    Console.WriteLine($"{_consoleMessageHead}加载文件 {file} 失败：{ex.Message}");
                 }
             }
 
             if (_loadedSounds.Count == 0)
             {
-                Console.WriteLine("未找到任何支持的音频文件。");
+                Console.WriteLine($"{_consoleMessageHead}未找到任何支持的音频文件。");
                 _noSoundFile = true;
             }
         }
@@ -137,39 +187,53 @@ namespace TouhouPets
         /// <summary>
         /// 播放指定索引的音乐文件
         /// </summary>
-        public static void PlayMusic(int index)
+        /// <param name="index">索引值</param>
+        /// <param name="printMessage">是否打印播放信息</param>
+        public static void PlayMusic(int index, bool printMessage = true)
         {
+            _exitPlay = false;
+
             // 先停止当前播放
             Stop();
+
+            //根据列表查找文件
             string fileName = Path.GetFileName(_loadedSoundFiles[index]);
             if (!File.Exists(_loadedSoundFiles[index]))
             {
-                ModUtils.WriteLineOrNewTextNotice($"错误：文件 {fileName} 不存在！");
+                ModUtils.WriteLineOrNewTextNotice(Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName));
                 return;
             }
-
             try
             {
                 SoundEffect sound = LoadedSounds[index];
                 _currentSoundInstance = sound.CreateInstance();
                 _currentSoundInstance.Play();
+                _lastPlayedSound = index;
 
-                if (_playMode != PlayModeID.SingleLoop)
+                //若当前索引不包含在已播放列表中，则将其加入
+                if (!_rolledSoundIndex.Contains(index))
                 {
-                    isSingleLooping = false;
+                    _rolledSoundIndex.Add(index);
                 }
-                if (!isSingleLooping)
-                {
-                    Console.WriteLine($"正在播放: {fileName}");
-                }
-                if (_playMode == PlayModeID.SingleLoop)
-                {
-                    isSingleLooping = true;
-                }
+
+                if (printMessage)
+                    Console.WriteLine($"{_consoleMessageHead}正在播放：{fileName}");
             }
             catch (Exception ex)
             {
-                ModUtils.WriteLineOrNewTextNotice($"播放失败: {ex.Message}");
+                ModUtils.WriteLineOrNewTextNotice(Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message));
+            }
+        }
+        /// <summary>
+        /// 停止播放之后的操作
+        /// </summary>
+        public static void PostStop()
+        {
+            _rolledSoundIndex.Clear();
+            if (!_exitPlay)
+            {
+                Console.WriteLine($"{_consoleMessageHead}已退出播放");
+                _exitPlay = true;
             }
         }
         /// <summary>
@@ -177,20 +241,22 @@ namespace TouhouPets
         /// </summary>
         public static void GuaranteedUpdate()
         {
-            ConcertPlayer bp = Main.LocalPlayer.GetModPlayer<ConcertPlayer>();
             if (_currentSoundInstance == null)
                 return;
 
+            ConcertPlayer bp = Main.LocalPlayer.GetModPlayer<ConcertPlayer>();
+
+            SetVolume();
+
+            //当演出停止、不在自选模式或位于主界面时，退出播放
             if (Main.gameMenu || !bp.ShouldBandPlaying || !bp.customMode)
             {
-                _currentSoundInstance.Stop();
-                currentListIndex = 0;
-                _rolledRandomIndex.Clear();
+                StopGradually();
+                PostStop();
                 return;
             }
 
-            _currentSoundInstance.Volume = Main.musicVolume;
-
+            //游戏窗口失焦且后台音频未开启时暂停
             if (Main.gameInactive && !_backgroundAudio)
             {
                 _currentSoundInstance.Pause();
@@ -199,70 +265,92 @@ namespace TouhouPets
             {
                 _currentSoundInstance.Resume();
             }
+
             if (_currentSoundInstance.State == SoundState.Stopped)
             {
-                if (PlayMode == PlayModeID.RandomLoop)
+                RollListedMusic(false, true);
+            }
+        }
+        /// <summary>
+        /// 设置音量
+        /// </summary>
+        public static void SetVolume()
+        {
+            if(!_exitPlay)
+            {
+                //当月总出现前逐渐静音
+                if (NPC.MoonLordCountdown > 0)
                 {
-                    RollRandomMusic();
+                    //转换是必要的
+                    float moonCDPercent = (float)NPC.MoonLordCountdown / (float)NPC.MaxMoonLordCountdown;
+                    moonCDPercent -= 0.5f;
+                    _soundFade = MathHelper.Clamp(moonCDPercent, 0f, 1f);
                 }
                 else
                 {
-                    RollListedMusic();
+                    _soundFade = MathHelper.Clamp(_soundFade + 0.01f, 0f, 1f);
                 }
             }
+
+            //同步游戏音乐音量
+            _currentSoundInstance.Volume = Main.musicVolume * _soundFade;
         }
         /// <summary>
-        /// 随机播放音乐
+        /// 播放列表内的音乐
         /// </summary>
-        public static void RollRandomMusic()
+        /// <param name="manual">是否为手动切换</param>
+        /// <param name="inLoop">是否处于自动循环中，是则单曲循环时不会频繁打印播放信息</param>
+        public static void RollListedMusic(bool manual, bool inLoop)
         {
-            if (_rolledRandomIndex.Count >= _loadedSounds.Count)
+            if (NoCustomMusic)
+                return;
+
+            //一次循环中可用曲目的列表
+            List<int> rollableSound = [];
+
+            //若已滚动曲目列表长度大于总曲目列表长度，则清空已滚动曲目列表
+            if (_rolledSoundIndex.Count >= _loadedSounds.Count && _playMode != PlayModeID.SingleLoop)
             {
-                _rolledRandomIndex.Clear();
+                _rolledSoundIndex.Clear();
+                Console.WriteLine($"{_consoleMessageHead}已完成一次列表播放。");
             }
             for (int i = 0; i < _loadedSounds.Count; i++)
             {
-                if (Main.rand.Next(_loadedSounds.Count) == i)
-                {
-                    if (_rolledRandomIndex.Contains(i))
-                        continue;
+                //若 i 被包含在已滚动曲目列表中则跳过
+                if (_rolledSoundIndex.Contains(i))
+                    continue;
 
-                    PlayMusic(i);
-                    _rolledRandomIndex.Add(i);
+                //将余下的可用曲目加入列表
+                rollableSound.Add(i);
+            }
+            switch (_playMode)
+            {
+                case PlayModeID.SingleLoop:
+
+                    //手动切换时目标为当前循环曲目的下一首
+                    int nextSound = _lastPlayedSound + 1;
+
+                    //若超过列表边界则回归0
+                    if (nextSound >= _loadedSounds.Count)
+                    {
+                        nextSound = 0;
+                    }
+
+                    //若为手动切换则按列表顺序选择音乐
+                    int targetIndex = manual ? nextSound : _lastPlayedSound;
+                    PlayMusic(targetIndex, !inLoop);
                     break;
-                }
-            }
-        }
-        /// <summary>
-        /// 按列表播放音乐
-        /// </summary>
-        public static void RollListedMusic()
-        {
-            int index = (int)MathHelper.Clamp(currentListIndex, 0, _loadedSounds.Count - 1);
-            PlayMusic(index);
 
-            if (PlayMode == PlayModeID.ListLoop)
-            {
-                currentListIndex++;
-            }
-            if (currentListIndex >= _loadedSounds.Count)
-            {
-                currentListIndex = 0;
-            }
-        }
-        public static void RerollMusic()
-        {
-            if (PlayMode == PlayModeID.RandomLoop)
-            {
-                RollRandomMusic();
-            }
-            else
-            {
-                if (Main.LocalPlayer.GetModPlayer<ConcertPlayer>().RolledFirstTime)
-                {
-                    currentListIndex++;
-                }
-                RollListedMusic();
+                case PlayModeID.RandomLoop:
+                    PlayMusic(Main.rand.NextFromCollection(rollableSound));
+                    break;
+
+                case PlayModeID.ListLoop:
+                    PlayMusic(rollableSound.First());
+                    break;
+
+                default:
+                    break;
             }
         }
         /// <summary>
@@ -273,6 +361,17 @@ namespace TouhouPets
             _currentSoundInstance?.Stop();
             _currentSoundInstance?.Dispose();
             _currentSoundInstance = null;
+        }
+        /// <summary>
+        /// 渐进式停止播放
+        /// </summary>
+        public static void StopGradually()
+        {
+            _soundFade = MathHelper.Clamp(_soundFade - 0.01f, 0f, 1f);
+            if (_soundFade <= 0f)
+            {
+                Stop();
+            }
         }
         #region 加载非WAV文件
         /// <summary>

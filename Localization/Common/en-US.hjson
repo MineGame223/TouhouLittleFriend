@@ -45,6 +45,8 @@ Mods: {
 		BackAudioDisplay: Background Audio: {0}
 		TurnOn: On
 		TurnOff: Off
+		FileNotExist: Error: file {0} not exist!
+		FailedToPlayAudio: Failed to play {0}: {1}
 		MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
 		HinaTips: "[c/009966:Keeps you away from bad luck]"
 		VampireTips: "[c/ff3366:Please do NOT let her under the sun!]"

@@ -1,0 +1,8 @@
+Mods: {
+	TouhouPets: {
+		ConsoleMessage: {
+			FileNotExist: Error: file {0} not exist!
+			FailedToPlay: Failed to play{0}: {1}
+		}
+	}
+}

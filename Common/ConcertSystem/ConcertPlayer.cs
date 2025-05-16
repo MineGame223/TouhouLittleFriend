@@ -17,22 +17,20 @@ namespace TouhouPets
         public bool prismriverBand = false;
         public bool manualStartBand = false;
         public bool musicRerolled = false;
+        public bool manualRerolled = false;
         public bool customMode = false;
 
         private int bandCountdown = 0;
         private int bandTimer = 0;
         private int bandTimerForVisual = 0;
-        private bool firstRoll = false;
 
         private int musicID = -1;
         private int lastMusicID = -1;
-        private List<int> musicList;
 
         private readonly List<int> constantMusicList = [MusicID.Title, MusicID.ConsoleMenu, MusicID.Credits];
         private readonly List<int> bannedMusicList = [MusicID.RainSoundEffect, 45];
         public int BandMusicID { get => musicID; }
         public bool ShouldBandPlaying { get => bandTimer > 0; }
-        public bool RolledFirstTime { get => firstRoll; }
         public bool IsConcertStarted { get => prismriverBand; }
         private void UpdateVisualTimer()
         {
@@ -98,7 +96,7 @@ namespace TouhouPets
         private void RerollMusic()
         {
             bool chooseMenuMusic = Main.rand.NextBool(10);
-            musicList = [];
+            List<int> musicList = [];
             for (int i = 0; i < MusicID.Count; i++)
             {
                 bool drunkReroll = i >= MusicID.OtherworldlyRain && i <= MusicID.OtherworldlyHallow;
@@ -126,48 +124,9 @@ namespace TouhouPets
                 }
                 musicList.Add(i);
             }
-            /*reroll:
-                if (Main.drunkWorld)
-                {
-                reroll_drunkWorld:
-                    randomID = Main.rand.Next(MusicID.OverworldDay, MusicID.Count);
-                    if (randomID >= MusicID.OtherworldlyRain && randomID <= MusicID.OtherworldlyHallow
-                        || constantMusicList.Contains(randomID))
-                    {
-                        goto reroll_drunkWorld;
-                    }
-                }
-                else
-                {
-                    randomID = Main.rand.Next(MusicID.OtherworldlyRain, MusicID.OtherworldlyHallow + 1);
-                }
-                if (Main.rand.NextBool(10))
-                {
-                    randomID = constantMusicList[Main.rand.Next(constantMusicList.Count)];
-                }
-                if (lastMusicID > 0 && randomID == lastMusicID || bannedMusicList.Contains(randomID))
-                {
-                    goto reroll;
-                }*/
             int randomID = Main.rand.NextFromCollection(musicList);
             lastMusicID = randomID;
             musicID = randomID;
-        }
-        private void RerollMusic_Custom()
-        {
-            /*musicList = [];
-            int max = LoadedSounds.Count;
-            for (int i = 0; i < max; i++)
-            {
-                if (i == LastCustomMusic && max > 1)
-                {
-                    continue;
-                }
-                musicList.Add(i);
-            }
-            int randomID = Main.rand.NextFromCollection(musicList);
-            LastCustomMusic = randomID;
-            PlayMusic(randomID);*/
         }
         public override void PostUpdateMiscEffects()
         {
@@ -202,14 +161,14 @@ namespace TouhouPets
                     {
                         if (customMode)
                         {
-                            CustomMusicManager.RerollMusic();
+                            CustomMusicManager.RollListedMusic(manualRerolled, false);
+                            manualRerolled = false;
                         }
                         else
                         {
                             RerollMusic();
                         }
                         musicRerolled = true;
-                        firstRoll = true;
                     }
                 }
             }
@@ -219,7 +178,7 @@ namespace TouhouPets
                 bandTimerForVisual = 0;
                 bandCountdown = BAND_COUNTDOWN_TIME;
                 musicRerolled = false;
-                firstRoll = false;
+                manualRerolled = false;
             }
             if (bandCountdown <= 0 && Player.IsStandingStillForSpecialEffects)
             {

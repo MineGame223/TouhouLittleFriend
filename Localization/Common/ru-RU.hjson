@@ -31,7 +31,7 @@ Mods: {
 		/* CustomModeDescrip:
 			'''
 			The custom music mode is described as follows:
-			This function can only be activited in Single-Player Mode
+			This function can only be activited in Single-Player Mode, you can open the control buttons when hold this item
 			When loading mod, it will create a folder called "TouhouPetCustomMusic" under the path "Terreria/tModLoader/Mods", this folder is where you put your music files
 			The available file formats include [c/ffff33:.ogg .mp3 .wav], You should reload the mod after put files in
 			Too many or too large files may make mod loading slowly, please take attention
@@ -45,6 +45,8 @@ Mods: {
 		// BackAudioDisplay: Background Audio: {0}
 		// TurnOn: On
 		// TurnOff: Off
+		// FileNotExist: Error: file {0} not exist!
+		// FailedToPlayAudio: Failed to play {0}: {1}
 		// MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
 		// HinaTips: "[c/009966:Keeps you away from bad luck]"
 		// VampireTips: "[c/ff3366:Please do NOT let her under the sun!]"
