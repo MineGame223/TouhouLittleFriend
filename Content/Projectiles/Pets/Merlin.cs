@@ -40,7 +40,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool BandOn
         {
-            get => Owner.GetModPlayer<ConcertPlayer>().prismriverBand && Owner.HasBuff<PoltergeistBuff>();
+            get => Owner.GetModPlayer<ConcertPlayer>().ConcertStart && Owner.HasBuff<PoltergeistBuff>();
         }
         private bool IsIdleState => CurrentState <= States.Blink;
         private bool IsBandState => CurrentState >= States.BeforeBand && CurrentState <= States.InBand;

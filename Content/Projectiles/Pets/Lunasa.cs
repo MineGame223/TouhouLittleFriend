@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Utilities;
+using TouhouPets.Content.Buffs;
 using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
@@ -41,8 +42,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool BandOn
         {
-            get => Owner.GetModPlayer<ConcertPlayer>().prismriverBand && Owner.HasBuff<PoltergeistBuff>();
-            set => Owner.GetModPlayer<ConcertPlayer>().prismriverBand = value;
+            get => Owner.GetModPlayer<ConcertPlayer>().ConcertStart && Owner.HasBuff<PoltergeistBuff>();
+            set => Owner.GetModPlayer<ConcertPlayer>().ConcertStart = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
         private bool IsBandState => CurrentState >= States.BeforeBand && CurrentState <= States.InBand;
@@ -216,10 +217,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
-                bool useTicket = Owner.GetModPlayer<ConcertPlayer>().manualStartBand;
+                bool useTicket = Owner.HasBuff<ConcertBuff>();
                 if ((Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver) || useTicket)
                 {
-                    bool readyForBand = (mainTimer % 60 == 0 && Main.rand.NextBool(2) || useTicket)
+                    bool readyForBand = ((mainTimer % 60 == 0 && Main.rand.NextBool(2) && ActionCD <= 0) || useTicket)
                         && Owner.HasBuff<PoltergeistBuff>() && !IsBandState;
                     if (readyForBand)
                     {

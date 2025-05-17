@@ -58,7 +58,8 @@ namespace TouhouPets
             Player player = Main.LocalPlayer;
             ConcertPlayer bp = player.GetModPlayer<ConcertPlayer>();
 
-            if (bp.IsConcertStarted && player.HeldItem.type == ItemType<SupportStick>())
+            if (bp.ConcertStart && player.HeldItem.type == ItemType<SupportStick>()
+                && Main.netMode == NetmodeID.SinglePlayer && GetInstance<MiscConfig>().EnableCustomMusicMode)
             {
                 buttonOpacity = Math.Clamp(buttonOpacity += 0.1f, 0, 1);
             }
@@ -89,7 +90,7 @@ namespace TouhouPets
                     player.mouseInterface = true;
                     if (Main.mouseLeft && Main.mouseLeftRelease)
                     {
-                        if (bp.customMode)
+                        if (bp.CustomModeOn)
                         {
                             if (PlayMode == PlayModeID.SingleLoop)
                             {
@@ -122,12 +123,12 @@ namespace TouhouPets
                         bool canClick = true;
                         if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
                         {
-                            Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomMusicDisabledNotice"), Color.Yellow);
+                            //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomMusicDisabledNotice"), Color.Yellow);
                             canClick = false;
                         }
                         if (Main.netMode != NetmodeID.SinglePlayer)
                         {
-                            Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomNotAllowedNotic"), Color.Yellow);
+                            //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomNotAllowedNotic"), Color.Yellow);
                             canClick = false;
                         }
                         if (NoCustomMusic)
@@ -137,12 +138,12 @@ namespace TouhouPets
                         }
                         if (canClick)
                         {
-                            bp.customMode = !bp.customMode;
-                            bp.musicRerolled = false;
+                            bp.CustomModeOn = !bp.CustomModeOn;
+                            bp.MusicRerolled = false;
                         }
                     }
                     string stateText;
-                    if (bp.customMode)
+                    if (bp.CustomModeOn)
                     {
                         stateText = Language.GetTextValue("Mods.TouhouPets.TurnOn");
                     }
@@ -158,7 +159,7 @@ namespace TouhouPets
 
                     if (Main.mouseLeft && Main.mouseLeftRelease)
                     {
-                        if (bp.customMode)
+                        if (bp.CustomModeOn)
                         {
                             EnableBackgroundAudio = !EnableBackgroundAudio;
                         }
@@ -175,15 +176,15 @@ namespace TouhouPets
                     Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.BackAudioDisplay", stateText));
                 }
             }
-            if (!bp.customMode)
+            if (!bp.CustomModeOn)
             {
                 buttonDisable[0] = true;
                 buttonDisable[2] = true;
             }
             button1State = (int)PlayMode;
-            button2State = bp.customMode ? 1 : 0;
+            button2State = bp.CustomModeOn ? 1 : 0;
             button3State = EnableBackgroundAudio ? 1 : 0;
-            if (!bp.customMode)
+            if (!bp.CustomModeOn)
             {
                 button1State = 0;
                 button3State = 0;

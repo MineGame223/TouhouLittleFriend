@@ -326,6 +326,15 @@ Mods: {
 				DisplayName: 骚灵乐团
 				Description: 来自冥界的合奏！
 			}
+
+			ConcertBuff: {
+				DisplayName: 骚灵演唱会
+				Description:
+					'''
+					受你的邀请，骚灵乐团举行了演唱会
+					右键取消可以结束演唱会
+					'''
+			}
 		}
 	}
 }

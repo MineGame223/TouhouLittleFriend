@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using TouhouPets.Content.Buffs;
+using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Items
 {
     public class SupportStick : ModItem
     {
-        private bool IsManualMode { get => Main.LocalPlayer.GetModPlayer<ConcertPlayer>().manualStartBand; }
+        private static ConcertPlayer ModPlayer { get => Main.LocalPlayer.GetModPlayer<ConcertPlayer>(); }
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -21,10 +23,14 @@ namespace TouhouPets.Content.Items
         }
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            if (IsManualMode)
+            Texture2D texture = null;
+            if (ModPlayer.ManualConcert)
             {
-                spriteBatch.TeaNPCDraw(AltVanillaFunction.GetExtraTexture("SupportStick_Yellow")
-                    , position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
+                texture = AltVanillaFunction.GetExtraTexture("SupportStick_Yellow");
+            }
+            if (texture != null)
+            {
+                spriteBatch.TeaNPCDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
             }
         }
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
@@ -32,10 +38,15 @@ namespace TouhouPets.Content.Items
             Main.GetItemDrawFrame(Type, out _, out Rectangle itemFrame);
             Vector2 drawOrigin = itemFrame.Size() / 2;
             Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
-            if (IsManualMode)
+
+            Texture2D texture = null;
+            if (ModPlayer.ManualConcert)
             {
-                spriteBatch.TeaNPCDraw(AltVanillaFunction.GetExtraTexture("SupportStick_Yellow")
-                    , drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+                texture = AltVanillaFunction.GetExtraTexture("SupportStick_Yellow");
+            }
+            if (texture != null)
+            {
+                spriteBatch.TeaNPCDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
             }
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -57,15 +68,28 @@ namespace TouhouPets.Content.Items
         }
         public override bool CanUseItem(Player player)
         {
-            ConcertPlayer bp = player.GetModPlayer<ConcertPlayer>();
-            if (player.altFunctionUse != 2)
+            if (!player.HasBuff<PoltergeistBuff>())
             {
-                bp.manualStartBand = !bp.manualStartBand;
+                return true;
             }
-            if (bp.manualStartBand && (bp.musicRerolled || player.altFunctionUse == 2))
+            if (player.altFunctionUse == 2)
             {
-                bp.musicRerolled = false;
-                bp.manualRerolled = true;
+                ModPlayer.MusicRerolled = false;
+                if (ModPlayer.CustomModeOn)
+                {
+                    ModPlayer.ManualRerolled = true;
+                }
+            }
+            else
+            {
+                if (ModPlayer.ManualConcert)
+                {
+                    player.ClearBuff(BuffType<ConcertBuff>());
+                }
+                else
+                {
+                    player.AddBuff(BuffType<ConcertBuff>(), 2);
+                }
             }
             return true;
         }

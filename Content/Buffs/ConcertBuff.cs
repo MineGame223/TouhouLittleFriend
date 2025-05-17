@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 
 namespace TouhouPets.Content.Buffs
 {
@@ -8,7 +9,7 @@ namespace TouhouPets.Content.Buffs
         {
             Main.buffNoTimeDisplay[Type] = true;
             Main.buffNoSave[Type] = true;
-            Main.persistentBuff[Type] = true;
+            BuffID.Sets.TimeLeftDoesNotDecrease[Type] = true;
         }
     }
 }

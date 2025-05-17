@@ -102,6 +102,7 @@ namespace TouhouPets
         /// 控制台信息头
         /// </summary>
         public static string ConsoleMessageHead { get => $"[{DateTime.Now}] [TouhouPets]: "; }
+        private static ConcertPlayer ModPlayer { get => Main.LocalPlayer.GetModPlayer<ConcertPlayer>(); }
         /// <summary>
         /// 确保文件夹存在
         /// </summary>
@@ -207,7 +208,7 @@ namespace TouhouPets
             if (count >= _loadedSoundFiles.Count)
             {
                 Main.NewText(Language.GetTextValue("Mods.TouhouPets.NoAnyFile"), Color.Yellow);
-                Main.LocalPlayer.GetModPlayer<ConcertPlayer>().customMode = false;
+                ModPlayer.CustomModeOn = false;
                 Stop();
                 PostStop();
                 return false;
@@ -264,18 +265,6 @@ namespace TouhouPets
             }
         }
         /// <summary>
-        /// 停止播放之后的操作
-        /// </summary>
-        public static void PostStop()
-        {
-            _rolledSoundIndex.Clear();
-            if (_exitPlay == ExitProcess.NotExited)
-            {
-                Console.WriteLine($"{ConsoleMessageHead}已退出播放。");
-                _exitPlay = ExitProcess.PrintMessage;
-            }
-        }
-        /// <summary>
         /// 实时更新的音乐状态
         /// </summary>
         public static void GuaranteedUpdate()
@@ -283,12 +272,10 @@ namespace TouhouPets
             if (_currentSoundInstance == null)
                 return;
 
-            ConcertPlayer bp = Main.LocalPlayer.GetModPlayer<ConcertPlayer>();
-
             SetVolume();
 
             //当演出停止或不在自选模式时，退出播放
-            if (!bp.ShouldBandPlaying || !bp.customMode)
+            if (!ModPlayer.ShouldBandPlaying || !ModPlayer.CustomModeOn)
             {
                 StopGradually();
                 PostStop();
@@ -393,15 +380,6 @@ namespace TouhouPets
             }
         }
         /// <summary>
-        /// 停止播放
-        /// </summary>
-        public static void Stop()
-        {
-            _currentSoundInstance?.Stop();
-            _currentSoundInstance?.Dispose();
-            _currentSoundInstance = null;
-        }
-        /// <summary>
         /// 渐进式停止播放
         /// </summary>
         public static void StopGradually()
@@ -411,6 +389,29 @@ namespace TouhouPets
             {
                 Stop();
                 _exitPlay = ExitProcess.Exited;
+            }
+        }
+        /// <summary>
+        /// 停止播放
+        /// </summary>
+        public static void Stop()
+        {
+            _currentSoundInstance?.Stop();
+            _currentSoundInstance?.Dispose();
+            _currentSoundInstance = null;
+        }
+        /// <summary>
+        /// 停止播放之后的操作
+        /// </summary>
+        public static void PostStop()
+        {
+            //清空已循环列表
+            _rolledSoundIndex.Clear();
+
+            if (_exitPlay == ExitProcess.NotExited)
+            {
+                Console.WriteLine($"{ConsoleMessageHead}已退出播放。");
+                _exitPlay = ExitProcess.PrintMessage;
             }
         }
         #region 加载非WAV文件
