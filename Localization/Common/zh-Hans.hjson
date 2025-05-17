@@ -22,7 +22,20 @@ Mods: {
 		GoodsShop: 社团推广？
 		CraftCondition_StarSapphire: 将材料扔在地上
 		FeedYuyuko: 投喂
-		MurasaTips: "[c/ff0000:务必不要随她一起下水！]"
+		KoishiTelephone1: "[c/9dffce:你接听了恋恋的电话，还好无事发生...]"
+		KoishiTelephone2: "[c/ff0000:现在再行动似乎已经太晚了。]"
+		PressShift: "[c/9b9b9b:摁住Shift查看更多信息]"
+		CustomModeDescrip:
+			'''
+			自选模式说明如下：
+			该功能可通过模组配置启用或禁用，且仅可在单人模式下开启
+			若该功能可用，则手持该物品时可以显示控制按钮
+			加载模组时，会在"Terreria / tModLoader / Mods"路径下新建一个名为"TouhouPetCustomMusic"的文件夹，该文件夹即为存放自选曲目的地方
+			可用的文件格式包括 [c/ffff33:.ogg .mp3 .wav]，放入曲目文件后应当重新加载模组以进行更新
+			较多或占用存储空间较大的自选文件可能会导致模组加载缓慢，请注意
+			请勿在演奏过程中随意删除音乐文件，以免造成错误
+			'''
+		MurasaTips: "[c/ff0000:千万不要随她一起下水！]"
 		HinaTips: "[c/009966:令你免受厄运的侵扰]"
 		VampireTips: "[c/ff3366:请不要将她置于阳光之下！]"
 		TenshinTips: "[c/33ccff:为你带来天人的强运]"
@@ -39,7 +52,5 @@ Mods: {
 		KokoroTips: "[c/ff66cc:抑制无意识的活动]"
 		PoltergeistTips: "[c/65efc6:可能会举办音乐会]"
 		RaikoTips: "[c/ff6080:让音乐会的氛围更上一层]"
-		KoishiTelephone1: "[c/9dffce:你接听了恋恋的电话，还好无事发生...]"
-		KoishiTelephone2: "[c/ff0000:现在再行动似乎已经太晚了。]"
 	}
 }

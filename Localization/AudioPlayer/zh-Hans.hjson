@@ -1,0 +1,18 @@
+Mods: {
+	TouhouPets: {
+		NoAnyFile: 当前未检测到任何可用音频文件！已退出自选模式。
+		FileNotExist: 错误：文件 {0} 不存在或已被移动，请重新加载模组！
+		FailedToPlay: "{0} 播放失败：{1}"
+		NoCustomMusicNotice: 当前并无任何自选曲目，请在指定文件夹内放入音频文件后重新加载模组。
+		CustomNotAllowedNotic: 自选音乐功能仅可在单人模式下开启！
+		CustomMusicDisabledNotice: 自选音乐功能已被禁用，你可以在模组配置中开启。
+		RandomLoop: 随机循环
+		ListLoop: 列表循环
+		SingleLoop: 单曲循环
+		LoopDisplay: 播放模式：{0}
+		CustomDisplay: 自选模式：{0}
+		BackAudioDisplay: 后台播放：{0}
+		TurnOn: 开启
+		TurnOff: 关闭
+	}
+}

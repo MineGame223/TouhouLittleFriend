@@ -326,6 +326,15 @@ Mods: {
 				DisplayName: Poltergeist's Band
 				Description: Ensemble from the nether!
 			}
+
+			ConcertBuff: {
+				DisplayName: Poltergeist's Concert
+				Description:
+					'''
+					The Poltergeist's Band rised a concert because your invitation
+					Right click can cancel the concert
+					'''
+			}
 		}
 	}
 }

@@ -9,5 +9,9 @@ namespace TouhouPets
 
         [DefaultValue(false)]
         public bool CompatibilityMode;
+
+        [DefaultValue(true)]
+        [ReloadRequired]
+        public bool EnableCustomMusicMode;
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Utilities;
+using TouhouPets.Content.Buffs;
 using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
@@ -40,8 +42,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool BandOn
         {
-            get => Owner.GetModPlayer<BandPlayer>().prismriverBand && Owner.HasBuff<PoltergeistBuff>();
-            set => Owner.GetModPlayer<BandPlayer>().prismriverBand = value;
+            get => Owner.GetModPlayer<ConcertPlayer>().ConcertStart && Owner.HasBuff<PoltergeistBuff>();
+            set => Owner.GetModPlayer<ConcertPlayer>().ConcertStart = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
         private bool IsBandState => CurrentState >= States.BeforeBand && CurrentState <= States.InBand;
@@ -147,9 +149,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            if (IsBandState && !BandOn)
+            if (OwnerIsMyPlayer && IsBandState && !BandOn)
             {
-                Timer = 0;
                 CurrentState = States.AfterPlaying;
             }
 
@@ -160,9 +161,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
 
                 case States.Playing:
-                case States.InBand:
                     shouldNotTalking = true;
                     Playing();
+                    break;
+
+                case States.InBand:
+                    shouldNotTalking = true;
+                    InBandPlaying();
                     break;
 
                 case States.AfterPlaying:
@@ -212,15 +217,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
-                bool useTicket = Owner.GetModPlayer<BandPlayer>().manualStartBand;
+                bool useTicket = Owner.HasBuff<ConcertBuff>();
                 if ((Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver) || useTicket)
                 {
-                    bool readyForBand = (mainTimer % 60 == 0 && Main.rand.NextBool(2) || useTicket)
+                    bool readyForBand = ((mainTimer % 60 == 0 && Main.rand.NextBool(2) && ActionCD <= 0) || useTicket)
                         && Owner.HasBuff<PoltergeistBuff>() && !IsBandState;
                     if (readyForBand)
                     {
-                        Timer = BandPlayer.BAND_COUNTDOWN_TIME;
-                        RandomCount = 2;
+                        Timer = 0;
                         CurrentState = States.BeforeBand;
                         BandOn = true;
                         return;
@@ -255,7 +259,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 CurrentState = States.Idle;
             }
         }
-        private void Playing()
+        private void PlayingAnimation(bool shouldCount)
         {
             if (++Projectile.frameCounter > 9)
             {
@@ -265,12 +269,31 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 11)
             {
                 Projectile.frame = 4;
-                if (CurrentState != States.InBand)
+                if (shouldCount)
                 {
                     Timer++;
                 }
             }
-            if (Timer > 0 && Projectile.frameCounter == 0 && Main.rand.NextBool(5) && !IsBandState)
+        }
+        private void InBandPlaying()
+        {
+            PlayingAnimation(false);
+            VisualEffectForBand();
+        }
+        private void VisualEffectForBand()
+        {
+            if (mainTimer % 10 == 0 && Main.rand.NextBool(5))
+            {
+                Gore.NewGoreDirect(Projectile.GetSource_FromAI()
+                    , Owner.Center + new Vector2(Main.rand.Next(-240, 240), -100 + Main.rand.Next(-80, 40))
+                    , new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-6, -3)) * 0.1f, Main.rand.Next(570, 573)
+                    , Main.rand.NextFloat(0.9f, 1.1f));
+            }
+        }
+        private void Playing()
+        {
+            PlayingAnimation(true);
+            if (Timer > 0 && mainTimer % 6 == 0 && Main.rand.NextBool(5))
             {
                 Gore.NewGoreDirect(Projectile.GetSource_FromAI()
                     , Projectile.Center + new Vector2(24 * Projectile.spriteDirection, -14)
@@ -303,10 +326,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void BeforeBand()
         {
-            if (Timer >= BandPlayer.BAND_COUNTDOWN_TIME)
-            {
-                Projectile.frame = 0;
-            }
             if (++Projectile.frameCounter > 6)
             {
                 Projectile.frameCounter = 0;
@@ -316,12 +335,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 4;
             }
-            Timer--;
 
-            if (OwnerIsMyPlayer && Timer <= 0)
+            if (OwnerIsMyPlayer)
             {
-                Timer = 1;
-                CurrentState = States.InBand;
+                Timer++;
+                if (Timer > ConcertPlayer.BAND_COUNTDOWN_TIME)
+                {
+                    Timer = 0;
+                    CurrentState = States.InBand;
+                }
             }
         }
         private void UpdateMiscFrame()

@@ -1,0 +1,18 @@
+Mods: {
+	TouhouPets: {
+		// NoAnyFile: There are no usable audio files! Exited custom mode.
+		// FileNotExist: Error: file {0} doesn't exist or has been moved, please reload your mod!
+		// FailedToPlay: Failed to play{0}: {1}
+		// NoCustomMusicNotice: There's no custom music now, please put the files into designated folder and reload your mod.
+		// CustomNotAllowedNotic: The custom music option can only be activated in Single-Player Mode!
+		// CustomMusicDisabledNotice: The custom music option has been disabled, you can enable it in Mod Configs.
+		// RandomLoop: Random Loop
+		// ListLoop: List Loop
+		// SingleLoop: Single Loop
+		// LoopDisplay: Play Mode: {0}
+		// CustomDisplay: Custom Mode: {0}
+		// BackAudioDisplay: Background Audio: {0}
+		// TurnOn: On
+		// TurnOff: Off
+	}
+}

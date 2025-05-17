@@ -587,9 +587,9 @@ Mods: {
 				DisplayName: Haunted Support Stick
 				Tooltip:
 					'''
+					"Proof of being a chief member of the Prismriver Ensemble Fan Club"
 					Allows you to enjoy poltergeist's band's concert while not AFK
-					Left click to start or end the concert, right click to switch random tracks
-					"Proof of being a member of the Prismriver Ensemble Fan Club"
+					Left click to start or cancel the concert, right click to switch tracks
 					'''
 			}
 		}

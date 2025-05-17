@@ -60,10 +60,10 @@ namespace TouhouPets
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
-            int EmoteIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Emote Bubbles"));
-            if (EmoteIndex != -1)
+            int emoteIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Emote Bubbles"));
+            if (emoteIndex != -1)
             {
-                layers.Insert(EmoteIndex, new LegacyGameInterfaceLayer(
+                layers.Insert(emoteIndex, new LegacyGameInterfaceLayer(
                     "TouhouPets : YukaRequest",
                     delegate
                     {
