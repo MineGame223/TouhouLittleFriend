@@ -2,16 +2,13 @@
 
 namespace TouhouPets.Content.Buffs
 {
-    public class KoishiCalling : ModBuff
+    public class ConcertBuff : ModBuff
     {
         public override void SetStaticDefaults()
         {
             Main.buffNoTimeDisplay[Type] = true;
             Main.buffNoSave[Type] = true;
-        }
-        public override bool RightClick(int buffIndex)
-        {
-            return false;
+            Main.persistentBuff[Type] = true;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace TouhouPets.Content.Buffs
         public override void SetStaticDefaults()
         {
             Main.buffNoTimeDisplay[Type] = true;
-            Main.debuff[Type] = true;
+            Main.buffNoSave[Type] = true;
         }
         public override bool RightClick(int buffIndex)
         {

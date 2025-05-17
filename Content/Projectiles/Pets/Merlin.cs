@@ -146,16 +146,17 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            if (IsBandState && !BandOn)
+            if (OwnerIsMyPlayer)
             {
-                Timer = 0;
-                CurrentState = States.AfterPlaying;
-            }
-            if (BandOn && !IsBandState)
-            {
-                Timer = ConcertPlayer.BAND_COUNTDOWN_TIME;
-                RandomCount = 2;
-                CurrentState = States.BeforeBand;
+                if (IsBandState && !BandOn)
+                {
+                    CurrentState = States.AfterPlaying;
+                }
+                if (BandOn && !IsBandState)
+                {
+                    Timer = 0;
+                    CurrentState = States.BeforeBand;
+                }
             }
 
             switch (CurrentState)
@@ -165,9 +166,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
 
                 case States.Playing:
-                case States.InBand:
                     shouldNotTalking = true;
                     Playing();
+                    break;
+
+                case States.InBand:
+                    shouldNotTalking = true;
+                    InBandPlaying();
                     break;
 
                 case States.AfterPlaying:
@@ -245,9 +250,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 CurrentState = States.Idle;
             }
         }
-        private void Playing()
+        private void PlayingAnimation(bool shouldCount)
         {
-            if (++Projectile.frameCounter > 7)
+            if (++Projectile.frameCounter > 9)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
@@ -255,12 +260,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 11)
             {
                 Projectile.frame = 4;
-                if (CurrentState != States.InBand)
+                if (shouldCount)
                 {
                     Timer++;
                 }
             }
-            if (Timer > 0 && Projectile.frameCounter == 0 && Main.rand.NextBool(2) && !IsBandState)
+        }
+        private void InBandPlaying()
+        {
+            PlayingAnimation(false);
+        }
+        private void Playing()
+        {
+            PlayingAnimation(true);
+            if (Timer > 0 && mainTimer % 6 == 0 && Main.rand.NextBool(5))
             {
                 Gore.NewGoreDirect(Projectile.GetSource_FromAI()
                     , Projectile.Center + new Vector2(24 * Projectile.spriteDirection, -14)
@@ -293,10 +306,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void BeforeBand()
         {
-            if (Timer >= ConcertPlayer.BAND_COUNTDOWN_TIME)
-            {
-                Projectile.frame = 0;
-            }
             if (++Projectile.frameCounter > 6)
             {
                 Projectile.frameCounter = 0;
@@ -306,12 +315,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Projectile.frame = 4;
             }
-            Timer--;
 
-            if (OwnerIsMyPlayer && Timer <= 0)
+            if (OwnerIsMyPlayer)
             {
-                Timer = 1;
-                CurrentState = States.InBand;
+                Timer++;
+                if (Timer > ConcertPlayer.BAND_COUNTDOWN_TIME)
+                {
+                    Timer = 0;
+                    CurrentState = States.InBand;
+                }
             }
         }
         private void UpdateMiscFrame()

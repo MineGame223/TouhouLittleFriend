@@ -24,7 +24,7 @@ namespace TouhouPets
             }
             else
             {
-                Console.WriteLine("由于未开启设置或正处于多人模式，已跳过音乐文件加载环节。");
+                Console.WriteLine($"{ConsoleMessageHead}由于未开启设置或正处于多人模式，已跳过音乐文件加载环节。");
             }
         }
         public override void ModifyScreenPosition()

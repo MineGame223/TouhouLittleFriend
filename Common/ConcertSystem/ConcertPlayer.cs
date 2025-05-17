@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Items;
@@ -20,7 +19,7 @@ namespace TouhouPets
         public bool manualRerolled = false;
         public bool customMode = false;
 
-        private int bandCountdown = 0;
+        private int bandCountdown = BAND_COUNTDOWN_TIME;
         private int bandTimer = 0;
         private int bandTimerForVisual = 0;
 
@@ -30,7 +29,7 @@ namespace TouhouPets
         private readonly List<int> constantMusicList = [MusicID.Title, MusicID.ConsoleMenu, MusicID.Credits];
         private readonly List<int> bannedMusicList = [MusicID.RainSoundEffect, 45];
         public int BandMusicID { get => musicID; }
-        public bool ShouldBandPlaying { get => bandTimer > 0; }
+        public bool ShouldBandPlaying { get => bandCountdown <= 0; }
         public bool IsConcertStarted { get => prismriverBand; }
         private void UpdateVisualTimer()
         {
@@ -42,9 +41,10 @@ namespace TouhouPets
         private void ConcertVisualEffect()
         {
             UpdateVisualTimer();
-            if (Main.rand.NextBool(5) && bandTimerForVisual % 10 == 0)
+
+            /*if (Main.rand.NextBool(5) && bandTimerForVisual % 10 == 0)
             {
-                Gore.NewGoreDirect(Player.GetSource_FromAI()
+                Gore.NewGoreDirect(Player.GetSource_FromThis()
                 , Player.Center + new Vector2(Main.rand.Next(-240, 240), -100 + Main.rand.Next(-80, 40))
                 , new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-6, -3)) * 0.1f, Main.rand.Next(570, 573)
                 , Main.rand.NextFloat(0.9f, 1.1f));
@@ -68,12 +68,12 @@ namespace TouhouPets
                 {
                     ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.StellarTune, settings);
                 }
-            }
+            }*/
+
             if (!Player.HasBuff<RaikoBuff>())
-            {
                 return;
-            }
-            if (Main.rand.NextBool(10) && bandTimer > 1080 && bandTimerForVisual % 5 == 0)
+
+            if (Main.rand.NextBool(10) && bandTimer > 720 && bandTimerForVisual % 5 == 0)
             {
                 Vector2 p = Player.Center + new Vector2(Main.rand.Next(-270, 270), -180 + Main.rand.Next(-180, -160));
                 if (Player.ownedProjectileCounts[ProjectileType<BandSpotlight>()] < 10)
@@ -83,7 +83,7 @@ namespace TouhouPets
                     ray.netUpdate = true;
                 }
             }
-            if (bandTimer > 1440 && bandTimerForVisual % 30 == 0 && Main.rand.NextBool(6))
+            if (bandTimer > 1080 && bandTimerForVisual % 30 == 0 && Main.rand.NextBool(6))
             {
                 Vector2 p = Player.Center + new Vector2(Main.rand.Next(-270, 270), -70 + Main.rand.Next(10, 20));
                 Projectile rocket = Projectile.NewProjectileDirect(Player.GetSource_FromThis(), p, new Vector2(0, -8)
@@ -153,10 +153,6 @@ namespace TouhouPets
                 bandCountdown = (int)MathHelper.Clamp(bandCountdown - 1, 0, BAND_COUNTDOWN_TIME);
                 if (bandCountdown <= 0)
                 {
-                    if (Player.IsStandingStillForSpecialEffects)
-                    {
-                        bandTimer = (int)MathHelper.Clamp(bandTimer + 1, 0, MAX_BANDTIME);
-                    }
                     if (!musicRerolled)
                     {
                         if (customMode)
@@ -182,6 +178,7 @@ namespace TouhouPets
             }
             if (bandCountdown <= 0 && Player.IsStandingStillForSpecialEffects)
             {
+                bandTimer = (int)MathHelper.Clamp(bandTimer + 1, 0, MAX_BANDTIME);
                 ConcertVisualEffect();
             }
         }

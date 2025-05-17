@@ -32,23 +32,32 @@ namespace TouhouPets
             /// </summary>
             ListLoop,
         }
+        private enum ExitProcess : int
+        {
+            NotExited,
+            PrintMessage,
+            Exited,
+        }
         /// <summary>
         /// 当前音乐的实例
         /// </summary>
         private static SoundEffectInstance _currentSoundInstance;
-        private static float _soundFade = 1f;
+        /// <summary>
+        /// 音量的额外百分比乘数
+        /// </summary>
+        private static float _soundFade = 0f;
         /// <summary>
         /// 已加载音乐的列表
         /// </summary>
-        private static List<SoundEffect> _loadedSounds = [];
+        private static readonly List<SoundEffect> _loadedSounds = [];
         /// <summary>
         /// 已加载音乐的路径列表
         /// </summary>
-        private static List<string> _loadedSoundFiles = [];
+        private static readonly List<string> _loadedSoundFiles = [];
         /// <summary>
         /// 一轮循环中播放过的音乐
         /// </summary>
-        private static List<int> _rolledSoundIndex = [];
+        private static readonly List<int> _rolledSoundIndex = [];
         /// <summary>
         /// 上次播放的音乐索引值
         /// </summary>
@@ -62,9 +71,9 @@ namespace TouhouPets
         /// </summary>
         private static bool _backgroundAudio = false;
         /// <summary>
-        /// 是否已退出播放
+        /// 退出播放的流程次序
         /// </summary>
-        private static bool _exitPlay = false;
+        private static ExitProcess _exitPlay = ExitProcess.NotExited;
         /// <summary>
         /// 播放模式
         /// </summary>
@@ -92,7 +101,7 @@ namespace TouhouPets
         /// <summary>
         /// 控制台信息头
         /// </summary>
-        private static string _consoleMessageHead { get => $"[{DateTime.Now}] [TouhouPets]: "; }
+        public static string ConsoleMessageHead { get => $"[{DateTime.Now}] [TouhouPets]: "; }
         /// <summary>
         /// 确保文件夹存在
         /// </summary>
@@ -110,10 +119,13 @@ namespace TouhouPets
         {
             if (!Directory.Exists(musicsFolderPath))
             {
-                Console.WriteLine($"{_consoleMessageHead}文件夹 {musicsFolderPath} 未找到！现已生成新的文件夹，请重新加载模组。");
+                Console.WriteLine($"{ConsoleMessageHead}文件夹 {musicsFolderPath} 未找到！现已生成新的文件夹并跳过加载环节。");
                 Directory.CreateDirectory(musicsFolderPath);
                 return;
             }
+
+            _rolledSoundIndex.Clear();
+            _noSoundFile = false;
 
             // 清空已加载的音效
             foreach (var sound in _loadedSounds)
@@ -122,13 +134,10 @@ namespace TouhouPets
             }
             _loadedSounds.Clear();
             _loadedSoundFiles.Clear();
-            _rolledSoundIndex.Clear();
-            _noSoundFile = false;
-
 
             // 加载所有支持的音频文件
-            string[] supportedExtensions = [".mp3", ".ogg", ".wav"];
             IEnumerable<string> allFolder = Directory.EnumerateFiles(musicsFolderPath, ".", SearchOption.AllDirectories);
+            string[] supportedExtensions = [".mp3", ".ogg", ".wav"];
             foreach (string file in allFolder)
             {
                 string fileName = Path.GetFileName(file);
@@ -138,28 +147,27 @@ namespace TouhouPets
 
                 try
                 {
-                    Console.WriteLine($"{_consoleMessageHead}正在加载 {fileName}");
+                    Console.WriteLine($"{ConsoleMessageHead}正在加载 {fileName}");
                     SoundEffect sound = LoadSoundEffect(file, extension);
                     if (sound != null)
                     {
                         _loadedSounds.Add(sound);
                         _loadedSoundFiles.Add(file);
-                        Console.WriteLine($"{_consoleMessageHead}已加载 {fileName}");
+                        Console.WriteLine($"{ConsoleMessageHead}已加载 {fileName}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{_consoleMessageHead}加载文件 {file} 失败：{ex.Message}");
+                    Console.WriteLine($"{ConsoleMessageHead}加载音频 {file} 失败：{ex.Message}");
                 }
             }
 
             if (_loadedSounds.Count == 0)
             {
-                Console.WriteLine($"{_consoleMessageHead}未找到任何支持的音频文件。");
+                Console.WriteLine($"{ConsoleMessageHead}未找到任何支持的音频文件。");
                 _noSoundFile = true;
             }
         }
-
         /// <summary>
         /// 根据文件扩展名加载音频
         /// </summary>
@@ -169,13 +177,13 @@ namespace TouhouPets
             {
                 case ".wav":
                 case ".ogg":
-                    using (var fileStream = File.OpenRead(filePath))
+                    using (FileStream fileStream = File.OpenRead(filePath))
                     {
                         return LoadOggFile(filePath);
                     }
 
                 case ".mp3":
-                    using (var fileStream = File.OpenRead(filePath))
+                    using (FileStream fileStream = File.OpenRead(filePath))
                     {
                         return LoadMp3File(filePath);
                     }
@@ -185,13 +193,38 @@ namespace TouhouPets
             }
         }
         /// <summary>
+        /// 检测是否有任何可播放曲目
+        /// </summary>
+        /// <returns></returns>
+        public static bool AnyFileFound()
+        {
+            int count = 0;
+            for (int i = 0; i < _loadedSoundFiles.Count; i++)
+            {
+                if (!File.Exists(_loadedSoundFiles[i]))
+                    count++;
+            }
+            if (count >= _loadedSoundFiles.Count)
+            {
+                Main.NewText(Language.GetTextValue("Mods.TouhouPets.NoAnyFile"), Color.Yellow);
+                Main.LocalPlayer.GetModPlayer<ConcertPlayer>().customMode = false;
+                Stop();
+                PostStop();
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
         /// 播放指定索引的音乐文件
         /// </summary>
         /// <param name="index">索引值</param>
         /// <param name="printMessage">是否打印播放信息</param>
         public static void PlayMusic(int index, bool printMessage = true)
         {
-            _exitPlay = false;
+            _exitPlay = ExitProcess.NotExited;
+
+            if (!AnyFileFound())
+                return;
 
             // 先停止当前播放
             Stop();
@@ -200,12 +233,17 @@ namespace TouhouPets
             string fileName = Path.GetFileName(_loadedSoundFiles[index]);
             if (!File.Exists(_loadedSoundFiles[index]))
             {
-                ModUtils.WriteLineOrNewTextNotice(Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName));
-                return;
+                Main.NewText(Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName), Color.Yellow);
+                Console.WriteLine(ConsoleMessageHead + Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName));
+                index++;
+                if (index >= _loadedSoundFiles.Count - 1)
+                {
+                    index = 0;
+                }
             }
             try
             {
-                SoundEffect sound = LoadedSounds[index];
+                SoundEffect sound = _loadedSounds[index];
                 _currentSoundInstance = sound.CreateInstance();
                 _currentSoundInstance.Play();
                 _lastPlayedSound = index;
@@ -217,11 +255,12 @@ namespace TouhouPets
                 }
 
                 if (printMessage)
-                    Console.WriteLine($"{_consoleMessageHead}正在播放：{fileName}");
+                    Console.WriteLine($"{ConsoleMessageHead}正在播放：{fileName}");
             }
             catch (Exception ex)
             {
-                ModUtils.WriteLineOrNewTextNotice(Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message));
+                Main.NewText(Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message), Color.Yellow);
+                Console.WriteLine(ConsoleMessageHead + Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message));
             }
         }
         /// <summary>
@@ -230,10 +269,10 @@ namespace TouhouPets
         public static void PostStop()
         {
             _rolledSoundIndex.Clear();
-            if (!_exitPlay)
+            if (_exitPlay == ExitProcess.NotExited)
             {
-                Console.WriteLine($"{_consoleMessageHead}已退出播放");
-                _exitPlay = true;
+                Console.WriteLine($"{ConsoleMessageHead}已退出播放。");
+                _exitPlay = ExitProcess.PrintMessage;
             }
         }
         /// <summary>
@@ -248,8 +287,8 @@ namespace TouhouPets
 
             SetVolume();
 
-            //当演出停止、不在自选模式或位于主界面时，退出播放
-            if (Main.gameMenu || !bp.ShouldBandPlaying || !bp.customMode)
+            //当演出停止或不在自选模式时，退出播放
+            if (!bp.ShouldBandPlaying || !bp.customMode)
             {
                 StopGradually();
                 PostStop();
@@ -276,7 +315,7 @@ namespace TouhouPets
         /// </summary>
         public static void SetVolume()
         {
-            if(!_exitPlay)
+            if (_exitPlay <= 0)
             {
                 //当月总出现前逐渐静音
                 if (NPC.MoonLordCountdown > 0)
@@ -302,7 +341,7 @@ namespace TouhouPets
         /// <param name="inLoop">是否处于自动循环中，是则单曲循环时不会频繁打印播放信息</param>
         public static void RollListedMusic(bool manual, bool inLoop)
         {
-            if (NoCustomMusic)
+            if (_noSoundFile)
                 return;
 
             //一次循环中可用曲目的列表
@@ -312,7 +351,7 @@ namespace TouhouPets
             if (_rolledSoundIndex.Count >= _loadedSounds.Count && _playMode != PlayModeID.SingleLoop)
             {
                 _rolledSoundIndex.Clear();
-                Console.WriteLine($"{_consoleMessageHead}已完成一次列表播放。");
+                Console.WriteLine($"{ConsoleMessageHead}已完成一次列表播放。");
             }
             for (int i = 0; i < _loadedSounds.Count; i++)
             {
@@ -367,10 +406,11 @@ namespace TouhouPets
         /// </summary>
         public static void StopGradually()
         {
-            _soundFade = MathHelper.Clamp(_soundFade - 0.01f, 0f, 1f);
-            if (_soundFade <= 0f)
+            _soundFade = MathHelper.Clamp(_soundFade - 0.005f, 0f, 1f);
+            if (_soundFade <= 0f && _exitPlay == ExitProcess.PrintMessage)
             {
                 Stop();
+                _exitPlay = ExitProcess.Exited;
             }
         }
         #region 加载非WAV文件
@@ -379,26 +419,24 @@ namespace TouhouPets
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static SoundEffect LoadOggFile(string path)
+        public static SoundEffect LoadOggFile(string filePath)
         {
-            using (var vorbis = new VorbisReader(path))
+            using VorbisReader vorbis = new(filePath);
+            float[] samples = new float[vorbis.TotalSamples * vorbis.Channels];
+            vorbis.ReadSamples(samples, 0, samples.Length);
+
+            byte[] buffer = new byte[samples.Length * 2];
+            for (int i = 0; i < samples.Length; i++)
             {
-                float[] samples = new float[vorbis.TotalSamples * vorbis.Channels];
-                vorbis.ReadSamples(samples, 0, samples.Length);
-
-                byte[] buffer = new byte[samples.Length * 2];
-                for (int i = 0; i < samples.Length; i++)
-                {
-                    short val = (short)(samples[i] * short.MaxValue);
-                    buffer[i * 2] = (byte)(val & 0xFF);
-                    buffer[i * 2 + 1] = (byte)((val >> 8) & 0xFF);
-                }
-
-                return new SoundEffect(
-                    buffer,
-                    vorbis.SampleRate,
-                    (AudioChannels)vorbis.Channels);
+                short val = (short)(samples[i] * short.MaxValue);
+                buffer[i * 2] = (byte)(val & 0xFF);
+                buffer[i * 2 + 1] = (byte)((val >> 8) & 0xFF);
             }
+
+            return new SoundEffect(
+                buffer,
+                vorbis.SampleRate,
+                (AudioChannels)vorbis.Channels);
         }
         /// <summary>
         /// 加载.mp3文件
@@ -408,21 +446,20 @@ namespace TouhouPets
         public static SoundEffect LoadMp3File(string filePath)
         {
             // 使用MP3Sharp解码MP3文件
-            using (var mp3Stream = new MP3Stream(filePath))
-            using (var memoryStream = new MemoryStream())
-            {
-                // 将解码后的PCM数据写入内存流
-                mp3Stream.CopyTo(memoryStream);
+            using MP3Stream mp3Stream = new(filePath);
+            using var memoryStream = new MemoryStream();
 
-                // 重置流位置以便读取
-                memoryStream.Position = 0;
+            // 将解码后的PCM数据写入内存流
+            mp3Stream.CopyTo(memoryStream);
 
-                // 创建XNA SoundEffect
-                return new SoundEffect(
-                    memoryStream.ToArray(),
-                    mp3Stream.Frequency,
-                    AudioChannels.Stereo);
-            }
+            // 重置流位置以便读取
+            memoryStream.Position = 0;
+
+            // 创建XNA SoundEffect
+            return new SoundEffect(
+                memoryStream.ToArray(),
+                mp3Stream.Frequency,
+                AudioChannels.Stereo);
         }
         #endregion
     }

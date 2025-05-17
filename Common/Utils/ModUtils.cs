@@ -17,21 +17,6 @@ namespace TouhouPets
     public static class ModUtils
     {
         /// <summary>
-        /// 打印文本
-        /// </summary>
-        /// <param name="value">内容</param>
-        public static void WriteLineOrNewTextNotice(params object[] values)
-        {
-            if (Main.gameMenu)
-            {
-                Console.WriteLine(values);
-            }
-            else
-            {
-                Main.NewText(values, Color.Yellow);
-            }
-        }
-        /// <summary>
         /// 判断是否为特定语言
         /// </summary>
         /// <param name="lang"></param>
