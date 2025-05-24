@@ -67,7 +67,6 @@ namespace TouhouPets
             for (int i = 0; i < MusicID.Count; i++)
             {
                 bool drunkReroll = i >= MusicID.OtherworldlyRain && i <= MusicID.OtherworldlyHallow;
-                bool regularReroll = i <= MusicID.OtherworldlyRain && i >= MusicID.OtherworldlyHallow;
 
                 if (bannedMusicList.Contains(i))
                 {
@@ -81,7 +80,7 @@ namespace TouhouPets
                 {
                     continue;
                 }
-                if (!Main.drunkWorld && regularReroll)
+                if (!Main.drunkWorld && !drunkReroll)
                 {
                     continue;
                 }
@@ -153,7 +152,7 @@ namespace TouhouPets
             bool playerUsingItem = Player.itemAnimation > 0;
             bool holdStick = Player.HeldItem.type == ItemType<SupportStick>();
 
-            if (holdStick && playerUsingItem)
+            if (holdStick && playerUsingItem && ManualConcert)
             {
                 ConcertStart = true;
             }

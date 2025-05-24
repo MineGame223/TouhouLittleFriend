@@ -4,14 +4,11 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入了三把闹鬼的乐器和一张唱片
-加入了一根应援棒
+为骚灵乐团的演奏加入自定义音乐模式
 
 修改：
-更改了永远亭集合Buff图标
-中文语言下的对话文本将不再出现连字符
-将幽幽子和妖梦的召唤物合成表中的灵气需求删除，改为需要墓地环境
+应援棒现在会基于乐队状态改变颜色
+修改了应援棒的合成配方
 
 修复：
-修复了英文翻译中大妖精部分对话不正确的问题
-Fixed some English chat texts of Daiyousei that incorrect.
+修复了骚灵乐团在多人模式下可能出现的问题

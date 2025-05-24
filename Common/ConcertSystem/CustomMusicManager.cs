@@ -309,7 +309,14 @@ namespace TouhouPets
                 {
                     //转换是必要的
                     float moonCDPercent = (float)NPC.MoonLordCountdown / (float)NPC.MaxMoonLordCountdown;
-                    moonCDPercent -= 0.5f;
+
+                    //源码的神秘小公式
+                    moonCDPercent *= moonCDPercent;
+                    if ((float)NPC.MoonLordCountdown > (float)NPC.MaxMoonLordCountdown * 0.2f)
+                    {
+                        moonCDPercent = MathHelper.Lerp(0f, 1f, moonCDPercent);
+                    }
+
                     _soundFade = MathHelper.Clamp(moonCDPercent, 0f, 1f);
                 }
                 else
