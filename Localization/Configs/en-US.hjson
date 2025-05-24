@@ -133,8 +133,8 @@ Mods: {
 					Label: Concert Custom Music Mode
 					Tooltip:
 						'''
-						Toggle whether the poltergeist's band can play custom muisc
-						This option will decide whether to load the music files you have put
+						Toggle whether the Poltergeist's Band can play custom music
+						This option will decide whether to load the music files you have put in
 						'''
 				}
 			}
