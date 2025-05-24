@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -52,9 +53,97 @@ namespace TouhouPets
                 );
             }
         }
+        private static void ButtonAction_0(int buttonState, bool buttonDisabled, ConcertPlayer bp)
+        {
+            if (buttonDisabled)
+            {
+                return;
+            }
+            if (Main.mouseLeft && Main.mouseLeftRelease)
+            {
+                if (bp.CustomModeOn)
+                {
+                    if (PlayMode == PlayModeID.SingleLoop)
+                    {
+                        PlayMode = PlayModeID.RandomLoop;
+                    }
+                    else if (PlayMode == PlayModeID.RandomLoop)
+                    {
+                        PlayMode = PlayModeID.ListLoop;
+                    }
+                    else if (PlayMode == PlayModeID.ListLoop)
+                    {
+                        PlayMode = PlayModeID.SingleLoop;
+                    }
+                }
+            }
+            string stateText = buttonState switch
+            {
+                1 => Language.GetTextValue("Mods.TouhouPets.RandomLoop"),
+                2 => Language.GetTextValue("Mods.TouhouPets.ListLoop"),
+                _ => Language.GetTextValue("Mods.TouhouPets.SingleLoop"),
+            };
+            Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.LoopDisplay", stateText));
+        }
+        private static void ButtonAction_1(int buttonState, bool buttonDisabled, ConcertPlayer bp)
+        {
+            if (buttonDisabled)
+            {
+                return;
+            }
+            if (Main.mouseLeft && Main.mouseLeftRelease)
+            {
+                bool canClick = true;
+                if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
+                {
+                    //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomMusicDisabledNotice"), Color.Yellow);
+                    canClick = false;
+                }
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                {
+                    //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomNotAllowedNotice"), Color.Yellow);
+                    canClick = false;
+                }
+                if (NoCustomMusic)
+                {
+                    Main.NewText(Language.GetTextValue("Mods.TouhouPets.NoCustomMusicNotice"), Color.Yellow);
+                    canClick = false;
+                }
+                if (canClick)
+                {
+                    bp.CustomModeOn = !bp.CustomModeOn;
+                    bp.MusicRerolled = false;
+                }
+            }
+            string stateText = buttonState switch
+            {
+                1 => Language.GetTextValue("Mods.TouhouPets.TurnOn"),
+                _ => Language.GetTextValue("Mods.TouhouPets.TurnOff"),
+            };
+            Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.CustomDisplay", stateText));
+        }
+        private static void ButtonAction_2(int buttonState, bool buttonDisabled, ConcertPlayer bp)
+        {
+            if (buttonDisabled)
+            {
+                return;
+            }
+            if (Main.mouseLeft && Main.mouseLeftRelease)
+            {
+                if (bp.CustomModeOn)
+                {
+                    EnableBackgroundAudio = !EnableBackgroundAudio;
+                }
+            }
+            string stateText = buttonState switch
+            {
+                1 => Language.GetTextValue("Mods.TouhouPets.TurnOn"),
+                _ => Language.GetTextValue("Mods.TouhouPets.TurnOff"),
+            };
+            Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.BackAudioDisplay", stateText));
+        }
         private static void DrawConcertUI()
         {
-            bool[] buttonDisable = new bool[3];
             Player player = Main.LocalPlayer;
             ConcertPlayer bp = player.GetModPlayer<ConcertPlayer>();
 
@@ -67,143 +156,76 @@ namespace TouhouPets
             {
                 buttonOpacity = Math.Clamp(buttonOpacity -= 0.1f, 0, 1);
             }
-
             if (buttonOpacity <= 0f)
             {
                 return;
             }
-            int button1State, button2State, button3State;
+
             Texture2D uiImage = AltVanillaFunction.GetExtraTexture("ConcertUI");
             float yPos = -50 + player.gfxOffY;
             Vector2 buttonSize = new Vector2(uiImage.Width / 3, uiImage.Height / 3);
-            Vector2 buttonPos1 = player.Center + new Vector2(0, yPos) - Main.screenPosition - buttonSize / 2;
-            Rectangle button1 = new Rectangle((int)buttonPos1.X, (int)buttonPos1.Y, (int)buttonSize.X, (int)buttonSize.Y);
-            Vector2 buttonPos2 = player.Center + new Vector2(-50, yPos) - Main.screenPosition - buttonSize / 2;
-            Rectangle button2 = new Rectangle((int)buttonPos2.X, (int)buttonPos2.Y, (int)buttonSize.X, (int)buttonSize.Y);
-            Vector2 buttonPos3 = player.Center + new Vector2(50, yPos) - Main.screenPosition - buttonSize / 2;
-            Rectangle button3 = new Rectangle((int)buttonPos3.X, (int)buttonPos3.Y, (int)buttonSize.X, (int)buttonSize.Y);
 
-            if (!PlayerInput.IgnoreMouseInterface)
-            {
-                if (button1.Contains(new Point(Main.mouseX, Main.mouseY)))
-                {
-                    player.mouseInterface = true;
-                    if (Main.mouseLeft && Main.mouseLeftRelease)
-                    {
-                        if (bp.CustomModeOn)
-                        {
-                            if (PlayMode == PlayModeID.SingleLoop)
-                            {
-                                PlayMode = PlayModeID.RandomLoop;
-                            }
-                            else if (PlayMode == PlayModeID.RandomLoop)
-                            {
-                                PlayMode = PlayModeID.ListLoop;
-                            }
-                            else if (PlayMode == PlayModeID.ListLoop)
-                            {
-                                PlayMode = PlayModeID.SingleLoop;
-                            }
-                        }
-                    }
-                    string stateText = (int)PlayMode switch
-                    {
-                        1 => Language.GetTextValue("Mods.TouhouPets.RandomLoop"),
-                        2 => Language.GetTextValue("Mods.TouhouPets.ListLoop"),
-                        _ => Language.GetTextValue("Mods.TouhouPets.SingleLoop"),
-                    };
-                    Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.LoopDisplay", stateText));
-                }
-                if (button2.Contains(new Point(Main.mouseX, Main.mouseY)))
-                {
-                    player.mouseInterface = true;
+            int[] buttonState = new int[3];
+            bool[] buttonDisable = new bool[3];
+            Vector2[] buttonPos = new Vector2[3];
+            Rectangle[] buttonRect = new Rectangle[3];
 
-                    if (Main.mouseLeft && Main.mouseLeftRelease)
-                    {
-                        bool canClick = true;
-                        if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
-                        {
-                            //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomMusicDisabledNotice"), Color.Yellow);
-                            canClick = false;
-                        }
-                        if (Main.netMode != NetmodeID.SinglePlayer)
-                        {
-                            //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomNotAllowedNotic"), Color.Yellow);
-                            canClick = false;
-                        }
-                        if (NoCustomMusic)
-                        {
-                            Main.NewText(Language.GetTextValue("Mods.TouhouPets.NoCustomMusicNotice"), Color.Yellow);
-                            canClick = false;
-                        }
-                        if (canClick)
-                        {
-                            bp.CustomModeOn = !bp.CustomModeOn;
-                            bp.MusicRerolled = false;
-                        }
-                    }
-                    string stateText;
-                    if (bp.CustomModeOn)
-                    {
-                        stateText = Language.GetTextValue("Mods.TouhouPets.TurnOn");
-                    }
-                    else
-                    {
-                        stateText = Language.GetTextValue("Mods.TouhouPets.TurnOff");
-                    }
-                    Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.CustomDisplay", stateText));
-                }
-                if (button3.Contains(new Point(Main.mouseX, Main.mouseY)))
-                {
-                    player.mouseInterface = true;
-
-                    if (Main.mouseLeft && Main.mouseLeftRelease)
-                    {
-                        if (bp.CustomModeOn)
-                        {
-                            EnableBackgroundAudio = !EnableBackgroundAudio;
-                        }
-                    }
-                    string stateText;
-                    if (EnableBackgroundAudio)
-                    {
-                        stateText = Language.GetTextValue("Mods.TouhouPets.TurnOn");
-                    }
-                    else
-                    {
-                        stateText = Language.GetTextValue("Mods.TouhouPets.TurnOff");
-                    }
-                    Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.BackAudioDisplay", stateText));
-                }
-            }
             if (!bp.CustomModeOn)
             {
                 buttonDisable[0] = true;
                 buttonDisable[2] = true;
             }
-            button1State = (int)PlayMode;
-            button2State = bp.CustomModeOn ? 1 : 0;
-            button3State = EnableBackgroundAudio ? 1 : 0;
+            buttonState[0] = (int)PlayMode;
+            buttonState[1] = bp.CustomModeOn ? 1 : 0;
+            buttonState[2] = EnableBackgroundAudio ? 1 : 0;
             if (!bp.CustomModeOn)
             {
-                button1State = 0;
-                button3State = 0;
+                buttonState[0] = 0;
+                buttonState[2] = 0;
             }
 
-            Color buttonColor = buttonDisable[0] ? Color.DarkSlateGray : Color.White;
-            Main.spriteBatch.TeaNPCDraw(uiImage, buttonPos1
-                , new Rectangle(button1State * (int)buttonSize.X, 0, (int)buttonSize.X, (int)buttonSize.Y)
-                , buttonColor * buttonOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+            for (int i = 0; i < 3; i++)
+            {
+                float xPos = i switch
+                {
+                    0 => -50,
+                    2 => 50,
+                    _ => 0
+                };
 
-            buttonColor = buttonDisable[1] ? Color.DarkSlateGray : Color.White;
-            Main.spriteBatch.TeaNPCDraw(uiImage, buttonPos2
-                , new Rectangle(button2State * (int)buttonSize.X, (int)buttonSize.Y, (int)buttonSize.X, (int)buttonSize.Y)
-                , buttonColor * buttonOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                buttonPos[i] = player.Center + new Vector2(xPos, yPos) - Main.screenPosition - buttonSize / 2;
+                buttonRect[i] = new((int)buttonPos[i].X, (int)buttonPos[i].Y, (int)buttonSize.X, (int)buttonSize.Y);
 
-            buttonColor = buttonDisable[2] ? Color.DarkSlateGray : Color.White;
-            Main.spriteBatch.TeaNPCDraw(uiImage, buttonPos3
-                , new Rectangle(button3State * (int)buttonSize.X, (int)buttonSize.Y * 2, (int)buttonSize.X, (int)buttonSize.Y)
-                , buttonColor * buttonOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                if (!PlayerInput.IgnoreMouseInterface)
+                {
+                    if (buttonRect[i].Contains(new Point(Main.mouseX, Main.mouseY)))
+                    {
+                        player.mouseInterface = true;
+                        switch (i)
+                        {
+                            case 1:
+                                ButtonAction_1(buttonState[i], buttonDisable[i], bp);
+                                break;
+
+                            case 2:
+                                ButtonAction_2(buttonState[i], buttonDisable[i], bp);
+                                break;
+
+                            default:
+                                ButtonAction_0(buttonState[i], buttonDisable[i], bp);
+                                break;
+                        }
+                    }
+                }
+
+                if (!buttonDisable[i])
+                {
+                    Color buttonColor = buttonDisable[i] ? Color.DarkSlateGray : Color.White;
+                    Main.spriteBatch.TeaNPCDraw(uiImage, buttonPos[i]
+                        , new Rectangle(buttonState[i] * (int)buttonSize.X, (int)buttonSize.Y * i, (int)buttonSize.X, (int)buttonSize.Y)
+                        , buttonColor * buttonOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
+                }
+            }
         }
     }
 }

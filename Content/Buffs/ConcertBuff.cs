@@ -11,5 +11,10 @@ namespace TouhouPets.Content.Buffs
             Main.buffNoSave[Type] = true;
             BuffID.Sets.TimeLeftDoesNotDecrease[Type] = true;
         }
+        public override bool RightClick(int buffIndex)
+        {
+            Main.LocalPlayer.GetModPlayer<ConcertPlayer>().ConcertStart = false;
+            return true;
+        }
     }
 }
