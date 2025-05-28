@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
@@ -28,12 +27,12 @@ namespace TouhouPets.Content.Items.PetItems
             Item solution = Main.LocalPlayer.ChooseAmmo(new Item(ItemID.Clentaminator2));
             if (solution == null || solution.IsAir)
             {
-                tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.YukaTips2"));
+                tooltips.InsertTooltipLine(Mod.GetLocalization("YukaTips2").Value);
                 return;
             }
 
             if (Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(solution.type))
-                tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.YukaTips"));
+                tooltips.InsertTooltipLine(Mod.GetLocalization("YukaTips").Value);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

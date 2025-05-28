@@ -7,7 +7,7 @@ namespace TouhouPets
 {
     public class TouhouPets : Mod
     {
-        public static PetChatRoom[] ChatRoom = new PetChatRoom[ChatRoomSystem.MaxChatRoom];
+        public static PetChatRoom[] ChatRoom => new PetChatRoom[ChatRoomSystem.MaxChatRoom];
         private static TouhouPets instance;
         public static TouhouPets Instance { get => instance; set => instance = value; }
         public override void Load()

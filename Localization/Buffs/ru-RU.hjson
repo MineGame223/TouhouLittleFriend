@@ -309,30 +309,30 @@ Mods: {
 
 			LunasaBuff: {
 				// DisplayName: Poltergeist Violinist
-				// Description: Listening to the notes of melancholic
+				// Description: Listening to the notes of melancholy
 			}
 
 			MerlinBuff: {
 				// DisplayName: Poltergeist Trumpeter
-				// Description: Listening to the notes of maniac
+				// Description: Listening to the notes of mania
 			}
 
 			LyricaBuff: {
 				// DisplayName: Poltergeist Keyboardist
-				// Description: Listening to the notes of illusionary
+				// Description: Listening to the notes of illusion
 			}
 
 			PoltergeistBuff: {
 				// DisplayName: Poltergeist's Band
-				// Description: Ensemble from the nether!
+				// Description: Ensemble from the Netherworld!
 			}
 
 			ConcertBuff: {
 				// DisplayName: Poltergeist's Concert
 				/* Description:
 					'''
-					The Poltergeist's Band rised a concert because your invitation
-					Right click can cancel the concert
+					The Poltergeist's Band started a concert from your invitation
+					Right-click to cancel the concert
 					''' */
 			}
 		}

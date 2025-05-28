@@ -31,6 +31,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(3);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hecatia_Cloth");
+        private readonly Texture2D planetTex = AltVanillaFunction.GetExtraTexture("HecatiaPlanets");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
@@ -220,11 +221,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int dummyTimer = 0;
         private void DrawPlantes(Vector2 pos, Color color, SpriteEffects effect)
         {
-            Texture2D t2 = AltVanillaFunction.GetExtraTexture("HecatiaPlanets");
+            Texture2D t2 = planetTex;
             int height2 = t2.Height / 3;
-            Rectangle rect3 = new Rectangle(0, 0 * height2, t2.Width, height2);
-            Rectangle rect4 = new Rectangle(0, 1 * height2, t2.Width, height2);
-            Rectangle rect5 = new Rectangle(0, 2 * height2, t2.Width, height2);
+            Rectangle rect3 = new(0, 0 * height2, t2.Width, height2);
+            Rectangle rect4 = new(0, 1 * height2, t2.Width, height2);
+            Rectangle rect5 = new(0, 2 * height2, t2.Width, height2);
             Vector2 orig2 = rect3.Size() / 2;
             //异界 -0
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[0].X * -Projectile.spriteDirection, plantePos[0].Y).RotatedBy(Projectile.rotation), rect3, color, Projectile.rotation, orig2, Projectile.scale * 1.12f, effect, 0f);

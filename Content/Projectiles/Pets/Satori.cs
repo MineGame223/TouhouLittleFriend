@@ -86,12 +86,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
             int height = t.Height / Main.projFrames[Type];
-            Rectangle rect = new Rectangle(t.Width / 2, 4 * height, t.Width / 2, height);
+            Rectangle rect = new (t.Width / 2, 4 * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
 
             float s = 1 + Main.rand.NextFloat(0.9f, 1.1f);
-            Texture2D glow = AltVanillaFunction.GetExtraTexture("SatoriEyeSpark");
-            Texture2D aura = AltVanillaFunction.GetExtraTexture("SatoriEyeAura");
+            Texture2D spark = AssetLoader.GlowSpark.Value;
+            Texture2D aura = AssetLoader.GlowAura.Value;
 
             Color clr = Projectile.GetAlpha(Color.DeepPink).ModifiedAlphaColor();
             for (int i = 0; i < 2; i++)
@@ -103,8 +103,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             for (int i = 0; i < 8; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
-                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.TeaNPCDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.TeaNPCDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
             }
         }
         public override Color ChatTextColor => new Color(255, 149, 170);

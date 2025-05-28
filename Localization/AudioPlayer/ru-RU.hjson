@@ -11,6 +11,7 @@ Mods: {
 		// SingleLoop: Single Loop
 		// LoopDisplay: Play Mode: {0}
 		// CustomDisplay: Custom Mode: {0}
+		// OpenFolder: Right click to open the custom music folder
 		// BackAudioDisplay: Background Audio: {0}
 		// TurnOn: On
 		// TurnOff: Off

@@ -30,7 +30,7 @@ Mods: {
 			The custom music mode is described as follows:
 			This function can be enabled or disabled by Mod Configs, and it can only be activited in Single-Player Mode
 			If the function is usable ,you can open the control buttons when hold this item
-			When loading mod, it will create a folder called "TouhouPetCustomMusic" under the path "Terreria / tModLoader / Mods", this folder is where you put your music files
+			When loading mod, it will create a folder called "TouhouPetCustomMusic", where you put your music files
 			The available file formats include [c/ffff33:.ogg .mp3 .wav], You should reload the mod after put files in
 			Too many or too large files may make mod loading slowly, please take attention
 			Please don't delete any music files during playing, in order to avoid any errors
@@ -50,7 +50,7 @@ Mods: {
 		// YukaTips2: "[c/33ff33:She has the power to change the environment]"
 		// LettyTips: "[c/ccccff:Will bring winter's cold to other partners]"
 		// KokoroTips: "[c/cc33cc:Restrain somebody's unconscious actions]"
-		// PoltergeistTips: "[c/65efc6:Maybe will hold a concert]"
+		// PoltergeistTips: "[c/65efc6:May hold a concert]"
 		// RaikoTips: "[c/ff6080:Makes the concert more colorful]"
 	}
 }

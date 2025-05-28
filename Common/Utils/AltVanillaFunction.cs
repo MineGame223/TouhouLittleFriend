@@ -55,7 +55,7 @@ namespace TouhouPets
         /// <returns>ModName/Assets/Textures/剩余路径名</returns>
         public static Texture2D GetTexture(string postAssetsPath)
         {
-            return Request<Texture2D>($"{nameof(TouhouPets)}/Assets/Textures/" + postAssetsPath).Value;
+            return Request<Texture2D>($"{AssetLoader.TexturePath}/{postAssetsPath}").Value;
         }
         /// <summary>
         /// 快速获取Extra材质
@@ -64,7 +64,7 @@ namespace TouhouPets
         /// <returns>TeaNPC/Assets/Textures/Extra/剩余路径名</returns>
         public static Texture2D GetExtraTexture(string path)
         {
-            return GetTexture("Extra/" + path);
+            return GetTexture($"Extra/{path}");
         }
         /// <summary>
         /// 快速获取Glow材质
@@ -73,7 +73,7 @@ namespace TouhouPets
         /// <returns>TeaNPC/Assets/Textures/Glow/剩余路径名</returns>
         public static Texture2D GetGlowTexture(string path)
         {
-            return GetTexture("Glow/" + path);
+            return GetTexture($"Glow/{path}");
         }
         public static Texture2D ProjectileTexture(int id)
         {

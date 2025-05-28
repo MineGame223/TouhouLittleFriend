@@ -11,6 +11,7 @@ Mods: {
 		SingleLoop: 单曲循环
 		LoopDisplay: 播放模式：{0}
 		CustomDisplay: 自选模式：{0}
+		OpenFolder: 右键点击打开自选音乐文件夹
 		BackAudioDisplay: 后台播放：{0}
 		TurnOn: 开启
 		TurnOff: 关闭
