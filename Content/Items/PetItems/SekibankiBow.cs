@@ -8,10 +8,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class SekibankiBow : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {            
             Item.DefaultToVanitypet(ProjectileType<Sekibanki>(), BuffType<SekibankiBuff>());

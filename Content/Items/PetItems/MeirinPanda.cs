@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
@@ -8,10 +9,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class MeirinPanda : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ProjectileType<Meirin>(), BuffType<MeirinBuff>());

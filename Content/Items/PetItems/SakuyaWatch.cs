@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
@@ -8,10 +9,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class SakuyaWatch : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {            
             Item.DefaultToVanitypet(ProjectileType<Sakuya>(), BuffType<SakuyaBuff>());
@@ -21,6 +18,20 @@ namespace TouhouPets.Content.Items.PetItems
         {
             player.AddBuff(Item.buffType, 2);
             return false;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+            .AddIngredient(ItemID.SilverWatch, 1)
+            .AddTile(TileID.CrystalBall)
+            .DisableDecraft()
+            .Register();
+
+            CreateRecipe()
+            .AddIngredient(ItemID.TungstenWatch, 1)
+            .AddTile(TileID.CrystalBall)
+            .DisableDecraft()
+            .Register();
         }
     }
 }

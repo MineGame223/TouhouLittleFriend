@@ -34,6 +34,7 @@ Mods: {
 			The available file formats include [c/ffff33:.ogg .mp3 .wav], You should reload the mod after put files in
 			Too many or too large files may make mod loading slowly, please take attention
 			Please don't delete any music files during playing, in order to avoid any errors
+			[c/ffff33:Be sure that the custom music files could be read by Terraria, if they didn't work, try to switch the format]
 			'''
 		MurasaTips: "[c/ff0000:DO NOT ENTER WATER WITH HER!]"
 		HinaTips: "[c/009966:Keeps you away from bad luck]"

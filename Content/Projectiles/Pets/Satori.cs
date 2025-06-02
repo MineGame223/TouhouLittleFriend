@@ -42,7 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
         private float eyeSparkScale;
-        private Vector2 eyePostion,eyePositionOffset;
+        private Vector2 eyePostion, eyePositionOffset;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Satori_Cloth");
@@ -51,6 +51,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 1);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -86,7 +90,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
             int height = t.Height / Main.projFrames[Type];
-            Rectangle rect = new (t.Width / 2, 4 * height, t.Width / 2, height);
+            Rectangle rect = new(t.Width / 2, 4 * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
 
             float s = 1 + Main.rand.NextFloat(0.9f, 1.1f);
@@ -136,6 +140,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateClothFrame();
             UpdateEyePosition();
+            UpdateMiscData();
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -178,23 +183,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            UpdateMiscData();
         }
         private void UpdateMiscData()
         {
-            if (CurrentState != States.MindReading)
+            float muti = Projectile.isAPreviewDummy ? 2f : 1f;
+            if (Projectile.frame == 2)
             {
-                if (eyeSparkScale > 0)
-                    eyeSparkScale -= 0.02f;
+                eyeSparkScale = MathHelper.Clamp(eyeSparkScale += 0.01f * muti * 2, 0, 1);
             }
-            else if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
+            else
             {
-                Owner.detectCreature = true;
+                eyeSparkScale = MathHelper.Clamp(eyeSparkScale -= 0.02f * muti, 0, 1);
             }
-
-            if (eyeSparkScale < 0)
-                eyeSparkScale = 0;
         }
         private void UpdateEyePosition()
         {
@@ -250,6 +250,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void MindReading()
         {
+            if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
+            {
+                Owner.detectCreature = true;
+            }
             if (++Projectile.frameCounter > 8)
             {
                 Projectile.frameCounter = 0;
@@ -258,9 +262,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame >= 2)
             {
                 Projectile.frame = 2;
-
-                if (eyeSparkScale < 1)
-                    eyeSparkScale += 0.01f;
             }
             Timer++;
             if (OwnerIsMyPlayer && Timer > RandomCount)

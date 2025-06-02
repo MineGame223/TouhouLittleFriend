@@ -11,8 +11,7 @@ namespace TouhouPets.Content.Items.PetItems
     {
         public override void SetStaticDefaults()
         {
-            Item.SacrificeCountNeeded(1);
-            Terraria.ID.ItemID.Sets.ShimmerTransformToItem[Type] = ItemType<AliceOldDoll>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ItemType<AliceOldDoll>();
         }
         public override void SetDefaults()
         {            

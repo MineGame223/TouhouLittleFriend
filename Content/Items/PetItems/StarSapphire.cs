@@ -9,10 +9,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class StarSapphire : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;

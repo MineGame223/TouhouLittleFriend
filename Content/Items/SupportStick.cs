@@ -116,6 +116,7 @@ namespace TouhouPets.Content.Items
             .AddIngredient(ItemID.Gel, 30)
             .AddTile(TileID.WorkBenches)
             .AddCondition(Condition.InGraveyard)
+            .DisableDecraft()
             .Register();
         }
     }

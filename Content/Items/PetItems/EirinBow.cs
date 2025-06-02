@@ -9,10 +9,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class EirinBow : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ProjectileType<Eirin>(), BuffType<EirinBuff>());

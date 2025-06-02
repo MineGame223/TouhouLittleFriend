@@ -9,10 +9,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class LettyGlobe : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {            
             Item.DefaultToVanitypet(ProjectileType<Letty>(), BuffType<LettyBuff>());
@@ -26,7 +22,7 @@ namespace TouhouPets.Content.Items.PetItems
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ItemID.Glass, 30)
+            .AddIngredient(ItemID.Glass, 10)
             .AddIngredient(ItemID.SnowBlock, 10)
             .AddIngredient(ItemID.BorealWood, 5)
             .AddTile(TileID.WorkBenches)

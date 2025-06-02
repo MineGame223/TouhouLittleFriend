@@ -70,7 +70,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             ProjectileID.Sets.CharacterPreviewAnimations[Type] =
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WithCode(DisappearOnSelect);
-                //.WhenSelected(15, 2, 5);
         }
         private void DisappearOnSelect(Projectile proj, bool walking)
         {

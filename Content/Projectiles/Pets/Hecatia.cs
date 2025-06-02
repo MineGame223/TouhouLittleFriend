@@ -21,7 +21,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int PlanteState
         {
             get => (int)Projectile.ai[2];
-            set => Projectile.ai[2] = value;
+            set
+            {
+                Projectile.ai[2] = value;
+                PlanteTimer = 1f;
+            }
+        }
+        private float PlanteTimer
+        {
+            get => Projectile.localAI[0];
+            set=> Projectile.localAI[0] = value;
         }
 
         private int blinkFrame, blinkFrameCounter;
@@ -227,50 +236,35 @@ namespace TouhouPets.Content.Projectiles.Pets
             Rectangle rect4 = new(0, 1 * height2, t2.Width, height2);
             Rectangle rect5 = new(0, 2 * height2, t2.Width, height2);
             Vector2 orig2 = rect3.Size() / 2;
-            //异界 -0
+            //异界 - 0
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[0].X * -Projectile.spriteDirection, plantePos[0].Y).RotatedBy(Projectile.rotation), rect3, color, Projectile.rotation, orig2, Projectile.scale * 1.12f, effect, 0f);
-            //地球 -1
+            //地球 - 1
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[1].X * -Projectile.spriteDirection, plantePos[1].Y).RotatedBy(Projectile.rotation), rect4, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
-            //月球 -2
+            //月球 - 2
             Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[2].X * -Projectile.spriteDirection, plantePos[2].Y).RotatedBy(Projectile.rotation), rect5, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
         }
         private void UpdateWorldState()
         {
+            PlanteTimer = MathHelper.Clamp(PlanteTimer - 0.016f, 0, 1);
+
             if (Projectile.isAPreviewDummy)
             {
                 dummyTimer++;
-                if (dummyTimer >= 120)
+                if (dummyTimer >= 90)
                 {
                     dummyTimer = 0;
                     PlanteState++;
                 }
             }
-            //懒得改
-            float xSpeed = 1.5f;
             if (PlanteState > 2)
             {
                 PlanteState = 0;
             }
             if (PlanteState == 1)
             {
-                if (plantePos[1].X > 0)
-                    plantePos[1].X--;
-                if (plantePos[1].X < 0)
-                    plantePos[1].X++;
-                if (plantePos[1].Y > -27)
-                    plantePos[1].Y--;
-
-                plantePos[2].X += xSpeed;
-                if (plantePos[2].Y > -5)
-                    plantePos[2].Y--;
-                if (plantePos[2].Y < -5)
-                    plantePos[2].Y++;
-
-                plantePos[0].X -= xSpeed;
-                if (plantePos[0].Y > -5)
-                    plantePos[0].Y--;
-                if (plantePos[0].Y < -5)
-                    plantePos[0].Y++;
+                plantePos[1] = Vector2.Lerp(new Vector2(0, -27), plantePos[1], PlanteTimer);
+                plantePos[2] = Vector2.Lerp(new Vector2(20, -5), plantePos[2], PlanteTimer);
+                plantePos[0] = Vector2.Lerp(new Vector2(-20, -5), plantePos[0], PlanteTimer);
 
                 bodyAlpha[0] -= 0.02f;
                 bodyAlpha[1] += 0.02f;
@@ -278,24 +272,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (PlanteState == 2)
             {
-                if (plantePos[2].X > 0)
-                    plantePos[2].X--;
-                if (plantePos[2].X < 0)
-                    plantePos[2].X++;
-                if (plantePos[2].Y > -27)
-                    plantePos[2].Y--;
-
-                plantePos[0].X += xSpeed;
-                if (plantePos[0].Y > -5)
-                    plantePos[0].Y--;
-                if (plantePos[0].Y < -5)
-                    plantePos[0].Y++;
-
-                plantePos[1].X -= xSpeed;
-                if (plantePos[1].Y > -5)
-                    plantePos[1].Y--;
-                if (plantePos[1].Y < -5)
-                    plantePos[1].Y++;
+                plantePos[2] = Vector2.Lerp(new Vector2(0, -27), plantePos[2], PlanteTimer);
+                plantePos[0] = Vector2.Lerp(new Vector2(20, -5), plantePos[0], PlanteTimer);
+                plantePos[1] = Vector2.Lerp(new Vector2(-20, -5), plantePos[1], PlanteTimer);
 
                 bodyAlpha[0] -= 0.02f;
                 bodyAlpha[1] -= 0.02f;
@@ -303,24 +282,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                if (plantePos[0].X > 0)
-                    plantePos[0].X--;
-                if (plantePos[0].X < 0)
-                    plantePos[0].X++;
-                if (plantePos[0].Y > -27)
-                    plantePos[0].Y--;
-
-                plantePos[1].X += xSpeed;
-                if (plantePos[1].Y > -5)
-                    plantePos[1].Y--;
-                if (plantePos[1].Y < -5)
-                    plantePos[1].Y++;
-
-                plantePos[2].X -= xSpeed;
-                if (plantePos[2].Y > -5)
-                    plantePos[2].Y--;
-                if (plantePos[2].Y < -5)
-                    plantePos[2].Y++;
+                plantePos[0] = Vector2.Lerp(new Vector2(0, -27), plantePos[0], PlanteTimer);
+                plantePos[1] = Vector2.Lerp(new Vector2(20, -5), plantePos[1], PlanteTimer);
+                plantePos[2] = Vector2.Lerp(new Vector2(-20, -5), plantePos[2], PlanteTimer);
 
                 bodyAlpha[0] += 0.02f;
                 bodyAlpha[1] -= 0.02f;
@@ -328,30 +292,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             for (int i = 0; i <= 2; i++)
             {
-                if (bodyAlpha[i] > 1)
-                {
-                    bodyAlpha[i] = 1;
-                }
-                if (bodyAlpha[i] < 0)
-                {
-                    bodyAlpha[i] = 0;
-                }
-                if (plantePos[i].X > 20)
-                {
-                    plantePos[i].X = 20;
-                }
-                if (plantePos[i].X < -20)
-                {
-                    plantePos[i].X = -20;
-                }
-                if (plantePos[i].Y > -5)
-                {
-                    plantePos[i].Y = -5;
-                }
-                if (plantePos[i].Y < -27)
-                {
-                    plantePos[i].Y = -27;
-                }
+                bodyAlpha[i] = MathHelper.Clamp(bodyAlpha[i], 0, 1);
             }
         }
         #endregion

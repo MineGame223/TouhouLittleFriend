@@ -58,6 +58,10 @@ namespace TouhouPets
         private static void CommonLoot(NPC npc, NPCLoot npcLoot)
         {
             int enemiesDropRate = 20;
+            if (npc.type == NPCID.WyvernHead)
+            {
+                npcLoot.Add(ItemType<MeirinPanda>(), enemiesDropRate - 10);
+            }
             if (npc.type == NPCID.PirateCaptain)
             {
                 npcLoot.Add(ItemType<MurasaBailer>(), enemiesDropRate - 10);

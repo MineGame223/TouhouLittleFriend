@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 
 namespace TouhouPets
 {
@@ -12,15 +10,6 @@ namespace TouhouPets
     /// </summary>
     internal static class AltVanillaFunction
     {
-        /// <summary>
-        /// 替换案：设置旅途模式物品研究所需数量
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="amountNeeded">所需数量</param>
-        public static void SacrificeCountNeeded(this Item item, int amountNeeded)
-        {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = amountNeeded;
-        }
         /// <summary>
         /// 替换原版PlaySound，允许编辑
         /// <br/>SoundStyle种类的type
@@ -40,22 +29,12 @@ namespace TouhouPets
         }
         /// <summary>
         /// 替换原版GetTexture
-        /// <br/>完全自定义路径
         /// </summary>
         /// <param name="path"></param>
-        /// <returns></returns>
-        public static Texture2D GetTextureFreePath(string path)
+        /// <returns>TouhouPets / Assets / Textures / 剩余路径</returns>
+        public static Texture2D GetTexture(string path)
         {
-            return Request<Texture2D>(path).Value;
-        }
-        /// <summary>
-        /// 替换原版GetTexture
-        /// </summary>
-        /// <param name="postAssetsPath"></param>
-        /// <returns>ModName/Assets/Textures/剩余路径名</returns>
-        public static Texture2D GetTexture(string postAssetsPath)
-        {
-            return Request<Texture2D>($"{AssetLoader.TexturePath}/{postAssetsPath}").Value;
+            return Request<Texture2D>($"{AssetLoader.TexturePath}/{path}").Value;
         }
         /// <summary>
         /// 快速获取Extra材质

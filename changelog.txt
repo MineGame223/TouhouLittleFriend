@@ -3,12 +3,8 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
-新增：
-为骚灵乐团的演奏加入自定义音乐模式
-
 修改：
-应援棒现在会基于乐队状态改变颜色
-修改了应援棒的合成配方
-
-修复：
-修复了骚灵乐团在多人模式下可能出现的问题
+为切换自选音乐模式按钮加入了右键打开文件夹的功能
+为大部分宠物加入了在玩家选择界面的小动画
+为伊吹瓢、月时计和银杏叶加入合成表
+熊猫挂坠现在可以由飞龙掉落
