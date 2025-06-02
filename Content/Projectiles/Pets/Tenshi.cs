@@ -56,7 +56,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -115,7 +114,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
-            Projectile.SetChat(ChatSettingConfig, 8);
+            if (ModLoader.TryGetMod("Gensokyo", out Mod result))
+            {
+                bool isTenshin = result.TryFind("TenshiHinanawi", out ModNPC n) && boss.type == n.Type;
+                if (isTenshin)
+                    Projectile.SetChat(ChatSettingConfig, 7);
+            }
+            else
+            {
+                Projectile.SetChat(ChatSettingConfig, 8);
+            }
         }
         public override void VisualEffectForPreview()
         {

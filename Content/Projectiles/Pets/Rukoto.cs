@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -48,6 +49,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 8;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(1, 4, 10);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -73,7 +78,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(bodyFrame, lightColor, config2, 1);
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState == States.Blink || CurrentState == States.Sweeping)
+            if (CurrentState == States.Blink || Projectile.frame > 0)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
@@ -107,6 +112,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrames();
+            if (Projectile.frame > 0)
+            {
+                blinkFrame = 7;
+            }
         }
         private void UpdateTalking()
         {
@@ -226,7 +235,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Sweeping()
         {
-            blinkFrame = 7;
             if (++Projectile.frameCounter > 10)
             {
                 Projectile.frameCounter = 0;

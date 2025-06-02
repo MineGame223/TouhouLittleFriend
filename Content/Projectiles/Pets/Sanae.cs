@@ -108,7 +108,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState < States.Flying)
+            if (Projectile.frame < 5)
             {
                 Projectile.DrawPet(itemFrame, lightColor, drawConfig, 1);
                 Projectile.DrawPet(clothFrame, lightColor,

@@ -101,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 对话字典
         /// </summary>
-        internal Dictionary<int, string> ChatDictionary = new Dictionary<int, string>();
+        internal Dictionary<int, string> ChatDictionary = [];
 
         /// <summary>
         /// 当前聊天室
@@ -111,10 +111,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 对话属性配置
         /// </summary>
-        public static ChatSettingConfig ChatSettingConfig
-        {
-            get => new();
-        }
+        public static ChatSettingConfig ChatSettingConfig => new();
         /// <summary>
         /// 宠物的状态值（Projectile.ai[1]），设置该值时会进行一次netUpdate
         /// </summary>
@@ -133,13 +130,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 宠物所属玩家是否被Boss锁定为目标或其附近是否存在Boss
         /// </summary>
-        public bool FindBoss
-        {
-            get
-            {
-                return findBoss;
-            }
-        }
+        public bool FindBoss => findBoss;
         /// <summary>
         /// 宠物的所属玩家
         /// </summary>
@@ -632,7 +623,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         /// <summary>
         /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
-        /// <br/>若寻常动作下本体包含动画，则该动画也应当在此运行
+        /// <br/>对于设置了 <see cref="ProjectileID.Sets.CharacterPreviewAnimations"/> 的宠物，待机状态的动画不应写在这里
         /// </summary>
         public virtual void VisualEffectForPreview()
         {
@@ -657,7 +648,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 5;
+            Projectile.timeLeft *= 5;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -680,7 +671,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 mainTimer = 0;
             }
-
+            if (!Owner.active)
+            {
+                Projectile.active = false;
+                return false;
+            }
             if (OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 UpdateChat();
@@ -688,12 +683,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (UpdateFindBoss())
                 {
                     shouldNotTalking = true;
-                    return base.PreAI();
+                    return true;
                 }
 
                 UpdateRegularDialog();
             }
-            return base.PreAI();
+            return true;
         }
         public override void PostAI()
         {

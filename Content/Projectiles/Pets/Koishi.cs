@@ -66,8 +66,24 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WithCode(DisappearOnSelect);
+                //.WhenSelected(15, 2, 5);
         }
+        private void DisappearOnSelect(Projectile proj, bool walking)
+        {
+            if (walking)
+            {
+                proj.Opacity = MathHelper.Clamp(proj.Opacity += 0.05f, 0, 1);
+            }
+            else
+            {
+                proj.Opacity = MathHelper.Clamp(proj.Opacity -= 0.05f, 0, 1);
+            }
+        }
+
         public override bool DrawPetSelf(ref Color lightColor)
         {
             bool hasDye = whiteDye || yellowBlackDye;
@@ -118,8 +134,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config2, 1);
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState == States.Annoying)
-                Projectile.DrawPet(annoyingFrame, lightColor, config, 1);
+            Projectile.DrawPet(annoyingFrame, lightColor, config, 1);
 
             if (eyePositionOffset.Y > 0)
                 DrawEye(tex, eyePosition - Main.screenPosition, lightColor);
@@ -160,10 +175,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
-            if (Projectile.isAPreviewDummy)
-            {
-                UpdateEyePosition();
-            }
+            UpdateAnnoyingFrame();
+            UpdateEyePosition();
         }
         private void UpdateTalking()
         {
@@ -300,7 +313,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 killCD--;
             }
-            UpdateEyePosition();
 
             whiteDye =
                 Owner.miscDyes[0].type == ItemID.SilverDye
@@ -445,20 +457,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Annoying()
         {
-            if (++annoyingFrameCounter > 4)
-            {
-                annoyingFrameCounter = 0;
-                annoyingFrame++;
-            }
-            if (annoyingFrame < 8)
-            {
-                annoyingFrame = 8;
-            }
-            if (annoyingFrame > 9)
-            {
-                annoyingFrame = 8;
-            }
-
             if (++Projectile.frameCounter > 5)
             {
                 Projectile.frameCounter = 0;
@@ -507,6 +505,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 3)
             {
                 clothFrame = 0;
+            }
+        }
+        private void UpdateAnnoyingFrame()
+        {
+            if (Projectile.frame >= 14 && Projectile.frame <= 16)
+            {
+                if (++annoyingFrameCounter > 4)
+                {
+                    annoyingFrameCounter = 0;
+                    annoyingFrame++;
+                }
+                if (annoyingFrame < 8)
+                {
+                    annoyingFrame = 8;
+                }
+                if (annoyingFrame > 9)
+                {
+                    annoyingFrame = 8;
+                }
+            }
+            else
+            {
+                annoyingFrame = 11;
             }
         }
         private void Calling()

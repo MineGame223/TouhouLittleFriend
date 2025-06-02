@@ -42,8 +42,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         private bool FeelCold => Owner.ZoneSnow || Owner.GetModPlayer<TouhouPetPlayer>().lettyCold;
         private bool AntennaeActive
         {
-            get => Projectile.ai[2] == 0;
-            set => Projectile.ai[2] = value ? 0 : 1;
+            get => Projectile.ai[2] == 1;
+            set => Projectile.ai[2] = value ? 1 : 0;
         }
         private bool CanGenFireFly
         {

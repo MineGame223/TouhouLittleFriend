@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -43,8 +45,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool ShouldKick
         {
-            get => Projectile.ai[2] == 0;
-            set => Projectile.ai[2] = value ? 0 : 1;
+            get => Projectile.ai[2] == 1;
+            set => Projectile.ai[2] = value ? 1 : 0;
         }
         private bool BandOn
         {
@@ -64,7 +66,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 25;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(14, 9, 4);
         }
+
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -123,10 +130,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateBackFrame();
             UpdateSkirtFrame();
             UpdateLegAndDrumFrame();
-            if (CurrentState == States.Idle || CurrentState == States.Blink)
-            {
-                IdleAnimation();
-            }
         }
         public override void AI()
         {
@@ -148,7 +151,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     CurrentState = States.BeforeBand;
                 }
             }
-
             switch (CurrentState)
             {
                 case States.Blink:
@@ -193,7 +195,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
+            if (CurrentState == States.Idle || CurrentState == States.Blink)
+            {
+                IdleAnimation();
+            }
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;

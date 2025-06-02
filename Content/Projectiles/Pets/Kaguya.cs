@@ -70,6 +70,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 21;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 4, 5)
+                .WhenSelected(8, 2, 8);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -347,8 +351,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
-            if (IsIdleState)
-                IdleAnimation();
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -424,7 +426,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
             UpdateMiscData();
         }
         public override void ReceiveExtraAI(BinaryReader reader)

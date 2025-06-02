@@ -36,8 +36,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool ShouldKick
         {
-            get => Projectile.ai[2] == 0;
-            set => Projectile.ai[2] = value ? 0 : 1;
+            get => Projectile.ai[2] == 1;
+            set => Projectile.ai[2] = value ? 1 : 0;
         }
         private bool IsIdleState => CurrentState <= States.Idle;
 
@@ -52,6 +52,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 22;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 8, 6);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {

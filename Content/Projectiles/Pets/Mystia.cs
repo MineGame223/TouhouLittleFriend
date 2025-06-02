@@ -41,7 +41,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 3, 7);
         }
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
@@ -114,6 +117,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateWingFrame();
             UpdateClothFrame();
+            UpdateMiscData();
         }
         private void UpdateTalking()
         {
@@ -150,7 +154,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-            UpdateMiscData();
             blackDye = Owner.miscDyes[0].type == ItemID.BlackDye;
         }
         private void ControlMovement()

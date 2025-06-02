@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -59,6 +60,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 4, 7)
+                .WhenSelected(11, 3, 6);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -117,10 +122,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateHeadFrame();
-            if (IsIdleState)
-            {
-                IdleAnimation();
-            }
+            UpdateHeadPosition();
         }
         private void UpdateTalking()
         {
@@ -277,8 +279,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
-            UpdateHeadPosition();
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
 
             if (IsIdleState && ActionCD > 0)
             {
@@ -432,7 +436,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 headFrameCounter = 0;
                 headFrame++;
             }
-            if (Projectile.frame >= 9 && CurrentState == States.Posing)
+            if (Projectile.frame >= 9 && Projectile.frame <= 13)
             {
                 if (headFrame > 10)
                 {
@@ -443,7 +447,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (headFrame > 5)
                 {
-                    if (headFrame > 10)
+                    if (headFrame > 10 || Projectile.isAPreviewDummy)
                     {
                         headFrame = 0;
                     }
@@ -456,7 +460,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateHeadPosition()
         {
-            if (headFrame >= 5)
+            if (Projectile.frame >= 9 && Projectile.frame <= 13)
             {
                 if (headBaseY > -15)
                     headBaseY--;

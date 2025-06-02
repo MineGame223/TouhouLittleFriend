@@ -106,8 +106,7 @@ namespace TouhouPets
         /// <param name="projectile"></param>
         public static void CloseCurrentDialog(this Projectile projectile)
         {
-            BasicTouhouPet pet = projectile.ToPetClass();
-            pet.chatTimeLeft = 0;
+            projectile.ToPetClass().chatTimeLeft = 0;
         }
         /// <summary>
         /// 设置宠物要说的话

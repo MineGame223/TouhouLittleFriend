@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -45,6 +46,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 6, 8)
+                .WhenSelected(6, 7, 7);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -84,13 +89,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
             return chat;
-        }
-        public override void VisualEffectForPreview()
-        {
-            if (IsIdleState)
-            {
-                IdleAnimation();
-            }
         }
         private void UpdateTalking()
         {
@@ -231,7 +229,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;

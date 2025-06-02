@@ -86,12 +86,16 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Eirin_Cloth");
-        private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Eirin_Glow");
+        //private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Eirin_Glow");
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(4, 0);
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -140,7 +144,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawArrow()
         {
-            Texture2D arrow = AltVanillaFunction.GetExtraTexture("SatoriEyeSpark");
+            Texture2D arrow = AssetLoader.GlowSpark.Value;
             Vector2 pos = Projectile.DefaultDrawPetPosition() + new Vector2(arrowPosX * Projectile.spriteDirection, 0);
             Main.spriteBatch.TeaNPCDraw(arrow, pos, null, Projectile.GetAlpha(Color.White)
                 , Projectile.rotation + MathHelper.PiOver2, arrow.Size() / 2, new Vector2(1.2f - arrowAlpha, 3 * arrowAlpha), SpriteEffects.None, 0);

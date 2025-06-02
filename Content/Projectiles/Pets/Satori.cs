@@ -135,10 +135,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
-            if (Projectile.isAPreviewDummy)
-            {
-                UpdateEyePosition();
-            }
+            UpdateEyePosition();
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -183,7 +180,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             UpdateMiscData();
-            UpdateEyePosition();
         }
         private void UpdateMiscData()
         {

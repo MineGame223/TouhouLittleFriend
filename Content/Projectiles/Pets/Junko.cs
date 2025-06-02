@@ -178,8 +178,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateTailFrame();
-            if (IsIdleState)
-                IdleAnimation();
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -219,7 +217,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
             UpdateAuraValue();
         }
         private void ControlMovement()

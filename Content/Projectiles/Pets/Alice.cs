@@ -50,7 +50,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {

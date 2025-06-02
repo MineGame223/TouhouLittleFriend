@@ -61,6 +61,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(12, 2, 5);
         }
         public override bool OnMouseHover()
         {
@@ -91,7 +95,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState >= States.Flying)
+            if (Projectile.frame >= 12)
                 return false;
 
             if (CurrentState != States.Shining)
