@@ -9,6 +9,29 @@ namespace TouhouPets
     internal class PetGlobalLoot : GlobalNPC
     {
         public override bool InstancePerEntity => true;
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
+                return;
+
+            AddHomewardJourneyLoot(npc, npcLoot);
+            AddThoriumLoot(npc, npcLoot);
+            AddCalamityLoot(npc, npcLoot);
+            AddCoraliteLoot(npc, npcLoot);
+
+            CommonLoot(npc, npcLoot);
+        }
+        #region 联动掉落
+        private static void AddCoraliteLoot(NPC npc, NPCLoot npcLoot)
+        {
+            bool hasCoralMod = ModLoader.TryGetMod("Coralite", out Mod result);
+            if (!hasCoralMod)
+                return;
+
+            bool isFlower = result.TryFind("NightmarePlantera", out ModNPC n) && npc.type == n.Type;
+            if (isFlower)
+                npcLoot.Add(ItemDropRule.Common(ItemType<DoremyPillow>()));
+        }
         private static void AddHomewardJourneyLoot(NPC npc, NPCLoot npcLoot)
         {
             bool hasHJMod = ModLoader.TryGetMod("ContinentOfJourney", out Mod result);
@@ -42,29 +65,19 @@ namespace TouhouPets
 
             bool isOarfish = result.TryFind("OarfishHead", out ModNPC n) && npc.type == n.Type;
             if (isOarfish)
-                npcLoot.Add(ItemDropRule.Common(ItemType<IkuOarfish>(), 20));
+                npcLoot.Add(ItemDropRule.Common(ItemType<IkuOarfish>(), 100));
         }
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
-                return;
-
-            AddHomewardJourneyLoot(npc, npcLoot);
-            AddThoriumLoot(npc, npcLoot);
-            AddCalamityLoot(npc, npcLoot);
-
-            CommonLoot(npc, npcLoot);
-        }
+        #endregion
         private static void CommonLoot(NPC npc, NPCLoot npcLoot)
         {
-            int enemiesDropRate = 20;
+            int enemiesDropRate = 100;
             if (npc.type == NPCID.WyvernHead)
             {
-                npcLoot.Add(ItemType<MeirinPanda>(), enemiesDropRate - 10);
+                npcLoot.Add(ItemType<MeirinPanda>(), enemiesDropRate - 15);
             }
             if (npc.type == NPCID.PirateCaptain)
             {
-                npcLoot.Add(ItemType<MurasaBailer>(), enemiesDropRate - 10);
+                npcLoot.Add(ItemType<MurasaBailer>(), enemiesDropRate / 4);
             }
             if (npc.type == NPCID.AngryNimbus)
             {
@@ -72,7 +85,7 @@ namespace TouhouPets
             }
             if (npc.type == NPCID.BloodNautilus)
             {
-                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 15, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate / 4, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
             }
             if (npc.type == NPCID.Harpy)
             {
@@ -88,96 +101,96 @@ namespace TouhouPets
             }
             if (npc.type == NPCID.WindyBalloon || npc.type == NPCID.Dandelion)
             {
-                npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate - 5);
+                npcLoot.Add(ItemType<AyaCamera>(), enemiesDropRate);
             }
             if (npc.type == NPCID.RedDevil)
             {
-                npcLoot.Add(ItemType<ShinkiHeart>(), enemiesDropRate - 5);
+                npcLoot.Add(ItemType<ShinkiHeart>(), enemiesDropRate);
             }
             if (npc.type == NPCID.Pumpking)
             {
-                npcLoot.Add(ItemType<KokoroMask>(), enemiesDropRate - 5);
+                npcLoot.Add(ItemType<KokoroMask>(), enemiesDropRate / 4);
             }
             if (npc.type == NPCID.CorruptBunny || npc.type == NPCID.CrimsonBunny)
             {
-                npcLoot.Add(ItemType<TewiCarrot>(), enemiesDropRate - 3);
+                npcLoot.Add(ItemType<TewiCarrot>(), enemiesDropRate);
             }
             if (npc.type == NPCID.Ghost || npc.type == NPCID.DungeonSpirit)
             {
-                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 5, ItemType<PoltergeistAlbum>()));
-                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 2, ItemType<SupportStick>()));
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 15, ItemType<PoltergeistAlbum>()));
+                npcLoot.Add(ItemDropRule.OneFromOptions(enemiesDropRate - 15, ItemType<SupportStick>()));
             }
 
-            int commonDropRate = 3;
+            int bossDropRate = 20;
             switch (npc.type)
             {
                 case NPCID.KingSlime:
-                    npcLoot.Add(new NotDownedKingSlime(), new DownedKingSlime(), commonDropRate
+                    npcLoot.Add(new NotDownedKingSlime(), new DownedKingSlime(), bossDropRate
                         , ItemType<DaiyouseiBomb>(), ItemType<LilyOneUp>(), ItemType<KoakumaPower>());
                     break;
 
                 case NPCID.EyeofCthulhu:
-                    npcLoot.Add(new NotDownedEoC(), new DownedEoC(), ItemType<KogasaUmbrella>(), commonDropRate);
+                    npcLoot.Add(new NotDownedEoC(), new DownedEoC(), ItemType<KogasaUmbrella>(), bossDropRate);
                     break;
 
                 case NPCID.QueenBee:
-                    npcLoot.Add(new NotDownedQueenBee(), new DownedQueenBee(), ItemType<WriggleInAJar>(), commonDropRate);
+                    npcLoot.Add(new NotDownedQueenBee(), new DownedQueenBee(), ItemType<WriggleInAJar>(), bossDropRate);
                     break;
 
                 case NPCID.SkeletronHead:
-                    npcLoot.Add(new NotDownedSkeletron(), new DownedSkeletron(), ItemType<HinaDoll>(), commonDropRate);
+                    npcLoot.Add(new NotDownedSkeletron(), new DownedSkeletron(), ItemType<HinaDoll>(), bossDropRate);
                     break;
 
                 case NPCID.Deerclops:
-                    npcLoot.Add(new NotDownedDeerclops(), new DownedDeerclops(), ItemType<CirnoIceShard>(), commonDropRate);
+                    npcLoot.Add(new NotDownedDeerclops(), new DownedDeerclops(), ItemType<CirnoIceShard>(), bossDropRate);
                     break;
 
                 case NPCID.WallofFlesh:
-                    npcLoot.Add(new NotDownedWoF(), new DownedWoF(), commonDropRate,
+                    npcLoot.Add(new NotDownedWoF(), new DownedWoF(), bossDropRate,
                         ItemType<UtsuhoEye>(), ItemType<RinSkull>());
                     break;
 
                 case NPCID.QueenSlimeBoss:
-                    npcLoot.Add(new NotDownedQueenSlime(), new DownedQueenSlime(), ItemType<PatchouliMoon>(), commonDropRate);
+                    npcLoot.Add(new NotDownedQueenSlime(), new DownedQueenSlime(), ItemType<PatchouliMoon>(), bossDropRate);
                     break;
 
                 case NPCID.TheDestroyer:
-                    npcLoot.Add(new NotDownedDestroyer(), new DownedDestroyer(), ItemType<MomoyoPickaxe>(), commonDropRate);
+                    npcLoot.Add(new NotDownedDestroyer(), new DownedDestroyer(), ItemType<MomoyoPickaxe>(), bossDropRate);
                     break;
 
                 case NPCID.Retinazer:
                 case NPCID.Spazmatism:
-                    npcLoot.Add(new KomeijiSister_NotDownedTwins(), new KomeijiSister_DownedTwins(), commonDropRate,
+                    npcLoot.Add(new KomeijiSister_NotDownedTwins(), new KomeijiSister_DownedTwins(), bossDropRate,
                         ItemType<SatoriSlippers>(), ItemType<KoishiTelephone>());
                     break;
 
                 case NPCID.SkeletronPrime:
-                    npcLoot.Add(new NotDownedPrime(), new DownedPrime(), ItemType<NitoriCucumber>(), commonDropRate);
+                    npcLoot.Add(new NotDownedPrime(), new DownedPrime(), ItemType<NitoriCucumber>(), bossDropRate);
                     break;
 
                 case NPCID.Plantera:
-                    npcLoot.Add(new NotDownedPrime(), new DownedPrime(), ItemType<YukaSunflower>(), commonDropRate);
+                    npcLoot.Add(new NotDownedPlantera(), new DownedPlantera(), ItemType<YukaSunflower>(), bossDropRate);
                     break;
 
                 case NPCID.Golem:
-                    npcLoot.Add(new NotDownedGolem(), new DownedGolem(), ItemType<SekibankiBow>(), commonDropRate);
+                    npcLoot.Add(new NotDownedGolem(), new DownedGolem(), ItemType<SekibankiBow>(), bossDropRate);
                     break;
 
                 case NPCID.HallowBoss:
-                    npcLoot.Add(new NotDownedEoL(), new DownedEoL(), ItemType<TenshiKeyStone>(), commonDropRate);
+                    npcLoot.Add(new NotDownedEoL(), new DownedEoL(), ItemType<TenshiKeyStone>(), bossDropRate);
                     break;
 
                 case NPCID.DukeFishron:
-                    npcLoot.Add(new NotDownedFishron(), new DownedFishron(), ItemType<IkuOarfish>(), commonDropRate);
+                    npcLoot.Add(new NotDownedFishron(), new DownedFishron(), ItemType<IkuOarfish>(), bossDropRate);
                     break;
 
                 case NPCID.CultistBoss:
-                    npcLoot.Add(new NotDownedCultist(), new DownedCultist(), commonDropRate,
+                    npcLoot.Add(new NotDownedCultist(), new DownedCultist(), bossDropRate,
                         ItemType<ReimuYinyangOrb>(), ItemType<MarisaHakkero>(), ItemType<SanaeCoin>());
                     break;
 
                 case NPCID.MoonLordCore:
-                    npcLoot.Add(new NotDownedMoonLord(), new DownedMoonLord(), commonDropRate,
+                    npcLoot.Add(new NotDownedMoonLord(), new DownedMoonLord(), bossDropRate,
                         ItemType<HecatiaPlanet>(), ItemType<JunkoMooncake>());
                     break;
 

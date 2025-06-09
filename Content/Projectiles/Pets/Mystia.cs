@@ -247,9 +247,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (Projectile.frame > 4)
             {
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(4) && ShouldExtraVFXActive)
                     Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -27), new Vector2(Main.rand.Next(-5, 5), Main.rand.Next(-6, -3)) * 0.1f, Main.rand.Next(570, 573), Main.rand.NextFloat(0.9f, 1.1f));
-                
+
                 Projectile.frame = 2;
                 Timer++;
             }

@@ -75,6 +75,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 4, 5)
                 .WhenSelected(8, 2, 8);
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsBattleState;
+            return false;
+        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -366,7 +371,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             bool noMoku = !FindPet(ProjectileType<Moku>(), false)
                 || (!Owner.HasBuff<MokuBuff>());

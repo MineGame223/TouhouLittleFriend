@@ -170,7 +170,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                chatRoom.CloseChatRoom();
+                chatRoom.CloseChatRoom(3600);
             }
         }
         private void Chatting2(PetChatRoom chatRoom)
@@ -239,12 +239,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Projectile.CurrentDialogFinished())
                 {
                     chatRoom.chatTurn++;
-                    chatCD = 12000;
                 }
             }
             else
             {
-                chatRoom.CloseChatRoom();
+                chatRoom.CloseChatRoom(12000);
             }
         }
         public override void AI()

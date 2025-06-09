@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Drawing.Drawing2D;
 using Terraria;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -66,7 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(12, 2, 5);
         }
-        public override bool OnMouseHover()
+        public override bool OnMouseHover(ref bool dontInvis)
         {
             Item coin = Owner.inventory[Owner.selectedItem];
             if ((coin.type == ItemID.GoldCoin || coin.type == ItemID.PlatinumCoin)
@@ -74,6 +72,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 seeCoin = true;
             }
+
+            dontInvis = seeCoin;
             return false;
         }
         public override bool DrawPetSelf(ref Color lightColor)

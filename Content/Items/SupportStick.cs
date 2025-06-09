@@ -25,7 +25,7 @@ namespace TouhouPets.Content.Items
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Texture2D texture = offTex;
-            spriteBatch.TeaNPCDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.MyDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
 
             if (ModPlayer.ManualConcert)
             {
@@ -34,7 +34,7 @@ namespace TouhouPets.Content.Items
                 {
                     texture = greenTex;
                 }
-                spriteBatch.TeaNPCDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.MyDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
             }
             return false;
         }
@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Items
             Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 
             Texture2D texture = offTex;
-            spriteBatch.TeaNPCDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+            spriteBatch.MyDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
 
             if (ModPlayer.ManualConcert)
             {
@@ -54,7 +54,7 @@ namespace TouhouPets.Content.Items
                 {
                     texture = greenTex;
                 }
-                spriteBatch.TeaNPCDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+                spriteBatch.MyDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
             }
             return false;
         }

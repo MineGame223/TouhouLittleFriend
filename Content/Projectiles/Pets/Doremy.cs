@@ -164,7 +164,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            if (CurrentState == States.Dreaming)
+            if (CurrentState == States.Dreaming && ShouldExtraVFXActive)
             {
                 GenDust();
             }

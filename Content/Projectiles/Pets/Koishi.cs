@@ -71,6 +71,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WithCode(DisappearOnSelect);
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsKillingState;
+            return false;
+        }
         private void DisappearOnSelect(Projectile proj, bool walking)
         {
             if (walking)
@@ -145,7 +150,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             int height = t.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(t.Width / 2, 7 * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
-            Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
+            Main.spriteBatch.MyDraw(t, eyePos, rect, Projectile.GetAlpha(lightColor) * mouseOpacity
+                , Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
         }
         public override Color ChatTextColor => new Color(145, 255, 183);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -375,9 +381,11 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir();
 
-            Vector2 point = new Vector2(-54 * Owner.direction, -34 + Owner.gfxOffY);
+            Vector2 point = new(-54 * Owner.direction, -34 + Owner.gfxOffY);
+
             if (Owner.HasBuff<KomeijiBuff>())
                 point = new Vector2(-44 * Owner.direction, -80 + Owner.gfxOffY);
+
             if (!Owner.dead)
                 MoveToPoint(point, 13f);
         }

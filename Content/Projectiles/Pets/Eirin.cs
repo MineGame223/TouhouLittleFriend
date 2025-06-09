@@ -146,7 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Texture2D arrow = AssetLoader.GlowSpark.Value;
             Vector2 pos = Projectile.DefaultDrawPetPosition() + new Vector2(arrowPosX * Projectile.spriteDirection, 0);
-            Main.spriteBatch.TeaNPCDraw(arrow, pos, null, Projectile.GetAlpha(Color.White)
+            Main.spriteBatch.MyDraw(arrow, pos, null, Projectile.GetAlpha(Color.White) * mouseOpacity
                 , Projectile.rotation + MathHelper.PiOver2, arrow.Size() / 2, new Vector2(1.2f - arrowAlpha, 3 * arrowAlpha), SpriteEffects.None, 0);
         }
         public override Color ChatTextColor => new Color(237, 237, 237);

@@ -317,7 +317,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Timer = 0;
                 CurrentState = States.AfterDischarging;
             }
-            if (Projectile.frame >= 9)
+            if (Projectile.frame >= 9 && ShouldExtraVFXActive)
             {
                 Dust.NewDustDirect(Projectile.Center + new Vector2(-16 * Projectile.spriteDirection, -10)
                     , 1, 1, Main.rand.NextBool(2) ? MyDustId.TrailingCyan : MyDustId.ElectricCyan,

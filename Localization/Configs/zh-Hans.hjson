@@ -137,6 +137,16 @@ Mods: {
 						该选项将决定是否加载玩家放入的音乐文件
 						'''
 				}
+
+				PetLightOnPlayer: {
+					Label: 宠物发光位置改为玩家中心
+					Tooltip: 照明宠物的光亮是否出现在玩家身上而非宠物身上
+				}
+
+				PetInvisWhenMouseHover: {
+					Label: 光标悬停时宠物隐形
+					Tooltip: 当光标悬停在宠物身上时，宠物将隐形至几乎不可见（部分情况除外）
+				}
 			}
 		}
 	}

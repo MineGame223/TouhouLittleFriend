@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using Terraria;
 using tModPorter;
+using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
 {
@@ -42,16 +43,22 @@ namespace TouhouPets
         public static void DrawPet(this Projectile projectile, int frame, Color lightColor, DrawPetConfig config, int currentRow = 0)
         {
             Texture2D t = config.AltTexture ?? AltVanillaFunction.ProjectileTexture(projectile.type);
-            int height = t.Height / Main.projFrames[projectile.type];
+
             Vector2 pos = projectile.DefaultDrawPetPosition() + config.PositionOffset;
-            Rectangle rect = new Rectangle(t.Width / config.TextureRow * currentRow, frame * height, t.Width / config.TextureRow, height);
+            Color clr = projectile.GetAlpha(lightColor) * projectile.ToPetClass().mouseOpacity;
+
+            int height = t.Height / Main.projFrames[projectile.type];
+            Rectangle rect = new(t.Width / config.TextureRow * currentRow, frame * height, t.Width / config.TextureRow, height);
+
             Vector2 orig = rect.Size() / 2;
             float scale = config.Scale;
+
             SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
             if (config.ShouldUseEntitySpriteDraw && !GetInstance<MiscConfig>().CompatibilityMode)
-                Main.EntitySpriteDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
+                Main.EntitySpriteDraw(t, pos, rect, clr, projectile.rotation, orig, projectile.scale * scale, effect, 0f);
             else
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, projectile.GetAlpha(lightColor), projectile.rotation, orig, projectile.scale * scale, effect, 0f);
+                Main.spriteBatch.MyDraw(t, pos, rect, clr, projectile.rotation, orig, projectile.scale * scale, effect, 0f);
         }
         /// <summary>
         /// 将宠物的绘制状态重置，防止被染料的Shader影响

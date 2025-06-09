@@ -229,7 +229,7 @@ namespace TouhouPets
                 if (!buttonDisable[i])
                 {
                     Color buttonColor = buttonDisable[i] ? Color.DarkSlateGray : Color.White;
-                    Main.spriteBatch.TeaNPCDraw(uiImage, buttonPos[i]
+                    Main.spriteBatch.MyDraw(uiImage, buttonPos[i]
                         , new Rectangle(buttonState[i] * (int)buttonSize.X, (int)buttonSize.Y * i, (int)buttonSize.X, (int)buttonSize.Y)
                         , buttonColor * buttonOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
                 }

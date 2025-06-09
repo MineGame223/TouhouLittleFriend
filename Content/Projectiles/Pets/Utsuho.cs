@@ -103,9 +103,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 pos = Projectile.DefaultDrawPetPosition();
             for (int i = 0; i < 5; i++)
             {
-                Main.EntitySpriteDraw(sunTex, pos + sunPos + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f), null, Projectile.GetAlpha(Color.White) * 0.5f, -mainTimer * 0.09f, sunTex.Size() / 2, Projectile.scale * 1.02f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(sunTex, pos + sunPos + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f)
+                    , null, Projectile.GetAlpha(Color.White) * 0.5f * mouseOpacity, -mainTimer * 0.09f
+                    , sunTex.Size() / 2, Projectile.scale * 1.02f, SpriteEffects.None, 0f);
             }
-            Main.EntitySpriteDraw(sunTex, pos + sunPos, null, Projectile.GetAlpha(Color.White), mainTimer * 0.05f, sunTex.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(sunTex, pos + sunPos, null, Projectile.GetAlpha(Color.White) * mouseOpacity
+                , mainTimer * 0.05f, sunTex.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
         }
         public override Color ChatTextColor => new Color(228, 184, 75);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -200,7 +203,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            SmokeDust();
+            if (ShouldExtraVFXActive)
+                SmokeDust();
 
             switch (CurrentState)
             {
@@ -308,10 +312,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame >= 4)
             {
                 Projectile.frame = 4;
-                if (Main.rand.NextBool(2))
-                    Dust.NewDustPerfect(Projectile.Center + new Vector2(26 * Projectile.spriteDirection, 6)
-                        , MyDustId.OrangeFire2, new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-3, 3) * 0.75f)
-                        , 100, default, Main.rand.NextFloat(0.5f, 1.25f)).noGravity = true;
+                if (ShouldExtraVFXActive)
+                {
+                    if (Main.rand.NextBool(2))
+                        Dust.NewDustPerfect(Projectile.Center + new Vector2(26 * Projectile.spriteDirection, 6)
+                            , MyDustId.OrangeFire2, new Vector2(Main.rand.Next(-3, 3) * 0.75f, Main.rand.Next(-3, 3) * 0.75f)
+                            , 100, default, Main.rand.NextFloat(0.5f, 1.25f)).noGravity = true;
+                }
 
                 Timer++;
             }
@@ -326,13 +333,16 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 5;
             if (Timer == 0)
             {
-                for (int i = 0; i < 7; i++)
+                if (ShouldExtraVFXActive)
                 {
-                    Vector2 center = Projectile.Center;
-                    Vector2 vel = (new Vector2(6 * Projectile.spriteDirection, -4) * Main.rand.NextFloat(0.5f, 2f)).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-30, 30)));
-                    Dust.NewDustDirect(center, 4, 4, MyDustId.Smoke, vel.X, vel.Y, 100, default, Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
-                    vel = (new Vector2(6 * Projectile.spriteDirection, -4) * 2f * Main.rand.NextFloat(0.5f, 2f)).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
-                    Dust.NewDustDirect(center, 4, 4, MyDustId.OrangeFire2, vel.X, vel.Y, 100, default, Main.rand.NextFloat(1.4f, 1.9f)).noGravity = true;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Vector2 center = Projectile.Center;
+                        Vector2 vel = (new Vector2(6 * Projectile.spriteDirection, -4) * Main.rand.NextFloat(0.5f, 2f)).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-30, 30)));
+                        Dust.NewDustDirect(center, 4, 4, MyDustId.Smoke, vel.X, vel.Y, 100, default, Main.rand.NextFloat(0.5f, 1.5f)).noGravity = true;
+                        vel = (new Vector2(6 * Projectile.spriteDirection, -4) * 2f * Main.rand.NextFloat(0.5f, 2f)).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-10, 10)));
+                        Dust.NewDustDirect(center, 4, 4, MyDustId.OrangeFire2, vel.X, vel.Y, 100, default, Main.rand.NextFloat(1.4f, 1.9f)).noGravity = true;
+                    }
                 }
                 if (OwnerIsMyPlayer)
                 {

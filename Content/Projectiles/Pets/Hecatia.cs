@@ -24,13 +24,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             set
             {
                 Projectile.ai[2] = value;
+                Projectile.netUpdate = true;
+
                 PlanteTimer = 1f;
             }
         }
         private float PlanteTimer
         {
             get => Projectile.localAI[0];
-            set=> Projectile.localAI[0] = value;
+            set => Projectile.localAI[0] = value;
         }
 
         private int blinkFrame, blinkFrameCounter;
@@ -51,7 +53,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-            DrawPlantes(pos + new Vector2(0, 4 * Main.essScale), Projectile.GetAlpha(lightColor), effect);
+            DrawPlantes(pos + new Vector2(0, 4 * Main.essScale), Projectile.GetAlpha(lightColor) * mouseOpacity, effect);
 
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
             Projectile.DrawPet(Projectile.frame, lightColor * bodyAlpha[0], drawConfig);
@@ -96,7 +98,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override string GetRegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -165,7 +167,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mainTimer == 4798 && !Projectile.isAPreviewDummy)
                 {
                     PlanteState++;
-                    Projectile.netUpdate = true;
                 }
             }
             switch (CurrentState)
@@ -237,11 +238,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Rectangle rect5 = new(0, 2 * height2, t2.Width, height2);
             Vector2 orig2 = rect3.Size() / 2;
             //异界 - 0
-            Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[0].X * -Projectile.spriteDirection, plantePos[0].Y).RotatedBy(Projectile.rotation), rect3, color, Projectile.rotation, orig2, Projectile.scale * 1.12f, effect, 0f);
+            Main.spriteBatch.MyDraw(t2, pos + new Vector2(plantePos[0].X * -Projectile.spriteDirection, plantePos[0].Y).RotatedBy(Projectile.rotation), rect3, color, Projectile.rotation, orig2, Projectile.scale * 1.12f, effect, 0f);
             //地球 - 1
-            Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[1].X * -Projectile.spriteDirection, plantePos[1].Y).RotatedBy(Projectile.rotation), rect4, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
+            Main.spriteBatch.MyDraw(t2, pos + new Vector2(plantePos[1].X * -Projectile.spriteDirection, plantePos[1].Y).RotatedBy(Projectile.rotation), rect4, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
             //月球 - 2
-            Main.spriteBatch.TeaNPCDraw(t2, pos + new Vector2(plantePos[2].X * -Projectile.spriteDirection, plantePos[2].Y).RotatedBy(Projectile.rotation), rect5, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
+            Main.spriteBatch.MyDraw(t2, pos + new Vector2(plantePos[2].X * -Projectile.spriteDirection, plantePos[2].Y).RotatedBy(Projectile.rotation), rect5, color, Projectile.rotation, orig2, Projectile.scale, effect, 0f);
         }
         private void UpdateWorldState()
         {

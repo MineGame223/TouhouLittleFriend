@@ -118,7 +118,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
             }
 
-            TorchDust();
+            if (ShouldExtraVFXActive)
+                TorchDust();
         }
         private void ControlMovement()
         {

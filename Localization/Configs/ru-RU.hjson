@@ -140,6 +140,16 @@ Mods: {
 						This option will decide whether to load the music files you have put in
 						''' */
 				}
+
+				PetLightOnPlayer: {
+					// Label: Pet's lighting losition is on player's center
+					// Tooltip: Toggle whether pet's lighting position is on player's center
+				}
+
+				PetInvisWhenMouseHover: {
+					// Label: Pet will be invisible while cursor hovering on it
+					// Tooltip: Toggle whether pet should invisible if cursor is hovering on it (Some special cases are excepted)
+				}
 			}
 		}
 	}

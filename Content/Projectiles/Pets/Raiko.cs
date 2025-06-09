@@ -71,7 +71,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(14, 9, 4);
         }
-
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsBandState;
+            return false;
+        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with

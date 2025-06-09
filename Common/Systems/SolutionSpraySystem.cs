@@ -39,7 +39,7 @@ namespace TouhouPets
 
                 yuka.ToPetClass().PetState = (int)value;
             }
-        }  
+        }
         public override void PostUpdateProjectiles()
         {
             if (Main.netMode == NetmodeID.Server || !GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka)
@@ -86,7 +86,7 @@ namespace TouhouPets
                 ItemID.RedSolution => ProjectileID.CrimsonSpray,
                 ItemID.SandSolution => ProjectileID.SandSpray,
                 ItemID.SnowSolution => ProjectileID.SnowSpray,
-                _ => SolutionSpraySystem.Sprayer.shoot,
+                _ => Sprayer.shoot,
             };
         }
         public static int SolutionSprayDust(int type)
@@ -172,9 +172,9 @@ namespace TouhouPets
             SpriteEffects effect = SpriteEffects.None;
             if (solution.ammo != AmmoID.None)
             {
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, 1.3f, effect, 0f);
+                Main.spriteBatch.MyDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, 1.3f, effect, 0f);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
-                                , ": " + Solution.stack.ToString(), pos.X + 20
+                                , ": " + solution.stack.ToString(), pos.X + 20
                                 , pos.Y - 4
                                 , Color.White, Color.Black
                                 , orig, 1f);
@@ -202,7 +202,7 @@ namespace TouhouPets
             Rectangle rect = new(width, frame * height, 32, 32);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = SpriteEffects.None;
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, yuka.scale, effect, 0f);
+            Main.spriteBatch.MyDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, yuka.scale, effect, 0f);
         }
     }
 }

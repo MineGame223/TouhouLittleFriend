@@ -139,7 +139,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             if (FeelHot)
             {
@@ -267,7 +268,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 2)
                 Projectile.frame = 2;
 
-            SnowingEffect();
+            if (ShouldExtraVFXActive)
+                SnowingEffect();
 
             Timer++;
             if (OwnerIsMyPlayer)

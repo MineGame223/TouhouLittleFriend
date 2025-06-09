@@ -126,7 +126,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             UpdateTalking();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             ControlMovement();
 

@@ -42,7 +42,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
             Color clr = Projectile.GetAlpha(lightColor);
             Vector2 orig = rect.Size() / 2;
-            Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
+            Main.spriteBatch.MyDraw(tex, pos, rect, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
         public int DustType

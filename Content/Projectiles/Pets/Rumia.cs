@@ -83,7 +83,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Color clr = Projectile.GetAlpha(Color.Black);
             Vector2 orig = tex.Size() / 2;
             for (int i = 0; i < 3; i++)
-                Main.spriteBatch.TeaNPCDraw(tex, pos, null, clr * darkAuraScale, 0f, orig, darkAuraScale * (Main.essScale * 0.3f + 0.8f), SpriteEffects.None, 0);
+                Main.spriteBatch.MyDraw(tex, pos, null, clr * darkAuraScale * mouseOpacity, 0f, orig, darkAuraScale * (Main.essScale * 0.3f + 0.8f), SpriteEffects.None, 0);
         }
         public override Color ChatTextBoardColor => Color.White;
         public override Color ChatTextColor => Color.Black;

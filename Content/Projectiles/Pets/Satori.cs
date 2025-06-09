@@ -97,18 +97,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             Texture2D spark = AssetLoader.GlowSpark.Value;
             Texture2D aura = AssetLoader.GlowAura.Value;
 
-            Color clr = Projectile.GetAlpha(Color.DeepPink).ModifiedAlphaColor();
+            Color clr = Projectile.GetAlpha(Color.DeepPink) * mouseOpacity;
+            clr.A *= 0;
             for (int i = 0; i < 2; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(aura, eyePos + new Vector2(0, 2), null, clr * 0.15f, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.MyDraw(aura, eyePos + new Vector2(0, 2), null, clr * 0.15f, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
             }
 
-            Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(Color.White), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
+            Main.spriteBatch.MyDraw(t, eyePos, rect, Projectile.GetAlpha(Color.White) * mouseOpacity, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
 
             for (int i = 0; i < 8; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
-                Main.spriteBatch.TeaNPCDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.MyDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.MyDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
             }
         }
         public override Color ChatTextColor => new Color(255, 149, 170);

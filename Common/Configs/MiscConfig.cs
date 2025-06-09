@@ -13,5 +13,11 @@ namespace TouhouPets
         [DefaultValue(true)]
         [ReloadRequired]
         public bool EnableCustomMusicMode;
+
+        [DefaultValue(false)]
+        public bool PetLightOnPlayer;
+
+        [DefaultValue(true)]
+        public bool PetInvisWhenMouseHover;
     }
 }

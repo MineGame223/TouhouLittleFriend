@@ -46,7 +46,7 @@ namespace TouhouPets.Content.Projectiles
             Vector2 pos = Projectile.Center - Main.screenPosition;
             Color clr = Projectile.GetAlpha(GetRayColor());
             Vector2 orig = new Vector2(tex.Width / 2, 0);
-            Main.spriteBatch.TeaNPCDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
+            Main.spriteBatch.MyDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
 
             Main.spriteBatch.QuickEndAndBegin(false);
             return false;

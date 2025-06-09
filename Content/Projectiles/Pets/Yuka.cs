@@ -53,6 +53,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = Solution != null && !Solution.IsAir;
+            return false;
+        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -94,7 +99,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.EntitySpriteDraw(t, pos, rect, Projectile.GetAlpha(lightColor), rot, orig, Projectile.scale, effect, 0f);
             else
             {
-                Main.spriteBatch.TeaNPCDraw(t, pos, rect, Projectile.GetAlpha(lightColor), rot, orig, Projectile.scale, effect, 0f);
+                Main.spriteBatch.MyDraw(t, pos, rect, Projectile.GetAlpha(lightColor), rot, orig, Projectile.scale, effect, 0f);
             }
         }
         public override Color ChatTextColor => new(107, 252, 75);

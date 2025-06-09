@@ -72,7 +72,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             for (int i = 0; i < 7; i++)
             {
-                Projectile.DrawPet(9, Color.White * 0.5f,
+                Projectile.DrawPet(9, Color.White * 0.5f * mouseOpacity,
                     config with
                     {
                         PositionOffset = new Vector2(0, extraHeight) + new Vector2(Main.rand.Next(-10, 11) * 0.2f, Main.rand.Next(-10, 11) * 0.2f),
@@ -231,7 +231,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame == 3 && Projectile.frameCounter == 0)
             {
                 AltVanillaFunction.PlaySound(SoundID.Item85, Projectile.Center);
-                if (OwnerIsMyPlayer)
+                if (OwnerIsMyPlayer && ShouldExtraVFXActive)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(4 * Projectile.spriteDirection, 4)
                     , new Vector2(Main.rand.NextFloat(1f, 3f) * Projectile.spriteDirection, Main.rand.NextFloat(-0.4f, 0.2f)), ProjectileType<WakasagihimeBubble>(), 0, 0, Main.myPlayer

@@ -196,7 +196,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 CurrentState = States.Cold;
             }
-            else
+            else if (ShouldExtraVFXActive)
             {
                 SpawnFirefly();
             }

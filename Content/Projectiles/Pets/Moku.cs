@@ -70,6 +70,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsBattleState;
+            return false;
+        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             if (IsBattling)
@@ -256,7 +261,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             bool noKaguya = !FindPet(ProjectileType<Kaguya>(), false)
                 || (!Owner.HasBuff<KaguyaBuff>() && !Owner.HasBuff<EienteiBuff>());
@@ -654,11 +660,14 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 2;
                 if (OwnerIsMyPlayer)
                 {
-                    for (int i = 0; i < 4; i++)
+                    if(ShouldExtraVFXActive)
                     {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis()
-                            , Projectile.Center + new Vector2(0, Main.rand.Next(20, 90)).RotatedByRandom(MathHelper.TwoPi)
-                                , Vector2.Zero, ProjectileType<MokuFlame>(), 0, 0);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis()
+                                , Projectile.Center + new Vector2(0, Main.rand.Next(20, 90)).RotatedByRandom(MathHelper.TwoPi)
+                                    , Vector2.Zero, ProjectileType<MokuFlame>(), 0, 0);
+                        }
                     }
                     Timer++;
                 }

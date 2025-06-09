@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs;
@@ -60,13 +59,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsBandState;
+            return false;
+        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             for (int i = 0; i < 4; i++)
             {
-                Color clr = Color.PaleVioletRed * 0.8f;
+                Color clr = Color.PaleVioletRed * mouseOpacity;
                 clr.A *= 0;
-                DrawLunasa(clr, new Vector2(2, 0).RotatedBy(MathHelper.ToRadians(90 * i)));
+                DrawLunasa(clr * 0.8f, new Vector2(2, 0).RotatedBy(MathHelper.ToRadians(90 * i)));
             }
             DrawLunasa(lightColor, Vector2.Zero);
             return false;
