@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace TouhouPets
 {
-    public class TouhouPets : Mod
+    public partial class TouhouPets : Mod
     {
         private static PetChatRoom[] chatRoom = new PetChatRoom[ChatRoomSystem.MaxChatRoom];
         private static TouhouPets instance;

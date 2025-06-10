@@ -17,6 +17,22 @@ namespace TouhouPets
     public static class ModUtils
     {
         /// <summary>
+        /// 查找其他模组的指定NPC
+        /// </summary>
+        /// <param name="modName">模组类名字符串</param>
+        /// <param name="target">需要对比的目标NPC</param>
+        /// <param name="npcName">指定NPC类名字符串</param>
+        /// <returns></returns>
+        public static bool HasModAndFindNPC(string modName, NPC target, string npcName)
+        {
+            if (ModLoader.TryGetMod(modName, out Mod result))
+            {
+                if (result.TryFind(npcName, out ModNPC n) && target.type == n.Type)
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
         /// 判断是否为特定语言
         /// </summary>
         /// <param name="lang"></param>

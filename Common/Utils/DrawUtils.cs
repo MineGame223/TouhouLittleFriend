@@ -45,7 +45,12 @@ namespace TouhouPets
             Texture2D t = config.AltTexture ?? AltVanillaFunction.ProjectileTexture(projectile.type);
 
             Vector2 pos = projectile.DefaultDrawPetPosition() + config.PositionOffset;
-            Color clr = projectile.GetAlpha(lightColor) * projectile.ToPetClass().mouseOpacity;
+            Color clr = projectile.GetAlpha(lightColor);
+
+            if (!Main.gameMenu)
+            {
+                clr *= projectile.ToPetClass().mouseOpacity;
+            }
 
             int height = t.Height / Main.projFrames[projectile.type];
             Rectangle rect = new(t.Width / config.TextureRow * currentRow, frame * height, t.Width / config.TextureRow, height);

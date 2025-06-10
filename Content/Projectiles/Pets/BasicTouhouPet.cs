@@ -155,10 +155,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
 
-            DrawStatePanelForTesting(drawingForTest, chatCD + "," + chatIndex + "," + chatLag + "," + chatTimeLeft + "," + chatTurn, new Vector2(0, 0));
-            DrawStatePanelForTesting(drawingForTest, Projectile.localAI[0] + "," + Projectile.localAI[1] + "," + Projectile.localAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
-            DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
-            DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
+            string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
+            string testMsg3 = $"{Projectile.localAI[0]}, {Projectile.localAI[1]}, {Projectile.localAI[2]}, {PetState}";
+            string testMsg2 = $"{timeToType}, {totalTimeToType}, {chatOpacity}, {mainTimer}";
+            string testMsg4 = $"{Projectile.ai[0]}, {Projectile.ai[1]}, {Projectile.ai[2]}";
+
+            DrawStatePanelForTesting(drawingForTest, testMsg1, new Vector2(0, 0));
+            DrawStatePanelForTesting(drawingForTest, testMsg2, new Vector2(0, 30));
+            DrawStatePanelForTesting(drawingForTest, testMsg3, new Vector2(0, 60));
+            DrawStatePanelForTesting(drawingForTest, testMsg4, new Vector2(0, 90));
         }
         private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default, bool typerStyle = false)
         {
@@ -557,6 +562,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="indexRange">对话索引的范围</param>
         public virtual void RegisterChat(ref string name, ref Vector2 indexRange) { }
         /// <summary>
+        /// 完成基本对话注册后执行的内容
+        /// </summary>
+        public virtual void PostRegisterChat() { }
+        /// <summary>
         /// 设置常规对话文本
         /// <br/>仅在本地端更新
         /// </summary>
@@ -640,8 +649,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                ChatDictionary[i] = ModUtils.GetChatText(name, i.ToString());
+                string chatText = ModUtils.GetChatText(name, i.ToString());
+                if (string.IsNullOrEmpty(chatText))
+                {
+                    chatText = "这是一段空对话，你怎么找出来的？";
+                }
+                ChatDictionary[i] = chatText;
             }
+            PostRegisterChat();
         }
         public override bool PreAI()
         {

@@ -24,47 +24,34 @@ namespace TouhouPets
         #region 联动掉落
         private static void AddCoraliteLoot(NPC npc, NPCLoot npcLoot)
         {
-            bool hasCoralMod = ModLoader.TryGetMod("Coralite", out Mod result);
-            if (!hasCoralMod)
-                return;
+            string name = "Coralite";
 
-            bool isFlower = result.TryFind("NightmarePlantera", out ModNPC n) && npc.type == n.Type;
-            if (isFlower)
+            if (ModUtils.HasModAndFindNPC(name, npc, "NightmarePlantera"))
                 npcLoot.Add(ItemDropRule.Common(ItemType<DoremyPillow>()));
         }
         private static void AddHomewardJourneyLoot(NPC npc, NPCLoot npcLoot)
         {
-            bool hasHJMod = ModLoader.TryGetMod("ContinentOfJourney", out Mod result);
-            if (!hasHJMod)
-                return;
+            string name = "ContinentOfJourney";
 
-            bool isTimeGod = result.TryFind("TheOverwatcher", out ModNPC n) && npc.type == n.Type;
-            if (isTimeGod)
+            if (ModUtils.HasModAndFindNPC(name, npc, "TheOverwatcher"))
                 npcLoot.Add(ItemDropRule.Common(ItemType<SakuyaWatch>()));
         }
         private static void AddThoriumLoot(NPC npc, NPCLoot npcLoot)
         {
-            bool hasThoMod = ModLoader.TryGetMod("ThoriumMod", out Mod result);
-            if (!hasThoMod)
-                return;
+            string name = "ThoriumMod";
 
-            bool isViscount = result.TryFind("Viscount", out ModNPC n) && npc.type == n.Type;
-            if (isViscount)
+            if (ModUtils.HasModAndFindNPC(name, npc, "Viscount"))
                 npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
 
-            bool isStrier = (result.TryFind("BoreanStrider", out n) && npc.type == n.Type
-                || result.TryFind("BoreanStriderPopped", out n) && npc.type == n.Type);
-            if (isStrier)
+            if (ModUtils.HasModAndFindNPC(name, npc, "BoreanStrider")
+                || ModUtils.HasModAndFindNPC(name, npc, "BoreanStriderPopped"))
                 npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<LettyGlobe>()));
         }
         private static void AddCalamityLoot(NPC npc, NPCLoot npcLoot)
         {
-            bool hasCalMod = ModLoader.TryGetMod("CalamityMod", out Mod result);
-            if (!hasCalMod)
-                return;
+            string name = "CalamityMod";
 
-            bool isOarfish = result.TryFind("OarfishHead", out ModNPC n) && npc.type == n.Type;
-            if (isOarfish)
+            if (ModUtils.HasModAndFindNPC(name, npc, "OarfishHead"))
                 npcLoot.Add(ItemDropRule.Common(ItemType<IkuOarfish>(), 100));
         }
         #endregion

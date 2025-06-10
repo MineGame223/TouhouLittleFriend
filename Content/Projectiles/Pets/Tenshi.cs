@@ -112,11 +112,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
-            if (ModLoader.TryGetMod("Gensokyo", out Mod result))
+            if (ModUtils.HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
             {
-                bool isTenshin = result.TryFind("TenshiHinanawi", out ModNPC n) && boss.type == n.Type;
-                if (isTenshin)
-                    Projectile.SetChat(ChatSettingConfig, 7);
+                Projectile.SetChat(ChatSettingConfig, 7);
             }
             else
             {

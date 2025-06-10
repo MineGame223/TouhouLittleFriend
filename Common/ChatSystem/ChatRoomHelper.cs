@@ -152,6 +152,8 @@ namespace TouhouPets
             pet.totalTimeToType = config.TyperModeUseTime;
             pet.chatColor = color;
             pet.chatLag = lag;
+
+            //Main.NewText($"Index: {index}", Main.DiscoColor);
         }
     }
 }

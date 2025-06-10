@@ -4,6 +4,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets.Content.Items.PetItems
 {
@@ -15,7 +16,7 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void SetDefaults()
         {
-            Item.DefaultToVanitypet(ProjectileType<Projectiles.Pets.Star>(), BuffType<StarBuff>());
+            Item.DefaultToVanitypet(ProjectileType<StarPet>(), BuffType<StarBuff>());
             Item.DefaultToVanitypetExtra(30, 26);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

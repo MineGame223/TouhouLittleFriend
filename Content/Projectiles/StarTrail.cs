@@ -100,7 +100,7 @@ namespace TouhouPets.Content.Projectiles
         public override void AI()
         {
             Projectile master = Main.projectile[(int)Projectile.localAI[2]];
-            if (master.active && master.type == ProjectileType<Pets.Star>())
+            if (master.active && master.type == ProjectileType<Pets.StarPet>())
             {
                 Projectile.Center = master.Center;
             }

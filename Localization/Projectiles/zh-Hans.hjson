@@ -75,6 +75,7 @@ Mods: {
 			Lunasa.DisplayName: 露娜萨·普莉兹姆利巴
 			Merlin.DisplayName: 梅露兰·普莉兹姆利巴
 			Lyrica.DisplayName: 莉莉卡·普莉兹姆利巴
+			// StarPet.DisplayName: Star Pet
 		}
 	}
 }
