@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using Terraria;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.UI;
 using TouhouPets.Content.Items;
 using static TouhouPets.CustomMusicManager;
@@ -53,7 +53,7 @@ namespace TouhouPets
                 );
             }
         }
-        private static void ButtonAction_0(int buttonState, bool buttonDisabled, ConcertPlayer bp)
+        private static void ButtonAction_0(Mod mod, int buttonState, bool buttonDisabled, ConcertPlayer bp)
         {
             if (buttonDisabled)
             {
@@ -79,34 +79,32 @@ namespace TouhouPets
             }
             string stateText = buttonState switch
             {
-                1 => Language.GetTextValue("Mods.TouhouPets.RandomLoop"),
-                2 => Language.GetTextValue("Mods.TouhouPets.ListLoop"),
-                _ => Language.GetTextValue("Mods.TouhouPets.SingleLoop"),
+                1 => mod.GetLocalization("RandomLoop").Value,
+                2 => mod.GetLocalization("ListLoop").Value,
+                _ => mod.GetLocalization("SingleLoop").Value,
             };
-            Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.LoopDisplay", stateText));
+            Main.instance.MouseText(mod.GetLocalization("LoopDisplay").Format(stateText));
         }
-        private static void ButtonAction_1(int buttonState, bool buttonDisabled, ConcertPlayer bp)
+        private static void ButtonAction_1(Mod mod, int buttonState, bool buttonDisabled, ConcertPlayer bp)
         {
             if (buttonDisabled)
             {
                 return;
             }
+            bool customEnable = GetInstance<MiscConfig>().EnableCustomMusicMode && Main.netMode == NetmodeID.SinglePlayer;
+            if (Main.mouseRight && Main.mouseRightRelease && customEnable)
+            {
+                if (Directory.Exists(FullPath))
+                {
+                    Process.Start("explorer.exe", FullPath);
+                }
+            }
             if (Main.mouseLeft && Main.mouseLeftRelease)
             {
-                bool canClick = true;
-                if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
-                {
-                    //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomMusicDisabledNotice"), Color.Yellow);
-                    canClick = false;
-                }
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                {
-                    //Main.NewText(Language.GetTextValue("Mods.TouhouPets.CustomNotAllowedNotice"), Color.Yellow);
-                    canClick = false;
-                }
+                bool canClick = customEnable;
                 if (NoCustomMusic)
                 {
-                    Main.NewText(Language.GetTextValue("Mods.TouhouPets.NoCustomMusicNotice"), Color.Yellow);
+                    Main.NewText(mod.GetLocalization("NoCustomMusicNotice"), Color.Yellow);
                     canClick = false;
                 }
                 if (canClick)
@@ -117,12 +115,22 @@ namespace TouhouPets
             }
             string stateText = buttonState switch
             {
-                1 => Language.GetTextValue("Mods.TouhouPets.TurnOn"),
-                _ => Language.GetTextValue("Mods.TouhouPets.TurnOff"),
+                1 => mod.GetLocalization("TurnOn").Value,
+                _ => mod.GetLocalization("TurnOff").Value,
             };
-            Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.CustomDisplay", stateText));
+
+            string finalText = mod.GetLocalization("CustomDisplay").Format(stateText);
+            if (customEnable)
+            {
+                finalText += "\n" + mod.GetLocalization("OpenFolder");
+            }
+            if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
+            {
+                finalText = mod.GetLocalization("CustomMusicDisabledNotice").Value;
+            }
+            Main.instance.MouseText(finalText);
         }
-        private static void ButtonAction_2(int buttonState, bool buttonDisabled, ConcertPlayer bp)
+        private static void ButtonAction_2(Mod mod, int buttonState, bool buttonDisabled, ConcertPlayer bp)
         {
             if (buttonDisabled)
             {
@@ -137,18 +145,18 @@ namespace TouhouPets
             }
             string stateText = buttonState switch
             {
-                1 => Language.GetTextValue("Mods.TouhouPets.TurnOn"),
-                _ => Language.GetTextValue("Mods.TouhouPets.TurnOff"),
+                1 => mod.GetLocalization("TurnOn").Value,
+                _ => mod.GetLocalization("TurnOff").Value,
             };
-            Main.instance.MouseText(Language.GetTextValue("Mods.TouhouPets.BackAudioDisplay", stateText));
+            Main.instance.MouseText(mod.GetLocalization("BackAudioDisplay").Format(stateText));
         }
-        private static void DrawConcertUI()
+        private void DrawConcertUI()
         {
             Player player = Main.LocalPlayer;
             ConcertPlayer bp = player.GetModPlayer<ConcertPlayer>();
 
             if (bp.ConcertStart && player.HeldItem.type == ItemType<SupportStick>()
-                && Main.netMode == NetmodeID.SinglePlayer && GetInstance<MiscConfig>().EnableCustomMusicMode)
+                && Main.netMode == NetmodeID.SinglePlayer)
             {
                 buttonOpacity = Math.Clamp(buttonOpacity += 0.1f, 0, 1);
             }
@@ -204,15 +212,15 @@ namespace TouhouPets
                         switch (i)
                         {
                             case 1:
-                                ButtonAction_1(buttonState[i], buttonDisable[i], bp);
+                                ButtonAction_1(Mod, buttonState[i], buttonDisable[i], bp);
                                 break;
 
                             case 2:
-                                ButtonAction_2(buttonState[i], buttonDisable[i], bp);
+                                ButtonAction_2(Mod, buttonState[i], buttonDisable[i], bp);
                                 break;
 
                             default:
-                                ButtonAction_0(buttonState[i], buttonDisable[i], bp);
+                                ButtonAction_0(Mod, buttonState[i], buttonDisable[i], bp);
                                 break;
                         }
                     }
@@ -221,7 +229,7 @@ namespace TouhouPets
                 if (!buttonDisable[i])
                 {
                     Color buttonColor = buttonDisable[i] ? Color.DarkSlateGray : Color.White;
-                    Main.spriteBatch.TeaNPCDraw(uiImage, buttonPos[i]
+                    Main.spriteBatch.MyDraw(uiImage, buttonPos[i]
                         , new Rectangle(buttonState[i] * (int)buttonSize.X, (int)buttonSize.Y * i, (int)buttonSize.X, (int)buttonSize.Y)
                         , buttonColor * buttonOpacity, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0);
                 }

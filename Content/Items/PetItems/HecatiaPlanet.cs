@@ -8,10 +8,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class HecatiaPlanet : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {
             Item.DefaultToVanitypet(ProjectileType<Hecatia>(), BuffType<HecatiaBuff>());

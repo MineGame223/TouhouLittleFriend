@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Creative;
 
 namespace TouhouPets
 {
@@ -13,16 +11,7 @@ namespace TouhouPets
     internal static class AltVanillaFunction
     {
         /// <summary>
-        /// 替换案：设置旅途模式物品研究所需数量
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="amountNeeded">所需数量</param>
-        public static void SacrificeCountNeeded(this Item item, int amountNeeded)
-        {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[item.type] = amountNeeded;
-        }
-        /// <summary>
-        /// 替换原版PlaySound，允许编辑
+        /// 替换原版PlaySound
         /// <br/>SoundStyle种类的type
         /// <br/>Vector2类型坐标
         /// </summary>
@@ -40,40 +29,30 @@ namespace TouhouPets
         }
         /// <summary>
         /// 替换原版GetTexture
-        /// <br/>完全自定义路径
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">路径名</param>
         /// <returns></returns>
-        public static Texture2D GetTextureFreePath(string path)
+        public static Texture2D GetTexture(string path)
         {
             return Request<Texture2D>(path).Value;
         }
         /// <summary>
-        /// 替换原版GetTexture
-        /// </summary>
-        /// <param name="postAssetsPath"></param>
-        /// <returns>ModName/Assets/Textures/剩余路径名</returns>
-        public static Texture2D GetTexture(string postAssetsPath)
-        {
-            return Request<Texture2D>($"{nameof(TouhouPets)}/Assets/Textures/" + postAssetsPath).Value;
-        }
-        /// <summary>
         /// 快速获取Extra材质
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>TeaNPC/Assets/Textures/Extra/剩余路径名</returns>
+        /// <param name="path">剩余路径名</param>
+        /// <returns>TouhouPets / Assets / Textures / Extra /剩余路径名</returns>
         public static Texture2D GetExtraTexture(string path)
         {
-            return GetTexture("Extra/" + path);
+            return Request<Texture2D>($"{AssetLoader.TexturePath}/Extra/{path}").Value;
         }
         /// <summary>
         /// 快速获取Glow材质
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>TeaNPC/Assets/Textures/Glow/剩余路径名</returns>
+        /// <param name="path">剩余路径名</param>
+        /// <returns>TouhouPets / Assets / Textures / Glow /剩余路径名</returns>
         public static Texture2D GetGlowTexture(string path)
         {
-            return GetTexture("Glow/" + path);
+            return Request<Texture2D>($"{AssetLoader.TexturePath}/Glow/{path}").Value;
         }
         public static Texture2D ProjectileTexture(int id)
         {
@@ -117,7 +96,7 @@ namespace TouhouPets
         /// <param name="scale"></param>
         /// <param name="effects"></param>
         /// <param name="layerDepth"></param>
-        public static void TeaNPCDraw(this SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
+        public static void MyDraw(this SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth)
         {
             spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         }
@@ -135,7 +114,7 @@ namespace TouhouPets
         /// <param name="scale"></param>
         /// <param name="effects"></param>
         /// <param name="layerDepth"></param>
-        public static void TeaNPCDraw(this SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+        public static void MyDraw(this SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
         {
             spriteBatch.Draw(texture, position, sourceRectangle, color, rotation, origin, scale, effects, layerDepth);
         }
@@ -152,7 +131,7 @@ namespace TouhouPets
         /// <param name="origin"></param>
         /// <param name="effects"></param>
         /// <param name="layerDepth"></param>
-        public static void TeaNPCDraw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
+        public static void MyDraw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color, rotation, origin, effects, layerDepth);
         }
@@ -164,7 +143,7 @@ namespace TouhouPets
         /// <param name="texture"></param>
         /// <param name="position"></param>
         /// <param name="color"></param>
-        public static void TeaNPCDraw(this SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Color color)
+        public static void MyDraw(this SpriteBatch spriteBatch, Texture2D texture, Vector2 position, Color color)
         {
             spriteBatch.Draw(texture, position, color);
         }
@@ -177,7 +156,7 @@ namespace TouhouPets
         /// <param name="texture"></param>
         /// <param name="destinationRectangle"></param>
         /// <param name="color"></param>
-        public static void TeaNPCDraw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Color color)
+        public static void MyDraw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Color color)
         {
             spriteBatch.Draw(texture, destinationRectangle, color);
         }
@@ -191,7 +170,7 @@ namespace TouhouPets
         /// <param name="destinationRectangle"></param>
         /// <param name="sourceRectangle"></param>
         /// <param name="color"></param>
-        public static void TeaNPCDraw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color)
+        public static void MyDraw(this SpriteBatch spriteBatch, Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, color);
         }

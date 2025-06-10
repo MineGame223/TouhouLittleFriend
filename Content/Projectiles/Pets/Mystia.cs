@@ -41,7 +41,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 3, 7);
         }
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
@@ -114,6 +117,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateWingFrame();
             UpdateClothFrame();
+            UpdateMiscData();
         }
         private void UpdateTalking()
         {
@@ -150,7 +154,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-            UpdateMiscData();
             blackDye = Owner.miscDyes[0].type == ItemID.BlackDye;
         }
         private void ControlMovement()
@@ -244,9 +247,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (Projectile.frame > 4)
             {
-                if (Main.rand.NextBool(4))
+                if (Main.rand.NextBool(4) && ShouldExtraVFXActive)
                     Gore.NewGoreDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, -27), new Vector2(Main.rand.Next(-5, 5), Main.rand.Next(-6, -3)) * 0.1f, Main.rand.Next(570, 573), Main.rand.NextFloat(0.9f, 1.1f));
-                
+
                 Projectile.frame = 2;
                 Timer++;
             }

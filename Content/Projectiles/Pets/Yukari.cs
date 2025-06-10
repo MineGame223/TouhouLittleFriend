@@ -185,7 +185,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             switch (CurrentState)
             {

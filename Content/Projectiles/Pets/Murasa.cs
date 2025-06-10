@@ -36,8 +36,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool ShouldKick
         {
-            get => Projectile.ai[2] == 0;
-            set => Projectile.ai[2] = value ? 0 : 1;
+            get => Projectile.ai[2] == 1;
+            set => Projectile.ai[2] = value ? 1 : 0;
         }
         private bool IsIdleState => CurrentState <= States.Idle;
 
@@ -52,6 +52,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 22;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 8, 6);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -94,7 +98,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             float rotation = MathHelper.Clamp(Projectile.velocity.X * 0.1f, -0.9f, 0.9f);
             rotation += (float)Math.Sin(Main.GlobalTimeWrappedHourly) * 0.1f;
 
-            Main.EntitySpriteDraw(tex, pos, rect, lightColor, rotation, new Vector2(rect.Width / 2, 0)
+            Main.EntitySpriteDraw(tex, pos, rect, lightColor * mouseOpacity, rotation, new Vector2(rect.Width / 2, 0)
                 , Projectile.scale, SpriteEffects.None);
         }
         public override Color ChatTextColor => new Color(59, 176, 224);
@@ -137,7 +141,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             switch (CurrentState)
             {

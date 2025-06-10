@@ -57,13 +57,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsBandState;
+            return false;
+        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             for (int i = 0; i < 4; i++)
             {
-                Color clr = Color.LimeGreen * 0.8f;
+                Color clr = Color.LimeGreen * mouseOpacity;
                 clr.A *= 0;
-                DrawLyrica(clr, new Vector2(2, 0).RotatedBy(MathHelper.ToRadians(90 * i)));
+                DrawLyrica(clr * 0.8f, new Vector2(2, 0).RotatedBy(MathHelper.ToRadians(90 * i)));
             }
             DrawLyrica(lightColor, Vector2.Zero);
             return false;

@@ -8,7 +8,7 @@ using TouhouPets.Content.Buffs.PetBuffs;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
-    public class Star : BasicTouhouPet
+    public class StarPet : BasicTouhouPet
     {
         private enum States
         {
@@ -132,7 +132,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             switch (CurrentState)
             {

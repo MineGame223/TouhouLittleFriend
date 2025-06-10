@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using rail;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using TouhouPets.Content.Buffs;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -13,6 +11,8 @@ namespace TouhouPets.Content.Items
     public class SupportStick : ModItem
     {
         private static ConcertPlayer ModPlayer { get => Main.LocalPlayer.GetModPlayer<ConcertPlayer>(); }
+        private readonly Texture2D offTex = AltVanillaFunction.GetExtraTexture("SupportStick_Off");
+        private readonly Texture2D greenTex = AltVanillaFunction.GetExtraTexture("SupportStick_Green");
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -24,17 +24,17 @@ namespace TouhouPets.Content.Items
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            Texture2D texture = AltVanillaFunction.GetExtraTexture("SupportStick_Off");
-            spriteBatch.TeaNPCDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
+            Texture2D texture = offTex;
+            spriteBatch.MyDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
 
             if (ModPlayer.ManualConcert)
             {
                 texture = AltVanillaFunction.ItemTexture(Type);
                 if (ModPlayer.CustomModeOn)
                 {
-                    texture = AltVanillaFunction.GetExtraTexture("SupportStick_Green");
+                    texture = greenTex;
                 }
-                spriteBatch.TeaNPCDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
+                spriteBatch.MyDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
             }
             return false;
         }
@@ -44,26 +44,26 @@ namespace TouhouPets.Content.Items
             Vector2 drawOrigin = itemFrame.Size() / 2;
             Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
 
-            Texture2D texture = AltVanillaFunction.GetExtraTexture("SupportStick_Off");
-            spriteBatch.TeaNPCDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+            Texture2D texture = offTex;
+            spriteBatch.MyDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
 
             if (ModPlayer.ManualConcert)
             {
                 texture = AltVanillaFunction.ItemTexture(Type);
                 if (ModPlayer.CustomModeOn)
                 {
-                    texture = AltVanillaFunction.GetExtraTexture("SupportStick_Green");
+                    texture = greenTex;
                 }
-                spriteBatch.TeaNPCDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
-            }           
+                spriteBatch.MyDraw(texture, drawPosition, itemFrame, alphaColor, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+            }
             return false;
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            string text = Language.GetTextValue("Mods.TouhouPets.PressShift");
+            string text = Mod.GetLocalization("PressShift").Value;
             if (Main.keyState.PressingShift())
             {
-                text = Language.GetTextValue("Mods.TouhouPets.CustomModeDescrip");
+                text = Mod.GetLocalization("CustomModeDescrip").Value;
             }
             ModUtils.InsertTooltipLine(tooltips, text);
         }
@@ -116,6 +116,7 @@ namespace TouhouPets.Content.Items
             .AddIngredient(ItemID.Gel, 30)
             .AddTile(TileID.WorkBenches)
             .AddCondition(Condition.InGraveyard)
+            .DisableDecraft()
             .Register();
         }
     }

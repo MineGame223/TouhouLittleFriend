@@ -151,10 +151,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
-            if (IsIdleState)
-            {
-                IdleAnimation();
-            }
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -168,7 +164,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            if (CurrentState == States.Dreaming)
+            if (CurrentState == States.Dreaming && ShouldExtraVFXActive)
             {
                 GenDust();
             }
@@ -192,6 +188,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 default:
                     Idle();
                     break;
+            }
+            if (IsIdleState)
+            {
+                IdleAnimation();
             }
             if (IsIdleState && ActionCD > 0)
             {

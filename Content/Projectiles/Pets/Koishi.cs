@@ -66,8 +66,28 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WithCode(DisappearOnSelect);
         }
+        public override bool OnMouseHover(ref bool dontInvis)
+        {
+            dontInvis = IsKillingState;
+            return false;
+        }
+        private void DisappearOnSelect(Projectile proj, bool walking)
+        {
+            if (walking)
+            {
+                proj.Opacity = MathHelper.Clamp(proj.Opacity += 0.05f, 0, 1);
+            }
+            else
+            {
+                proj.Opacity = MathHelper.Clamp(proj.Opacity -= 0.05f, 0, 1);
+            }
+        }
+
         public override bool DrawPetSelf(ref Color lightColor)
         {
             bool hasDye = whiteDye || yellowBlackDye;
@@ -118,8 +138,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config2, 1);
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState == States.Annoying)
-                Projectile.DrawPet(annoyingFrame, lightColor, config, 1);
+            Projectile.DrawPet(annoyingFrame, lightColor, config, 1);
 
             if (eyePositionOffset.Y > 0)
                 DrawEye(tex, eyePosition - Main.screenPosition, lightColor);
@@ -131,7 +150,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             int height = t.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(t.Width / 2, 7 * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
-            Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(lightColor), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
+            Main.spriteBatch.MyDraw(t, eyePos, rect, Projectile.GetAlpha(lightColor) * mouseOpacity
+                , Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
         }
         public override Color ChatTextColor => new Color(145, 255, 183);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -160,10 +180,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
-            if (Projectile.isAPreviewDummy)
-            {
-                UpdateEyePosition();
-            }
+            UpdateAnnoyingFrame();
+            UpdateEyePosition();
         }
         private void UpdateTalking()
         {
@@ -300,7 +318,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 killCD--;
             }
-            UpdateEyePosition();
 
             whiteDye =
                 Owner.miscDyes[0].type == ItemID.SilverDye
@@ -364,9 +381,11 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir();
 
-            Vector2 point = new Vector2(-54 * Owner.direction, -34 + Owner.gfxOffY);
+            Vector2 point = new(-54 * Owner.direction, -34 + Owner.gfxOffY);
+
             if (Owner.HasBuff<KomeijiBuff>())
                 point = new Vector2(-44 * Owner.direction, -80 + Owner.gfxOffY);
+
             if (!Owner.dead)
                 MoveToPoint(point, 13f);
         }
@@ -445,20 +464,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Annoying()
         {
-            if (++annoyingFrameCounter > 4)
-            {
-                annoyingFrameCounter = 0;
-                annoyingFrame++;
-            }
-            if (annoyingFrame < 8)
-            {
-                annoyingFrame = 8;
-            }
-            if (annoyingFrame > 9)
-            {
-                annoyingFrame = 8;
-            }
-
             if (++Projectile.frameCounter > 5)
             {
                 Projectile.frameCounter = 0;
@@ -507,6 +512,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 3)
             {
                 clothFrame = 0;
+            }
+        }
+        private void UpdateAnnoyingFrame()
+        {
+            if (Projectile.frame >= 14 && Projectile.frame <= 16)
+            {
+                if (++annoyingFrameCounter > 4)
+                {
+                    annoyingFrameCounter = 0;
+                    annoyingFrame++;
+                }
+                if (annoyingFrame < 8)
+                {
+                    annoyingFrame = 8;
+                }
+                if (annoyingFrame > 9)
+                {
+                    annoyingFrame = 8;
+                }
+            }
+            else
+            {
+                annoyingFrame = 11;
             }
         }
         private void Calling()

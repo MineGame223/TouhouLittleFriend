@@ -42,7 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
         private float eyeSparkScale;
-        private Vector2 eyePostion,eyePositionOffset;
+        private Vector2 eyePostion, eyePositionOffset;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Satori_Cloth");
@@ -51,6 +51,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 1);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -86,25 +90,26 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Texture2D t = AltVanillaFunction.ProjectileTexture(Type);
             int height = t.Height / Main.projFrames[Type];
-            Rectangle rect = new Rectangle(t.Width / 2, 4 * height, t.Width / 2, height);
+            Rectangle rect = new(t.Width / 2, 4 * height, t.Width / 2, height);
             Vector2 orig = rect.Size() / 2;
 
             float s = 1 + Main.rand.NextFloat(0.9f, 1.1f);
-            Texture2D glow = AltVanillaFunction.GetExtraTexture("SatoriEyeSpark");
-            Texture2D aura = AltVanillaFunction.GetExtraTexture("SatoriEyeAura");
+            Texture2D spark = AssetLoader.GlowSpark.Value;
+            Texture2D aura = AssetLoader.GlowAura.Value;
 
-            Color clr = Projectile.GetAlpha(Color.DeepPink).ModifiedAlphaColor();
+            Color clr = Projectile.GetAlpha(Color.DeepPink) * mouseOpacity;
+            clr.A *= 0;
             for (int i = 0; i < 2; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(aura, eyePos + new Vector2(0, 2), null, clr * 0.15f, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.MyDraw(aura, eyePos + new Vector2(0, 2), null, clr * 0.15f, Projectile.rotation, aura.Size() / 2, Projectile.scale * 0.38f * eyeSparkScale, SpriteEffects.None, 0f);
             }
 
-            Main.spriteBatch.TeaNPCDraw(t, eyePos, rect, Projectile.GetAlpha(Color.White), Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
+            Main.spriteBatch.MyDraw(t, eyePos, rect, Projectile.GetAlpha(Color.White) * mouseOpacity, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
 
             for (int i = 0; i < 8; i++)
             {
-                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
-                Main.spriteBatch.TeaNPCDraw(glow, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, glow.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.MyDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation + MathHelper.PiOver2, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.4f) * s * eyeSparkScale, SpriteEffects.None, 0f);
+                Main.spriteBatch.MyDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
             }
         }
         public override Color ChatTextColor => new Color(255, 149, 170);
@@ -135,10 +140,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
-            if (Projectile.isAPreviewDummy)
-            {
-                UpdateEyePosition();
-            }
+            UpdateEyePosition();
+            UpdateMiscData();
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -181,24 +184,18 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            UpdateMiscData();
-            UpdateEyePosition();
         }
         private void UpdateMiscData()
         {
-            if (CurrentState != States.MindReading)
+            float muti = Projectile.isAPreviewDummy ? 2f : 1f;
+            if (Projectile.frame == 2)
             {
-                if (eyeSparkScale > 0)
-                    eyeSparkScale -= 0.02f;
+                eyeSparkScale = MathHelper.Clamp(eyeSparkScale += 0.01f * muti * 2, 0, 1);
             }
-            else if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
+            else
             {
-                Owner.detectCreature = true;
+                eyeSparkScale = MathHelper.Clamp(eyeSparkScale -= 0.02f * muti, 0, 1);
             }
-
-            if (eyeSparkScale < 0)
-                eyeSparkScale = 0;
         }
         private void UpdateEyePosition()
         {
@@ -254,6 +251,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void MindReading()
         {
+            if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
+            {
+                Owner.detectCreature = true;
+            }
             if (++Projectile.frameCounter > 8)
             {
                 Projectile.frameCounter = 0;
@@ -262,9 +263,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame >= 2)
             {
                 Projectile.frame = 2;
-
-                if (eyeSparkScale < 1)
-                    eyeSparkScale += 0.01f;
             }
             Timer++;
             if (OwnerIsMyPlayer && Timer > RandomCount)

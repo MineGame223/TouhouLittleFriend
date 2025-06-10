@@ -185,24 +185,6 @@ Mods: {
 			Chat15: What's up, Reimu?
 			Chat16: Ugh...Why do you suddenly say this? Sounds weird...
 			Chat17: Eh...Pretty good, I think? It means we are born with great duty, daze!
-			Chat18: What a HUGE lump of slime! That golden crown must be valuable.
-			Chat19: An eyeball that flies in the sky? So cool!
-			Chat20: Ugh...Gross worm.
-			Chat21: That's a really giant brain...It must be very smart, right?
-			Chat22: How much honey can such a big bee produce?
-			Chat23: This skeleton lacks at least 300 bones.
-			Chat24: You told me that's a deer? What the hell!
-			Chat25: I don't want to see that meat monster anymore...
-			Chat26: A sparkling huge lump of slime daze!
-			Chat27: Two eyes' sight is better than one's
-			Chat28: Ugh...Metal worm.
-			Chat29: This is really "bones of iron" daze!
-			Chat30: A pot can never grown such a big, brute flower.
-			Chat31: Guard golem? Looks like some kind of large toy.
-			Chat32: That pig is flying!
-			Chat33: How large should the bottle be if I want to catch this fairy...
-			Chat34: The ritual is really cool, but I don't get a good feeling...
-			Chat35: The moon monster's incoming!
 		}
 
 		Chat_Reimu: {
@@ -222,31 +204,6 @@ Mods: {
 			Chat14: If we're actually crafted for a world's existence by somebody, how do you feel about it?
 			Chat15: Just tell me how do you feel!
 			Chat16: Perhaps so...
-			Chat17: That ice fairy called herself the strongest one...Where did that baka get such confidence?
-			Chat18: Why do I remember that this tapir used to be in my dream?
-			Chat19: Brain of the moon? Is that really so?
-			Chat20: A mad vampire who is more horrible than her elder sister...
-			Chat21: If I can keep a dragon palace messager like her in my home, I won't have to worry for tomorrow's weather, right?
-			Chat22: A horrific goddess of purity, it's lucky that she has no animosity toward Gensokyo...
-			Chat23: She's just a mask, but she want to learn emotions, interesting.
-			Chat24: I don't want to see those three fairies causing trouble next time...
-			Chat25: If you don't know much about her, you'll never know this sleepy guard is a youkai rather than a human.
-			Chat26: I used to admire the immortal, but now look at her...Just forget it.
-			Chat27: It would be good if those kappa could give me a discount.
-			Chat28: Everytime I see that girl get close to Marisa, I feel a bit angry...Just a purple nerd...
-			Chat29: Moriya stuff should keep a distance from me...
-			Chat30: She's hated by all surface people because she can read minds, but actually, I want that ability.
-			Chat31: Goddess of Makai? Just a stupid mother...
-			Chat32: It's all her effort to make the Autumn beautiful, although I prefer get her younger sister's help.
-			Chat33: Sometimes you'll feel being stared if you watch the star, is that the explanation to her ability?
-			Chat34: If you see sun light directly, you'll see nothing, is that the explanation to her ability?
-			Chat35: The night will be more slient under the moon light, is that the explanation to her ability?
-			Chat36: If I can have a raven like her, I won't need to worry about heating right?
-			Chat37: *Swallow...That fish's tail looks delicious...
-			Chat38: If she can only control fireflies, I might like her.
-			Chat39: Can't believe that she has to manage such a big yard while taking care of her hungry master...
-			Chat40: If you see her, you'll know that the spring is coming.
-			Chat41: This kid reminds me of that puppeteer...I suddenly want a maid now.
 		}
 
 		Chat_Nitori: {

@@ -63,9 +63,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 20;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(11, 5, 12);
         }
-        public override bool OnMouseHover()
+        public override bool OnMouseHover(ref bool dontInvis)
         {
             Item food = Owner.inventory[Owner.selectedItem];
             if (food.stack > 0 && ItemID.Sets.IsFood[food.type])
@@ -74,9 +77,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     Owner.cursorItemIconEnabled = true;
                     Owner.cursorItemIconText = Language.GetTextValue($"Mods.TouhouPets.FeedYuyuko");
+                    dontInvis = true;
                     return true;
                 }
             }
+            dontInvis = IsEattingState;
             return false;
         }
         public override void OnMouseClick(bool leftMouse, bool rightMouse)
@@ -150,7 +155,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 orig = rect.Size() / 2;
             Color clr = Projectile.GetAlpha(lightColor);
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Main.spriteBatch.TeaNPCDraw(t, pos, rect, clr, Projectile.rotation, orig, 1f, effect, 0f);
+            Main.spriteBatch.MyDraw(t, pos, rect, clr, Projectile.rotation, orig, 1f, effect, 0f);
         }
         public override Color ChatTextColor => new Color(255, 112, 214);
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
@@ -301,7 +306,10 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            SpawnButterfly();
+            if (ShouldExtraVFXActive)
+            {
+                SpawnButterfly();
+            }
 
             if (food.IsAir && IsEattingState)
             {
@@ -387,7 +395,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (!OwnerIsMyPlayer)
                 return;
 
-            if (mainTimer % 20 == 0)
+            if (mainTimer % 20 == 0 && mouseOpacity >= 1f)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
                             , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);

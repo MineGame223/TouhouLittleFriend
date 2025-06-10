@@ -17,6 +17,22 @@ namespace TouhouPets
     public static class ModUtils
     {
         /// <summary>
+        /// 查找其他模组的指定NPC
+        /// </summary>
+        /// <param name="modName">模组类名字符串</param>
+        /// <param name="target">需要对比的目标NPC</param>
+        /// <param name="npcName">指定NPC类名字符串</param>
+        /// <returns></returns>
+        public static bool HasModAndFindNPC(string modName, NPC target, string npcName)
+        {
+            if (ModLoader.TryGetMod(modName, out Mod result))
+            {
+                if (result.TryFind(npcName, out ModNPC n) && target.type == n.Type)
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
         /// 判断是否为特定语言
         /// </summary>
         /// <param name="lang"></param>
@@ -55,11 +71,7 @@ namespace TouhouPets
             bool flag = petType != -1 && player.ownedProjectileCounts[petType] <= 0;
             if (flag && player.whoAmI == Main.myPlayer)
             {
-                if (petType == ProjectileType<Koakuma>())
-                {
-                    player.GetModPlayer<TouhouPetPlayer>().koakumaNumber = Main.rand.Next(1, 301);
-                }
-                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, petType, 0, 0f, player.whoAmI);
+                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.Center, Vector2.Zero, petType, 0, 0f, player.whoAmI);
             }
         }
         /// <summary>
@@ -125,7 +137,7 @@ namespace TouhouPets
         /// <param name="buffType">宠物对应buff种类</param>
         public static void SetPetActive(this Projectile projectile, Player owner, int buffType)
         {
-            if (owner.active && !owner.dead && owner.HasBuff(buffType))
+            if (!owner.dead && owner.HasBuff(buffType))
             {
                 projectile.timeLeft = 2;
             }

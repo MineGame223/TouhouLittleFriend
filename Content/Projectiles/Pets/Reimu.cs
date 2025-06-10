@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Drawing.Drawing2D;
 using Terraria;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -61,8 +59,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(12, 2, 5);
         }
-        public override bool OnMouseHover()
+        public override bool OnMouseHover(ref bool dontInvis)
         {
             Item coin = Owner.inventory[Owner.selectedItem];
             if ((coin.type == ItemID.GoldCoin || coin.type == ItemID.PlatinumCoin)
@@ -70,6 +72,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 seeCoin = true;
             }
+
+            dontInvis = seeCoin;
             return false;
         }
         public override bool DrawPetSelf(ref Color lightColor)
@@ -91,7 +95,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState >= States.Flying)
+            if (Projectile.frame >= 12)
                 return false;
 
             if (CurrentState != States.Shining)
@@ -106,11 +110,17 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 120, 120);
+        public override Color ChatTextColor => new(255, 120, 120);
+        private const int PresetMaxChat = 50;
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Reimu";
-            indexRange = new Vector2(1, 41 + 1);
+            indexRange = new Vector2(1, PresetMaxChat);
+        }
+        public override void PostRegisterChat()
+        {
+            this.RegisterComments();
+            this.RegisterComment_ByMod();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -118,16 +128,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;
             whenShouldStop = !IsIdleState;
         }
-        private void AddDialogToPets(WeightedRandom<string> chat, int petType, int chatIndex)
-        {
-            if (FindPet(petType, false))
-            {
-                chat.Add(ChatDictionary[chatIndex]);
-            }
-        }
         public override string GetRegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 if (Main.bloodMoon || Main.eclipse || Main.slimeRain)
                 {
@@ -136,40 +139,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
+                    this.Comment_TouhouLightPet(chat);
+                    this.PetChat_ByMod(chat);
+
                     chat.Add(ChatDictionary[1]);
                     chat.Add(ChatDictionary[2]);
                     if (FindPet(ProjectileType<Marisa>()))
                     {
                         chat.Add(ChatDictionary[13]);
                     }
-                    AddDialogToPets(chat, ProjectileType<Cirno>(), 17);
-                    AddDialogToPets(chat, ProjectileType<Doremy>(), 18);
-                    AddDialogToPets(chat, ProjectileType<Eirin>(), 19);
-                    AddDialogToPets(chat, ProjectileType<Flandre>(), 20);
-                    AddDialogToPets(chat, ProjectileType<Iku>(), 21);
-                    AddDialogToPets(chat, ProjectileType<Junko>(), 22);
-                    AddDialogToPets(chat, ProjectileType<Kokoro>(), 23);
-                    if (Owner.HasBuff<TheThreeFairiesBuff>())
-                    {
-                        chat.Add(ChatDictionary[24]);
-                    }
-                    AddDialogToPets(chat, ProjectileType<Meirin>(), 25);
-                    AddDialogToPets(chat, ProjectileType<Moku>(), 26);
-                    AddDialogToPets(chat, ProjectileType<Nitori>(), 27);
-                    AddDialogToPets(chat, ProjectileType<Patchouli>(), 28);
-                    AddDialogToPets(chat, ProjectileType<Sanae>(), 29);
-                    AddDialogToPets(chat, ProjectileType<Satori>(), 30);
-                    AddDialogToPets(chat, ProjectileType<Shinki>(), 31);
-                    AddDialogToPets(chat, ProjectileType<Sizuha>(), 32);
-                    AddDialogToPets(chat, ProjectileType<Star>(), 33);
-                    AddDialogToPets(chat, ProjectileType<Sunny>(), 34);
-                    AddDialogToPets(chat, ProjectileType<Luna>(), 35);
-                    AddDialogToPets(chat, ProjectileType<Utsuho>(), 36);
-                    AddDialogToPets(chat, ProjectileType<Wakasagihime>(), 37);
-                    AddDialogToPets(chat, ProjectileType<Wriggle>(), 38);
-                    AddDialogToPets(chat, ProjectileType<Youmu>(), 39);
-                    AddDialogToPets(chat, ProjectileType<Lily>(), 40);
-                    AddDialogToPets(chat, ProjectileType<AliceOld>(), 41);
                 }
             }
             return chat;

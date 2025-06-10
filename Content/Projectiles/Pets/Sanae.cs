@@ -64,16 +64,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (auraScale > 0)
             {
                 float time = Main.GlobalTimeWrappedHourly * 6f;
-                Color clr = (Color.SeaGreen * 0.3f).ModifiedAlphaColor();
+                Color clr = Color.SeaGreen * mouseOpacity;
+                clr.A *= 0;
                 for (int o = 0; o < 8; o++)
                 {
                     for (int i = -1; i <= 1; i++)
                     {
                         Vector2 auraPos = new Vector2(2.5f * auraScale * (float)Math.Sin(time), 0);
-                        DrawSanaeAura(clr, auraPos.RotatedBy(MathHelper.Pi * i));
+                        DrawSanaeAura(clr * 0.3f, auraPos.RotatedBy(MathHelper.Pi * i));
 
                         auraPos = new Vector2(0, 2.5f * auraScale * (float)Math.Sin(time));
-                        DrawSanaeAura(clr, auraPos.RotatedBy(MathHelper.Pi * i));
+                        DrawSanaeAura(clr * 0.3f, auraPos.RotatedBy(MathHelper.Pi * i));
                     }
                 }
             }
@@ -108,7 +109,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.ResetDrawStateForPet();
 
-            if (CurrentState < States.Flying)
+            if (Projectile.frame < 5)
             {
                 Projectile.DrawPet(itemFrame, lightColor, drawConfig, 1);
                 Projectile.DrawPet(clothFrame, lightColor,
@@ -282,7 +283,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (CurrentState == States.Pray)
             {
-                PrayEffect();
+                if (ShouldExtraVFXActive)
+                    PrayEffect();
+
                 auraScale = MathHelper.Clamp(auraScale += 0.02f, 0, 2);
             }
             else

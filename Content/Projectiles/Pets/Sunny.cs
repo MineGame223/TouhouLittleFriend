@@ -219,7 +219,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Chatting2(PetChatRoom chatRoom)
         {
             int type = ProjectileType<Luna>();
-            int type2 = ProjectileType<Star>();
+            int type2 = ProjectileType<StarPet>();
             if (FindPet(out Projectile member, type) && FindPet(out Projectile member2, type2))
             {
                 chatRoom.member[0] = member;
@@ -324,7 +324,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             switch (CurrentState)
             {

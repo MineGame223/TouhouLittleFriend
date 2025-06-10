@@ -45,7 +45,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(1, 2, 9);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -76,7 +79,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void DrawUmbrella(Color lightColor)
         {
             int type = ItemID.TragicUmbrella;
-            //Main.instance.LoadItem(type);
             Texture2D tex = AltVanillaFunction.ItemTexture(type);
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(13 * Projectile.spriteDirection, -20) + new Vector2(0, 7f * Main.essScale);
             Color clr = Projectile.GetAlpha(lightColor);

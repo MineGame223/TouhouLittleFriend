@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 
 namespace TouhouPets.Content.Buffs
 {
@@ -17,10 +18,10 @@ namespace TouhouPets.Content.Buffs
             player.buffTime[buffIndex] = 18000;
             bool flag = PetType != -1 && player.ownedProjectileCounts[PetType] <= 0;
             if (flag && player.whoAmI == Main.myPlayer)
-            {               
-                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.position.X + player.width / 2, player.position.Y + player.height / 2, 0f, 0f, PetType, 0, 0f, player.whoAmI);
+            {
+                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.Center, Vector2.Zero, PetType, 0, 0f, player.whoAmI);
                 OnSummonPet(player);
-            }           
+            }
         }
         public virtual void OnSummonPet(Player player)
         {

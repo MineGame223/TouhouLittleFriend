@@ -49,7 +49,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 1);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -75,12 +78,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawDark()
         {
-            Texture2D tex = AltVanillaFunction.GetExtraTexture("SatoriEyeAura");
+            Texture2D tex = AssetLoader.GlowAura.Value;
             Vector2 pos = Projectile.Center - Main.screenPosition;
             Color clr = Projectile.GetAlpha(Color.Black);
             Vector2 orig = tex.Size() / 2;
             for (int i = 0; i < 3; i++)
-                Main.spriteBatch.TeaNPCDraw(tex, pos, null, clr * darkAuraScale, 0f, orig, darkAuraScale * 1.2f * Main.essScale, SpriteEffects.None, 0);
+                Main.spriteBatch.MyDraw(tex, pos, null, clr * darkAuraScale * mouseOpacity, 0f, orig, darkAuraScale * (Main.essScale * 0.3f + 0.8f), SpriteEffects.None, 0);
         }
         public override Color ChatTextBoardColor => Color.White;
         public override Color ChatTextColor => Color.Black;

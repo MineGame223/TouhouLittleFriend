@@ -75,11 +75,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(lightFrame, Color.White, drawConfig, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 249, 137);
+        public override Color ChatTextColor => new(255, 249, 137);
+        private const int PresetMaxChat = 50;
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Marisa";
-            indexRange = new Vector2(1, 35);
+            indexRange = new Vector2(1, PresetMaxChat);
+        }
+        public override void PostRegisterChat()
+        {
+            this.RegisterComment_Vanilla();
+            this.RegisterComment_Coralite();
+            this.RegisterComment_Thorium();
+            this.RegisterComment_HJ();
+            this.RegisterComment_ByMod();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -89,7 +98,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override string GetRegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -114,66 +123,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
-            switch (boss.type)
-            {
-                case NPCID.KingSlime:
-                    Projectile.SetChat(ChatSettingConfig, 18);
-                    break;
-                case NPCID.EyeofCthulhu:
-                    Projectile.SetChat(ChatSettingConfig, 19);
-                    break;
-                case NPCID.EaterofWorldsHead:
-                    Projectile.SetChat(ChatSettingConfig, 20);
-                    break;
-                case NPCID.BrainofCthulhu:
-                    Projectile.SetChat(ChatSettingConfig, 21);
-                    break;
-                case NPCID.QueenBee:
-                    Projectile.SetChat(ChatSettingConfig, 22);
-                    break;
-                case NPCID.SkeletronHead:
-                    Projectile.SetChat(ChatSettingConfig, 23);
-                    break;
-                case NPCID.Deerclops:
-                    Projectile.SetChat(ChatSettingConfig, 24);
-                    break;
-                case NPCID.WallofFlesh:
-                    Projectile.SetChat(ChatSettingConfig, 25);
-                    break;
-                case NPCID.QueenSlimeBoss:
-                    Projectile.SetChat(ChatSettingConfig, 26);
-                    break;
-                case NPCID.TheDestroyer:
-                    Projectile.SetChat(ChatSettingConfig, 28);
-                    break;
-                case NPCID.Retinazer:
-                case NPCID.Spazmatism:
-                    Projectile.SetChat(ChatSettingConfig, 27);
-                    break;
-                case NPCID.SkeletronPrime:
-                    Projectile.SetChat(ChatSettingConfig, 29);
-                    break;
-                case NPCID.Plantera:
-                    Projectile.SetChat(ChatSettingConfig, 30);
-                    break;
-                case NPCID.Golem:
-                    Projectile.SetChat(ChatSettingConfig, 31);
-                    break;
-                case NPCID.DukeFishron:
-                    Projectile.SetChat(ChatSettingConfig, 32);
-                    break;
-                case NPCID.HallowBoss:
-                    Projectile.SetChat(ChatSettingConfig, 33);
-                    break;
-                case NPCID.CultistBoss:
-                    Projectile.SetChat(ChatSettingConfig, 34);
-                    break;
-                case NPCID.MoonLordCore:
-                    Projectile.SetChat(ChatSettingConfig, 35);
-                    break;
-                default:
-                    break;
-            }
+            Projectile.BossChat_Vanilla(ChatSettingConfig, boss);
+            Projectile.BossChat_Coralite(ChatSettingConfig, boss);
+            Projectile.BossChat_Thorium(ChatSettingConfig, boss);
+            Projectile.BossChat_HomewardHourney(ChatSettingConfig, boss);
+            Projectile.BossChat_Gensokyo(ChatSettingConfig, boss);
+            Projectile.BossChat_ByMod(ChatSettingConfig, boss);
         }
         private void UpdateTalking()
         {
@@ -278,10 +233,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
-            if (IsIdleState)
-            {
-                IdleAnimation();
-            }
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -315,7 +266,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Idle();
                     break;
             }
-
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
             if (IsIdleState && ActionCD > 0)
             {
                 ActionCD--;

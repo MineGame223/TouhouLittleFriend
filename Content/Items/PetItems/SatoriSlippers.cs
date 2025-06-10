@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Pets;
 
@@ -10,8 +11,7 @@ namespace TouhouPets.Content.Items.PetItems
     {
         public override void SetStaticDefaults()
         {
-            Item.SacrificeCountNeeded(1);
-            Terraria.ID.ItemID.Sets.ShimmerTransformToItem[Type] = ItemType<KoishiTelephone>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ItemType<KoishiTelephone>();
         }
         public override void SetDefaults()
         {

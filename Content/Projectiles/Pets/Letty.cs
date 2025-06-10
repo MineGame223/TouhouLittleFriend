@@ -53,6 +53,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 8;
             Main.projPet[Type] = true;
+
+            ProjectileID.Sets.CharacterPreviewAnimations[Type] =
+                ProjectileID.Sets.SimpleLoop(0, 1)
+                .WhenSelected(2, 0);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -125,6 +129,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
+            UpdateMiscData();
         }
         public override void AI()
         {
@@ -134,7 +139,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             if (FeelHot)
             {
@@ -175,8 +181,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
-            UpdateMiscData();
         }
         private void GenDust()
         {
@@ -264,7 +268,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 2)
                 Projectile.frame = 2;
 
-            SnowingEffect();
+            if (ShouldExtraVFXActive)
+                SnowingEffect();
 
             Timer++;
             if (OwnerIsMyPlayer)

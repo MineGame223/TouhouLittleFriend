@@ -100,7 +100,7 @@ namespace TouhouPets.Content.Projectiles
         public override void AI()
         {
             Projectile master = Main.projectile[(int)Projectile.localAI[2]];
-            if (master.active && master.type == ProjectileType<Pets.Star>())
+            if (master.active && master.type == ProjectileType<Pets.StarPet>())
             {
                 Projectile.Center = master.Center;
             }
@@ -122,6 +122,7 @@ namespace TouhouPets.Content.Projectiles
                 Projectile.Opacity -= 0.1f;
             }
             Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity, 0, 1 - (Radius / 800));
+            Projectile.Opacity *= master.ToPetClass().mouseOpacity;
         }
         public override bool? CanDamage()
         {

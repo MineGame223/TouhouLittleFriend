@@ -49,8 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         /// <summary>
         /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
-        /// <br/>用途：说完一句话以后一段时间内不会再进行其他对话
-        /// <br/>仅由赤蛮奇使用
+        /// <br/>该值不为0时，宠物不会发起向其他宠物的对话或接受来自其他宠物的对话
         /// </summary>
         internal int chatCD;
 
@@ -101,20 +100,24 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 对话字典
         /// </summary>
-        internal Dictionary<int, string> ChatDictionary = new Dictionary<int, string>();
+        internal Dictionary<int, string> ChatDictionary = [];
 
         /// <summary>
         /// 当前聊天室
         /// </summary>
         internal PetChatRoom currentChatRoom;
-
+        /// <summary>
+        /// 当鼠标悬停在宠物身上时应当变化的透明度，同时影响宠物本身和对话
+        /// </summary>
+        public float mouseOpacity = 1f;
+        /// <summary>
+        /// 是否应当启用额外视觉效果，当 <see cref="mouseOpacity"/> >= 1 时为 true
+        /// </summary>
+        public bool ShouldExtraVFXActive => mouseOpacity >= 1f;
         /// <summary>
         /// 对话属性配置
         /// </summary>
-        public static ChatSettingConfig ChatSettingConfig
-        {
-            get => new();
-        }
+        public static ChatSettingConfig ChatSettingConfig => new();
         /// <summary>
         /// 宠物的状态值（Projectile.ai[1]），设置该值时会进行一次netUpdate
         /// </summary>
@@ -133,13 +136,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 宠物所属玩家是否被Boss锁定为目标或其附近是否存在Boss
         /// </summary>
-        public bool FindBoss
-        {
-            get
-            {
-                return findBoss;
-            }
-        }
+        public bool FindBoss => findBoss;
         /// <summary>
         /// 宠物的所属玩家
         /// </summary>
@@ -158,10 +155,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
 
-            DrawStatePanelForTesting(drawingForTest, chatCD + "," + chatIndex + "," + chatLag + "," + chatTimeLeft + "," + chatTurn, new Vector2(0, 0));
-            DrawStatePanelForTesting(drawingForTest, Projectile.localAI[0] + "," + Projectile.localAI[1] + "," + Projectile.localAI[2] + "," + PetState + "," + mainTimer, new Vector2(0, 30));
-            DrawStatePanelForTesting(drawingForTest, timeToType + "," + totalTimeToType, new Vector2(0, 60));
-            DrawStatePanelForTesting(drawingForTest, Projectile.ai[0] + "," + Projectile.ai[2], new Vector2(0, 90));
+            string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
+            string testMsg3 = $"{Projectile.localAI[0]}, {Projectile.localAI[1]}, {Projectile.localAI[2]}, {PetState}";
+            string testMsg2 = $"{timeToType}, {totalTimeToType}, {chatOpacity}, {mainTimer}";
+            string testMsg4 = $"{Projectile.ai[0]}, {Projectile.ai[1]}, {Projectile.ai[2]}";
+
+            DrawStatePanelForTesting(drawingForTest, testMsg1, new Vector2(0, 0));
+            DrawStatePanelForTesting(drawingForTest, testMsg2, new Vector2(0, 30));
+            DrawStatePanelForTesting(drawingForTest, testMsg3, new Vector2(0, 60));
+            DrawStatePanelForTesting(drawingForTest, testMsg4, new Vector2(0, 90));
         }
         private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default, bool typerStyle = false)
         {
@@ -290,14 +292,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chatTimeLeft = 0;
                 chatOpacity -= 0.05f;
 
-                if (chatCD > 0)
-                {
-                    chatCD--;
-                }
-                else
-                {
-                    chatCD = 0;
-                }
+                chatCD = (int)MathHelper.Clamp(chatCD--, 0, int.MaxValue - 1);
             }
 
             if (chatOpacity > 0)
@@ -515,8 +510,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdatePetLight()
         {
-            Vector2 position = Projectile.Center;
-            Vector3 rgb = new Vector3(0, 0, 0);
+            Vector2 position = GetInstance<MiscConfig>().PetLightOnPlayer ? Owner.Center : Projectile.Center;
+            Vector3 rgb = new(0, 0, 0);
             bool inactive = false;
             SetPetLight(ref position, ref rgb, ref inactive);
             if (!inactive)
@@ -529,20 +524,30 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (!PlayerInput.IgnoreMouseInterface && OwnerIsMyPlayer)
             {
                 Vector2 projPos = Projectile.position - Main.screenPosition;
-                Rectangle projRect = new((int)projPos.X, (int)projPos.Y, Projectile.width, Projectile.height);
+                Rectangle projRect = new((int)projPos.X, (int)projPos.Y
+                    , Projectile.width, Projectile.height);
                 if (projRect.Contains(new Point(Main.mouseX, Main.mouseY)))
                 {
-                    if (!OnMouseHover())
-                        return;
-
-                    if (Main.mouseRight && Main.mouseRightRelease)
+                    bool dontInvis = false;
+                    if (OnMouseHover(ref dontInvis))
                     {
-                        OnMouseClick(false, true);
+                        if (Main.mouseRight && Main.mouseRightRelease)
+                        {
+                            OnMouseClick(false, true);
+                        }
+                        if (Main.mouseLeft && Main.mouseLeftRelease)
+                        {
+                            OnMouseClick(true, false);
+                        }
                     }
-                    if (Main.mouseLeft && Main.mouseLeftRelease)
+                    if (!dontInvis && GetInstance<MiscConfig>().PetInvisWhenMouseHover)
                     {
-                        OnMouseClick(true, false);
+                        mouseOpacity = MathHelper.Clamp(mouseOpacity - 0.1f, 0.05f, 1);
                     }
+                }
+                else
+                {
+                    mouseOpacity = MathHelper.Clamp(mouseOpacity + 0.1f, 0.05f, 1);
                 }
             }
         }
@@ -555,10 +560,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         /// <param name="name">对话所属宠物的名字</param>
         /// <param name="indexRange">对话索引的范围</param>
-        public virtual void RegisterChat(ref string name, ref Vector2 indexRange)
-        {
-
-        }
+        public virtual void RegisterChat(ref string name, ref Vector2 indexRange) { }
+        /// <summary>
+        /// 完成基本对话注册后执行的内容
+        /// </summary>
+        public virtual void PostRegisterChat() { }
         /// <summary>
         /// 设置常规对话文本
         /// <br/>仅在本地端更新
@@ -566,86 +572,58 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <param name="timePerDialog">每次说话机会的间隔</param>
         /// <param name="chance">说话的几率（1 / chance）</param>
         /// <param name="whenShouldStop">何时应当停止说话</param>
-        public virtual void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
-        {
-
-        }
+        public virtual void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop) { }
         /// <summary>
         /// 设置宠物照明（于PostDraw中更新）
         /// </summary>
         /// <param name="position">发光位置，默认为宠物中心</param>
         /// <param name="rgb">颜色，单值最高为2.55、最低为0</param>
         /// <param name="inactive">何时不会发光，默认为false</param>
-        public virtual void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
-        {
-
-        }
+        public virtual void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive) { }
         /// <summary>
         /// 鼠标置于宠物之上时执行的方法，可控制是否能点击宠物（于PostDraw中更新）
         /// <br/>仅在本地端更新
         /// </summary>
+        /// <param name="dontInvis">何时应当无视鼠标悬停时隐形的规则</param>
         /// <returns></returns>
-        public virtual bool OnMouseHover()
-        {
-            return true;
-        }
+        public virtual bool OnMouseHover(ref bool dontInvis) => false;
         /// <summary>
         /// 点击宠物时执行的方法，需要OnMouseHover返回true才能执行
         /// <br/>仅在本地端更新
         /// </summary>
         /// <param name="leftMouse">左键点击</param>
         /// <param name="rightMouse">右键点击</param>
-        public virtual void OnMouseClick(bool leftMouse, bool rightMouse)
-        {
-
-        }
+        public virtual void OnMouseClick(bool leftMouse, bool rightMouse) { }
         /// <summary>
         /// 当Boss出场的一刻间执行的方法
         /// </summary>
         /// <param name="boss"></param>
-        public virtual void OnFindBoss(NPC boss)
-        {
-
-        }
+        public virtual void OnFindBoss(NPC boss) { }
         /// <summary>
         /// 对话文本边框颜色，默认为黑色
         /// </summary>
-        public virtual Color ChatTextBoardColor
-        {
-            get => Color.Black;
-        }
+        public virtual Color ChatTextBoardColor => Color.Black;
         /// <summary>
         /// 对话文本颜色，默认为白色
         /// </summary>
-        public virtual Color ChatTextColor
-        {
-            get => Color.White;
-        }
+        public virtual Color ChatTextColor => Color.White;
         /// <summary>
         /// 常规对话
         /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
-        public virtual string GetRegularDialogText()
-        {
-            return null;
-        }
+        public virtual string GetRegularDialogText() => null;
         /// <summary>
         /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
-        /// <br/>若寻常动作下本体包含动画，则该动画也应当在此运行
+        /// <br/>对于设置了 <see cref="ProjectileID.Sets.CharacterPreviewAnimations"/> 的宠物，待机状态的动画不应写在这里
         /// </summary>
-        public virtual void VisualEffectForPreview()
-        {
-        }
+        public virtual void VisualEffectForPreview() { }
         /// <summary>
         /// 绘制宠物，替代PreDraw
         /// </summary>
         /// <param name="lightColor"></param>
         /// <returns></returns>
-        public virtual bool DrawPetSelf(ref Color lightColor)
-        {
-            return true;
-        }
+        public virtual bool DrawPetSelf(ref Color lightColor) => true;
         #endregion
 
         #region 原有重写函数
@@ -657,7 +635,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 5;
+            Projectile.timeLeft *= 5;
         }
         public override void OnSpawn(IEntitySource source)
         {
@@ -671,8 +649,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                ChatDictionary[i] = ModUtils.GetChatText(name, i.ToString());
+                string chatText = ModUtils.GetChatText(name, i.ToString());
+                if (string.IsNullOrEmpty(chatText))
+                {
+                    chatText = "这是一段空对话，你怎么找出来的？";
+                }
+                ChatDictionary[i] = chatText;
             }
+            PostRegisterChat();
         }
         public override bool PreAI()
         {
@@ -680,7 +664,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 mainTimer = 0;
             }
-
+            if (!Owner.active)
+            {
+                Projectile.active = false;
+                return false;
+            }
             if (OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 UpdateChat();
@@ -688,12 +676,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (UpdateFindBoss())
                 {
                     shouldNotTalking = true;
-                    return base.PreAI();
+                    return true;
                 }
 
                 UpdateRegularDialog();
             }
-            return base.PreAI();
+            return true;
         }
         public override void PostAI()
         {
@@ -721,7 +709,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
-                float alpha = chatOpacity * Projectile.Opacity;
+                float alpha = chatOpacity * Projectile.Opacity * mouseOpacity;
                 if (textShaking)
                 {
                     DrawChatPanel_Koishi(drawPos, chatText, chatColor, alpha, ChatTextBoardColor);

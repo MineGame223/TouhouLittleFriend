@@ -369,7 +369,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					Summons a poltergeist violinist
-					"Will not buzz when monster appears."
+					"Will not buzz when monsters appear."
 					''' */
 			}
 
@@ -387,12 +387,12 @@ Mods: {
 				/* Tooltip:
 					'''
 					Summons a poltergeist keyboardist
-					"Not to be confused with piano."
+					"Not to be confused with a piano."
 					''' */
 			}
 
 			PoltergeistAlbum: {
-				// DisplayName: Record of Poltergeist
+				// DisplayName: Poltergeist's Record
 				/* Tooltip:
 					'''
 					Summons the poltergeist's band

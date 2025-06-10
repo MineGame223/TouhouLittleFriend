@@ -378,7 +378,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void Hot()
         {
-            MeltingDust();
+            if (ShouldExtraVFXActive)
+                MeltingDust();
+
             Projectile.frame = 1;
             if (OwnerIsMyPlayer && mainTimer % 270 == 0)
             {
@@ -391,7 +393,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void HotBlink()
         {
-            MeltingDust();
+            if (ShouldExtraVFXActive)
+                MeltingDust();
+
             if (++Projectile.frameCounter > 3)
             {
                 Projectile.frameCounter = 0;

@@ -55,7 +55,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             for (int i = 0; i < 4; i++)
             {
-                Color clr = Color.White * 0.8f;
+                Color clr = Color.White * 0.8f * mouseOpacity;
                 Projectile.DrawPet(8, clr,
                     drawConfig with
                     {

@@ -223,7 +223,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 backFrame = 4;
                 Timer++;
             }
-            if (Main.rand.NextBool(8 - Timer))
+            if (Main.rand.NextBool(8 - Timer) && ShouldExtraVFXActive)
             {
                 Dust.NewDustPerfect(Projectile.Center + new Vector2(-6 * Projectile.spriteDirection, -8)
                     , MyDustId.Smoke
@@ -257,7 +257,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 4;
                 Timer++;
             }
-            if (Main.rand.NextBool(4 - Timer))
+            if (Main.rand.NextBool(4 - Timer) && ShouldExtraVFXActive)
             {
                 Dust.NewDustPerfect(Projectile.Center + new Vector2(-6 * Projectile.spriteDirection, -8)
                     , MyDustId.Smoke
@@ -294,7 +294,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         , Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1), Main.rand.NextFloat(0.75f, 1.25f));
                 AltVanillaFunction.PlaySound(SoundID.Item14, Projectile.position);
             }
-            else if (Main.rand.NextBool(2))
+            else if (Main.rand.NextBool(2) && ShouldExtraVFXActive)
             {
                 Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(-8, 8))
                         , MyDustId.Smoke
@@ -316,7 +316,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void CleanAsh()
         {
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(3) && ShouldExtraVFXActive)
             {
                 for (int i = 0; i < 4; i++)
                     Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(-8, 8))

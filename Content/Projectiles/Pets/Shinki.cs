@@ -38,9 +38,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             for (int i = 0; i < 4; i++)
             {
-                Color clr = Color.Purple * 0.8f;
+                Color clr = Color.Purple * mouseOpacity;
                 clr.A *= 0;
-                DrawShinki(clr, new Vector2(6 * Main.essScale, 0)
+                DrawShinki(clr * 0.8f, new Vector2(6 * Main.essScale, 0)
                     .RotatedBy(MathHelper.ToRadians(90 * i) + Main.GlobalTimeWrappedHourly));
             }
             Projectile.ResetDrawStateForPet();//用于让染料正常工作，因为上面的DrawShinki没有进行闭环操作
@@ -272,7 +272,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement();
 
-            GenDust();
+            if (ShouldExtraVFXActive)
+                GenDust();
 
             switch (CurrentState)
             {

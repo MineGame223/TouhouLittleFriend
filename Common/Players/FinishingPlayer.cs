@@ -10,30 +10,44 @@ namespace TouhouPets.Common
     {
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
-            if (attempt.inLava || attempt.inHoney)
-                return;
-
             if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
                 return;
 
-            if (Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish
-                || attempt.rare)
-            {
-                if (Main.rand.NextBool(7))
-                    itemDrop = ItemType<UselessBook>();
-            }
-            if (attempt.rare)
-            {
-                if (Main.rand.NextBool(5))
-                    itemDrop = ItemType<WakasagihimeFishingRod>();
+            bool junkCondition = Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish;
+            bool enoughWater = attempt.waterTilesCount > 1000;
 
-                if (Main.rand.NextBool(5))
-                    itemDrop = ItemType<HinaDoll>();
+            if (attempt.inLava || attempt.inHoney)
+                return;
+
+            if (junkCondition || attempt.veryrare)
+            {
+                if (Main.rand.NextBool(100))
+                    itemDrop = ItemType<UselessBook>();
             }
             if (attempt.legendary)
             {
-                if (Main.rand.NextBool(3))
-                    itemDrop = ItemType<IkuOarfish>();
+                if (Player.ZoneForest)
+                {
+                    if (Main.rand.NextBool(8))
+                    {
+                        itemDrop = ItemType<WakasagihimeFishingRod>();
+                        return;
+                    }
+
+                    if (Main.rand.NextBool(8))
+                    {
+                        itemDrop = ItemType<HinaDoll>();
+                        return;
+                    }
+                }
+                if (Player.ZoneBeach)
+                {
+                    if (Main.rand.NextBool(20) && enoughWater)
+                    {
+                        itemDrop = ItemType<IkuOarfish>();
+                        return;
+                    }
+                }
             }
         }
     }

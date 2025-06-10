@@ -35,14 +35,20 @@ namespace TouhouPets.Content.Projectiles
             Vector2 pos = Projectile.Center - Main.screenPosition;
             int height = tex.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
+
             Color clr = Projectile.GetAlpha(lightColor);
+            if (IsAliceExited)
+            {
+                clr *= Alice.ToPetClass().mouseOpacity;
+            }
+
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
+            Main.spriteBatch.MyDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
             tex = AltVanillaFunction.GetExtraTexture("AliceDoll_Proj_Cloth");
             if (GetInstance<MiscConfig>().CompatibilityMode)
             {
-                Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
+                Main.spriteBatch.MyDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
             }
             else
             {
@@ -57,11 +63,12 @@ namespace TouhouPets.Content.Projectiles
             Vector2 pos = Projectile.Center - Main.screenPosition;
             Rectangle rect = new Rectangle(0, 0, tex.Width, (int)Vector2.Distance(startP, Projectile.Center));
             Color clr = Projectile.GetAlpha(Lighting.GetColor(Projectile.Center.ToTileCoordinates(), lightColor));
+            clr *= Alice.ToPetClass().mouseOpacity;
             Vector2 orig = new Vector2(tex.Width / 2, 0);
             float rot = startP.DirectionTo(Projectile.Center).ToRotation() + MathHelper.PiOver2;
             if (GetInstance<MiscConfig>().CompatibilityMode)
             {
-                Main.spriteBatch.TeaNPCDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
+                Main.spriteBatch.MyDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
             }
             else
             {

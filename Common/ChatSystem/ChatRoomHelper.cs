@@ -1,9 +1,9 @@
 ﻿using Terraria;
 using TouhouPets.Content.Projectiles.Pets;
-using static TouhouPets.TouhouPets;
-using static TouhouPets.ChatRoomSystem;
 using Microsoft.Xna.Framework;
 using System;
+using static TouhouPets.TouhouPets;
+using static TouhouPets.ChatRoomSystem;
 
 namespace TouhouPets
 {
@@ -13,13 +13,13 @@ namespace TouhouPets
     public static class ChatRoomHelper
     {
         /// <summary>
-        /// 宠物是否被允许说话（shouldNotTalking 是否为 false）
+        /// 宠物是否被允许说话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns></returns>
+        /// <returns>当 shouldNotTalking 为 true 且 chatCD 小于等于 0 时，返回 true</returns>
         public static bool ShouldPetTalking(this Projectile projectile)
         {
-            return !projectile.ToPetClass().shouldNotTalking;
+            return !projectile.ToPetClass().shouldNotTalking && projectile.ToPetClass().chatCD <= 0;
         }
         /// <summary>
         /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPet"/> 类
@@ -34,17 +34,20 @@ namespace TouhouPets
         /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空、chatIndex归零
         /// </summary>
         /// <param name="chatRoom">当前聊天室</param>
-        public static void CloseChatRoom(this PetChatRoom chatRoom)
+        /// <param name="chatCD">聊天冷却时间，归零前宠物之间不会再次发起聊天</param>
+        public static void CloseChatRoom(this PetChatRoom chatRoom, int chatCD = 21600)
         {
             BasicTouhouPet owner = ToPetClass(chatRoom.initiator);
             owner.currentChatRoom = null;
             owner.chatIndex = 0;
+            owner.chatCD = chatCD;
             foreach (Projectile m in chatRoom.member)
             {
                 if (m != null && m.active)
                 {
                     ToPetClass(m).currentChatRoom = null;
                     ToPetClass(m).chatIndex = 0;
+                    ToPetClass(m).chatCD = chatCD;
                 }
             }
             chatRoom.active = false;
@@ -106,8 +109,7 @@ namespace TouhouPets
         /// <param name="projectile"></param>
         public static void CloseCurrentDialog(this Projectile projectile)
         {
-            BasicTouhouPet pet = projectile.ToPetClass();
-            pet.chatTimeLeft = 0;
+            projectile.ToPetClass().chatTimeLeft = 0;
         }
         /// <summary>
         /// 设置宠物要说的话
@@ -150,6 +152,8 @@ namespace TouhouPets
             pet.totalTimeToType = config.TyperModeUseTime;
             pet.chatColor = color;
             pet.chatLag = lag;
+
+            //Main.NewText($"Index: {index}", Main.DiscoColor);
         }
     }
 }

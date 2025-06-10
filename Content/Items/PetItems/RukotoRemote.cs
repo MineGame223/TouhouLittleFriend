@@ -9,10 +9,6 @@ namespace TouhouPets.Content.Items.PetItems
 {
     public class RukotoRemote : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            Item.SacrificeCountNeeded(1);
-        }
         public override void SetDefaults()
         {            
             Item.DefaultToVanitypet(ProjectileType<Rukoto>(), BuffType<RukotoBuff>());
@@ -23,7 +19,6 @@ namespace TouhouPets.Content.Items.PetItems
             player.AddBuff(Item.buffType, 2);
             return false;
         }
-
         public override void AddRecipes()
         {
             CreateRecipe()

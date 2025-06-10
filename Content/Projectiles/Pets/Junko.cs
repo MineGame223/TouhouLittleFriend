@@ -76,20 +76,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             Texture2D tex = tailTex;
             int width = tex.Width / drawConfig.TextureRow;
             int height = tex.Height / 4;
-            Rectangle rect = new Rectangle(0, tailFrame * height, width, height);
+            Rectangle rect = new(0, tailFrame * height, width, height);
 
             Vector2 extraPos = new Vector2(-4 * Projectile.spriteDirection, 20).RotatedBy(Projectile.rotation);
             Vector2 pos = Projectile.DefaultDrawPetPosition() + extraPos;
-            Vector2 orig = new Vector2(rect.Width / 2, rect.Height);
+            Vector2 orig = new(rect.Width / 2, rect.Height);
 
             Main.spriteBatch.QuickEndAndBegin(true, Projectile.isAPreviewDummy, BlendState.Additive);
             for (int i = -4; i <= 4; i++)
             {
-                Color clr = Projectile.GetAlpha(Color.White * (1 - Math.Abs(i * 0.12f)));
+                Color clr = Projectile.GetAlpha(Color.White * (1 - Math.Abs(i * 0.12f))) * mouseOpacity;
                 float rotOffset = MathHelper.ToRadians(3 * i * (float)Math.Sin(Main.GlobalTimeWrappedHourly));
                 float rot = MathHelper.ToRadians(30 * i) + rotOffset;
                 float rot2 = MathHelper.ToRadians(20 * i * 1.1f) + rotOffset;
-                Vector2 scale = new Vector2(Projectile.scale * 0.7f, (Projectile.scale * (1f - Math.Abs(i * 0.2f))) + (auraValue * 0.7f));
+                Vector2 scale = new(Projectile.scale * 0.7f, (Projectile.scale * (1f - Math.Abs(i * 0.2f))) + (auraValue * 0.7f));
 
                 Main.EntitySpriteDraw(tex, pos, rect, clr * 0.5f, Projectile.rotation + rot2, orig, scale, SpriteEffects.None);
                 Main.EntitySpriteDraw(tex, pos, rect, clr, Projectile.rotation + rot, orig, scale, SpriteEffects.None);
@@ -178,8 +178,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateTailFrame();
-            if (IsIdleState)
-                IdleAnimation();
         }
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
@@ -219,7 +217,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 ActionCD--;
             }
-
+            if (IsIdleState)
+            {
+                IdleAnimation();
+            }
             UpdateAuraValue();
         }
         private void ControlMovement()

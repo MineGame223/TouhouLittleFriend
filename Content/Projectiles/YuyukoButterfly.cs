@@ -87,7 +87,7 @@ namespace TouhouPets.Content.Projectiles
             float r = 1.47f;
             float g = 0.45f;
             float b = 1.03f;
-            float brightness = Projectile.Opacity;
+            float brightness = Projectile.Opacity * 0.5f;
             Lighting.AddLight(Projectile.Center, r * brightness, g * brightness, b * brightness);
         }
     }
