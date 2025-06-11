@@ -17,7 +17,7 @@ namespace TouhouPets
             HomewardJourney,
             Gensokyo,
             Mods,
-            Count,
+            Count
         }
 
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Marisa";
@@ -304,18 +304,6 @@ namespace TouhouPets
             if (HasModAndFindNPC(modName, boss, "TheSon"))
             {
                 marisa.SetChat(config, index + 11);
-            }
-            if (HasModAndFindNPC(modName, boss, "UNK"))
-            {
-                marisa.SetChat(config, index + 12);
-            }
-            if (HasModAndFindNPC(modName, boss, "UNK"))
-            {
-                marisa.SetChat(config, index + 13);
-            }
-            if (HasModAndFindNPC(modName, boss, "UNK"))
-            {
-                marisa.SetChat(config, index + 14);
             }
         }
         public static void BossChat_Gensokyo(this Projectile marisa, ChatSettingConfig config, NPC boss)

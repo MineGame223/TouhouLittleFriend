@@ -105,11 +105,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal Dictionary<int, string> ChatDictionary = [];
 
         /// <summary>
-        /// 由其他模组加入的对话的起始索引值
-        /// </summary>
-        private int crossModChatStartIndex;
-
-        /// <summary>
         /// 当前聊天室
         /// </summary>
         internal PetChatRoom currentChatRoom;
@@ -323,7 +318,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void RegisterCrossModChat()
         {
             int index = ChatDictionary.Count;
-            crossModChatStartIndex = index + 1;
             if (CrossModChatText[(int)UniqueID].Count > 0)
             {
                 for (int i = 1; i <= CrossModChatText[(int)UniqueID].Count; i++)
@@ -344,12 +338,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (id <= (int)TouhouPetID.None)
                 return;
 
-            int index = crossModChatStartIndex;
             for (int i = 0; i < CrossModChatText[id].Count; i++)
             {
                 if (CrossModChatCondition[id][i]())
                 {
-                    chatText.Add(ChatDictionary[i + index], CrossModChatWeight[id][i]);
+                    chatText.Add(CrossModChatText[id][i], CrossModChatWeight[id][i]);
                 }
             }
         }
