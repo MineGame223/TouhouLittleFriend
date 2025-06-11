@@ -31,7 +31,7 @@
         Meirin = 26,
         Merlin = 27,
         Minoriko = 28,
-        Mok = 29,
+        Moku = 29,
         Momoyo = 30,
         Murasa = 31,
         Mystia = 32,
