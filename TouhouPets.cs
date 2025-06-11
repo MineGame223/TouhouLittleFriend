@@ -28,6 +28,11 @@ namespace TouhouPets
         public override void Unload()
         {
             instance = null;
+
+            //不知道有啥影响，先写着
+            CrossModChatText = null;
+            CrossModChatCondition = null;
+            CrossModChatWeight = null;
         }
         public override void PostSetupContent()
         {

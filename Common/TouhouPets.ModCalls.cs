@@ -6,8 +6,7 @@ namespace TouhouPets
     public partial class TouhouPets
     {
         private const string Arg_1 = "MarisasReactionToBoss";
-        private const string Arg_2 = "ReimusReactionToOtherPet";
-        private const string Arg_3 = "PetDialog";
+        private const string Arg_2 = "PetDialog";
 
         private const string Warning_NullException = "ModCall填入内容不可为空！";
         private const string Warning_WrongDataType = "填入数据类型错误！已阻止本次载入。";
@@ -57,45 +56,35 @@ namespace TouhouPets
                         return true;
 
                     case Arg_2:
-                        if (args[1] is not int || args[2] is not string)
+                        if (args[1] is not int || args[2] is not string
+                            || args[3] is not Func<bool> || args[4] is not int)
                         {
                             Logger.Warn(ConsoleMessage(Arg_2, Warning_WrongDataType));
                             return false;
                         }
-                        ReimuComment.ModPetTypeList.Add((int)args[1]);
-                        ReimuComment.ModChatList.Add((string)args[2]);
-                        return true;
-
-                    case Arg_3:
-                        if (args[1] is not int || args[2] is not string
-                            || args[3] is not Func<bool> || args[4] is not int)
-                        {
-                            Logger.Warn(ConsoleMessage(Arg_3, Warning_WrongDataType));
-                            return false;
-                        }
                         if ((int)args[1] >= (int)TouhouPetID.Count)
                         {
-                            Logger.Warn(ConsoleMessage(Arg_3, Warning_IndexOutOfRange));
+                            Logger.Warn(ConsoleMessage(Arg_2, Warning_IndexOutOfRange));
                             return false;
                         }
                         if (args[1] == null)
                         {
-                            Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：宠物索引"));
+                            Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：宠物索引"));
                             return false;
                         }
                         if (args[2] == null)
                         {
-                            Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：对话文本"));
+                            Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话文本"));
                             return false;
                         }
                         if (args[3] == null)
                         {
-                            Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：对话条件"));
+                            Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话条件"));
                             return false;
                         }
                         if (args[4] == null)
                         {
-                            Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：对话权重"));
+                            Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话权重"));
                             return false;
                         }
                         if ((int)args[4] <= 0)

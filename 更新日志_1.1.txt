@@ -4,6 +4,7 @@ v1.1.5.4：
 
 
 修改：
+移除了 ReimusReactionToOtherPet 的ModCall，该功能由更加自由、可以为本模组全部宠物添加对话的 PetDialog 取代，详细信息可查阅 https://github.com/MineGame223/TouhouLittleFriend 中的README
 
 
 修复：

@@ -122,7 +122,7 @@ namespace TouhouPets
         public static void SetChat(this Projectile projectile, ChatSettingConfig config, int index, int lag = 0, Color color = default)
         {
             BasicTouhouPet pet = projectile.ToPetClass();
-            if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0 || pet.chatCD > 0)
+            if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0)
             {
                 return;
             }

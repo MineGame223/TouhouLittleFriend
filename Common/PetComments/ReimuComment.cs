@@ -7,12 +7,11 @@ using System.Collections.Generic;
 
 namespace TouhouPets
 {
-    public static partial class ReimuComment
+    public static class ReimuComment
     {
         private enum DictionaryID : int
         {
             MyMod,
-            Mods,
             Count,
         }
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Reimu";

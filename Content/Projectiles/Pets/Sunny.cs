@@ -147,7 +147,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             timePerDialog = 640;
             chance = 6;
-            whenShouldStop = !IsIdleState && !IsWetState;
+            whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
