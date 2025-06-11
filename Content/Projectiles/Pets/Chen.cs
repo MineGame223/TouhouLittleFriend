@@ -37,8 +37,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
-            ProjectileID.Sets.LightPet[Type] = false;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Chen;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             Projectile.DrawPet(tailFrame, lightColor, drawConfig, 1);
@@ -73,7 +73,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

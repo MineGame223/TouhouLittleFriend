@@ -16,10 +16,23 @@ namespace TouhouPets
         public override void Load()
         {
             instance = this;
+
+            //需要对列表进行初始化
+            for (int i = 0; i < (int)TouhouPetID.Count; i++)
+            {
+                CrossModChatText[i] = [];
+                CrossModChatCondition[i] = [];
+                CrossModChatWeight[i] = [];
+            }
         }
         public override void Unload()
         {
             instance = null;
+
+            //不知道有啥影响，先写着
+            CrossModChatText = null;
+            CrossModChatCondition = null;
+            CrossModChatWeight = null;
         }
         public override void PostSetupContent()
         {

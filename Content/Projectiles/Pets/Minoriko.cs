@@ -37,6 +37,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             ProjectileID.Sets.CharacterPreviewAnimations[Type] =
                 ProjectileID.Sets.SimpleLoop(0, 4, 8);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Minoriko;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -69,7 +70,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;
             whenShouldStop = false;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

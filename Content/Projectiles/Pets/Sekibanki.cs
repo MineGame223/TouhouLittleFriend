@@ -65,6 +65,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 4, 7)
                 .WhenSelected(11, 3, 6);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Sekibanki;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             Vector2 headPosAdj = new Vector2(0, 2 * headBaseY) + new Vector2(headAdjX, headAdjY);
@@ -105,7 +106,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;
             whenShouldStop = !IsIdleState || chatCD > 0;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

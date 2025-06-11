@@ -64,6 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(12, 2, 5);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Reimu;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             Item coin = Owner.inventory[Owner.selectedItem];
@@ -120,15 +121,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void PostRegisterChat()
         {
             this.RegisterComments();
-            this.RegisterComment_ByMod();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 840;
-            chance = 6;
+            timePerDialog = 840;//840
+            chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new();
             {
@@ -140,7 +140,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 else
                 {
                     this.Comment_TouhouLightPet(chat);
-                    this.PetChat_ByMod(chat);
 
                     chat.Add(ChatDictionary[1]);
                     chat.Add(ChatDictionary[2]);

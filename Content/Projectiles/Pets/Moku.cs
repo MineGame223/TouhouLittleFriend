@@ -70,6 +70,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Moku;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             dontInvis = IsBattleState;
@@ -183,7 +184,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 5;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

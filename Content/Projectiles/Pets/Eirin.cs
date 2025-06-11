@@ -97,6 +97,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(4, 0);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Eirin;
         public override void OnSpawn(IEntitySource source)
         {
             ChatDictionary[99] = ModUtils.GetChatText("Eirin", "99", Owner.name);
@@ -161,7 +162,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             float healthPercentage = (float)Owner.statLife / Owner.statLifeMax;
             WeightedRandom<string> chat = new WeightedRandom<string>();

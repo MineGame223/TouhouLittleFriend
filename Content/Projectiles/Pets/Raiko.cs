@@ -71,6 +71,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(14, 9, 4);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Raiko;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             dontInvis = IsBandState;
@@ -116,7 +117,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

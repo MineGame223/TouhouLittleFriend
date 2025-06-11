@@ -51,6 +51,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 6, 8)
                 .WhenSelected(6, 7, 7);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Hina;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
@@ -76,7 +77,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

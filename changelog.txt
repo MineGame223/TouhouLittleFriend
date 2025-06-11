@@ -3,8 +3,12 @@ v{ModVersion} has been published to {tMLBuildPurpose} tML v{tMLVersion}.
 ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
+新增：
+加入两个新的ModCall，详细信息可查阅 https://github.com/MineGame223/TouhouLittleFriend 中的README
+
 修改：
-为切换自选音乐模式按钮加入了右键打开文件夹的功能
-为大部分宠物加入了在玩家选择界面的小动画
-为伊吹瓢、月时计和银杏叶加入合成表
-熊猫挂坠现在可以由飞龙掉落
+大幅下调了各类宠物从怪物掉落和钓鱼中获取的概率
+修改了天子的特殊动作
+现在可以通过Config决定发光宠物的光芒出现在宠物身上还是玩家身上
+当鼠标悬停在宠物身上时，宠物将会隐形至几乎不可见（可通过Config控制）
+哆来咪的枕头现在可以通过珊瑚石模组的梦魇之花掉落

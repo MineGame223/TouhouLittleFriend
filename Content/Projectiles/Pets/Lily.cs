@@ -25,6 +25,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Lily;
 
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
@@ -72,7 +73,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;
             whenShouldStop = false;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

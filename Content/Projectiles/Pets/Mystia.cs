@@ -46,6 +46,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(2, 3, 7);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Mystia;
+
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
         private int clothFrame, clothFrameCounter;
@@ -102,7 +104,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

@@ -50,6 +50,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 22;
             Main.projPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Tenshin;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -96,7 +97,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

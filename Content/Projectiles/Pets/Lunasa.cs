@@ -59,6 +59,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Lunasa;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             dontInvis = IsBandState;
@@ -117,7 +118,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

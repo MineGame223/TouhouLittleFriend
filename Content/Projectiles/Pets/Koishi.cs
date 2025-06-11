@@ -71,6 +71,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WithCode(DisappearOnSelect);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Koishi;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             dontInvis = IsKillingState;
@@ -165,7 +166,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {
