@@ -23,8 +23,6 @@ namespace TouhouPets
             for (int i = 1; i <= modChatList.Count; i++)
             {
                 reimu.ChatDictionary.TryAdd(index + i, modChatList[i - 1]);
-                //增加一个空位，防止WeightedRandom无法读取最后一个索引
-                reimu.ChatDictionary.TryAdd(index + modChatList.Count + 1, string.Empty);
             }
         }
         public static void PetChat_ByMod(this Reimu reimu, WeightedRandom<string> chat)

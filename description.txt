@@ -12,7 +12,7 @@
 模组交流群群号：753836414
 
 这是一个以宠物为主的模组
-召唤物由各个Boss以30%的概率（或部分敌怪以5%的概率）掉落，且第一次击败Boss时必定掉落
+召唤物由各个Boss以20%的概率（或部分敌怪以1~25%的概率）掉落，且第一次击败Boss时必定掉落
 部分召唤物亦可由合成获取
 部分可组合的物品可能会由同一Boss掉落
 召唤物亦可以通过在夜晚生成的神秘隙间处购买
@@ -27,7 +27,7 @@ Adventure with partners from Gensokyo!
 NOTE: The author is a Chinese and his English sucks, so the next time when you want to submit some bug reports, please describe it with details as more as you can.
 
 This is a vanity pet mod
-The summon items are dropped from every boss with a 30% chance (or some enemies with a 5% chance), and it always drops the first time you defeat the Boss
+The summon items are dropped from every boss with a 20% chance (or some enemies with a 1~25% chance), and it always drops the first time you defeat the Boss
 Some items can be obtained by crafting
 You can also buy these items from the Mysterious Gap which spawns in nighttime
 

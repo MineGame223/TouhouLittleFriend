@@ -7,6 +7,8 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.Utilities;
+using static TouhouPets.TouhouPets;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -103,21 +105,30 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal Dictionary<int, string> ChatDictionary = [];
 
         /// <summary>
+        /// 由其他模组加入的对话的起始索引值
+        /// </summary>
+        private int crossModChatStartIndex;
+
+        /// <summary>
         /// 当前聊天室
         /// </summary>
         internal PetChatRoom currentChatRoom;
+
         /// <summary>
         /// 当鼠标悬停在宠物身上时应当变化的透明度，同时影响宠物本身和对话
         /// </summary>
-        public float mouseOpacity = 1f;
+        internal float mouseOpacity = 1f;
+
         /// <summary>
         /// 是否应当启用额外视觉效果，当 <see cref="mouseOpacity"/> >= 1 时为 true
         /// </summary>
         public bool ShouldExtraVFXActive => mouseOpacity >= 1f;
+
         /// <summary>
         /// 对话属性配置
         /// </summary>
         public static ChatSettingConfig ChatSettingConfig => new();
+
         /// <summary>
         /// 宠物的状态值（Projectile.ai[1]），设置该值时会进行一次netUpdate
         /// </summary>
@@ -133,14 +144,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.netUpdate = true;
             }
         }
+
         /// <summary>
         /// 宠物所属玩家是否被Boss锁定为目标或其附近是否存在Boss
         /// </summary>
         public bool FindBoss => findBoss;
+
         /// <summary>
         /// 宠物的所属玩家
         /// </summary>
         public Player Owner => Main.player[Projectile.owner];
+
         /// <summary>
         /// 宠物的 owner 是否为 Main.myPlayer
         /// </summary>
@@ -306,6 +320,39 @@ namespace TouhouPets.Content.Projectiles.Pets
             textShaking = false;
             shouldNotTalking = false;
         }
+        private void RegisterCrossModChat()
+        {
+            int index = ChatDictionary.Count;
+            crossModChatStartIndex = index + 1;
+            if (CrossModChatText[(int)UniqueID].Count > 0)
+            {
+                for (int i = 1; i <= CrossModChatText[(int)UniqueID].Count; i++)
+                {
+                    ChatDictionary.TryAdd(index + i, CrossModChatText[(int)UniqueID][i - 1]);
+                }
+            }
+            //增加一个空位，防止WeightedRandom无法读取最后一个索引
+            ChatDictionary.TryAdd(index + CrossModChatText[(int)UniqueID].Count + 1, string.Empty);
+        }
+        private void GetCrossModChat(ref WeightedRandom<string> chatText)
+        {
+            if (CrossModChatCondition == null || CrossModChatText == null || CrossModChatWeight == null)
+                return;
+
+            int id = (int)UniqueID;
+
+            if (id <= (int)TouhouPetID.None)
+                return;
+
+            int index = crossModChatStartIndex;
+            for (int i = 0; i < CrossModChatText[id].Count; i++)
+            {
+                if (CrossModChatCondition[id][i]())
+                {
+                    chatText.Add(ChatDictionary[i + index], CrossModChatWeight[id][i]);
+                }
+            }
+        }
         private void UpdateRegularDialog()
         {
             if (currentChatRoom != null || mainTimer <= 0)
@@ -317,12 +364,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             SetRegularDialog(ref time, ref chance, ref stop);
             if (mainTimer % time == 0 && Main.rand.NextBool(chance) && !stop)
             {
+                WeightedRandom<string> chatText = RegularDialogText();
+                GetCrossModChat(ref chatText);
+
+                string result = chatText.Get();
                 for (int i = 1; i < ChatDictionary.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(GetRegularDialogText()))
+                    if (string.IsNullOrEmpty(result))
+                    {
                         return;
-
-                    if (GetRegularDialogText().Equals(ChatDictionary[i]))
+                    }
+                    if (result.Equals(ChatDictionary[i]))
                     {
                         Projectile.SetChat(ChatSettingConfig, i);
                         break;
@@ -608,11 +660,21 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         public virtual Color ChatTextColor => Color.White;
         /// <summary>
+        /// 宠物的独特标识值
+        /// </summary>
+        public virtual TouhouPetID UniqueID => TouhouPetID.None;
+        /// <summary>
         /// 常规对话
         /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
         public virtual string GetRegularDialogText() => null;
+        /// <summary>
+        /// 常规对话
+        /// <br/>仅在本地端更新
+        /// </summary>
+        /// <returns></returns>
+        public virtual WeightedRandom<string> RegularDialogText() => null;
         /// <summary>
         /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
         /// <br/>对于设置了 <see cref="ProjectileID.Sets.CharacterPreviewAnimations"/> 的宠物，待机状态的动画不应写在这里
@@ -656,7 +718,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 ChatDictionary[i] = chatText;
             }
+
             PostRegisterChat();
+
+            RegisterCrossModChat();
         }
         public override bool PreAI()
         {

@@ -53,6 +53,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Junko;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawTail();
@@ -104,13 +105,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 1000;
-            chance = 10;
+            timePerDialog = 1000;//1000
+            chance = 10;//10
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
                 {

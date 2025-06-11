@@ -123,12 +123,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
+            Projectile.BossChat_ByMod(ChatSettingConfig, boss);
+
             Projectile.BossChat_Vanilla(ChatSettingConfig, boss);
             Projectile.BossChat_Coralite(ChatSettingConfig, boss);
             Projectile.BossChat_Thorium(ChatSettingConfig, boss);
             Projectile.BossChat_HomewardHourney(ChatSettingConfig, boss);
             Projectile.BossChat_Gensokyo(ChatSettingConfig, boss);
-            Projectile.BossChat_ByMod(ChatSettingConfig, boss);
         }
         private void UpdateTalking()
         {
