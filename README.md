@@ -51,25 +51,27 @@
 
 #### 参数
 
-- `BossType` 被指定的Boss生物的种类，int类型
-- `ChatText` 与之相关的话语文本，string类型
+- `BossType` ：被指定的Boss生物的种类，`int` 类型
+- `ChatText` ：与之相关的话语文本，`string` 类型
 
 #### 注意事项
 
-- `BossType` 代指的NPC必须能够被判定为Boss，及 `npc.boss = true`
+- `BossType` 代指的NPC必须能够被判定为Boss，即 `npc.boss = true`。
 
-### ReimusReactionToOtherPet
+### PetDialog
 
-设置灵梦偶尔会说出的对同一玩家召唤的另一个宠物（一般是照明宠物）的评价，可以为同一宠物加入多个不同的评价。
+为本模组宠物添加在特定条件下可能会说出的话，数量不限，仅支持常规讲话。
 
 #### 参数
 
-- `PetType` 被指定的宠物弹幕的种类，int类型
-- `ChatText` 与之相关的话语文本，string类型
+- `UniquePetID` ：被添加对话的宠物的独特ID值，可参考[TouhouPetID.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/TouhouPetUniqueID.cs)，建议您复制一份到自己的模组中以供便利，`int` 类型
+- `ChatText` ：与之相关的话语文本，`string` 类型
+- `Condition` ：允许说出相关话语的条件，`Func<bool>` 类型
+- `Weight` ：相关话语的出现权重，值越大则出现几率越高，`int` 类型
 
 #### 注意事项
 
-- `PetType` 代指的弹幕必须能够被判定为宠物，及 `Main.projBoss`
+- `Weight` 最小为1，任何小于0的填入数值都会被强制设置为1。
 
 ## 其他内容
 
