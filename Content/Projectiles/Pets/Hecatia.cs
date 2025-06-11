@@ -48,6 +48,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Hecatia;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
@@ -96,7 +97,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;
             whenShouldStop = false;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new();
             {

@@ -49,6 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projPet[Type] = true;
             ProjectileID.Sets.LightPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Doremy;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             Vector2 extraPos = new Vector2(extraX, extraY);
@@ -113,7 +114,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             whenShouldStop = false;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

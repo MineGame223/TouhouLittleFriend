@@ -38,6 +38,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.projFrames[Type] = 10;
             Main.projPet[Type] = true;
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Koakuma;
         public override void OnSpawn(IEntitySource source)
         {
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
@@ -80,7 +81,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;
             whenShouldStop = false;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

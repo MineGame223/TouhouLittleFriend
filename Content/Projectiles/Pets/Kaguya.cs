@@ -75,6 +75,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 4, 5)
                 .WhenSelected(8, 2, 8);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Kaguya;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             dontInvis = IsBattleState;
@@ -162,7 +163,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

@@ -54,6 +54,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(2, 1);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Rumia;
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -98,7 +99,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 10;
             whenShouldStop = false;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
             WeightedRandom<string> chat = new WeightedRandom<string>();
             {

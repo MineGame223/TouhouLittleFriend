@@ -668,12 +668,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
-        public virtual string GetRegularDialogText() => null;
-        /// <summary>
-        /// 常规对话
-        /// <br/>仅在本地端更新
-        /// </summary>
-        /// <returns></returns>
         public virtual WeightedRandom<string> RegularDialogText() => null;
         /// <summary>
         /// 视觉效果，用于常驻动画表现（包含玩家选择界面）

@@ -68,6 +68,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(11, 5, 12);
         }
+        public override TouhouPetID UniqueID => TouhouPetID.Yuyuko;
         public override bool OnMouseHover(ref bool dontInvis)
         {
             Item food = Owner.inventory[Owner.selectedItem];
@@ -169,9 +170,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;
             whenShouldStop = !IsIdleState;
         }
-        public override string GetRegularDialogText()
+        public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
