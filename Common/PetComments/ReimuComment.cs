@@ -12,7 +12,7 @@ namespace TouhouPets
         private enum DictionaryID : int
         {
             MyMod,
-            Count,
+            Count
         }
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Reimu";
         private const int MaxTouhouComment = 29;
