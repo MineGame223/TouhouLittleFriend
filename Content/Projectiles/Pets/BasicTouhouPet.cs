@@ -470,20 +470,32 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 center = Owner.MountedCenter;
             }
+
             Vector2 pos = center + point;
             float dist = Vector2.Distance(Projectile.Center, pos);
             if (dist > 1200f)
-                Projectile.Center = center + point;
+                Projectile.Center = pos;
+
             Vector2 vel = pos - Projectile.Center;
 
-            float actualSpeed = 1;
+            /*float distanceLimit = MathHelper.Clamp(dist / 200f, 0f, 1f);
+            float scaledSpeed = MathHelper.SmoothStep(0f, speed, distanceLimit);
 
-            if (dist < actualSpeed)
+            vel.Normalize();
+            if (float.IsNaN(vel.X) || float.IsNaN(vel.Y))
+            {
+                vel = Vector2.One;
+            }
+            Projectile.velocity = vel * scaledSpeed;*/
+
+            float closeValue = 1f;
+
+            if (dist < closeValue)
                 Projectile.velocity *= 0.25f;
 
             if (vel != Vector2.Zero)
             {
-                if (vel.Length() < actualSpeed)
+                if (vel.Length() < closeValue)
                     Projectile.velocity = vel;
                 else
                     Projectile.velocity = vel * 0.01f * speed;
