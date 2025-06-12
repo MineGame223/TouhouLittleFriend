@@ -1,6 +1,6 @@
 global using Terraria.ModLoader;
 global using static Terraria.ModLoader.ModContent;
-
+using System;
 using Terraria;
 using Terraria.ID;
 
@@ -20,19 +20,12 @@ namespace TouhouPets
             //需要对列表进行初始化
             for (int i = 0; i < (int)TouhouPetID.Count; i++)
             {
-                CrossModChatText[i] = [];
-                CrossModChatCondition[i] = [];
-                CrossModChatWeight[i] = [];
+                CrossModDialogList[i] = [];
             }
         }
         public override void Unload()
         {
             instance = null;
-
-            //不知道有啥影响，先写着
-            CrossModChatText = null;
-            CrossModChatCondition = null;
-            CrossModChatWeight = null;
         }
         public override void PostSetupContent()
         {
@@ -44,6 +37,17 @@ namespace TouhouPets
             {
                 GensokyoSupport.Setup(result);
             }
+
+            Func<bool> condi_1 = delegate () { return Main.LocalPlayer.ZoneBeach; };
+            Func<bool> condi_2 = delegate () { return !Main.dayTime; };
+            Func<bool> condi_3 = delegate () { return !Main.dayTime && Main.LocalPlayer.ZoneSkyHeight; };
+            for (int i = 1; i <= 61; i++)
+            {
+                Call("PetDialog", i, $"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在海边出现", condi_1, 1);
+                Call("PetDialog", i, $"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在夜晚出现", condi_2, 1);
+                Call("PetDialog", i, $"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在夜晚的太空出现", condi_2, 1);
+            }
+
             LoadClient();
         }
         private static void LoadClient()

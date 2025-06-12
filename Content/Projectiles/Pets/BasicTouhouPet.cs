@@ -317,20 +317,23 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void RegisterCrossModChat()
         {
-            int index = ChatDictionary.Count;
-            if (CrossModChatText[(int)UniqueID].Count > 0)
+            int lastIndex = ChatDictionary.Count;
+            int id = (int)UniqueID;
+
+            if (CrossModDialogList[id].Count > 0)
             {
-                for (int i = 1; i <= CrossModChatText[(int)UniqueID].Count; i++)
+                for (int i = 0; i < CrossModDialogList[id].Count; i++)
                 {
-                    ChatDictionary.TryAdd(index + i, CrossModChatText[(int)UniqueID][i - 1]);
+                    string text = CrossModDialogList[id][i].dialogText;
+                    int startIndex = lastIndex + 1 + i;
+
+                    ChatDictionary.TryAdd(startIndex, text);
                 }
             }
-            //增加一个空位，防止WeightedRandom无法读取最后一个索引
-            ChatDictionary.TryAdd(index + CrossModChatText[(int)UniqueID].Count + 1, string.Empty);
         }
         private void GetCrossModChat(ref WeightedRandom<string> chatText)
         {
-            if (CrossModChatCondition == null || CrossModChatText == null || CrossModChatWeight == null)
+            if (CrossModDialogList == null)
                 return;
 
             int id = (int)UniqueID;
@@ -338,11 +341,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (id <= (int)TouhouPetID.None)
                 return;
 
-            for (int i = 0; i < CrossModChatText[id].Count; i++)
+            for (int i = 0; i < CrossModDialogList[id].Count; i++)
             {
-                if (CrossModChatCondition[id][i]())
+                if (CrossModDialogList[id][i].condition())
                 {
-                    chatText.Add(CrossModChatText[id][i], CrossModChatWeight[id][i]);
+                    chatText.Add(CrossModDialogList[id][i].dialogText, CrossModDialogList[id][i].weight);
                 }
             }
         }
@@ -361,17 +364,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 GetCrossModChat(ref chatText);
 
                 string result = chatText.Get();
+
+                if (string.IsNullOrEmpty(result))
+                    return;
+
                 for (int i = 1; i < ChatDictionary.Count; i++)
                 {
-                    if (string.IsNullOrEmpty(result))
-                    {
-                        return;
-                    }
-                    if (result.Equals(ChatDictionary[i]))
-                    {
-                        Projectile.SetChat(ChatSettingConfig, i);
-                        break;
-                    }
+                    if (!result.Equals(ChatDictionary[i]))
+                        continue;
+
+                    Projectile.SetChat(ChatSettingConfig, i);
                 }
             }
         }
@@ -721,6 +723,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             PostRegisterChat();
 
             RegisterCrossModChat();
+
+            //增加一个空位，防止WeightedRandom无法读取最后一个索引
+            int lastIndex = ChatDictionary.Count;
+            ChatDictionary.TryAdd(lastIndex + 1, string.Empty);
         }
         public override bool PreAI()
         {

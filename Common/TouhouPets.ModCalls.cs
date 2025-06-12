@@ -17,22 +17,9 @@ namespace TouhouPets
             return $"东方小伙伴 ModCall [{argName}]：{msgType}";
         }
 
-        private static List<string>[] crossModChatText = new List<string>[(int)TouhouPetID.Count];
-        private static List<Func<bool>>[] crossModChatCondition = new List<Func<bool>>[(int)TouhouPetID.Count];
-        private static List<int>[] crossModChatWeight = new List<int>[(int)TouhouPetID.Count];
-
-        /// <summary>
-        /// 来自其他模组的对话文本的列表数组
-        /// </summary>
-        public static List<string>[] CrossModChatText { get => crossModChatText; set => crossModChatText = value; }
-        /// <summary>
-        /// 来自其他模组的对话条件的列表数组
-        /// </summary>
-        public static List<Func<bool>>[] CrossModChatCondition { get => crossModChatCondition; set => crossModChatCondition = value; }
-        /// <summary>
-        /// 来自其他模组的对话权重的列表数组
-        /// </summary>
-        public static List<int>[] CrossModChatWeight { get => crossModChatWeight; set => crossModChatWeight = value; }
+        private static List<(string, Func<bool>, int)>[] crossModDialogList
+            = new List<(string, Func<bool>, int)>[(int)TouhouPetID.Count];
+        public static List<(string dialogText, Func<bool> condition, int weight)>[] CrossModDialogList { get => crossModDialogList; set => crossModDialogList = value; }
         public override object Call(params object[] args)
         {
             ArgumentNullException.ThrowIfNull(args);
@@ -92,17 +79,21 @@ namespace TouhouPets
                             args[4] = (int)0;
                         }
 
-                        crossModChatText[(int)args[1]].Add((string)args[2]);
-                        crossModChatCondition[(int)args[1]].Add((Func<bool>)args[3]);
-                        crossModChatWeight[(int)args[1]].Add((int)args[4]);
+                        (string, Func<bool>, int) tuple = 
+                            ((string)args[2], (Func<bool>)args[3], (int)args[4]);
 
-                        for (int i = 0; i < crossModChatText[(int)args[1]].Count; i++)
+                        crossModDialogList[(int)args[1]].Add(tuple);
+
+                        for (int i = 0; i < crossModDialogList[(int)args[1]].Count; i++)
                         {
-                            if (i != crossModChatText[(int)args[1]].Count - 1)
+                            if (i < crossModDialogList[(int)args[1]].Count - 1)
                                 continue;
 
                             Logger.Info(ConsoleMessage("添加结果"
-                                , $"对话添加成功！内容：{crossModChatText[(int)args[1]][i]}；权重：{crossModChatWeight[(int)args[1]][i]}"));
+                                , $"对话添加成功！" +
+                                $"索引：{(int)args[1]}；" +
+                                $"内容：{CrossModDialogList[(int)args[1]][i].dialogText}；" +
+                                $"权重：{CrossModDialogList[(int)args[1]][i].weight}"));
                         }
 
                         return true;
