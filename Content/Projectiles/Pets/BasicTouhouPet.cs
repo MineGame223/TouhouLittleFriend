@@ -30,11 +30,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         internal float chatOpacity;
 
         /// <summary>
-        /// 对话文本所用颜色
-        /// </summary>
-        internal Color chatColor;
-
-        /// <summary>
         /// 对话字体大小
         /// </summary>
         internal float chatScale;
@@ -120,11 +115,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public bool ShouldExtraVFXActive => mouseOpacity >= 1f;
 
         /// <summary>
-        /// 对话属性配置
-        /// </summary>
-        public static ChatSettingConfig ChatSettingConfig => new();
-
-        /// <summary>
         /// 宠物的状态值（Projectile.ai[1]），设置该值时会进行一次netUpdate
         /// </summary>
         public int PetState
@@ -174,25 +164,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             DrawStatePanelForTesting(drawingForTest, testMsg3, new Vector2(0, 60));
             DrawStatePanelForTesting(drawingForTest, testMsg4, new Vector2(0, 90));
         }
-        private void DrawChatPanel(Vector2 pos, string text, Color color, float alpha, Color boardColor = default, bool typerStyle = false)
+        private void DrawChatText(Vector2 pos, float alpha, int maxWidth = 210)
         {
+            string text = chatText;
+            Color color = ChatSettingConfig.TextColor;
+
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
                 return;
             }
-            if (boardColor == default)
-            {
-                boardColor = Color.Black;
-            }
+
+            Color boardColor = ChatSettingConfig.TextBoardColor;
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             float totalScale = 0.9f;
             string _text = text;
+            bool typerStyle = GetInstance<PetDialogConfig>().TyperStyleChat;
+
             if (typerStyle)
             {
                 int textLength = (int)Math.Clamp(timeToType / (totalTimeToType / text.Length), 0, text.Length);
                 _text = text.Remove(textLength);
             }
-            string[] array = DrawUtils.MyWordwrapString(_text, font, 210, 10, out int chatLine);
+            string[] array = DrawUtils.MyWordwrapString(_text, font, maxWidth, 10, out int chatLine);
             chatLine++;
             for (int i = 0; i < chatLine; i++)
             {
@@ -213,19 +206,21 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        private void DrawChatPanel_Koishi(Vector2 pos, string text, Color color, float alpha, Color boardColor = default)
+        private void DrawChatText_Koishi(Vector2 pos, float alpha, int maxWidth = 240)
         {
+            string text = chatText;
+            Color color = ChatSettingConfig.TextColor;
+
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
                 return;
             }
-            if (boardColor == default)
-            {
-                boardColor = Color.Black;
-            }
+
+            Color boardColor = ChatSettingConfig.TextBoardColor;
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             float totalScale = 0.9f;
-            string[] array = DrawUtils.MyWordwrapString(text, font, 240, 10, out int chatLine);
+            string[] array = DrawUtils.MyWordwrapString(text, font, maxWidth, 10, out int chatLine);
+
             chatLine++;
             for (int i = 0; i < chatLine; i++)
             {
@@ -320,11 +315,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             int lastIndex = ChatDictionary.Count;
             int id = (int)UniqueID;
 
-            if (CrossModDialogList[id].Count > 0)
+            if (CrossModDialog[id].Count > 0)
             {
-                for (int i = 0; i < CrossModDialogList[id].Count; i++)
+                for (int i = 0; i < CrossModDialog[id].Count; i++)
                 {
-                    string text = CrossModDialogList[id][i].dialogText;
+                    string text = CrossModDialog[id][i].dialogText.Value;
                     int startIndex = lastIndex + 1 + i;
 
                     ChatDictionary.TryAdd(startIndex, text);
@@ -333,7 +328,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void GetCrossModChat(ref WeightedRandom<string> chatText)
         {
-            if (CrossModDialogList == null)
+            if (CrossModDialog == null)
                 return;
 
             int id = (int)UniqueID;
@@ -341,11 +336,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (id <= (int)TouhouPetID.None)
                 return;
 
-            for (int i = 0; i < CrossModDialogList[id].Count; i++)
+            for (int i = 0; i < CrossModDialog[id].Count; i++)
             {
-                if (CrossModDialogList[id][i].condition())
+                CrossModDialogInfo info = CrossModDialog[id][i];
+                if (info.condition())
                 {
-                    chatText.Add(CrossModDialogList[id][i].dialogText, CrossModDialogList[id][i].weight);
+                    chatText.Add(info.dialogText.Value, info.weight);
                 }
             }
         }
@@ -658,14 +654,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// </summary>
         /// <param name="boss"></param>
         public virtual void OnFindBoss(NPC boss) { }
-        /// <summary>
-        /// 对话文本边框颜色，默认为黑色
-        /// </summary>
-        public virtual Color ChatTextBoardColor => Color.Black;
-        /// <summary>
-        /// 对话文本颜色，默认为白色
-        /// </summary>
-        public virtual Color ChatTextColor => Color.White;
+        public virtual ChatSettingConfig ChatSettingConfig => new();
         /// <summary>
         /// 宠物的独特标识值
         /// </summary>
@@ -782,11 +771,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 float alpha = chatOpacity * Projectile.Opacity * mouseOpacity;
                 if (textShaking)
                 {
-                    DrawChatPanel_Koishi(drawPos, chatText, chatColor, alpha, ChatTextBoardColor);
+                    DrawChatText_Koishi(drawPos, alpha);
                 }
                 else
                 {
-                    DrawChatPanel(drawPos, chatText, chatColor, alpha, ChatTextBoardColor, GetInstance<PetDialogConfig>().TyperStyleChat);
+                    DrawChatText(drawPos, alpha);
                 }
             }
             if (Projectile.isAPreviewDummy)

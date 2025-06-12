@@ -103,7 +103,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.spriteBatch.MyDraw(t, pos, rect, Projectile.GetAlpha(lightColor), rot, orig, Projectile.scale, effect, 0f);
             }
         }
-        public override Color ChatTextColor => new(107, 252, 75);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(107, 252, 75),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Yuka";

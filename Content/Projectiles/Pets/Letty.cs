@@ -85,7 +85,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config2, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(236, 223, 255);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(236, 223, 255),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Letty";

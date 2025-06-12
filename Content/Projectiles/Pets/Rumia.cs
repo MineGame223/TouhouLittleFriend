@@ -86,8 +86,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             for (int i = 0; i < 3; i++)
                 Main.spriteBatch.MyDraw(tex, pos, null, clr * darkAuraScale * mouseOpacity, 0f, orig, darkAuraScale * (Main.essScale * 0.3f + 0.8f), SpriteEffects.None, 0);
         }
-        public override Color ChatTextBoardColor => Color.White;
-        public override Color ChatTextColor => Color.Black;
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = Color.Black,
+            TextBoardColor = Color.White,
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Rumia";

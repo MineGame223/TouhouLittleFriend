@@ -172,7 +172,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.EntitySpriteDraw(t, pos + new Vector2(Main.rand.NextFloat(-1.3f, 1.3f)), rect, clr * 0.3f, -Main.GlobalTimeWrappedHourly, orig, scale * 0.5f, SpriteEffects.FlipHorizontally, 0f);
             }
         }
-        public override Color ChatTextColor => new Color(200, 200, 200);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(200, 200, 200),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Moku";
@@ -661,7 +664,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.frame = 2;
                 if (OwnerIsMyPlayer)
                 {
-                    if(ShouldExtraVFXActive)
+                    if (ShouldExtraVFXActive)
                     {
                         for (int i = 0; i < 4; i++)
                         {

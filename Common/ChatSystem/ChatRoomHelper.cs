@@ -119,16 +119,12 @@ namespace TouhouPets
         /// <param name="config">对话属性配置</param>
         /// <param name="lag">说话前的延时</param>
         /// <param name="color">文本颜色</param>
-        public static void SetChat(this Projectile projectile, ChatSettingConfig config, int index, int lag = 0, Color color = default)
+        public static void SetChat(this Projectile projectile, ChatSettingConfig config, int index, int lag = 0)
         {
             BasicTouhouPet pet = projectile.ToPetClass();
             if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0)
             {
                 return;
-            }
-            if (color == default)
-            {
-                color = pet.ChatTextColor;
             }
             string chat = pet.ChatDictionary[index];
             if (chat.Length > 10 && !config.AutoHandleTimeLeft)
@@ -150,7 +146,6 @@ namespace TouhouPets
             pet.chatTimeLeft = Math.Clamp(chat.Length * config.TimeLeftPerWord, 0, 420);
             pet.timeToType = 0;
             pet.totalTimeToType = config.TyperModeUseTime;
-            pet.chatColor = color;
             pet.chatLag = lag;
 
             //Main.NewText($"Index: {index}", Main.DiscoColor);

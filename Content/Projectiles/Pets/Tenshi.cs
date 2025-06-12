@@ -85,7 +85,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(69, 170, 234);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(69, 170, 234),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Tenshin";

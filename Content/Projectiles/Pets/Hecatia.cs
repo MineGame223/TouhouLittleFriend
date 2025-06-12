@@ -74,18 +74,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             });
             return false;
         }
-        public override Color ChatTextColor
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
         {
-            get
+            TextColor = PlanteState switch
             {
-                return PlanteState switch
-                {
-                    1 => new Color(79, 215, 239),
-                    2 => new Color(255, 249, 137),
-                    _ => new Color(255, 120, 120),
-                };
-            }
-        }
+                1 => new Color(79, 215, 239),
+                2 => new Color(255, 249, 137),
+                _ => new Color(255, 120, 120),
+            },
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Hecatia";
@@ -93,8 +90,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 666;
-            chance = 6;
+            timePerDialog = 666;//666
+            chance = 6;//6
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()

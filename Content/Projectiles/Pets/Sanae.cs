@@ -139,7 +139,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             Projectile.DrawPet(clothFrame, lightColor, config2);
         }
-        public override Color ChatTextColor => new Color(83, 241, 146);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(83, 241, 146),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Sanae";

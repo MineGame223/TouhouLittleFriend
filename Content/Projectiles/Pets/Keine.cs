@@ -57,7 +57,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, currentRow);
             return false;
         }
-        public override Color ChatTextColor => IsAltForm ? new Color(69, 172, 105) : new Color(97, 103, 255);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = IsAltForm ? new Color(69, 172, 105) : new Color(97, 103, 255),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Keine";
@@ -65,8 +68,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 720;
-            chance = 7;
+            timePerDialog = 720;//720
+            chance = 7;//7
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()

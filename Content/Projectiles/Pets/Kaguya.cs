@@ -151,7 +151,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             orig = rect.Size() / 2;
             Main.EntitySpriteDraw(t2, pos, rect, clr, Main.GlobalTimeWrappedHourly, orig, scale / 2, effect, 0f);
         }
-        public override Color ChatTextColor => new Color(255, 165, 191);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 165, 191),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Kaguya";

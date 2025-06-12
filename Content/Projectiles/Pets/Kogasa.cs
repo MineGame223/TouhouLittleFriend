@@ -98,7 +98,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(handFrame, lightColor, config, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(172, 69, 191);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(172, 69, 191),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Kogasa";

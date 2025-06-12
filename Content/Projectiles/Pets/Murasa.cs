@@ -102,7 +102,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.EntitySpriteDraw(tex, pos, rect, lightColor * mouseOpacity, rotation, new Vector2(rect.Width / 2, 0)
                 , Projectile.scale, SpriteEffects.None);
         }
-        public override Color ChatTextColor => new Color(59, 176, 224);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(59, 176, 224),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Murasa";
@@ -229,7 +232,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (OwnerIsMyPlayer)
                 {
                     if (Main.rand.NextBool(3))
+                    {
                         ShouldKick = true;
+                        Projectile.netUpdate = true;
+                    }
 
                     CurrentState = States.Idle;
                 }

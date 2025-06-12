@@ -95,7 +95,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Projectile.DrawPet(auraFrame, Color.White * 0.7f, config, 1);
         }
-        public override Color ChatTextColor => new Color(185, 228, 255);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(185, 228, 255),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Alice";
@@ -109,7 +112,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);

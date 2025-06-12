@@ -97,7 +97,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
         }
-        public override Color ChatTextColor => new Color(254, 159, 75);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(254, 159, 75),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Junko";
@@ -105,8 +108,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 1000;//1000
-            chance = 10;//10
+            timePerDialog = 600;//1000
+            chance = 1;//10
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()

@@ -111,7 +111,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.EntitySpriteDraw(sunTex, pos + sunPos, null, Projectile.GetAlpha(Color.White) * mouseOpacity
                 , mainTimer * 0.05f, sunTex.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
         }
-        public override Color ChatTextColor => new Color(228, 184, 75);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(228, 184, 75),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Utsuho";

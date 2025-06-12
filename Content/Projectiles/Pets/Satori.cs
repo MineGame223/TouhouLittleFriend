@@ -113,7 +113,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Main.spriteBatch.MyDraw(spark, eyePos + new Vector2(0, 2), null, clr * 0.5f, Projectile.rotation, spark.Size() / 2, Projectile.scale * new Vector2(0.14f, 0.26f) * s * eyeSparkScale, SpriteEffects.None, 0f);
             }
         }
-        public override Color ChatTextColor => new Color(255, 149, 170);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 149, 170),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Satori";

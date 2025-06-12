@@ -99,7 +99,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
-        public override Color ChatTextColor => new Color(107, 252, 75);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(107, 252, 75),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Wriggle";
@@ -307,7 +310,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mainTimer % 270 == 0)
                 {
                     if (Main.rand.NextBool(4))
+                    {
                         AntennaeActive = true;
+                        Projectile.netUpdate = true;
+                    }
 
                     CurrentState = States.Blink;
                 }
@@ -438,11 +444,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (antennaeFrame > 3)
             {
                 antennaeFrame = 0;
-                if (OwnerIsMyPlayer)
-                {
-                    AntennaeActive = false;
-                    Projectile.netUpdate = true;
-                }
+                AntennaeActive = false;
             }
         }
         private void AttractInsect()
@@ -462,8 +464,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private static List<int> IsFlyInsect()
         {
-            return new List<int>
-            {
+            return
+            [
                 NPCID.Butterfly,
                 NPCID.EmpressButterfly,
                 NPCID.GoldButterfly,
@@ -481,7 +483,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 NPCID.RedDragonfly,
                 NPCID.YellowDragonfly,
                 NPCID.Stinkbug
-            };
+            ];
         }
     }
 }

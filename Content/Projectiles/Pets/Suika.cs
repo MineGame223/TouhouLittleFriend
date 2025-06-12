@@ -98,7 +98,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Main.EntitySpriteDraw(decorTex, pos, frame, Projectile.GetAlpha(lightColor) * mouseOpacity, Projectile.rotation, frame.Size() / 2, Projectile.scale, effect, 0f);
         }
-        public override Color ChatTextColor => new Color(255, 220, 118);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 220, 118),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Suika";

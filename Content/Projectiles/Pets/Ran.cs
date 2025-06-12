@@ -46,7 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, 
+            Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     AltTexture = clothTex,
@@ -54,7 +54,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(254, 216, 82);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(254, 216, 82),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Ran";

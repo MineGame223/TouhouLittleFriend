@@ -109,7 +109,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 orig = tex.Size() / 2;
             Main.EntitySpriteDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
         }
-        public override Color ChatTextColor => new Color(255, 81, 81);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 81, 81),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Meirin";

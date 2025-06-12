@@ -69,7 +69,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(224, 78, 78);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(224, 78, 78),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Koakuma";
@@ -258,6 +261,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Main.rand.NextBool(4))
                 {
                     EarActive = true;
+                    Projectile.netUpdate = true;
                 }
                 CurrentState = States.Blink;
             }
@@ -322,11 +326,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (earFrame > 3)
             {
                 earFrame = 0;
-                if (OwnerIsMyPlayer)
-                {
-                    EarActive = false;
-                    Projectile.netUpdate = true;
-                }
+                EarActive = false;
             }
         }
     }

@@ -154,7 +154,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.spriteBatch.MyDraw(t, eyePos, rect, Projectile.GetAlpha(lightColor) * mouseOpacity
                 , Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0f);
         }
-        public override Color ChatTextColor => new Color(145, 255, 183);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(145, 255, 183),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Koishi";
@@ -637,7 +640,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         TimeLeftPerWord = 45,
                         TyperModeUseTime = 300,
-                    }, 8, 0, Color.Red);
+                        TextColor = Color.Red,
+                    }, 8, 0);
                 }
                 if (Projectile.frame >= 9 && Timer > 540)
                 {

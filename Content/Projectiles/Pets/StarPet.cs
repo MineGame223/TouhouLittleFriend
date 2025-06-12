@@ -86,7 +86,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(135, 143, 237);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(135, 143, 237),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Star";
