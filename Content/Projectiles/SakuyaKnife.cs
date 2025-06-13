@@ -60,6 +60,9 @@ namespace TouhouPets.Content.Projectiles
             {
                 if (t != null && t.active)
                 {
+                    if (!t.IsATouhouPet())
+                        continue;
+
                     if (t.type == ProjectileType<Meirin>() && t.owner == Projectile.owner
                         && t.Hitbox.Intersects(Projectile.Hitbox))
                     {

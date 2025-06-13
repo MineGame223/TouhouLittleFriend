@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -217,68 +218,27 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(18, 19))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Kaguya>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile eirin = chatRoom.initiator;
-            Projectile kaguya = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 18 && index <= 19)
-            {
-                if (turn == -1)
-                {
-                    //永琳：公主大人，上次我又看到您偷偷跑去人里了。
-                    kaguya.CloseCurrentDialog();
+            TouhouPetID eirin = TouhouPetID.Eirin;
+            TouhouPetID kaguya = TouhouPetID.Kaguya;
 
-                    if (eirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //辉夜：有、有吗？一定是你看错了吧...
-                    kaguya.SetChat(ChatSettingConfig, 16, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(eirin, 18, -1), //永琳：公主大人，上次我又看到您偷偷跑去人里了。
+                new ChatRoomInfo(kaguya, 16, 0),//辉夜：有、有吗？一定是你看错了吧...
+                new ChatRoomInfo(eirin, 19, 1), //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
+                new ChatRoomInfo(kaguya, 17, 2),//辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
+            ];
 
-                    if (kaguya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
-                    eirin.SetChat(ChatSettingConfig, 19, 20);
-
-                    if (eirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
-                    kaguya.SetChat(ChatSettingConfig, 17, 20);
-
-                    if (kaguya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -324,8 +284,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             SetEirinActive(Owner);
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

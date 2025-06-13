@@ -30,14 +30,14 @@ namespace TouhouPets
                 if (yuka == null)
                     return 0;
 
-                return yuka.ToPetClass().PetState;
+                return yuka.ai[1];
             }
             set
             {
                 if (yuka == null)
                     return;
 
-                yuka.ToPetClass().PetState = (int)value;
+                yuka.ai[1] = (int)value;
             }
         }
         public override void PostUpdateProjectiles()

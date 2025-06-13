@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -169,49 +170,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(4))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Reimu>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile sanae = chatRoom.initiator;
-            Projectile reimu = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
-                reimu.CloseCurrentDialog();
+            TouhouPetID sanae = TouhouPetID.Sanae;
+            TouhouPetID reimu = TouhouPetID.Reimu;
 
-                if (sanae.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //灵梦：给我适可而止啊喂！
-                reimu.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sanae, 4, -1), //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
+                new ChatRoomInfo(reimu, 9, 0),//灵梦：给我适可而止啊喂！
+            ];
 
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -227,8 +204,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<SanaeBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

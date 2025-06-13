@@ -1,108 +1,24 @@
 ﻿using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Utilities;
-using static TouhouPets.TouhouPets;
 
-namespace TouhouPets.Content.Projectiles.Pets
+namespace TouhouPets
 {
     /// <summary>
     /// 东方可交互宠物基类，基本示范见 <see cref="Cirno"/>
     /// </summary>
-    public abstract class BasicTouhouPet : ModProjectile
+    public abstract partial class BasicTouhouPet : ModProjectile
     {
         #region 字段与属性
-        /// <summary>
-        /// 是否不应该说话
-        /// <br/>该属性并不会影响宠物更新常规对话，仅作为是否应当参与聊天的判断条件
-        /// <br/>!--该属性会反复重置
-        /// </summary>
-        internal bool shouldNotTalking;
-        /// <summary>
-        /// 对话文本不透明度
-        /// </summary>
-        internal float chatOpacity;
-
-        /// <summary>
-        /// 对话字体大小
-        /// </summary>
-        internal float chatScale;
-
-        /// <summary>
-        /// 整段对话文本的底部坐标
-        /// </summary>
-        internal float chatBaseY = 0;
-
-        /// <summary>
-        /// 对话的持续剩余时间
-        /// </summary>
-        internal int chatTimeLeft;
-
-        /// <summary>
-        /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
-        /// <br/>该值不为0时，宠物不会发起向其他宠物的对话或接受来自其他宠物的对话
-        /// </summary>
-        internal int chatCD;
-
-        /// <summary>
-        /// 对话文本对应的索引值
-        /// </summary>
-        internal int chatIndex;
-
-        /// <summary>
-        /// 对话文本
-        /// </summary>
-        internal string chatText;
-
-        /// <summary>
-        /// 说话前的延时
-        /// </summary>
-        internal int chatLag;
-
-        /// <summary>
-        /// 打字机式文本显示状态下，打印文本总共需要的时间
-        /// </summary>
-        internal float totalTimeToType;
-
-        /// <summary>
-        /// 打字机式文本显示状态下，打印单个字符所需的时间
-        /// </summary>
-        internal float timeToType;
-
-        /// <summary>
-        /// 主要计时器，从0增加至4800再重置并循环
-        /// <br/>由于该计时器并不接受同步，故最好只在本地客户端执行与其相关的操作
-        /// </summary>
-        internal int mainTimer;
-
-        /// <summary>
-        /// 是否开启对话文字震动
-        /// <br/>恋恋专用
-        /// <br/>!--该属性会反复重置
-        /// </summary>
-        internal bool textShaking;
-
         /// <summary>
         /// 是否发现Boss
         /// <br/>该变量会自动更新，无需手动更改
         /// </summary>
         private bool findBoss;
-
-        /// <summary>
-        /// 对话字典
-        /// </summary>
-        internal Dictionary<int, string> ChatDictionary = [];
-
-        /// <summary>
-        /// 当前聊天室
-        /// </summary>
-        internal PetChatRoom currentChatRoom;
 
         /// <summary>
         /// 当鼠标悬停在宠物身上时应当变化的透明度，同时影响宠物本身和对话
@@ -146,7 +62,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public bool OwnerIsMyPlayer => Projectile.owner == Main.myPlayer;
         #endregion
 
-        #region 绘制方法
+        #region 调试信息绘制方法
         private void DrawTestInfo()
         {
             bool drawingForTest = false;
@@ -156,91 +72,13 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
             string testMsg3 = $"{Projectile.localAI[0]}, {Projectile.localAI[1]}, {Projectile.localAI[2]}, {PetState}";
-            string testMsg2 = $"{timeToType}, {totalTimeToType}, {chatOpacity}, {mainTimer}";
+            string testMsg2 = $"{timeToType}, {totalTimeToType}, {Math.Round(chatOpacity, 1)}, {mainTimer}";
             string testMsg4 = $"{Projectile.ai[0]}, {Projectile.ai[1]}, {Projectile.ai[2]}";
 
             DrawStatePanelForTesting(drawingForTest, testMsg1, new Vector2(0, 0));
             DrawStatePanelForTesting(drawingForTest, testMsg2, new Vector2(0, 30));
             DrawStatePanelForTesting(drawingForTest, testMsg3, new Vector2(0, 60));
             DrawStatePanelForTesting(drawingForTest, testMsg4, new Vector2(0, 90));
-        }
-        private void DrawChatText(Vector2 pos, float alpha, int maxWidth = 210)
-        {
-            string text = chatText;
-            Color color = ChatSettingConfig.TextColor;
-
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
-                return;
-            }
-
-            Color boardColor = ChatSettingConfig.TextBoardColor;
-            DynamicSpriteFont font = FontAssets.MouseText.Value;
-            float totalScale = 0.9f;
-            string _text = text;
-            bool typerStyle = GetInstance<PetDialogConfig>().TyperStyleChat;
-
-            if (typerStyle)
-            {
-                int textLength = (int)Math.Clamp(timeToType / (totalTimeToType / text.Length), 0, text.Length);
-                _text = text.Remove(textLength);
-            }
-            string[] array = DrawUtils.MyWordwrapString(_text, font, maxWidth, 10, out int chatLine);
-            chatLine++;
-            for (int i = 0; i < chatLine; i++)
-            {
-                if (array[i] != null)
-                {
-                    if (typerStyle)
-                    {
-                        chatBaseY = 0;
-                        chatScale = 1;
-                    }
-                    Vector2 offset = font.MeasureString(array[i]);
-                    Vector2 orig = offset / 2;
-                    Utils.DrawBorderStringFourWay(Main.spriteBatch, font
-                            , array[i], pos.X
-                            , pos.Y + orig.Y / 2 + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale - chatBaseY
-                            , color * alpha, boardColor * alpha
-                            , orig, chatScale * totalScale);
-                }
-            }
-        }
-        private void DrawChatText_Koishi(Vector2 pos, float alpha, int maxWidth = 240)
-        {
-            string text = chatText;
-            Color color = ChatSettingConfig.TextColor;
-
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
-                return;
-            }
-
-            Color boardColor = ChatSettingConfig.TextBoardColor;
-            DynamicSpriteFont font = FontAssets.MouseText.Value;
-            float totalScale = 0.9f;
-            string[] array = DrawUtils.MyWordwrapString(text, font, maxWidth, 10, out int chatLine);
-
-            chatLine++;
-            for (int i = 0; i < chatLine; i++)
-            {
-                if (array[i] != null)
-                {
-                    Vector2 offset = font.MeasureString(array[i]);
-                    Vector2 orig = offset / 2;
-                    char[] array2 = text.ToCharArray();
-                    int textLength = (int)Math.Clamp(timeToType / (totalTimeToType / text.Length), 0, text.Length);
-                    for (int l = 0; l < array.Length - text.Length + textLength; l++)
-                    {
-                        string chara = array2[l].ToString();
-                        float xOffset = FontAssets.MouseText.Value.MeasureString(text.Remove(l)).X;
-                        DrawUtils.MyDrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
-                            , chara, pos.X + xOffset + Main.rand.Next(-2, 2)
-                            , pos.Y + orig.Y / 2 + i * 30 * totalScale - (chatLine - 1) * 30 * totalScale + Main.rand.Next(-2, 2)
-                            , color * alpha, boardColor * alpha, orig, chatScale * totalScale);
-                    }
-                }
-            }
         }
         internal void DrawStatePanelForTesting(bool visible, string text, Vector2 posAdj)
         {
@@ -267,143 +105,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         #endregion
 
-        #region 对话更新方法
-        private void UpdateChat()
-        {
-            if (chatLag > 0)
-            {
-                chatLag--;
-            }
-            else
-            {
-                chatLag = 0;
-            }
-            if (chatTimeLeft > 0)
-            {
-                if (chatLag <= 0)
-                {
-                    chatBaseY += 1.2f;
-                    chatScale += 0.05f;
-                    chatOpacity += 0.1f;
-                    if (timeToType >= totalTimeToType)
-                        chatTimeLeft--;
-                }
-            }
-            else
-            {
-                chatBaseY = 0;
-                chatScale = 1;
-                chatTimeLeft = 0;
-                chatOpacity -= 0.05f;
-
-                chatCD = (int)MathHelper.Clamp(chatCD--, 0, int.MaxValue - 1);
-            }
-
-            if (chatOpacity > 0)
-                timeToType++;
-
-            chatBaseY = Math.Clamp(chatBaseY, -24, 0);
-            chatScale = Math.Clamp(chatScale, 0, 1);
-            chatOpacity = Math.Clamp(chatOpacity, 0, 1);
-            timeToType = Math.Clamp(timeToType, 0, totalTimeToType);
-
-            textShaking = false;
-            shouldNotTalking = false;
-        }
-        private void RegisterCrossModChat()
-        {
-            int lastIndex = ChatDictionary.Count;
-            int id = (int)UniqueID;
-
-            if (CrossModDialog[id].Count > 0)
-            {
-                for (int i = 0; i < CrossModDialog[id].Count; i++)
-                {
-                    string text = CrossModDialog[id][i].dialogText.Value;
-                    int startIndex = lastIndex + 1 + i;
-
-                    ChatDictionary.TryAdd(startIndex, text);
-                }
-            }
-        }
-        private void GetCrossModChat(ref WeightedRandom<string> chatText)
-        {
-            if (CrossModDialog == null)
-                return;
-
-            int id = (int)UniqueID;
-
-            if (id <= (int)TouhouPetID.None)
-                return;
-
-            for (int i = 0; i < CrossModDialog[id].Count; i++)
-            {
-                CrossModDialogInfo info = CrossModDialog[id][i];
-                if (info.condition())
-                {
-                    chatText.Add(info.dialogText.Value, info.weight);
-                }
-            }
-        }
-        private void UpdateRegularDialog()
-        {
-            if (currentChatRoom != null || mainTimer <= 0)
-                return;
-
-            int time = 0;
-            int chance = 0;
-            bool stop = true;
-            SetRegularDialog(ref time, ref chance, ref stop);
-            if (mainTimer % time == 0 && Main.rand.NextBool(chance) && !stop)
-            {
-                WeightedRandom<string> chatText = RegularDialogText();
-                GetCrossModChat(ref chatText);
-
-                string result = chatText.Get();
-
-                if (string.IsNullOrEmpty(result))
-                    return;
-
-                for (int i = 1; i < ChatDictionary.Count; i++)
-                {
-                    if (!result.Equals(ChatDictionary[i]))
-                        continue;
-
-                    Projectile.SetChat(ChatSettingConfig, i);
-                }
-            }
-        }
-        #endregion
-
         #region 查找方法
-        /// <summary>
-        /// 查找自身的<see cref="chatIndex"/>
-        /// </summary>
-        /// <param name="minIndex">最小索引值</param>
-        /// <param name="maxIndex">最大索引值，默认等于最小索引值</param>
-        /// <returns></returns>
-        internal bool FindChatIndex(int minIndex, int maxIndex = 0)
-        {
-            if (maxIndex <= minIndex)
-            {
-                maxIndex = minIndex;
-            }
-            if (chatIndex >= minIndex && chatIndex <= maxIndex)
-            {
-                return true;
-            }
-            return false;
-        }
-        /// <summary>
-        /// 查找对应宠物
-        /// </summary>
-        /// <param name="target">被查找的对象</param>
-        /// <param name="type">宠物ID</param>
-        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
-        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
-        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
-        /// <returns></returns>
-        internal bool FindPet(out Projectile target, int type, int minState = -1, int maxState = 0, bool checkTalkable = true)
+        private bool FindPet_Inner(out Projectile target, int minState, int maxState, bool checkTalkable, int type = -1, TouhouPetID id = TouhouPetID.None)
         {
             target = null;
             if (maxState <= minState && minState > 0
@@ -413,9 +116,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             foreach (Projectile p in Main.ActiveProjectiles)
             {
+                if (!p.IsATouhouPet())
+                    continue;
+
                 if (p.owner == Projectile.owner)
                 {
-                    if (p.type == type
+                    bool findType = false;
+                    if (type > 0)
+                    {
+                        findType = p.type == type;
+                    }
+                    else if (id > TouhouPetID.None && id < TouhouPetID.Count)
+                    {
+                        findType = p.ToPetClass().UniqueID == id;
+                    }
+                    if (findType
                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
                        && (!checkTalkable || p.ShouldPetTalking()))
                     {
@@ -428,6 +143,34 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <summary>
         /// 查找对应宠物
         /// </summary>
+        /// <param name="target">被查找的对象</param>
+        /// <param name="type">宠物ID</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
+        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
+        /// <returns></returns>
+        internal bool FindPet(out Projectile target, int type, int minState = -1, int maxState = 0, bool checkTalkable = true)
+        {
+            FindPet_Inner(out target, minState, maxState, checkTalkable, type);
+            return target != null;
+        }
+        /// <summary>
+        /// 通过独特标识ID查找对应宠物
+        /// </summary>
+        /// <param name="target">被查找的对象</param>
+        /// <param name="id">宠物独特标识ID</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
+        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
+        /// <returns></returns>
+        internal bool FindPetByUniqueID(out Projectile target, TouhouPetID id, int minState = -1, int maxState = 0, bool checkTalkable = true)
+        {
+            FindPet_Inner(out target, minState, maxState, checkTalkable, -1, id);
+            return target != null;
+        }
+        /// <summary>
+        /// 查找对应宠物
+        /// </summary>
         /// <param name="type">宠物ID</param>
         /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
         /// <param name="maxState">最大状态值，默认等于最小状态值</param>
@@ -435,24 +178,19 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// <returns></returns>
         internal bool FindPet(int type, bool checkTalkable = true, int minState = -1, int maxState = 0)
         {
-            if (maxState <= minState && minState > 0
-                || maxState >= minState && minState < 0)
-            {
-                maxState = minState;
-            }
-            foreach (Projectile p in Main.ActiveProjectiles)
-            {
-                if (p.owner == Projectile.owner)
-                {
-                    if (p.type == type
-                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
-                        && (!checkTalkable || p.ShouldPetTalking()))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
+            return FindPet_Inner(out _, minState, maxState, checkTalkable, type);
+        }
+        /// <summary>
+        /// 通过独特标识ID查找对应宠物
+        /// </summary>
+        /// <param name="type">宠物独特标识ID</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
+        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
+        /// <returns></returns>
+        internal bool FindPet(TouhouPetID id, bool checkTalkable = true, int minState = -1, int maxState = 0)
+        {
+            return FindPet_Inner(out _, minState, maxState, checkTalkable, -1, id);
         }
         #endregion
 
@@ -565,7 +303,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdatePetLight()
         {
-            Vector2 position = GetInstance<MiscConfig>().PetLightOnPlayer ? Owner.Center : Projectile.Center;
+            Vector2 position = GetInstance<MiscConfig_ClientSide>().PetLightOnPlayer ? Owner.Center : Projectile.Center;
             Vector3 rgb = new(0, 0, 0);
             bool inactive = false;
             SetPetLight(ref position, ref rgb, ref inactive);
@@ -595,7 +333,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             OnMouseClick(true, false);
                         }
                     }
-                    if (!dontInvis && GetInstance<MiscConfig>().PetInvisWhenMouseHover)
+                    if (!dontInvis && GetInstance<MiscConfig_ClientSide>().PetInvisWhenMouseHover)
                     {
                         mouseOpacity = MathHelper.Clamp(mouseOpacity - 0.1f, 0.05f, 1);
                     }
@@ -610,24 +348,9 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         #region 自身重写函数
         /// <summary>
-        /// 注册对话文本及其索引值
-        /// <br/>仅在本地端更新
+        /// 宠物的独特标识值
         /// </summary>
-        /// <param name="name">对话所属宠物的名字</param>
-        /// <param name="indexRange">对话索引的范围</param>
-        public virtual void RegisterChat(ref string name, ref Vector2 indexRange) { }
-        /// <summary>
-        /// 完成基本对话注册后执行的内容
-        /// </summary>
-        public virtual void PostRegisterChat() { }
-        /// <summary>
-        /// 设置常规对话文本
-        /// <br/>仅在本地端更新
-        /// </summary>
-        /// <param name="timePerDialog">每次说话机会的间隔</param>
-        /// <param name="chance">说话的几率（1 / chance）</param>
-        /// <param name="whenShouldStop">何时应当停止说话</param>
-        public virtual void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop) { }
+        public virtual TouhouPetID UniqueID => TouhouPetID.None;
         /// <summary>
         /// 设置宠物照明（于PostDraw中更新）
         /// </summary>
@@ -656,16 +379,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public virtual void OnFindBoss(NPC boss) { }
         public virtual ChatSettingConfig ChatSettingConfig => new();
         /// <summary>
-        /// 宠物的独特标识值
-        /// </summary>
-        public virtual TouhouPetID UniqueID => TouhouPetID.None;
-        /// <summary>
-        /// 常规对话
-        /// <br/>仅在本地端更新
-        /// </summary>
-        /// <returns></returns>
-        public virtual WeightedRandom<string> RegularDialogText() => null;
-        /// <summary>
         /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
         /// <br/>对于设置了 <see cref="ProjectileID.Sets.CharacterPreviewAnimations"/> 的宠物，待机状态的动画不应写在这里
         /// </summary>
@@ -691,31 +404,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnSpawn(IEntitySource source)
         {
-            string name = string.Empty;
-            Vector2 indexRange = Vector2.Zero;
-            RegisterChat(ref name, ref indexRange);
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return;
-            }
-            for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
-            {
-                string chatText = ModUtils.GetChatText(name, i.ToString());
-                if (string.IsNullOrEmpty(chatText))
-                {
-                    chatText = "这是一段空对话，你怎么找出来的？";
-                }
-                ChatDictionary[i] = chatText;
-            }
-
-            PostRegisterChat();
-
-            RegisterCrossModChat();
-
-            //增加一个空位，防止WeightedRandom无法读取最后一个索引
-            int lastIndex = ChatDictionary.Count;
-            ChatDictionary.TryAdd(lastIndex + 1, string.Empty);
+            RegisterChat_Full();
         }
         public override bool PreAI()
         {
@@ -728,18 +417,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.active = false;
                 return false;
             }
-            if (OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
-            {
-                UpdateChat();
-
-                if (UpdateFindBoss())
-                {
-                    shouldNotTalking = true;
-                    return true;
-                }
-
-                UpdateRegularDialog();
-            }
+            UpdateChat_Full();
             return true;
         }
         public override void PostAI()

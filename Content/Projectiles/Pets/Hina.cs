@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -94,122 +95,49 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(4, 8))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+                Chatting2(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Nitori>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile hina = chatRoom.initiator;
-            Projectile nitori = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 4 && index <= 6)
-            {
-                if (turn == -1)
-                {
-                    //转转：荷取，你知道吗？我一直有一个愿望。
-                    nitori.CloseCurrentDialog();
+            TouhouPetID hina = TouhouPetID.Hina;
+            TouhouPetID nitori = TouhouPetID.Nitori;
 
-                    if (hina.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //荷取：嗯？是什么愿望呢？
-                    nitori.SetChat(ChatSettingConfig, 4, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(hina, 4, -1), //转转：荷取，你知道吗？我一直有一个愿望。
+                new ChatRoomInfo(nitori, 4, 0),//荷取：嗯？是什么愿望呢？
+                new ChatRoomInfo(hina, 5, 1), //转转：我希望，把这个世界彻底净化成没有厄运的世界。
+                new ChatRoomInfo(nitori, 5, 2),//荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
+                new ChatRoomInfo(hina, 6, 3), //转转：哈哈，所以说只是一个愿望啊。
+                new ChatRoomInfo(nitori, 6, 4),//荷取：说不定哪一天真的可以实现哦！
+            ];
 
-                    if (nitori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //转转：我希望，把这个世界彻底净化成没有厄运的世界。
-                    hina.SetChat(ChatSettingConfig, 5, 20);
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting2()
+        {
+            TouhouPetID hina = TouhouPetID.Hina;
+            TouhouPetID nitori = TouhouPetID.Nitori;
 
-                    if (hina.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
-                    nitori.SetChat(ChatSettingConfig, 5, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(hina, 7, -1), //转转：我们是...
+                new ChatRoomInfo(nitori, 7, 0),//荷取：“旋转河童”组合！
+                new ChatRoomInfo(hina, 8, 1), //转转 & 荷取：哈哈哈哈！...
+                new ChatRoomInfo(nitori, 8, 1),
+            ];
 
-                    if (nitori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 3)
-                {
-                    //转转：哈哈，所以说只是一个愿望啊。
-                    hina.SetChat(ChatSettingConfig, 6, 20);
-
-                    if (hina.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 4)
-                {
-                    //荷取：说不定哪一天真的可以实现哦！
-                    nitori.SetChat(ChatSettingConfig, 6, 20);
-
-                    if (nitori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 7 || index == 8)
-            {
-                if (turn == -1)
-                {
-                    //转转：我们是...
-                    nitori.CloseCurrentDialog();
-
-                    if (hina.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //荷取：“旋转河童”组合！
-                    nitori.SetChat(ChatSettingConfig, 7, 20);
-
-                    if (nitori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //转转&荷取：哈哈哈哈！...
-                    nitori.SetChat(ChatSettingConfig, 8, 20);
-                    hina.SetChat(ChatSettingConfig, 8, 20);
-
-                    if (hina.CurrentDialogFinished() || nitori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<HinaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

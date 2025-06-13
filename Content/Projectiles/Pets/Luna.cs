@@ -131,15 +131,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             rgb = new Vector3(1.52f, 1.50f, 1.15f);
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<LunaBuff>());
             Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

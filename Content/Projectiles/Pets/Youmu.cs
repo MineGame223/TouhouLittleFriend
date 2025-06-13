@@ -129,9 +129,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.SetChat(ChatSettingConfig, 3);
             }
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
@@ -143,8 +140,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<YoumuBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

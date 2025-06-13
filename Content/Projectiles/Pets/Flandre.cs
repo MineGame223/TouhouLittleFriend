@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -129,65 +130,27 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(10, 11))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Meirin>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile flandre = chatRoom.initiator;
-            Projectile meirin = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //芙兰：美铃在跳什么奇怪的舞蹈吗？
-                meirin.CloseCurrentDialog();
+            TouhouPetID flandre = TouhouPetID.Flandre;
+            TouhouPetID meirin = TouhouPetID.Meirin;
 
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //美铃：这叫"太极"哦，二小姐。
-                meirin.SetChat(ChatSettingConfig, 7, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(flandre, 10, -1), //芙兰：美铃在跳什么奇怪的舞蹈吗？
+                new ChatRoomInfo(meirin, 7, 0),//美铃：这叫"太极"哦，二小姐。
+                new ChatRoomInfo(flandre, 11, 1), //芙兰：好像很厉害...可以教教芙兰吗？
+                new ChatRoomInfo(meirin, 8, 2),//美铃：唔...可能需要大小姐的同意吧？
+            ];
 
-                if (meirin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //芙兰：好像很厉害...可以教教芙兰吗？
-                flandre.SetChat(ChatSettingConfig, 11, 20);
-
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //美铃：唔...可能需要大小姐的同意吧？
-                meirin.SetChat(ChatSettingConfig, 8, 20);
-
-                if (meirin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -211,8 +174,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.SetPetActive(Owner, BuffType<FlandreBuff>());
             Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

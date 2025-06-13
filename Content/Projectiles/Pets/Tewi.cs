@@ -103,15 +103,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<TewiBuff>());
             Projectile.SetPetActive(Owner, BuffType<EienteiBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

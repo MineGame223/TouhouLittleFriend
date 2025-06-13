@@ -130,9 +130,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
@@ -147,8 +144,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.SetPetActive(Owner, BuffType<KogasaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

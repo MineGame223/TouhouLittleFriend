@@ -140,9 +140,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         private void SetShotChat()
         {
             int chance = Main.rand.Next(6);
@@ -172,8 +169,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<AyaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

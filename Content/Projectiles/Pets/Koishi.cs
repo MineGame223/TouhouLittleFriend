@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -187,56 +188,36 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateAnnoyingFrame();
             UpdateEyePosition();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(5))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Satori>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile koishi = chatRoom.initiator;
-            Projectile satori = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //恋恋：就算是姐姐，也不知道恋在想什么哦。
-                satori.CloseCurrentDialog();
+            TouhouPetID koishi = TouhouPetID.Koishi;
+            TouhouPetID satori = TouhouPetID.Satori;
 
-                if (koishi.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //觉：姐姐现在就在看着你呢...
-                satori.SetChat(ChatSettingConfig, 4, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(koishi, 5, -1), //恋恋：就算是姐姐，也不知道恋在想什么哦。
+                new ChatRoomInfo(satori, 4, 0),///觉：姐姐现在就在看着你呢...
+            ];
 
-                if (satori.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void AI()
         {
             if (!SetKoishiActive(Owner))
+            {
+                if(currentChatRoom != null)
+                {
+                    currentChatRoom.CloseChatRoom();
+                }
                 return;
-
-            UpdateTalking();
+            }
 
             ControlMovement();
 
@@ -640,7 +621,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         TimeLeftPerWord = 45,
                         TyperModeUseTime = 300,
-                        TextColor = Color.Red,
+                        TextColor = Color.Black,
+                        TextBoardColor = Color.Red,
                     }, 8, 0);
                 }
                 if (Projectile.frame >= 9 && Timer > 540)

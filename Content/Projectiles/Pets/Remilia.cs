@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -145,88 +146,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateWingFrame();
             UpdateClothFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(6, 8))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Flandre>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile remilia = chatRoom.initiator;
-            Projectile flandre = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //蕾米：我亲爱的芙兰哟...
-                flandre.CloseCurrentDialog();
+            TouhouPetID remi = TouhouPetID.Remilia;
+            TouhouPetID flan = TouhouPetID.Flandre;
 
-                if (remilia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //芙兰：姐姐？叫芙兰有什么事嘛？
-                flandre.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(remi, 6, -1), //蕾米：我亲爱的芙兰哟...
+                new ChatRoomInfo(flan, 6, 0),//芙兰：姐姐？叫芙兰有什么事嘛？
+                new ChatRoomInfo(remi, 7, 1), //蕾米：没什么...只是想叫你一下。
+                new ChatRoomInfo(flan, 7, 2),//芙兰：...姐姐什么时候能和芙兰一起玩...
+                new ChatRoomInfo(remi, 8, 3), //蕾米：有空会陪你的啦~
+                new ChatRoomInfo(flan, 8, 4),//芙兰：姐姐老是这么说...
+            ];
 
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //蕾米：没什么...只是想叫你一下。
-                remilia.SetChat(ChatSettingConfig, 7, 20);
-
-                if (remilia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //芙兰：...姐姐什么时候能和芙兰一起玩...
-                flandre.SetChat(ChatSettingConfig, 7, 20);
-
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //蕾米：有空会陪你的啦~
-                remilia.SetChat(ChatSettingConfig, 8, 20);
-
-                if (remilia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //芙兰：姐姐老是这么说...
-                flandre.SetChat(ChatSettingConfig, 8, 20);
-
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<RemiliaBuff>());
             Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

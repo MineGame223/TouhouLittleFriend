@@ -115,14 +115,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MomoyoBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

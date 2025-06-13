@@ -100,9 +100,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             if (IsIdleState)
@@ -120,8 +117,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<NitoriBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

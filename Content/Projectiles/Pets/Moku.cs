@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
@@ -200,49 +201,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(9))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Keine>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile moku = chatRoom.initiator;
-            Projectile keine = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //妹红：每到满月你都会这样，怪吓人的！
-                keine.CloseCurrentDialog();
+            TouhouPetID moku = TouhouPetID.Moku;
+            TouhouPetID keine = TouhouPetID.Keine;
 
-                if (moku.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //慧音：这是天性，也是使命。
-                keine.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(moku, 9, -1), //妹红：每到满月你都会这样，怪吓人的！
+                new ChatRoomInfo(keine, 9, 0),///慧音：这是天性，也是使命。
+            ];
 
-                if (keine.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -260,8 +237,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MokuBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

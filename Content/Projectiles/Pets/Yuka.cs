@@ -138,9 +138,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateClothFrame();
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             if (OwnerIsMyPlayer)
@@ -151,8 +148,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.SetPetActive(Owner, BuffType<YukaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
@@ -108,7 +109,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 600;//1000
+            timePerDialog = 1000;//1000
             chance = 1;//10
             whenShouldStop = !IsIdleState;
         }
@@ -135,49 +136,25 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.SetChat(ChatSettingConfig, 4);
             }
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(3))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Reisen>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile junko = chatRoom.initiator;
-            Projectile reisen = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //纯狐：乌冬酱~最近还好嘛？
-                reisen.CloseCurrentDialog();
+            TouhouPetID junko = TouhouPetID.Junko;
+            TouhouPetID reisen = TouhouPetID.Reisen;
 
-                if (junko.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //铃仙：嗯嗯...还、还好吧...
-                reisen.SetChat(ChatSettingConfig, 11, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(junko, 3, -1), //纯狐：乌冬酱~最近还好嘛？
+                new ChatRoomInfo(reisen, 11, 0),//铃仙：嗯嗯...还、还好吧...
+            ];
 
-                if (reisen.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -191,8 +168,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<JunkoBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -120,131 +121,59 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateClothFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(1, 3))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
-            if (FindChatIndex(4))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2(),
+                Chatting3(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Remilia>();
-            if (FindPet(out Projectile member, type, 0, 1))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile sakuya = chatRoom.initiator;
-            Projectile remilia = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 1 && index <= 2)
-            {
-                if (turn == -1)
-                {
-                    //咲夜：过去已为过去，如今只要侍奉大小姐便是。
-                    remilia.CloseCurrentDialog();
+            TouhouPetID sakuya = TouhouPetID.Sakuya;
+            TouhouPetID remilia = TouhouPetID.Remilia;
 
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //蕾米：咲夜还记得你过去的日子吗？
-                    remilia.SetChat(ChatSettingConfig, 14, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sakuya, 1, -1), //咲夜：过去已为过去，如今只要侍奉大小姐便是。
+                new ChatRoomInfo(remilia, 14, 0),//蕾米：咲夜还记得你过去的日子吗？
+                new ChatRoomInfo(sakuya, 2, 1),//咲夜：从遇到您的那一刻起我的人生就重新开始了，没有所谓过去了。
+            ];
 
-                    if (remilia.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //咲夜：从遇到您的那一刻起我的人生就重新开始了，没有所谓过去了。
-                    sakuya.SetChat(ChatSettingConfig, 2, 20);
-
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 3)
-            {
-                if (turn == -1)
-                {
-                    //咲夜：大小姐能安好，我就安好。
-                    remilia.CloseCurrentDialog();
-
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //蕾米：咲夜偶尔也得为自己考虑一下嘛。
-                    remilia.SetChat(ChatSettingConfig, 13, 20);
-
-                    if (remilia.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Meirin>();
-            if (FindPet(out Projectile member, type, 0, 4))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile sakuya = chatRoom.initiator;
-            Projectile meirin = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //咲夜：美铃那家伙，是不是又在偷懒了...
-                meirin.CloseCurrentDialog();
+            TouhouPetID sakuya = TouhouPetID.Sakuya;
+            TouhouPetID remilia = TouhouPetID.Remilia;
 
-                if (sakuya.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //美铃：我才没有呐！
-                meirin.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sakuya, 5, -1), //咲夜：大小姐能安好，我就安好。
+                new ChatRoomInfo(remilia, 13, 0),//蕾米：咲夜偶尔也得为自己考虑一下嘛。
+            ];
 
-                if (meirin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting3()
+        {
+            TouhouPetID sakuya = TouhouPetID.Sakuya;
+            TouhouPetID meirin = TouhouPetID.Meirin;
+
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sakuya, 5, -1), //咲夜：美铃那家伙，是不是又在偷懒了...
+                new ChatRoomInfo(meirin, 9, 0),//美铃：我才没有呐！
+            ];
+
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<SakuyaBuff>());
             Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

@@ -130,9 +130,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateBackFrame();
@@ -142,8 +139,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<RaikoBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

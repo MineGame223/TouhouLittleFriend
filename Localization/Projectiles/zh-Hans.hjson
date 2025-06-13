@@ -56,7 +56,7 @@ Mods: {
 			Raiko.DisplayName: 堀川 雷鼓
 			Keine.DisplayName: 上白泽 慧音
 			Luna.DisplayName: 露娜·切露德
-			Star.DisplayName: 斯塔·萨菲娅
+			StarPet.DisplayName: 斯塔·萨菲娅
 			Sunny.DisplayName: 桑尼·米尔克
 			Reisen.DisplayName: 铃仙·优昙华院·因幡
 			Sizuha.DisplayName: 秋 静叶
@@ -75,7 +75,6 @@ Mods: {
 			Lunasa.DisplayName: 露娜萨·普莉兹姆利巴
 			Merlin.DisplayName: 梅露兰·普莉兹姆利巴
 			Lyrica.DisplayName: 莉莉卡·普莉兹姆利巴
-			// StarPet.DisplayName: Star Pet
 		}
 	}
 }

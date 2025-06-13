@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -130,52 +131,31 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (FindChatIndex(3, 6))
-            {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
             if (FindChatIndex(1) || FindChatIndex(7, 10))
             {
                 Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
             }
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
+            return new()
             {
-                //赤蛮奇：一直以来我都穿着斗篷，
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //赤蛮奇：因为我不喜欢被人类认出是妖怪。
-                Projectile.SetChat(ChatSettingConfig, 4, 20);
+                Chatting1(),
+            };
+        }
+        private static List<ChatRoomInfo> Chatting1()
+        {
+            TouhouPetID seki = TouhouPetID.Sekibanki;
 
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
-                Projectile.SetChat(ChatSettingConfig, 5, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(seki,3, -1),//赤蛮奇：一直以来我都穿着斗篷，
+                new ChatRoomInfo(seki,4, 0),//赤蛮奇：因为我不喜欢被人类认出是妖怪。
+                new ChatRoomInfo(seki,5, 1),//赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
+                new ChatRoomInfo(seki,6, 2),//赤蛮奇：...好吧，除了你。
+            ];
 
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //赤蛮奇：...好吧，除了你。
-                Projectile.SetChat(ChatSettingConfig, 6, 20);
-
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom(3600);
-            }
+            return list;
         }
         private void Chatting2(PetChatRoom chatRoom)
         {

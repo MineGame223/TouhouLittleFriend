@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -162,95 +163,34 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(13, 16))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Marisa>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile reimu = chatRoom.initiator;
-            Projectile marisa = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //灵梦：喂，魔理沙？
-                marisa.CloseCurrentDialog();
+            TouhouPetID reimu = TouhouPetID.Reimu;
+            TouhouPetID marisa = TouhouPetID.Marisa;
 
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //魔理沙：怎么了灵梦？
-                marisa.SetChat(ChatSettingConfig, 15, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(reimu, 13, -1), //灵梦：喂，魔理沙？
+                new ChatRoomInfo(marisa, 15, 0),//魔理沙：怎么了灵梦？
+                new ChatRoomInfo(reimu, 14, 1), //灵梦：你说，如果我们其实是什么人被制造出来的、并且存在的目的是为了哪个世界的延续，你会怎么想？
+                new ChatRoomInfo(marisa, 16, 2),//魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
+                new ChatRoomInfo(reimu, 15, 3), //灵梦：你就说你会怎么想嘛！
+                new ChatRoomInfo(marisa, 17, 4), //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
+                new ChatRoomInfo(reimu, 16, 5), //灵梦：也许吧...
+            ];
 
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //灵梦：你说，如果我们其实是什么人被制造出来的、并且存在的目的是为了哪个世界的延续，你会怎么想？
-                reimu.SetChat(ChatSettingConfig, 14, 20);
-
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
-                marisa.SetChat(ChatSettingConfig, 16, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //灵梦：你就说你会怎么想嘛！
-                reimu.SetChat(ChatSettingConfig, 15, 20);
-
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
-                marisa.SetChat(ChatSettingConfig, 17, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 5)
-            {
-                //灵梦：也许吧...
-                reimu.SetChat(ChatSettingConfig, 16, 20);
-
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<ReimuBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

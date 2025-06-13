@@ -124,13 +124,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateClothFrame();
             UpdateMiscData();
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MystiaBuff>());
-            UpdateTalking();
 
             ControlMovement();
 

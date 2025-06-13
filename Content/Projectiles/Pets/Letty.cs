@@ -127,9 +127,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
@@ -138,8 +135,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<LettyBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

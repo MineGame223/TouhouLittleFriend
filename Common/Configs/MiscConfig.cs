@@ -12,12 +12,14 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         [ReloadRequired]
-        public bool EnableCustomMusicMode;
-
-        [DefaultValue(false)]
-        public bool PetLightOnPlayer;
+        public bool AllowModCall_MarisasReaction;
 
         [DefaultValue(true)]
-        public bool PetInvisWhenMouseHover;
+        [ReloadRequired]
+        public bool AllowModCall_PetDialog;
+
+        [DefaultValue(true)]
+        [ReloadRequired]
+        public bool AllowModCall_PetChatRoom;
     }
 }

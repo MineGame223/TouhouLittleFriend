@@ -121,14 +121,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 blinkFrame = 7;
             }
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<RukotoBuff>());
-
-            UpdateTalking();
 
             if (ShouldExtraVFXActive)
                 GenDust();

@@ -17,6 +17,15 @@ namespace TouhouPets
     public static class ModUtils
     {
         /// <summary>
+        /// 检查一个弹幕是否属于BasicTouhouPet类或派生
+        /// </summary>
+        /// <param name="proj"></param>
+        /// <returns></returns>
+        public static bool IsATouhouPet(this Projectile proj)
+        {
+            return proj.ModProjectile is BasicTouhouPet;
+        }
+        /// <summary>
         /// 查找其他模组的指定NPC
         /// </summary>
         /// <param name="modName">模组类名字符串</param>

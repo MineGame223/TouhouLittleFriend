@@ -18,11 +18,7 @@ namespace TouhouPets
         {
             instance = this;
 
-            //需要对列表进行初始化
-            for (int i = 0; i < (int)TouhouPetID.Count; i++)
-            {
-                CrossModDialog[i] = [];
-            }
+            InitializCrossModList();
         }
         public override void Unload()
         {
@@ -39,19 +35,10 @@ namespace TouhouPets
                 GensokyoSupport.Setup(result);
             }
 
-            Func<bool> condi_1 = delegate () { return Main.LocalPlayer.ZoneBeach; };
-            Func<bool> condi_2 = delegate () { return !Main.dayTime; };
-            Func<bool> condi_3 = delegate () { return !Main.dayTime && Main.LocalPlayer.ZoneSkyHeight; };
-
-            LocalizedText text_1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在海边出现");
-            LocalizedText text_2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在夜晚出现");
-            LocalizedText text_3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在夜晚的太空出现");
-
-            for (int i = 1; i <= 61; i++)
+            bool addCallForTest = true;
+            if (addCallForTest)
             {
-                Call("PetDialog", i, text_1, condi_1, 1);
-                Call("PetDialog", i, text_2, condi_2, 1);
-                Call("PetDialog", i, text_3, condi_3, 1);
+                this.SetModCall();
             }
 
             LoadClient();

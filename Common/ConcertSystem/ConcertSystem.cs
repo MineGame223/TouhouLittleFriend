@@ -16,9 +16,10 @@ namespace TouhouPets
     public class ConcertSystem : ModSystem
     {
         private static float buttonOpacity = 0f;
+        private static bool ConfigEnable => GetInstance<MiscConfig_ClientSide>().EnableCustomMusicMode;
         public override void OnModLoad()
         {
-            if (GetInstance<MiscConfig>().EnableCustomMusicMode && Main.netMode == NetmodeID.SinglePlayer)
+            if (ConfigEnable && Main.netMode == NetmodeID.SinglePlayer)
             {
                 EnsureMusicFolder();
                 Initialize(FullPath);
@@ -91,7 +92,7 @@ namespace TouhouPets
             {
                 return;
             }
-            bool customEnable = GetInstance<MiscConfig>().EnableCustomMusicMode && Main.netMode == NetmodeID.SinglePlayer;
+            bool customEnable = ConfigEnable && Main.netMode == NetmodeID.SinglePlayer;
             if (Main.mouseRight && Main.mouseRightRelease && customEnable)
             {
                 if (Directory.Exists(FullPath))
@@ -124,7 +125,7 @@ namespace TouhouPets
             {
                 finalText += "\n" + mod.GetLocalization("OpenFolder");
             }
-            if (!GetInstance<MiscConfig>().EnableCustomMusicMode)
+            if (!ConfigEnable)
             {
                 finalText = mod.GetLocalization("CustomMusicDisabledNotice").Value;
             }
