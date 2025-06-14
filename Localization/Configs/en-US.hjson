@@ -153,21 +153,26 @@ Mods: {
 				}
 
 				AllowModCall_MarisasReaction: {
-					Label: Enable Mod.Call: [MarisasReactionToBoss]
+					Label: Enable Mod.Call: [ MarisasReactionToBoss ]
 					Tooltip: Allow other mods using Mod.Call to add new or edit Marisa's reaction to bosses
 				}
 
+				AllowModCall_YuyukosReaction: {
+					Label: Enable Mod.Call: [ YuyukosReactionToFood ]
+					Tooltip: Allow other mods using Mod.Call to add new or edit Yuyuko's reaction when ate food
+				}
+
 				AllowModCall_PetDialog: {
-					Label: Enable Mod.Call: [PetDialog]
+					Label: Enable Mod.Call: [ PetDialog ]
 					Tooltip:
 						'''
 						Allow other mods using Mod.Call to add new regular dialog to pets
-						While disable this, the [PetChatRoom] option will not take effect
+						While disable this, the [ PetChatRoom ] option will not take effect
 						'''
 				}
 
 				AllowModCall_PetChatRoom: {
-					Label: Enable Mod.Call: [PetChatRoom]
+					Label: Enable Mod.Call: [ PetChatRoom ]
 					Tooltip: Allow other mods using Mod.Call to add new chat room to pets
 				}
 			}

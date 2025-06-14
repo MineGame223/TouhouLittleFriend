@@ -9,6 +9,7 @@ namespace TouhouPets
         private const string Arg_1 = "MarisasReactionToBoss";
         private const string Arg_2 = "PetDialog";
         private const string Arg_3 = "PetChatRoom";
+        private const string Arg_4 = "YuyukosReactionToFood";
 
         #region 日志信息
         private const string Warning_NullException = "ModCall填入内容不可为空！";
@@ -19,20 +20,37 @@ namespace TouhouPets
         private static string ConsoleMessage(string argName, string msgType) => $"东方小伙伴 ModCall [{argName}]：{msgType}";
         #endregion
 
-        private static List<SingleDialogInfo>[] crossModDialog = new List<SingleDialogInfo>[(int)TouhouPetID.Count];
+        /// <summary>
+        /// 跨模组添加的对话的列表
+        /// </summary>
         public static List<SingleDialogInfo>[] CrossModDialog { get => crossModDialog; set => crossModDialog = value; }
+        private static List<SingleDialogInfo>[] crossModDialog = new List<SingleDialogInfo>[(int)TouhouPetID.Count];
 
-        //唐完了的二维列表，忍着看吧（
-        private static List<List<ChatRoomInfo>>[] crossModChatRoomList = new List<List<ChatRoomInfo>>[(int)TouhouPetID.Count];
+        /// <summary>
+        /// 跨模组添加的聊天室的列表
+        /// </summary>
         public static List<List<ChatRoomInfo>>[] CrossModChatRoomList { get => crossModChatRoomList; set => crossModChatRoomList = value; }
-
+        private static List<List<ChatRoomInfo>>[] crossModChatRoomList = new List<List<ChatRoomInfo>>[(int)TouhouPetID.Count];
         private static List<ChatRoomInfo>[] crossModChatRoom = new List<ChatRoomInfo>[(int)TouhouPetID.Count];
+
+        /// <summary>
+        /// 跨模组添加的Boss评论的列表
+        /// </summary>
+        public static List<CommentInfo> CrossModBossComment { get => crossModBossComment; set => crossModBossComment = value; }
+        private static List<CommentInfo> crossModBossComment = [];
+
+        /// <summary>
+        /// 跨模组添加的食物评论的列表
+        /// </summary>
+        public static List<CommentInfo> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
+        private static List<CommentInfo> crossModFoodComment = [];
         private static void InitializCrossModList()
         {
             //需要对列表进行初始化
             for (int i = 0; i < (int)TouhouPetID.Count; i++)
             {
                 CrossModDialog[i] = [];
+
                 CrossModChatRoomList[i] = [];
                 crossModChatRoom[i] = [];
             }
@@ -57,6 +75,9 @@ namespace TouhouPets
 
                     case Arg_3:
                         return AddCrossModChatRoom(args);
+
+                    case Arg_4:
+                        return AddYuyukoReaction(args);
                 }
             }
             return null;
@@ -68,13 +89,59 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int || args[2] is not string)
+            if (args[1] is not int || args[2] is not LocalizedText)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
                 return false;
             }
-            MarisaComment.ModNPCTypeList.Add((int)args[1]);
-            MarisaComment.ModChatList.Add((string)args[2]);
+            if (args[1] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对象种类"));
+                return false;
+            }
+            if (args[2] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：评价文本"));
+                return false;
+            }
+
+            int npcType = (int)args[1];
+            LocalizedText text = (LocalizedText)args[2];
+
+            CommentInfo info = new(npcType, text);
+
+            CrossModBossComment.Add(info);
+            return true;
+        }
+        private object AddYuyukoReaction(params object[] args)
+        {
+            if (!GetInstance<MiscConfig>().AllowModCall_YuyukosReaction)
+            {
+                Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
+                return false;
+            }
+            if (args[1] is not int || args[2] is not LocalizedText)
+            {
+                Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
+                return false;
+            }
+            if (args[1] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对象种类"));
+                return false;
+            }
+            if (args[2] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：评价文本"));
+                return false;
+            }
+
+            int npcType = (int)args[1];
+            LocalizedText text = (LocalizedText)args[2];
+
+            CommentInfo info = new(npcType, text);
+
+            CrossModFoodComment.Add(info);
             return true;
         }
         private object AddCrossModDialog(params object[] args)
@@ -124,13 +191,7 @@ namespace TouhouPets
             if (weight < 1)
                 weight = 1;
 
-            SingleDialogInfo info = new SingleDialogInfo() with
-            {
-                DialogText = text,
-                Condition = condition,
-                Weight = weight,
-            };
-
+            SingleDialogInfo info = new(text, condition, weight);
             CrossModDialog[id].Add(info);
 
             for (int i = 0; i < CrossModDialog[id].Count; i++)

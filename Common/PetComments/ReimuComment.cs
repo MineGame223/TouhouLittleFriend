@@ -9,19 +9,14 @@ namespace TouhouPets
 {
     public static class ReimuComment
     {
-        private enum DictionaryID : int
-        {
-            MyMod,
-            Count
-        }
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Reimu";
         private const int MaxTouhouComment = 29;
 
         private static Dictionary<int, string> commentDictionary = [];
-        private static int[] startIndex = new int[(int)DictionaryID.Count];
+        private static int startIndex = 0;
         private static void AddDialogToPets(this Reimu reimu, WeightedRandom<string> chat, Projectile target, int petType, int chatIndex)
         {
-            if (target.type == petType && target.owner == reimu.Owner.whoAmI)
+            if (target.type == petType)
             {
                 chat.Add(reimu.ChatDictionary[chatIndex]);
             }
@@ -34,7 +29,7 @@ namespace TouhouPets
             }
 
             int index = reimu.ChatDictionary.Count;
-            startIndex[(int)DictionaryID.MyMod] = index + 1;
+            startIndex = index + 1;
 
             foreach (var comment in commentDictionary)
             {
@@ -43,10 +38,13 @@ namespace TouhouPets
         }
         public static void Comment_TouhouLightPet(this Reimu reimu, WeightedRandom<string> chat)
         {
-            int index = startIndex[(int)DictionaryID.MyMod];
+            int index = startIndex;
 
             foreach (Projectile pet in Main.ActiveProjectiles)
             {
+                if (pet.owner != reimu.Owner.whoAmI)
+                    continue;
+
                 reimu.AddDialogToPets(chat, pet, ProjectileType<Cirno>(), index);
                 reimu.AddDialogToPets(chat, pet, ProjectileType<Doremy>(), index + 1);
                 reimu.AddDialogToPets(chat, pet, ProjectileType<Eirin>(), index + 2);

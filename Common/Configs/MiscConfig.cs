@@ -16,6 +16,10 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         [ReloadRequired]
+        public bool AllowModCall_YuyukosReaction;
+
+        [DefaultValue(true)]
+        [ReloadRequired]
         public bool AllowModCall_PetDialog;
 
         [DefaultValue(true)]

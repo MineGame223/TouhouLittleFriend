@@ -191,7 +191,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer > 0 && mainTimer % 320 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(3))
+                    if (Main.rand.NextBool(5))
                     {
                         RandomCount = Main.rand.Next(10, 20);
                         CurrentState = States.Turning;

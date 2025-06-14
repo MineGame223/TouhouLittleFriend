@@ -118,7 +118,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 720;//720
-            chance = 1;//12
+            chance = 12;//12
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -190,9 +190,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 new ChatRoomInfo(patchi, 13, 1), //帕秋莉：她偷走的那好几本书也一直没还...
                 new ChatRoomInfo(alice, 9, 2),//帕秋莉 & 爱丽丝：...一定要找她算账！
                 new ChatRoomInfo(patchi, 14, 2),
-                //new ChatRoomInfo(patchi, -1, 3),//此处关闭帕秋莉的对话
-                new ChatRoomInfo(alice, 10, 3),//爱丽丝：...？还是我去找她吧，就不麻烦你了...
-                new ChatRoomInfo(patchi, 15, 4), //帕秋莉：不不不，我去就行，我去就行...
+                //由于同一回合内多个宠物说话会导致chatTurn的增加值等于说话宠物数，
+                //因此，需要插入一些空对话以进行修正
+                new ChatRoomInfo(patchi, -1, 3),
+                new ChatRoomInfo(alice, 10, 4),//爱丽丝：...？还是我去找她吧，就不麻烦你了...
+                new ChatRoomInfo(patchi, 15, 5), //帕秋莉：不不不，我去就行，我去就行...
             ];
 
             return list;

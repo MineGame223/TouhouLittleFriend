@@ -153,21 +153,26 @@ Mods: {
 				}
 
 				AllowModCall_MarisasReaction: {
-					Label: 允许Mod.Call: [MarisasReactionToBoss]
+					Label: 允许Mod.Call: [ MarisasReactionToBoss ]
 					Tooltip: 允许其他模组通过Mod.Call为魔理沙加入新的Boss遭遇反应或修改已有的反应
 				}
 
+				AllowModCall_YuyukosReaction: {
+					Label: 允许Mod.Call: [ YuyukosReactionToFood ]
+					Tooltip: 允许其他模组通过Mod.Call为幽幽子加入新的吃掉食物时的反应或修改已有的反应
+				}
+
 				AllowModCall_PetDialog: {
-					Label: 允许Mod.Call: [PetDialog]
+					Label: 允许Mod.Call: [ PetDialog ]
 					Tooltip:
 						'''
 						允许其他模组通过Mod.Call为宠物加入新的常规对话文本
-						该项被禁用时，[PetChatRoom] 选项将不生效
+						该项被禁用时，[ PetChatRoom ] 选项将不生效
 						'''
 				}
 
 				AllowModCall_PetChatRoom: {
-					Label: 允许Mod.Call: [PetChatRoom]
+					Label: 允许Mod.Call: [ PetChatRoom ]
 					Tooltip: 允许其他模组通过Mod.Call为宠物加入新的聊天室
 				}
 			}

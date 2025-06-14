@@ -342,20 +342,8 @@ Mods: {
 			Chat11: Youmu-chan, what're we eating tonight?
 			Chat12: Has Youmu-chan made any plans for the future?
 			Chat13: Youmu-chan is as simple as I thought, we'll just talk this over later.
-			Chat14: Life won't be awesome without alcohol, Cheers!
-			Chat15: A peculiar jungle delicacy with high protein!
-			Chat16: It's a homeland taste...But there is no sea in the Netherworld, right?
-			Chat17: Salute to the legendary commercial food!
-			Chat18: The fries without ketchup or cod are soulless...
-			Chat19: Oh! Gold taste!
-			Chat20: No matter if it's shucks, or something else, just eat them together.
-			Chat21: An apple a day keeps the doctor... wait, do I need a doctor?
-			Chat22: These won't explode, right?
-			Chat23: I've hidden all the pineapples...
-			Chat24: Could it be a pie?
-			Chat25: It's tasty if there are no small bones!
-			Chat26: Please don't feed me junk...
-			Chat27: Thank you for your generosity, now let me eat this!
+			Chat14: Please don't feed me junk...
+			Chat15: Thank you for your generosity, now let me eat this!
 		}
 
 		Chat_Youmu: {

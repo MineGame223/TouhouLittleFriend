@@ -219,14 +219,14 @@ namespace TouhouPets
                 //仅当索引值大于0时设置要说的话
                 if (info[i].chatIndex >= 0)
                 {
-                    //若索引值被设为小于0，则关闭当前对话
-                    if (info[i].chatIndex < 0)
+                    //若索引值被设为小于等于0，则关闭当前对话
+                    if (info[i].chatIndex <= 0)
                     {
                         pet.CloseCurrentDialog();
                     }
                     //起始回合时发起者不设置对话
                     if (info[i].chatTurn != -1 || pet != chatRoom.initiator)
-                    {             
+                    {
                         pet.SetChat(p.ChatSettingConfig, info[i].chatIndex + extraIndex, 20);
                     }
                 }
@@ -392,17 +392,6 @@ namespace TouhouPets
             SetChat_Inner(projectile, config, lag, index);
         }
         /// <summary>
-        /// 设置宠物要说的话，采用直接输入文本的形式
-        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
-        /// </summary>
-        /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
-        /// <param name="config">对话属性配置</param>
-        /// <param name="lag">说话前的延时</param>
-        public static void SetChat(this Projectile projectile, ChatSettingConfig config, string text, int lag = 0)
-        {
-            SetChat_Inner(projectile, config, lag, -1, text);
-        }
-        /// <summary>
         /// 设置宠物要说的话，自动调用ChatSettingConfig
         /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
         /// </summary>
@@ -415,6 +404,17 @@ namespace TouhouPets
                 return;
 
             SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, index);
+        }
+        /// <summary>
+        /// 设置宠物要说的话，采用直接输入文本的形式
+        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
+        /// </summary>
+        /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
+        /// <param name="config">对话属性配置</param>
+        /// <param name="lag">说话前的延时</param>
+        public static void SetChat(this Projectile projectile, ChatSettingConfig config, string text, int lag = 0)
+        {
+            SetChat_Inner(projectile, config, lag, -1, text);
         }
         /// <summary>
         /// 设置宠物要说的话，采用直接输入文本的形式，自动调用ChatSettingConfig

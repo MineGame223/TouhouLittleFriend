@@ -65,7 +65,7 @@ namespace TouhouPets
         #region 调试信息绘制方法
         private void DrawTestInfo()
         {
-            bool drawingForTest = true;
+            bool drawingForTest = false;
             string chatTurn = "#";
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();

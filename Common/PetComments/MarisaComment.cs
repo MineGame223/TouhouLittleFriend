@@ -2,6 +2,7 @@
 using Terraria;
 using TouhouPets.Content.Projectiles.Pets;
 using static TouhouPets.ModUtils;
+using static TouhouPets.TouhouPets;
 using Terraria.Localization;
 using System.Collections.Generic;
 
@@ -19,294 +20,194 @@ namespace TouhouPets
             Mods,
             Count
         }
-
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Marisa";
-        private const int MaxVanillaComment = 19;
-        private const int MaxCoraliteComment = 8;
-        private const int MaxThoriumComment = 12;
-        private const int MaxHJComment = 15;
-        private const int MaxGensokyoComment = 0;
 
-        private static Dictionary<int, string> vanillaDictionary = [];
-        private static Dictionary<int, string> coraliteDictionary = [];
-        private static Dictionary<int, string> thoriumDictionary = [];
-        private static Dictionary<int, string> hjDictionary = [];
-        private static Dictionary<int, string> gensokyoDictionary = [];
+        private static List<int> bossIDList_Vanilla = [
+            NPCID.KingSlime,
+            NPCID.EyeofCthulhu,
+            NPCID.EaterofWorldsHead,
+            NPCID.BrainofCthulhu,
+            NPCID.QueenBee,
+            NPCID.SkeletronHead,
+            NPCID.Deerclops,
+            NPCID.WallofFlesh,
+            NPCID.QueenSlimeBoss,
+            NPCID.Retinazer,
+            NPCID.Spazmatism,
+            NPCID.TheDestroyer,
+            NPCID.SkeletronPrime,
+            NPCID.Plantera,
+            NPCID.Golem,
+            NPCID.DukeFishron,
+            NPCID.HallowBoss,
+            NPCID.CultistBoss,
+            NPCID.MoonLordCore,
+            NPCID.DD2Betsy,
+            ];
+
+        private static List<string> bossIDList_Coralite = [
+            "Rediancie",
+            "BabyIceDragon",
+            "SlimeEmperor",
+            "ShadowBall",
+            "Bloodiancie",
+            "ThunderveinDragon",
+            "ZacurrentDragon",
+            "NightmarePlantera"
+            ];
+
+        private static List<string> bossIDList_Thorium = [
+            "TheGrandThunderBird",
+            "QueenJellyfish",
+            "Viscount",
+            "GraniteEnergyStorm",
+            "BuriedChampion",
+            "StarScouter",
+            "BoreanStrider",
+            "FallenBeholder",
+            "Lich",
+            "ForgottenOne",
+            "SlagFury",
+            "Aquaius",
+            "Omnicide",
+            "DreamEater"
+            ];
+
+        private static List<string> bossIDList_HJ = [
+            "MarquisMoonsquid",
+            "PriestessRod",
+            "TheMotherbrain",
+            "Diver",
+            "WallofShadow",
+            "SlimeGod",
+            "TheOverwatcher",
+            "TheLifebringerHead",
+            "TheMaterealizer",
+            "ScarabBelief",
+            "WorldsEndEverlastingFallingWhale",
+            "TheSon"
+            ];
+
         private static int[] startIndex = new int[(int)DictionaryID.Count];
 
-        public static void RegisterComment_Vanilla(this Marisa marisa)
+        private static void HandleRegisterModComment(this Marisa marisa, string modName, List<string> list, DictionaryID dictionaryID)
         {
-            for (int i = 1; i <= MaxVanillaComment; i++)
-            {
-                vanillaDictionary[i] = Language.GetTextValue($"{Path}.Vanilla_{i}");
-            }
+            int lastIndex = marisa.ChatDictionary.Count;
+            startIndex[(int)dictionaryID] = lastIndex + 1;
 
-            int index = marisa.ChatDictionary.Count;
-            startIndex[(int)DictionaryID.Vanilla] = index + 1;
-
-            foreach (var comment in vanillaDictionary)
+            for (int i = 0; i < list.Count; i++)
             {
-                marisa.ChatDictionary.TryAdd(index + comment.Key, comment.Value);
+                string text = Language.GetTextValue($"{Path}.{modName}_{i + 1}");
+                marisa.ChatDictionary.TryAdd(startIndex[(int)dictionaryID] + i, text);
             }
         }
-        public static void RegisterComment_Coralite(this Marisa marisa)
+        public static void RegisterComment(this Marisa marisa)
         {
-            for (int i = 1; i <= MaxCoraliteComment; i++)
+            int lastIndex = marisa.ChatDictionary.Count;
+            startIndex[(int)DictionaryID.Vanilla] = lastIndex + 1;
+
+            for (int i = 0; i < bossIDList_Vanilla.Count; i++)
             {
-                coraliteDictionary[i] = Language.GetTextValue($"{Path}.Coralite_{i}");
+                string text = Language.GetTextValue($"{Path}.Vanilla_{i + 1}");
+                marisa.ChatDictionary.TryAdd(startIndex[(int)DictionaryID.Vanilla] + i, text);
             }
 
-            int index = marisa.ChatDictionary.Count;
-            startIndex[(int)DictionaryID.Coralite] = index + 1;
-
-            foreach (var comment in coraliteDictionary)
+            marisa.HandleRegisterModComment("Coralite", bossIDList_Coralite, DictionaryID.Coralite);
+            marisa.HandleRegisterModComment("Thorium", bossIDList_Thorium, DictionaryID.Thorium);
+            marisa.HandleRegisterModComment("HJ", bossIDList_HJ, DictionaryID.HomewardJourney);
+        }
+        public static void BossChat_CrossMod(this Projectile marisa, int bossType)
+        {
+            if (CrossModBossComment == null || CrossModBossComment.Count <= 0)
             {
-                marisa.ChatDictionary.TryAdd(index + comment.Key, comment.Value);
+                return;
+            }
+            for (int i = 0; i < CrossModBossComment.Count; i++)
+            {
+                if (bossType == CrossModBossComment[i].ObjectType)
+                {
+                    marisa.SetChat(CrossModBossComment[i].CommentText.Value);
+                    break;
+                }
             }
         }
-        public static void RegisterComment_Thorium(this Marisa marisa)
+        public static void BossChat_Vanilla(this Projectile marisa, int bossType)
         {
-            for (int i = 1; i <= MaxThoriumComment; i++)
-            {
-                thoriumDictionary[i] = Language.GetTextValue($"{Path}.Thorium_{i}");
-            }
+            //以防万一（？）
+            if (bossIDList_Vanilla.Count <= 0)
+                return;
 
-            int index = marisa.ChatDictionary.Count;
-            startIndex[(int)DictionaryID.Thorium] = index + 1;
-
-            foreach (var comment in thoriumDictionary)
-            {
-                marisa.ChatDictionary.TryAdd(index + comment.Key, comment.Value);
-            }
-        }
-        public static void RegisterComment_HJ(this Marisa marisa)
-        {
-            for (int i = 1; i <= MaxHJComment; i++)
-            {
-                hjDictionary[i] = Language.GetTextValue($"{Path}.HJ_{i}");
-            }
-
-            int index = marisa.ChatDictionary.Count;
-            startIndex[(int)DictionaryID.HomewardJourney] = index + 1;
-
-            foreach (var comment in hjDictionary)
-            {
-                marisa.ChatDictionary.TryAdd(index + comment.Key, comment.Value);
-            }
-        }
-        public static void BossChat_Vanilla(this Projectile marisa, ChatSettingConfig config, NPC boss)
-        {
             int index = startIndex[(int)DictionaryID.Vanilla];
-            switch (boss.type)
+
+            if (!bossIDList_Vanilla.Contains(bossType))
+                return;
+
+            //魔焰眼和激光眼的评价是一样的
+            if (bossType == NPCID.Spazmatism)
+                bossType = NPCID.Retinazer;
+
+            marisa.SetChat(index + bossIDList_Vanilla.IndexOf(bossType));
+        }
+        private static void HandleModBossChatFromList(this Projectile marisa, string modName,
+            NPC boss, string bossType, List<string> list, DictionaryID dictionaryID)
+        {
+            //以防万一（？）
+            if (list.Count <= 0)
+                return;
+
+            int index = startIndex[(int)dictionaryID];
+
+            if (!list.Contains(bossType))
+                return;
+
+            if (HasModAndFindNPC(modName, boss, bossType))
             {
-                case NPCID.KingSlime:
-                    marisa.SetChat(config, index);
-                    break;
-                case NPCID.EyeofCthulhu:
-                    marisa.SetChat(config, index + 1);
-                    break;
-                case NPCID.EaterofWorldsHead:
-                    marisa.SetChat(config, index + 2);
-                    break;
-                case NPCID.BrainofCthulhu:
-                    marisa.SetChat(config, index + 3);
-                    break;
-                case NPCID.QueenBee:
-                    marisa.SetChat(config, index + 4);
-                    break;
-                case NPCID.SkeletronHead:
-                    marisa.SetChat(config, index + 5);
-                    break;
-                case NPCID.Deerclops:
-                    marisa.SetChat(config, index + 6);
-                    break;
-                case NPCID.WallofFlesh:
-                    marisa.SetChat(config, index + 7);
-                    break;
-                case NPCID.QueenSlimeBoss:
-                    marisa.SetChat(config, index + 8);
-                    break;
-                case NPCID.Retinazer:
-                case NPCID.Spazmatism:
-                    marisa.SetChat(config, index + 9);
-                    break;
-                case NPCID.TheDestroyer:
-                    marisa.SetChat(config, index + 10);
-                    break;
-                case NPCID.SkeletronPrime:
-                    marisa.SetChat(config, index + 11);
-                    break;
-                case NPCID.Plantera:
-                    marisa.SetChat(config, index + 12);
-                    break;
-                case NPCID.Golem:
-                    marisa.SetChat(config, index + 13);
-                    break;
-                case NPCID.DukeFishron:
-                    marisa.SetChat(config, index + 14);
-                    break;
-                case NPCID.HallowBoss:
-                    marisa.SetChat(config, index + 15);
-                    break;
-                case NPCID.CultistBoss:
-                    marisa.SetChat(config, index + 16);
-                    break;
-                case NPCID.MoonLordCore:
-                    marisa.SetChat(config, index + 17);
-                    break;
-                case NPCID.DD2Betsy:
-                    marisa.SetChat(config, index + 18);
-                    break;
-                default:
-                    break;
+                string actualType = bossType;
+
+                //三灾的评价是一样的
+                if (dictionaryID == DictionaryID.Thorium)
+                {
+                    if (bossType == "Aquaius" || bossType == "Omnicide")
+                        actualType = "SlagFury";
+                }
+
+                marisa.SetChat(index + list.IndexOf(actualType));
             }
         }
-        public static void BossChat_Coralite(this Projectile marisa, ChatSettingConfig config, NPC boss)
+        public static void BossChat_Coralite(this Projectile marisa, NPC boss)
         {
             string modName = "Coralite";
-            int index = startIndex[(int)DictionaryID.Coralite];
-            if (HasModAndFindNPC(modName, boss, "Rediancie"))
+            List<string> list = bossIDList_Coralite;
+            DictionaryID dictionary = DictionaryID.Coralite;
+
+            foreach (string name in list)
             {
-                marisa.SetChat(config, index);
-            }
-            if (HasModAndFindNPC(modName, boss, "BabyIceDragon"))
-            {
-                marisa.SetChat(config, index + 1);
-            }
-            if (HasModAndFindNPC(modName, boss, "SlimeEmperor"))
-            {
-                marisa.SetChat(config, index + 2);
-            }
-            if (HasModAndFindNPC(modName, boss, "ShadowBall"))
-            {
-                marisa.SetChat(config, index + 3);
-            }
-            if (HasModAndFindNPC(modName, boss, "Bloodiancie"))
-            {
-                marisa.SetChat(config, index + 4);
-            }
-            if (HasModAndFindNPC(modName, boss, "ThunderveinDragon"))
-            {
-                marisa.SetChat(config, index + 5);
-            }
-            if (HasModAndFindNPC(modName, boss, "ZacurrentDragon"))
-            {
-                marisa.SetChat(config, index + 6);
-            }
-            if (HasModAndFindNPC(modName, boss, "NightmarePlantera"))
-            {
-                marisa.SetChat(config, index + 7);
+                marisa.HandleModBossChatFromList(modName, boss, name, list, dictionary);
             }
         }
-        public static void BossChat_Thorium(this Projectile marisa, ChatSettingConfig config, NPC boss)
+        public static void BossChat_Thorium(this Projectile marisa, NPC boss)
         {
             string modName = "ThoriumMod";
-            int index = startIndex[(int)DictionaryID.Thorium];
-            if (HasModAndFindNPC(modName, boss, "TheGrandThunderBird"))
+            List<string> list = bossIDList_Thorium;
+            DictionaryID dictionary = DictionaryID.Thorium;
+
+            foreach (string name in list)
             {
-                marisa.SetChat(config, index);
-            }
-            if (HasModAndFindNPC(modName, boss, "QueenJellyfish"))
-            {
-                marisa.SetChat(config, index + 1);
-            }
-            if (HasModAndFindNPC(modName, boss, "Viscount"))
-            {
-                marisa.SetChat(config, index + 2);
-            }
-            if (HasModAndFindNPC(modName, boss, "GraniteEnergyStorm"))
-            {
-                marisa.SetChat(config, index + 3);
-            }
-            if (HasModAndFindNPC(modName, boss, "BuriedChampion"))
-            {
-                marisa.SetChat(config, index + 4);
-            }
-            if (HasModAndFindNPC(modName, boss, "StarScouter"))
-            {
-                marisa.SetChat(config, index + 5);
-            }
-            if (HasModAndFindNPC(modName, boss, "BoreanStrider"))
-            {
-                marisa.SetChat(config, index + 6);
-            }
-            if (HasModAndFindNPC(modName, boss, "FallenBeholder"))
-            {
-                marisa.SetChat(config, index + 7);
-            }
-            if (HasModAndFindNPC(modName, boss, "Lich"))
-            {
-                marisa.SetChat(config, index + 8);
-            }
-            if (HasModAndFindNPC(modName, boss, "ForgottenOne"))
-            {
-                marisa.SetChat(config, index + 9);
-            }
-            if (HasModAndFindNPC(modName, boss, "SlagFury")
-                || HasModAndFindNPC(modName, boss, "Aquaius")
-                || HasModAndFindNPC(modName, boss, "Omnicide"))
-            {
-                marisa.SetChat(config, index + 10);
-            }
-            if (HasModAndFindNPC(modName, boss, "DreamEater"))
-            {
-                marisa.SetChat(config, index + 11);
+                marisa.HandleModBossChatFromList(modName, boss, name, list, dictionary);
             }
         }
-        public static void BossChat_HomewardHourney(this Projectile marisa, ChatSettingConfig config, NPC boss)
+        public static void BossChat_HomewardHourney(this Projectile marisa, NPC boss)
         {
             string modName = "ContinentOfJourney";
-            int index = startIndex[(int)DictionaryID.HomewardJourney];
-            if (HasModAndFindNPC(modName, boss, "MarquisMoonsquid"))
+            List<string> list = bossIDList_HJ;
+            DictionaryID dictionary = DictionaryID.HomewardJourney;
+
+            foreach (string name in list)
             {
-                marisa.SetChat(config, index);
-            }
-            if (HasModAndFindNPC(modName, boss, "PriestessRod"))
-            {
-                marisa.SetChat(config, index + 1);
-            }
-            if (HasModAndFindNPC(modName, boss, "TheMotherbrain"))
-            {
-                marisa.SetChat(config, index + 2);
-            }
-            if (HasModAndFindNPC(modName, boss, "Diver"))
-            {
-                marisa.SetChat(config, index + 3);
-            }
-            if (HasModAndFindNPC(modName, boss, "WallofShadow"))
-            {
-                marisa.SetChat(config, index + 4);
-            }
-            if (HasModAndFindNPC(modName, boss, "SlimeGod"))
-            {
-                marisa.SetChat(config, index + 5);
-            }
-            if (HasModAndFindNPC(modName, boss, "TheOverwatcher"))
-            {
-                marisa.SetChat(config, index + 6);
-            }
-            if (HasModAndFindNPC(modName, boss, "TheLifebringerHead"))
-            {
-                marisa.SetChat(config, index + 7);
-            }
-            if (HasModAndFindNPC(modName, boss, "TheMaterealizer"))
-            {
-                marisa.SetChat(config, index + 8);
-            }
-            if (HasModAndFindNPC(modName, boss, "ScarabBelief"))
-            {
-                marisa.SetChat(config, index + 9);
-            }
-            if (HasModAndFindNPC(modName, boss, "WorldsEndEverlastingFallingWhale"))
-            {
-                marisa.SetChat(config, index + 10);
-            }
-            if (HasModAndFindNPC(modName, boss, "TheSon"))
-            {
-                marisa.SetChat(config, index + 11);
+                marisa.HandleModBossChatFromList(modName, boss, name, list, dictionary);
             }
         }
-        public static void BossChat_Gensokyo(this Projectile marisa, ChatSettingConfig config, NPC boss)
+        public static void BossChat_Gensokyo(this Projectile marisa, NPC boss)
         {
             //string modName = "Gensokyo";
         }

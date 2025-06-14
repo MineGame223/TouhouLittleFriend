@@ -55,7 +55,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         private Item food = new();
         private List<Item> foodList = [];
         private int hungerPoint;
-        private bool feeded;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuyuko_Cloth");
@@ -87,13 +86,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnMouseClick(bool leftMouse, bool rightMouse)
         {
-            if (!rightMouse)
+            if (!rightMouse || IsEattingState)
                 return;
 
             Item selectedItem = Owner.inventory[Owner.selectedItem];
             if (selectedItem.type == ItemID.JojaCola)//请不要喂垃圾
             {
-                Projectile.SetChat(ChatSettingConfig, 26, 60);
+                Projectile.SetChat(14);
                 return;
             }
 
@@ -108,9 +107,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
 
-            feeded = true;
             hungerPoint += 10800;
-            UpdateEattingText(food);
+            CurrentState = States.BeforeEatting;
+            Projectile.UpdateComment(food.type, true);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -165,7 +164,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Yuyuko";
-            indexRange = new Vector2(1, 27);
+            indexRange = new Vector2(1, 15);
+        }
+        public override void PostRegisterChat()
+        {
+            this.RegisterComment_Vanilla();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -175,7 +178,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -301,12 +304,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 hungerPoint--;
             }
-
-            if (feeded)
-            {
-                CurrentState = States.BeforeEatting;
-            }
-            feeded = false;
 
             UpdatePositionOffset();
         }
@@ -592,105 +589,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                         fd.TurnToAir(true);
                     }
                 }
-                UpdateEattingText(food);
                 CurrentState = States.BeforeEatting;
             }
-            else
-            {
-                UpdateRegularFoodText(false);
-            }
-        }
-        private void UpdateEattingText(Item food)
-        {
-            Projectile.CloseCurrentDialog();
-            switch (food.type)
-            {
-                case ItemID.Ale:
-                case ItemID.Sake:
-                    //人生得意须尽欢，莫使金樽空对月。干了！
-                    Projectile.SetChat(14, 60);
-                    break;
 
-                case ItemID.GrubSoup:
-                    //奇特的丛林美食，富含蛋白质！
-                    Projectile.SetChat(15, 60);
-                    break;
-
-                case ItemID.Sashimi:
-                    //是家乡的味道呢...但是冥界并没有海吧？
-                    Projectile.SetChat(16, 60);
-                    break;
-
-                case ItemID.Burger:
-                    //向传奇商业食物致敬！
-                    Projectile.SetChat(17, 60);
-                    break;
-
-                case ItemID.Fries:
-                    //没有番茄酱或者炸鱼的薯条是没有灵魂的...
-                    Projectile.SetChat(18, 60);
-                    break;
-
-                case ItemID.GoldenDelight:
-                    //谢谢你这么大方，请我吃这个！
-                    Projectile.SetChat(19, 60);
-                    break;
-
-                case ItemID.ShuckedOyster:
-                    //壳什么的一起吃掉就好啦！
-                    Projectile.SetChat(20, 60);
-                    break;
-
-                case ItemID.Apple:
-                    //一天一个苹果，医生...欸我需要医生吗？
-                    Projectile.SetChat(21, 60);
-                    break;
-
-                case ItemID.Cherry:
-                    //这不会爆炸，对吧？
-                    Projectile.SetChat(22, 60);
-                    break;
-
-                case ItemID.Pizza:
-                    //我已经把菠萝都藏起来了...
-                    Projectile.SetChat(23, 60);
-                    break;
-
-                case ItemID.Escargot:
-                    //能不能做成派呢？
-                    Projectile.SetChat(24, 60);
-                    break;
-
-                case ItemID.ChickenNugget:
-                    //没有碎骨更好吃！
-                    Projectile.SetChat(25, 60);
-                    break;
-
-                default:
-                    UpdateRegularFoodText(true);
-                    break;
-            };
-        }
-        private void UpdateRegularFoodText(bool hasFood)
-        {
-            if (chatTimeLeft <= 0)
-            {
-                if (hasFood)
-                {
-                    if (feeded)
-                    {
-                        Projectile.SetChat(27, 60);
-                    }
-                    else
-                    {
-                        Projectile.SetChat(Main.rand.Next(5, 8), 60);
-                    }
-                }
-                else
-                {
-                    Projectile.SetChat(Main.rand.Next(8, 11), 60);
-                }
-            }
+            Projectile.UpdateComment(food.type, false);
         }
     }
 }
