@@ -122,11 +122,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (FindPet(ProjectileType<Yuyuko>(), false))
             {
-                Projectile.SetChat(ChatSettingConfig, 11);
+                Projectile.SetChat(11);
             }
             else
             {
-                Projectile.SetChat(ChatSettingConfig, 3);
+                Projectile.SetChat(3);
             }
         }
         public override void VisualEffectForPreview()

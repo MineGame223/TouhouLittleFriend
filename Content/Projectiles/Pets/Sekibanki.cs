@@ -106,8 +106,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 777;
-            chance = 7;
+            timePerDialog = 777;//777
+            chance = 7;//7
             whenShouldStop = !IsIdleState || chatCD > 0;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -182,7 +182,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 0)
             {
                 //赤蛮奇：...我将超越一切！
-                Projectile.SetChat(ChatSettingConfig, 7, 20);
+                Projectile.SetChat(7, 20);
 
                 if (Projectile.CurrentDialogFinished())
                 {
@@ -196,7 +196,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 1)
             {
                 //赤蛮奇：超——变——身——！！！
-                Projectile.SetChat(ChatSettingConfig, 8, 20);
+                Projectile.SetChat(8, 20);
 
                 if (Projectile.CurrentDialogFinished())
                     chatRoom.chatTurn++;
@@ -204,7 +204,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 2)
             {
                 //赤蛮奇：......
-                Projectile.SetChat(ChatSettingConfig, 9, 20);
+                Projectile.SetChat(9, 20);
 
                 if (Projectile.CurrentDialogFinished())
                 {
@@ -218,7 +218,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 3)
             {
                 //赤蛮奇：...呃，你什么都没听见
-                Projectile.SetChat(ChatSettingConfig, 10, 20);
+                Projectile.SetChat(10, 20);
 
                 if (Projectile.CurrentDialogFinished())
                 {

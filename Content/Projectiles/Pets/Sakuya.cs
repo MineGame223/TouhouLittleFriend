@@ -99,8 +99,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 960;
-            chance = Owner.HasBuff<ScarletBuff>() ? 30 : 12;
+            timePerDialog = 960;//960
+            chance = Owner.HasBuff<ScarletBuff>() ? 30 : 12;//30 : 12
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -151,7 +151,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sakuya, 5, -1), //咲夜：大小姐能安好，我就安好。
+                new ChatRoomInfo(sakuya, 3, -1), //咲夜：大小姐能安好，我就安好。
                 new ChatRoomInfo(remilia, 13, 0),//蕾米：咲夜偶尔也得为自己考虑一下嘛。
             ];
 
@@ -164,7 +164,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sakuya, 5, -1), //咲夜：美铃那家伙，是不是又在偷懒了...
+                new ChatRoomInfo(sakuya, 4, -1), //咲夜：美铃那家伙，是不是又在偷懒了...
                 new ChatRoomInfo(meirin, 9, 0),//美铃：我才没有呐！
             ];
 

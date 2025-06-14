@@ -65,7 +65,7 @@ namespace TouhouPets
         #region 调试信息绘制方法
         private void DrawTestInfo()
         {
-            bool drawingForTest = false;
+            bool drawingForTest = true;
             string chatTurn = "#";
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
@@ -73,7 +73,7 @@ namespace TouhouPets
             string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
             string testMsg3 = $"{Projectile.localAI[0]}, {Projectile.localAI[1]}, {Projectile.localAI[2]}, {PetState}";
             string testMsg2 = $"{timeToType}, {totalTimeToType}, {Math.Round(chatOpacity, 1)}, {mainTimer}";
-            string testMsg4 = $"{Projectile.ai[0]}, {Projectile.ai[1]}, {Projectile.ai[2]}";
+            string testMsg4 = $"{Projectile.ai[0]}, {Projectile.ai[1]}, {Projectile.ai[2]}, {Projectile.ShouldPetTalking()}";
 
             DrawStatePanelForTesting(drawingForTest, testMsg1, new Vector2(0, 0));
             DrawStatePanelForTesting(drawingForTest, testMsg2, new Vector2(0, 30));

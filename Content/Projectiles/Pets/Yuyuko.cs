@@ -169,8 +169,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 970;
-            chance = 9;
+            timePerDialog = 970;//970
+            chance = 9;//9
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -183,8 +183,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[4]);
                 if (FindPet(ProjectileType<Youmu>()))
                 {
-                    chat.Add(ChatDictionary[10]);
                     chat.Add(ChatDictionary[11]);
+                    chat.Add(ChatDictionary[12]);
                 }
             }
             return chat;
@@ -194,119 +194,59 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateHatFrame();
             UpdateClothFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(11, 13) || FindChatIndex(1))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+                Chatting2(),
+                Chatting3(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Youmu>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile yuyuko = chatRoom.initiator;
-            Projectile youmu = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 12 && index <= 13)
-            {
-                if (turn == -1)
-                {
-                    //幽幽子：妖梦酱有为未来做过打算嘛？
-                    youmu.CloseCurrentDialog();
+            TouhouPetID yuyuko = TouhouPetID.Yuyuko;
+            TouhouPetID youmu = TouhouPetID.Youmu;
 
-                    if (yuyuko.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //妖梦：欸？只要伺候幽幽子大人就行了吧...
-                    youmu.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(yuyuko, 12, -1), //幽幽子：妖梦酱有为未来做过打算嘛？
+                new ChatRoomInfo(youmu, 6, 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
+                new ChatRoomInfo(yuyuko, 13, 1), //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
+                new ChatRoomInfo(youmu, 10, 2),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
+            ];
 
-                    if (youmu.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
-                    yuyuko.SetChat(ChatSettingConfig, 13, 20);
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting2()
+        {
+            TouhouPetID yuyuko = TouhouPetID.Yuyuko;
+            TouhouPetID youmu = TouhouPetID.Youmu;
 
-                    if (yuyuko.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //妖梦：只要能待在幽幽子大人身旁，我就很知足了。
-                    youmu.SetChat(ChatSettingConfig, 10, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(yuyuko, 11, -1), //幽幽子：妖梦酱，今天晚上吃什么？
+                new ChatRoomInfo(youmu, 8, 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
+            ];
 
-                    if (youmu.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 11)
-            {
-                if (turn == -1)
-                {
-                    //幽幽子：妖梦酱，今天晚上吃什么？
-                    youmu.CloseCurrentDialog();
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting3()
+        {
+            TouhouPetID yuyuko = TouhouPetID.Yuyuko;
+            TouhouPetID youmu = TouhouPetID.Youmu;
 
-                    if (yuyuko.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //妖梦：幽幽子大人您五分钟之前刚吃过饭。
-                    youmu.SetChat(ChatSettingConfig, 8, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(yuyuko, 1, -1), //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
+                new ChatRoomInfo(youmu, 9, 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
+            ];
 
-                    if (youmu.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 1)
-            {
-                if (turn == -1)
-                {
-                    //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
-                    youmu.CloseCurrentDialog();
-
-                    if (yuyuko.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //妖梦：可是幽幽子大人您已经死了啊？也不会复生。
-                    youmu.SetChat(ChatSettingConfig, 9, 20);
-
-                    if (youmu.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<YuyukoBuff>());
-            UpdateTalking();
 
             ControlMovement();
 
@@ -666,68 +606,64 @@ namespace TouhouPets.Content.Projectiles.Pets
             switch (food.type)
             {
                 case ItemID.Ale:
-                    //人生得意须尽欢，莫使金樽空对月。干了！
-                    Projectile.SetChat(ChatSettingConfig, 14, 60);
-                    break;
-
                 case ItemID.Sake:
                     //人生得意须尽欢，莫使金樽空对月。干了！
-                    Projectile.SetChat(ChatSettingConfig, 14, 60);
+                    Projectile.SetChat(14, 60);
                     break;
 
                 case ItemID.GrubSoup:
                     //奇特的丛林美食，富含蛋白质！
-                    Projectile.SetChat(ChatSettingConfig, 15, 60);
+                    Projectile.SetChat(15, 60);
                     break;
 
                 case ItemID.Sashimi:
                     //是家乡的味道呢...但是冥界并没有海吧？
-                    Projectile.SetChat(ChatSettingConfig, 16, 60);
+                    Projectile.SetChat(16, 60);
                     break;
 
                 case ItemID.Burger:
                     //向传奇商业食物致敬！
-                    Projectile.SetChat(ChatSettingConfig, 17, 60);
+                    Projectile.SetChat(17, 60);
                     break;
 
                 case ItemID.Fries:
                     //没有番茄酱或者炸鱼的薯条是没有灵魂的...
-                    Projectile.SetChat(ChatSettingConfig, 18, 60);
+                    Projectile.SetChat(18, 60);
                     break;
 
                 case ItemID.GoldenDelight:
                     //谢谢你这么大方，请我吃这个！
-                    Projectile.SetChat(ChatSettingConfig, 19, 60);
+                    Projectile.SetChat(19, 60);
                     break;
 
                 case ItemID.ShuckedOyster:
                     //壳什么的一起吃掉就好啦！
-                    Projectile.SetChat(ChatSettingConfig, 20, 60);
+                    Projectile.SetChat(20, 60);
                     break;
 
                 case ItemID.Apple:
                     //一天一个苹果，医生...欸我需要医生吗？
-                    Projectile.SetChat(ChatSettingConfig, 21, 60);
+                    Projectile.SetChat(21, 60);
                     break;
 
                 case ItemID.Cherry:
                     //这不会爆炸，对吧？
-                    Projectile.SetChat(ChatSettingConfig, 22, 60);
+                    Projectile.SetChat(22, 60);
                     break;
 
                 case ItemID.Pizza:
                     //我已经把菠萝都藏起来了...
-                    Projectile.SetChat(ChatSettingConfig, 23, 60);
+                    Projectile.SetChat(23, 60);
                     break;
 
                 case ItemID.Escargot:
                     //能不能做成派呢？
-                    Projectile.SetChat(ChatSettingConfig, 24, 60);
+                    Projectile.SetChat(24, 60);
                     break;
 
                 case ItemID.ChickenNugget:
                     //没有碎骨更好吃！
-                    Projectile.SetChat(ChatSettingConfig, 25, 60);
+                    Projectile.SetChat(25, 60);
                     break;
 
                 default:
@@ -743,16 +679,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (feeded)
                     {
-                        Projectile.SetChat(ChatSettingConfig, 27, 60);
+                        Projectile.SetChat(27, 60);
                     }
                     else
                     {
-                        Projectile.SetChat(ChatSettingConfig, Main.rand.Next(5, 8), 60);
+                        Projectile.SetChat(Main.rand.Next(5, 8), 60);
                     }
                 }
                 else
                 {
-                    Projectile.SetChat(ChatSettingConfig, Main.rand.Next(8, 11), 60);
+                    Projectile.SetChat(Main.rand.Next(8, 11), 60);
                 }
             }
         }

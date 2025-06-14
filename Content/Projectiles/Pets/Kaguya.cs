@@ -163,8 +163,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 730;
-            chance = 7;
+            timePerDialog = 730;//730
+            chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -608,13 +608,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                     switch (chance)
                     {
                         case 1:
-                            Projectile.SetChat(ChatSettingConfig, 10);
+                            Projectile.SetChat(10);
                             break;
                         case 2:
-                            Projectile.SetChat(ChatSettingConfig, 11);
+                            Projectile.SetChat(11);
                             break;
                         default:
-                            Projectile.SetChat(ChatSettingConfig, 12);
+                            Projectile.SetChat(12);
                             break;
                     }
                 }
@@ -656,13 +656,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                     switch (chance)
                     {
                         case 1:
-                            Projectile.SetChat(ChatSettingConfig, 13);
+                            Projectile.SetChat(13);
                             break;
                         case 2:
-                            Projectile.SetChat(ChatSettingConfig, 14);
+                            Projectile.SetChat(14);
                             break;
                         default:
-                            Projectile.SetChat(ChatSettingConfig, 15);
+                            Projectile.SetChat(15);
                             break;
                     }
                 }
@@ -768,13 +768,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 switch (chance)
                 {
                     case 1:
-                        Projectile.SetChat(ChatSettingConfig, 4);
+                        Projectile.SetChat(4);
                         break;
                     case 2:
-                        Projectile.SetChat(ChatSettingConfig, 5);
+                        Projectile.SetChat(5);
                         break;
                     default:
-                        Projectile.SetChat(ChatSettingConfig, 3);
+                        Projectile.SetChat(3);
                         break;
                 }
                 if (Main.rand.NextBool(8))

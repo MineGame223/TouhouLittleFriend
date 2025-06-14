@@ -16,7 +16,7 @@ namespace TouhouPets
         /// 宠物是否被允许说话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns>当 shouldNotTalking 为 true 且 chatCD 小于等于 0 时，返回 true</returns>
+        /// <returns>当 shouldNotTalking 为 false 且 chatCD 小于等于 0 时，返回 true</returns>
         public static bool ShouldPetTalking(this Projectile projectile)
         {
             if (!projectile.IsATouhouPet())
@@ -415,6 +415,17 @@ namespace TouhouPets
                 return;
 
             SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, index);
+        }
+        /// <summary>
+        /// 设置宠物要说的话，采用直接输入文本的形式，自动调用ChatSettingConfig
+        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
+        /// </summary>
+        /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
+        /// <param name="config">对话属性配置</param>
+        /// <param name="lag">说话前的延时</param>
+        public static void SetChat(this Projectile projectile, string text, int lag = 0)
+        {
+            SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, -1, text);
         }
         #endregion
     }

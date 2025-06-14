@@ -66,8 +66,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 750;
-            chance = 8;
+            timePerDialog = 750;//750
+            chance = 8;//8
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -77,7 +77,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                if (FindPet(ProjectileType<Chen>()))
+                if (FindPet(ProjectileType<Chen>()) && chatCD <= 0)
                 {
                     chat.Add(ChatDictionary[7]);
                 }
@@ -108,7 +108,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private static List<ChatRoomInfo> Chatting2()
         {
-            TouhouPetID ran = TouhouPetID.Daiyousei;
+            TouhouPetID ran = TouhouPetID.Ran;
             TouhouPetID chen = TouhouPetID.Chen;
 
             List<ChatRoomInfo> list =

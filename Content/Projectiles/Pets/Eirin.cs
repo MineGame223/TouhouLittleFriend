@@ -101,7 +101,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override TouhouPetID UniqueID => TouhouPetID.Eirin;
         public override void OnSpawn(IEntitySource source)
         {
-            ChatDictionary[99] = ModUtils.GetChatText("Eirin", "99", Owner.name);
             base.OnSpawn(source);
         }
         public override bool DrawPetSelf(ref Color lightColor)
@@ -162,8 +161,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 860;
-            chance = 8;
+            timePerDialog = 860;//860
+            chance = 8;//8
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -258,11 +257,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.CloseCurrentDialog();
                 if (player.difficulty == PlayerDifficultyID.Hardcore)
                 {
-                    Projectile.SetChat(ChatSettingConfig, 99);
+                    Projectile.SetChat(ModUtils.GetChatText("Eirin", "99", Owner.name));
                 }
                 else
                 {
-                    Projectile.SetChat(ChatSettingConfig, 14);
+                    Projectile.SetChat(14);
                 }
                 CurrentState = States.OwnerIsDead;
             }

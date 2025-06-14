@@ -121,8 +121,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 960;
-            chance = 5;
+            timePerDialog = 960;//960
+            chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()

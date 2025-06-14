@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -87,8 +88,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 720;
-            chance = 9;
+            timePerDialog = 720;//720
+            chance = 9;//9
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -110,154 +111,47 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(1))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
-            if (FindChatIndex(6, 10))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Reimu>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile shinki = chatRoom.initiator;
-            Projectile reimu = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //神绮：所谓“巫女”，不过是神明的狗罢了~
-                reimu.CloseCurrentDialog();
+            TouhouPetID shinki = TouhouPetID.Shinki;
+            TouhouPetID alice = TouhouPetID.Alice;
 
-                if (shinki.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //灵梦：*优美的博丽脏话
-                reimu.SetChat(ChatSettingConfig, 12, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(shinki, 6, -1), //神绮：爱~丽~丝~酱~~
+                new ChatRoomInfo(alice, 11, 0),//爱丽丝：别那么肉麻的叫我！...咱们、咱们认识吗？
+                new ChatRoomInfo(shinki, 7, 1), //神绮：别这样嘛！你难道连你亲爱的妈妈都不认识了？
+                new ChatRoomInfo(alice, 12, 2),//爱丽丝：不熟，真的不熟...
+                new ChatRoomInfo(shinki, 8, 3), //神绮：呜呜呜...被女儿冷落了...
+                new ChatRoomInfo(alice, 13, 4),//爱丽丝：...好啦好啦，真受不了，我叫你一声母...神绮小姐。
+                new ChatRoomInfo(shinki, 9, 5), //神绮：你刚刚是不是说“母亲”了？哇！妈妈好感动！
+                new ChatRoomInfo(alice, 14, 6),//爱丽丝：（真是说不清道不明的关系啊...）
+                new ChatRoomInfo(shinki, 10, 7), //神绮：再叫一声好不好？
+                new ChatRoomInfo(alice, 15, 8), //爱丽丝：不、不行！
+            ];
 
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Alice>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile shinki = chatRoom.initiator;
-            Projectile alice = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //神绮：爱~丽~丝~酱~~
-                alice.CloseCurrentDialog();
+            TouhouPetID shinki = TouhouPetID.Shinki;
+            TouhouPetID reimu = TouhouPetID.Reimu;
 
-                if (shinki.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //爱丽丝：别那么肉麻的叫我！...咱们、咱们认识吗？
-                alice.SetChat(ChatSettingConfig, 11, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(shinki, 1, -1), //神绮：所谓“巫女”，不过是神明的狗罢了~
+                new ChatRoomInfo(reimu, 12, 0),//灵梦：*优美的博丽脏话
+            ];
 
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //神绮：别这样嘛！你难道连你亲爱的妈妈都不认识了？
-                shinki.SetChat(ChatSettingConfig, 7, 20);
-
-                if (shinki.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //爱丽丝：不熟，真的不熟...
-                alice.SetChat(ChatSettingConfig, 12, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //神绮：呜呜呜...被女儿冷落了...
-                shinki.SetChat(ChatSettingConfig, 8, 20);
-
-                if (shinki.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //爱丽丝：...好啦好啦，真受不了，我叫你一声母...神绮小姐。
-                alice.SetChat(ChatSettingConfig, 13, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 5)
-            {
-                //神绮：你刚刚是不是说“母亲”了？哇！妈妈好感动！
-                shinki.SetChat(ChatSettingConfig, 9, 20);
-
-                if (shinki.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 6)
-            {
-                //爱丽丝：（真是说不清道不明的关系啊...）
-                alice.SetChat(ChatSettingConfig, 14, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 7)
-            {
-                //神绮：再叫一声好不好？
-                shinki.SetChat(ChatSettingConfig, 10, 20);
-
-                if (shinki.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 8)
-            {
-                //爱丽丝：不、不行！
-                alice.SetChat(ChatSettingConfig, 15, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -271,8 +165,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<ShinkiBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
