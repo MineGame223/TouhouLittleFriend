@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -12,6 +13,10 @@ namespace TouhouPets
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Yuyuko";
 
         private static int startIndex = 0;
+
+        private static List<int> foodIDList_Full = [];
+
+        private static List<int> foodIDList_CrossMod = [];
 
         private readonly static List<int> foodIDList_Vanilla = [
             ItemID.ChocolateChipCookie,//现烤的最好吃！
@@ -30,20 +35,42 @@ namespace TouhouPets
             ItemID.Sake,
             ];
 
+        /// <summary>
+        /// 更新评价
+        /// </summary>
+        /// <param name="yuyuko"></param>
+        /// <param name="foodType">食物种类</param>
+        /// <param name="feeded">是否主动投喂</param>
         public static void UpdateComment(this Projectile yuyuko, int foodType, bool feeded = false)
         {
+            //若发现食物，则进行评价。反之会随机选取一个抱怨文本
             if (foodType > 0)
             {
-                yuyuko.Comment_Vanilla(foodType, feeded);
-                yuyuko.Comment_CrossMod(foodType, feeded);
+                //若列表长度为0、或是被选取的食物种类不包含在列表中，则启用默认评价
+                if (foodIDList_Full.Count <= 0 || !foodIDList_Full.Contains(foodType))
+                {
+                    yuyuko.DefaultComment(feeded);
+                    return;
+                }
+                //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
+                yuyuko.Comment_CrossMod(foodType);
+                yuyuko.Comment_Vanilla(foodType);
             }
-            else if (yuyuko.CurrentDialogFinished())
+            else
             {
-                yuyuko.SetChat(Main.rand.Next(8, 10 + 1));
+                int index = Main.rand.Next(8, 10 + 1);
+                yuyuko.SetChat(index);
             }
         }
+
+        /// <summary>
+        /// 当幽幽子没有吃到指定食物时给予的评价
+        /// </summary>
+        /// <param name="yuyuko"></param>
+        /// <param name="feeded">是否主动投喂</param>
         private static void DefaultComment(this Projectile yuyuko, bool feeded = false)
         {
+            //如果是主动投喂
             if (feeded)
             {
                 yuyuko.SetChat(15, 60);
@@ -53,52 +80,70 @@ namespace TouhouPets
                 yuyuko.SetChat(Main.rand.Next(5, 7 + 1), 60);
             }
         }
+
+        /// <summary>
+        /// 注册原版食物评价
+        /// </summary>
+        /// <param name="yuyuko"></param>
         public static void RegisterComment_Vanilla(this Yuyuko yuyuko)
         {
+            //记录起始索引值
             int index = yuyuko.ChatDictionary.Count;
             startIndex = index + 1;
 
+            //以ID列表的长度为索引，注册相应对话
             for (int i = 0; i < foodIDList_Vanilla.Count; i++)
             {
                 yuyuko.ChatDictionary.TryAdd(startIndex + i, Language.GetTextValue($"{Path}.Food_{i + 1}"));
             }
+
+            //将该列表汇入总列表
+            foodIDList_Full.AddRange(foodIDList_Vanilla);
         }
-        private static void Comment_Vanilla(this Projectile yuyuko, int foodType, bool feeded = false)
+
+        /// <summary>
+        /// 注册模组食物评价
+        /// </summary>
+        /// <param name="yuyuko"></param>
+        public static void RegisterComment_CrossMod(this Yuyuko _)
+        {
+            //将该列表汇入总列表
+            foodIDList_Full.AddRange(foodIDList_CrossMod);
+        }
+
+        /// <summary>
+        /// 关于原版食物的评价
+        /// </summary>
+        /// <param name="yuyuko"></param>
+        /// <param name="foodType">食物种类</param>
+        private static void Comment_Vanilla(this Projectile yuyuko, int foodType)
         {
             //以防万一（？）
             if (foodIDList_Vanilla.Count <= 0)
                 return;
 
-            int index = startIndex;
-
-            yuyuko.CloseCurrentDialog();
-            if (!foodIDList_Vanilla.Contains(foodType))
-            {
-                yuyuko.DefaultComment(feeded);
-                return;
-            }
-
             //清酒和啤酒的评价是一样的
             if (foodType == ItemID.Sake)
                 foodType = ItemID.Ale;
 
-            yuyuko.SetChat(index + foodIDList_Vanilla.IndexOf(foodType), 60);
+            yuyuko.SetChat(startIndex + foodIDList_Vanilla.IndexOf(foodType), 60);
         }
-        private static void Comment_CrossMod(this Projectile yuyuko, int foodType, bool feeded = false)
+
+        /// <summary>
+        /// 关于跨模组食物的评价
+        /// </summary>
+        /// <param name="yuyuko"></param>
+        /// <param name="foodType">食物种类</param>
+        private static void Comment_CrossMod(this Projectile yuyuko, int foodType)
         {
             //以防万一
             if (CrossModFoodComment.Count <= 0)
                 return;
 
-            yuyuko.CloseCurrentDialog();
-            if (!foodIDList_Vanilla.Contains(foodType))
-            {
-                yuyuko.DefaultComment(feeded);
-                return;
-            }
+            //遍历食物评价信息列表并选取评价
             foreach (var i in CrossModFoodComment)
             {
-                if (i.ObjectType != foodType)
+                if (foodType != i.ObjectType)
                     continue;
 
                 yuyuko.SetChat(i.CommentText.Value, 60);

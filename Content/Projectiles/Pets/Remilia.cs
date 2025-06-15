@@ -339,7 +339,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    if (Main.rand.NextBool(3) && currentChatRoom == null && Projectile.CurrentDialogFinished())
+                    if (Main.rand.NextBool(3) && currentChatRoom == null)
                     {
                         int chance = Main.rand.Next(2);
                         switch (chance)

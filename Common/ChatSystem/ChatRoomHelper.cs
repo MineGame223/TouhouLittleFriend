@@ -1,5 +1,4 @@
 ﻿using Terraria;
-using TouhouPets.Content.Projectiles.Pets;
 using System;
 using static TouhouPets.TouhouPets;
 using static TouhouPets.ChatRoomSystem;
@@ -24,6 +23,7 @@ namespace TouhouPets
 
             return !projectile.ToPetClass().shouldNotTalking && projectile.ToPetClass().chatCD <= 0;
         }
+
         /// <summary>
         /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPet"/> 类
         /// </summary>
@@ -33,6 +33,7 @@ namespace TouhouPets
         {
             return projectile.ModProjectile as BasicTouhouPet;
         }
+
         /// <summary>
         /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空、chatIndex归零
         /// </summary>
@@ -78,6 +79,7 @@ namespace TouhouPets
             }
             chatRoom.active = false;
         }
+
         /// <summary>
         /// 创建聊天室
         /// </summary>
@@ -112,6 +114,7 @@ namespace TouhouPets
             }
             return MaxChatRoom - 1;
         }
+
         /// <summary>
         /// 创建聊天室
         /// </summary>
@@ -122,15 +125,33 @@ namespace TouhouPets
             int i = CreateChatRoom(initiator);
             return ChatRoom[i];
         }
+
         /// <summary>
-        /// 宠物当前是否已说完话或尚未准备说话
+        /// 宠物当前是否刚说完一句话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns>当 chatTimeLeft 小于等于 1 时返回 true</returns>
+        /// <returns>当 chatOpacity < 0 且 > -0.3 时返回 true</returns>
         public static bool CurrentDialogFinished(this Projectile projectile)
         {
-            return projectile.ToPetClass().chatTimeLeft <= 1;
+            if (!projectile.IsATouhouPet())
+                return false;
+
+            return projectile.ToPetClass().chatOpacity < 0 && projectile.ToPetClass().chatOpacity > -0.3f;
         }
+
+        /// <summary>
+        /// 宠物当前是否没有在说话
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <returns>当 chatOpacity <= -0.3 时返回 true</returns>
+        public static bool CurrentlyNoDialog(this Projectile projectile)
+        {
+            if (!projectile.IsATouhouPet())
+                return false;
+
+            return projectile.ToPetClass().chatOpacity <= 0.3f;
+        }
+
         /// <summary>
         /// 关闭当前宠物的对话（将chatTimeLeft设为0）
         /// </summary>
@@ -139,6 +160,7 @@ namespace TouhouPets
         {
             projectile.ToPetClass().chatTimeLeft = 0;
         }
+
         #region 设置聊天室
         /// <summary>
         /// 编辑聊天室
@@ -152,7 +174,7 @@ namespace TouhouPets
             List<TouhouPetID> member = [];
 
             //使用弹幕实例的成员信息元组列表
-            List<(Projectile pet, int chatIndex, int chatTurn)> info = [];
+            List<(Projectile pet, int chatIndex, int chatTurn, int targetTurn)> info = [];
 
             //用于记录实际对话总回合数的计数列表
             List<int> listForCount = [];
@@ -180,7 +202,8 @@ namespace TouhouPets
             //设置成员并维持聊天室
             if (!MaintainChatRoom(ref chatRoom, member))
             {
-                chatRoom.CloseChatRoom();
+                //因为异常而退出的CD更短
+                chatRoom.CloseChatRoom(60);
                 return;
             }
 
@@ -192,13 +215,13 @@ namespace TouhouPets
                 {
                     continue;
                 }
-                info.Add((chatRoom.member[member.IndexOf(i.UniqueID)], i.ChatIndex, i.ChatTurn));
+                info.Add((chatRoom.member[member.IndexOf(i.UniqueID)], i.ChatIndex, i.ChatTurn, i.ChatTurn + 1));
             }
 
             //根据长度遍历元组列表内容
             for (int i = 0; i < info.Count; i++)
             {
-                Projectile pet = chatRoom.member[member.IndexOf(infoList[i].UniqueID)];
+                Projectile pet = info[i].pet;
 
                 //如果加入的弹幕不存在，则不设置对话
                 if (pet == null || !pet.active)
@@ -215,30 +238,32 @@ namespace TouhouPets
 
                 BasicTouhouPet p = pet.ToPetClass();
 
+                //区分模组对话和原有对话的索引值偏移
                 int extraIndex = isCrossMod ? p.crossModDialogStartIndex : 0;
+
                 //仅当索引值大于0时设置要说的话
-                if (info[i].chatIndex >= 0)
+                if (info[i].chatIndex > 0)
                 {
-                    //若索引值被设为小于等于0，则关闭当前对话
-                    if (info[i].chatIndex <= 0)
-                    {
-                        pet.CloseCurrentDialog();
-                    }
+                    int chatIndex = info[i].chatIndex + extraIndex;
                     //起始回合时发起者不设置对话
                     if (info[i].chatTurn != -1 || pet != chatRoom.initiator)
                     {
-                        pet.SetChat(p.ChatSettingConfig, info[i].chatIndex + extraIndex, 20);
+                        pet.SetChat(p.ChatSettingConfig, chatIndex, 20);
                     }
                 }
+                //若索引值被设为小于等于0，则关闭当前对话
+                else
+                {
+                    pet.CloseCurrentDialog();
+                }
 
-                //若当前对话已说完，则回合值+1并跳出循环，以防多加
+                //若当前对话已说完，则将回合值+1并跳出循环，防止多加
                 if (pet.CurrentDialogFinished())
                 {
-                    chatRoom.chatTurn++;
+                    chatRoom.chatTurn = info[i].targetTurn;
                     break;
                 }
             }
-
             //超过最大回合数时关闭聊天室
             //由于存在回合-1与回合0，所以总回合数需要 -2 才等于最大回合值
             if (chatRoom.chatTurn > listForCount.Count - 2)
@@ -246,6 +271,7 @@ namespace TouhouPets
                 chatRoom.CloseChatRoom();
             }
         }
+
         /// <summary>
         /// 设置聊天成员并维持聊天室，若成员列表无内容或任意成员不存在则会关闭聊天室
         /// </summary>
@@ -325,8 +351,8 @@ namespace TouhouPets
             }
             string chat = string.Empty;
 
-            //采用索引值设置
-            if (index > 0)
+            //采用索引值设置，若当前索引值不等于目标索引值则进行设置
+            if (index > 0 && pet.chatIndex != index)
             {
                 chat = pet.ChatDictionary[index];
                 pet.chatIndex = index;
@@ -380,9 +406,10 @@ namespace TouhouPets
 
             //Main.NewText($"Index: {index}", Main.DiscoColor);
         }
+
         /// <summary>
         /// 设置宠物要说的话
-        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
+        /// <br/>当 ChatTimeLeft 大于0时不输出结果
         /// </summary>
         /// <param name="index">对话索引值</param>
         /// <param name="config">对话属性配置</param>
@@ -391,9 +418,10 @@ namespace TouhouPets
         {
             SetChat_Inner(projectile, config, lag, index);
         }
+
         /// <summary>
         /// 设置宠物要说的话，自动调用ChatSettingConfig
-        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
+        /// <br/>当 ChatTimeLeft 大于0时不输出结果
         /// </summary>
         /// <param name="index">对话索引值</param>
         /// <param name="config">对话属性配置</param>
@@ -405,9 +433,10 @@ namespace TouhouPets
 
             SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, index);
         }
+
         /// <summary>
         /// 设置宠物要说的话，采用直接输入文本的形式
-        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
+        /// <br/>当 ChatTimeLeft 大于0时不输出结果
         /// </summary>
         /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
         /// <param name="config">对话属性配置</param>
@@ -416,9 +445,10 @@ namespace TouhouPets
         {
             SetChat_Inner(projectile, config, lag, -1, text);
         }
+
         /// <summary>
         /// 设置宠物要说的话，采用直接输入文本的形式，自动调用ChatSettingConfig
-        /// <br/>当 ChatTimeLeft 或 ChatCD 大于0时不输出结果
+        /// <br/>当 ChatTimeLeft 大于0时不输出结果
         /// </summary>
         /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
         /// <param name="config">对话属性配置</param>

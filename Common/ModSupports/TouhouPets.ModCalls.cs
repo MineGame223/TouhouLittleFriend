@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Terraria.Localization;
 
 namespace TouhouPets
@@ -17,7 +18,7 @@ namespace TouhouPets
         private const string Warning_IndexOutOfRange = "填入数值超出索引界限！已阻止本次载入。";
         private const string Warning_NullValue = "检测到空值！已阻止本次载入。";
         private const string Warning_PreventedByConfig = "该项已被模组配置禁止载入。";
-        private static string ConsoleMessage(string argName, string msgType) => $"东方小伙伴 ModCall [{argName}]：{msgType}";
+        private static string ConsoleMessage(string argName, string msgType) => $"东方小伙伴 ModCall [ {argName} ]：{msgType}";
         #endregion
 
         /// <summary>
@@ -89,59 +90,102 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int || args[2] is not LocalizedText)
+            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
                 return false;
             }
             if (args[1] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对象种类"));
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：对象种类"));
                 return false;
             }
             if (args[2] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：评价文本"));
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：评价文本"));
+                return false;
+            }
+            if (args[3] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
 
-            int npcType = (int)args[1];
+            int npcType;
+            if (args[1] is short)
+            {
+                npcType = (short)args[1];
+            }
+            else
+            {
+                npcType = (int)args[1];
+            }
             LocalizedText text = (LocalizedText)args[2];
 
             CommentInfo info = new(npcType, text);
-
             CrossModBossComment.Add(info);
+
+            Mod mod = (Mod)args[3];
+            string modName = mod.DisplayNameClean;
+            Logger.Info(ConsoleMessage("魔理沙Boss评价添加结果"
+                    , $"添加成功！\n" +
+                    $"添加者：{modName}\n" +
+                    $"对象ID：{npcType}\n" +
+                    $"评价文本：{text.Value}"
+                    ));
             return true;
         }
         private object AddYuyukoReaction(params object[] args)
         {
             if (!GetInstance<MiscConfig>().AllowModCall_YuyukosReaction)
             {
-                Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
+                Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int || args[2] is not LocalizedText)
+            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText)
             {
-                Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
+                Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
                 return false;
             }
             if (args[1] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对象种类"));
+                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：对象种类"));
                 return false;
             }
             if (args[2] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：评价文本"));
+                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：评价文本"));
+                return false;
+            }
+            if (args[3] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
 
-            int npcType = (int)args[1];
+            int npcType;
+            if (args[1] is short)
+            {
+                npcType = (short)args[1];
+            }
+            else
+            {
+                npcType = (int)args[1];
+            }
             LocalizedText text = (LocalizedText)args[2];
 
             CommentInfo info = new(npcType, text);
-
             CrossModFoodComment.Add(info);
+
+            Mod mod = (Mod)args[3];
+            string modName = mod.DisplayNameClean;
+            Logger.Info(ConsoleMessage("幽幽子食物评价添加结果"
+                    , $"添加成功！\n" +
+                    $"添加者：{modName}\n" +
+                    $"对象ID：{npcType}\n" +
+                    $"评价文本：{text.Value}"
+                    ));
+
             return true;
         }
         private object AddCrossModDialog(params object[] args)
@@ -182,6 +226,11 @@ namespace TouhouPets
                 Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话权重"));
                 return false;
             }
+            if (args[5] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：添加对象"));
+                return false;
+            }
 
             int id = (int)args[1];
             LocalizedText text = (LocalizedText)args[2];
@@ -194,16 +243,20 @@ namespace TouhouPets
             SingleDialogInfo info = new(text, condition, weight);
             CrossModDialog[id].Add(info);
 
+            Mod mod = (Mod)args[5];
+            string modName = mod.DisplayNameClean;
             for (int i = 0; i < CrossModDialog[id].Count; i++)
             {
                 if (i < CrossModDialog[id].Count - 1)
                     continue;
 
                 Logger.Info(ConsoleMessage("宠物对话添加结果"
-                    , $"添加成功！" +
-                    $"索引：{(TouhouPetID)id}；" +
-                    $"内容：{CrossModDialog[id][i].DialogText}；" +
-                    $"权重：{CrossModDialog[id][i].Weight}"));
+                    , $"添加成功！\n" +
+                    $"添加者：{modName}\n" +
+                    $"索引：{(TouhouPetID)id}\n" +
+                    $"内容：{CrossModDialog[id][i].DialogText}\n" +
+                    $"权重：{CrossModDialog[id][i].Weight}"
+                    ));
             }
 
             return true;
@@ -231,10 +284,14 @@ namespace TouhouPets
                 Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：聊天室成员信息列表"));
                 return false;
             }
+            if (args[3] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：添加对象"));
+                return false;
+            }
 
             int id = (int)args[1];
             List<(int, int, int)> infoList = (List<(int, int, int)>)args[2];
-
 
             for (int j = 0; j < infoList.Count; j++)
             {
@@ -246,24 +303,27 @@ namespace TouhouPets
 
                 crossModChatRoom[id].Add(info);
             }
-
             CrossModChatRoomList[id].Add(crossModChatRoom[id]);
 
+            Mod mod = (Mod)args[3];
+            string modName = mod.DisplayNameClean;
             for (int i = 0; i < CrossModChatRoomList[id].Count; i++)
             {
                 if (i < CrossModChatRoomList[id].Count - 1)
                     continue;
 
+                StringBuilder logInfo = new($"添加成功！\n" +
+                    $"添加者：{modName}；\n" +
+                    $"第{i + 1}个聊天室；\n" +
+                    $"发起者索引：{(TouhouPetID)id}");
+
                 foreach (var j in crossModChatRoom[id])
                 {
-                    Logger.Info(ConsoleMessage("宠物聊天室添加结果"
-                    , $"添加成功！" +
-                    $"第{i + 1}个聊天室；" +
-                    $"索引：{(TouhouPetID)id}；" +
-                    $"宠物ID：{j.UniqueID}；" +
-                    $"索引值：{j.ChatIndex}；" +
-                    $"回合数：{j.ChatTurn}"));
+                    logInfo.Append($"\n宠物ID：{j.UniqueID}；索引值：{j.ChatIndex}；回合数：{j.ChatTurn}");
                 }
+
+                Logger.Info(ConsoleMessage("宠物聊天室添加结果"
+                    , logInfo.ToString()));
             }
 
             return true;

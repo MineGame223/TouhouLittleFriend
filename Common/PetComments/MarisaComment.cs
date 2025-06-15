@@ -90,34 +90,67 @@ namespace TouhouPets
 
         private static int[] startIndex = new int[(int)DictionaryID.Count];
 
-        private static void HandleRegisterModComment(this Marisa marisa, string modName, List<string> list, DictionaryID dictionaryID)
+        /// <summary>
+        /// 处理注册评价的方法
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="modName">模组名</param>
+        /// <param name="list">注册对象列表</param>
+        /// <param name="dictionaryID">起始索引字典枚举</param>
+        private static void HandleRegisterComment(this Marisa marisa, string modName, DictionaryID dictionaryID, object list)
         {
+            //记录对应字典的起始索引值
             int lastIndex = marisa.ChatDictionary.Count;
             startIndex[(int)dictionaryID] = lastIndex + 1;
 
-            for (int i = 0; i < list.Count; i++)
+            //根据对应列表长度赋予其索引值
+            if (list is List<int> vanillaList)
             {
-                string text = Language.GetTextValue($"{Path}.{modName}_{i + 1}");
-                marisa.ChatDictionary.TryAdd(startIndex[(int)dictionaryID] + i, text);
+                if (vanillaList.Count > 0)
+                {
+                    for (int i = 0; i < vanillaList.Count; i++)
+                    {
+                        string text = Language.GetTextValue($"{Path}.{modName}_{i + 1}");
+                        marisa.ChatDictionary.TryAdd(startIndex[(int)dictionaryID] + i, text);
+                    }
+                }
+            }
+
+            if (list is List<string> modList)
+            {
+                if (modList.Count > 0)
+                {
+                    for (int i = 0; i < modList.Count; i++)
+                    {
+                        string text = Language.GetTextValue($"{Path}.{modName}_{i + 1}");
+                        marisa.ChatDictionary.TryAdd(startIndex[(int)dictionaryID] + i, text);
+                    }
+                }
             }
         }
+        
+        /// <summary>
+        /// 注册评价
+        /// </summary>
+        /// <param name="marisa"></param>
         public static void RegisterComment(this Marisa marisa)
         {
-            int lastIndex = marisa.ChatDictionary.Count;
-            startIndex[(int)DictionaryID.Vanilla] = lastIndex + 1;
-
-            for (int i = 0; i < bossIDList_Vanilla.Count; i++)
-            {
-                string text = Language.GetTextValue($"{Path}.Vanilla_{i + 1}");
-                marisa.ChatDictionary.TryAdd(startIndex[(int)DictionaryID.Vanilla] + i, text);
-            }
-
-            marisa.HandleRegisterModComment("Coralite", bossIDList_Coralite, DictionaryID.Coralite);
-            marisa.HandleRegisterModComment("Thorium", bossIDList_Thorium, DictionaryID.Thorium);
-            marisa.HandleRegisterModComment("HJ", bossIDList_HJ, DictionaryID.HomewardJourney);
+            marisa.HandleRegisterComment("Vanilla", DictionaryID.Vanilla, bossIDList_Vanilla);
+            marisa.HandleRegisterComment("Coralite", DictionaryID.Coralite, bossIDList_Coralite);
+            marisa.HandleRegisterComment("Coralite", DictionaryID.Coralite, bossIDList_Coralite);
+            marisa.HandleRegisterComment("Thorium", DictionaryID.Thorium, bossIDList_Thorium);
+            marisa.HandleRegisterComment("HJ", DictionaryID.HomewardJourney, bossIDList_HJ);
+            //由于被动添加的跨模组评价不采用索引值，因此无需注册流程
         }
+        
+        /// <summary>
+        /// 跨模组Boss评价
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="bossType"></param>
         public static void BossChat_CrossMod(this Projectile marisa, int bossType)
         {
+            //若列表不存在内容，则不执行后续
             if (CrossModBossComment == null || CrossModBossComment.Count <= 0)
             {
                 return;
@@ -131,6 +164,12 @@ namespace TouhouPets
                 }
             }
         }
+        
+        /// <summary>
+        /// 原版Boss评价
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="bossType"></param>
         public static void BossChat_Vanilla(this Projectile marisa, int bossType)
         {
             //以防万一（？）
@@ -139,6 +178,7 @@ namespace TouhouPets
 
             int index = startIndex[(int)DictionaryID.Vanilla];
 
+            //若被检测的种类不包含在该列表中，则不执行后续
             if (!bossIDList_Vanilla.Contains(bossType))
                 return;
 
@@ -148,6 +188,16 @@ namespace TouhouPets
 
             marisa.SetChat(index + bossIDList_Vanilla.IndexOf(bossType));
         }
+        
+        /// <summary>
+        /// 处理主动添加的跨模组Boss评价的方法
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="modName">模组名</param>
+        /// <param name="boss">Boss的实例</param>
+        /// <param name="bossType">Boss名称</param>
+        /// <param name="list">对应列表</param>
+        /// <param name="dictionaryID">对应起始索引字典枚举</param>
         private static void HandleModBossChatFromList(this Projectile marisa, string modName,
             NPC boss, string bossType, List<string> list, DictionaryID dictionaryID)
         {
@@ -157,9 +207,11 @@ namespace TouhouPets
 
             int index = startIndex[(int)dictionaryID];
 
+            //若被检测的种类不包含在该列表中，则不执行后续
             if (!list.Contains(bossType))
                 return;
 
+            //发现存在对应模组与生物时，进行评价
             if (HasModAndFindNPC(modName, boss, bossType))
             {
                 string actualType = bossType;
@@ -174,6 +226,12 @@ namespace TouhouPets
                 marisa.SetChat(index + list.IndexOf(actualType));
             }
         }
+        
+        /// <summary>
+        /// 珊瑚石Boss评价
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="boss"></param>
         public static void BossChat_Coralite(this Projectile marisa, NPC boss)
         {
             string modName = "Coralite";
@@ -185,6 +243,12 @@ namespace TouhouPets
                 marisa.HandleModBossChatFromList(modName, boss, name, list, dictionary);
             }
         }
+        
+        /// <summary>
+        /// 瑟银Boss评价
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="boss"></param>
         public static void BossChat_Thorium(this Projectile marisa, NPC boss)
         {
             string modName = "ThoriumMod";
@@ -196,6 +260,12 @@ namespace TouhouPets
                 marisa.HandleModBossChatFromList(modName, boss, name, list, dictionary);
             }
         }
+        
+        /// <summary>
+        /// 旅人归途Boss评价
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="boss"></param>
         public static void BossChat_HomewardHourney(this Projectile marisa, NPC boss)
         {
             string modName = "ContinentOfJourney";
@@ -207,6 +277,12 @@ namespace TouhouPets
                 marisa.HandleModBossChatFromList(modName, boss, name, list, dictionary);
             }
         }
+        
+        /// <summary>
+        /// 幻想乡Boss评价
+        /// </summary>
+        /// <param name="marisa"></param>
+        /// <param name="boss"></param>
         public static void BossChat_Gensokyo(this Projectile marisa, NPC boss)
         {
             //string modName = "Gensokyo";

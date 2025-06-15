@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Utilities;
-using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
 {
@@ -267,6 +266,10 @@ namespace TouhouPets
 
             if (mainTimer % time == 0 && Main.rand.NextBool(chance) && !stop)
             {
+                //若当前还有没说完的话则不设置
+                if (!Projectile.CurrentlyNoDialog())
+                    return;
+
                 WeightedRandom<string> chatText = RegularDialogText();
 
                 //将跨模组的常规对话加入随机选择器
@@ -288,6 +291,7 @@ namespace TouhouPets
                 }
             }
         }
+
         /// <summary>
         /// 更新聊天室
         /// </summary>
@@ -304,6 +308,7 @@ namespace TouhouPets
                 room.ModifyChatRoom(infoList);
             }
         }
+
         /// <summary>
         /// 更新对话文本的状态
         /// </summary>
@@ -319,6 +324,9 @@ namespace TouhouPets
             }
             if (chatTimeLeft > 0)
             {
+                if (chatOpacity < 0)
+                    chatOpacity = 0;
+
                 if (chatLag <= 0)
                 {
                     chatBaseY += 1.2f;
@@ -344,12 +352,14 @@ namespace TouhouPets
 
             chatBaseY = Math.Clamp(chatBaseY, -24, 0);
             chatScale = Math.Clamp(chatScale, 0, 1);
-            chatOpacity = Math.Clamp(chatOpacity, 0, 1);
+            //最小值为负数，用于在宠物对话视觉上完全透明后依旧可以被判定为“正在说话”
+            chatOpacity = Math.Clamp(chatOpacity, -0.3f, 1);
             timeToType = Math.Clamp(timeToType, 0, totalTimeToType);
 
             textShaking = false;
             shouldNotTalking = false;
         }
+
         /// <summary>
         /// 完整的对话更新方法
         /// </summary>

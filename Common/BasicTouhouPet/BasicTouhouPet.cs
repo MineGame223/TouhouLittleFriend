@@ -446,7 +446,7 @@ namespace TouhouPets
             if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
-                float alpha = chatOpacity * Projectile.Opacity * mouseOpacity;
+                float alpha = MathHelper.Clamp(chatOpacity * Projectile.Opacity * mouseOpacity, 0, 1);
                 if (textShaking)
                 {
                     DrawChatText_Koishi(drawPos, alpha);

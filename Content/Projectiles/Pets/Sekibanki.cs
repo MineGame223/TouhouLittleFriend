@@ -112,11 +112,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
-                chat.Add(ChatDictionary[3]);
+                if (chatCD <= 0)
+                {
+                    chat.Add(ChatDictionary[3]);
+                }
                 for (int i = 11; i <= 14; i++)
                 {
                     chat.Add(ChatDictionary[i]);

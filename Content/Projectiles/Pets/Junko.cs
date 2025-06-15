@@ -121,7 +121,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[1]);
                 }
-                chat.Add(ChatDictionary[2]);
+                //chat.Add(ChatDictionary[2]);
                 if (FindPet(ProjectileType<Reisen>()))
                 {
                     chat.Add(ChatDictionary[3]);

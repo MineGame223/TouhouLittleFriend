@@ -169,6 +169,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void PostRegisterChat()
         {
             this.RegisterComment_Vanilla();
+            this.RegisterComment_CrossMod();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -537,7 +538,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 clothFrame = 7;
             }
         }
-        private void FoodListUpdate(Player player)
+        private void UpdateFoodList(Player player)
         {
             foodList.Clear();
             for (int j = 0; j < player.inventory.Length; j++)
@@ -565,7 +566,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void FoodSelect(Player player)
         {
-            FoodListUpdate(player);
+            UpdateFoodList(player);
+
+            //先设为空气，防止评价出错
+            food = new Item(ItemID.None);
 
             if (foodList.Count > 0)
             {

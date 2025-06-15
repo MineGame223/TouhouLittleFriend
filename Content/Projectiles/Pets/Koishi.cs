@@ -399,7 +399,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             RandomCount = Main.rand.Next(1800, 3600);
                             CurrentState = States.Fading;
                         }
-                        else if (Projectile.CurrentDialogFinished())
+                        else if (Projectile.CurrentlyNoDialog())
                         {
                             RandomCount = Main.rand.Next(5, 14);
                             CurrentState = States.Annoying;
