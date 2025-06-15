@@ -44,10 +44,12 @@ namespace TouhouPets
 
             LocalizedText comment_m1 = Language.GetText($"这句话覆盖了原本对独眼巨鹿的评价！");
             LocalizedText comment_y1 = Language.GetText($"这句话覆盖了原本对汉堡的评价！");
+            LocalizedText comment_y2 = Language.GetText($"当生活给了你柠檬...不，这个模组不让我吃。");
 
             //遍历全部TouhouPetID表并为所有宠物添加上面的三句对话
             for (int i = 1; i < (int)TouhouPetID.Count; i++)
             {
+                //参数分别为：Call类型、宠物索引、文本、条件、权重、添加模组
                 //内部索引值由添加顺序决定、从0开始，此处可视为0、1、2
                 //最后一个参数为添加方模组的实例，用于日志信息
                 //虽然很想做成选填项，但TML不允许
@@ -85,10 +87,18 @@ namespace TouhouPets
             mod.Call("PetChatRoom", junko, chatRoom1, mod);
 
             //为魔理沙添加一句覆盖原版独眼巨鹿评论的话
+            //参数分别为：Call类型、Boss种类、文本、添加模组
             mod.Call("MarisasReactionToBoss", NPCID.Deerclops, comment_m1, mod);
 
-            //为幽幽子添加一句覆盖原版汉堡评论的话
-            mod.Call("YuyukosReactionToFood", ItemID.Burger, comment_y1, mod);
+            //为幽幽子添加一句接受并覆盖原版汉堡评论的话
+            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
+            mod.Call("YuyukosReactionToFood", ItemID.Burger, comment_y1, true, mod);
+
+            //为幽幽子添加一句拒绝柠檬评论的话
+            mod.Call("YuyukosReactionToFood", ItemID.Lemon, comment_y2, false, mod);
+
+            //若同一食物同时存在拒绝与接受的条件，则拒绝的优先级更高
+            mod.Call("YuyukosReactionToFood", ItemID.Lemon, comment_y2, true, mod);
         }
     }
 }

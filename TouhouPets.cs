@@ -1,19 +1,17 @@
 global using Terraria.ModLoader;
 global using static Terraria.ModLoader.ModContent;
-using System;
+
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 
 namespace TouhouPets
 {
     public partial class TouhouPets : Mod
     {
         private static PetChatRoom[] chatRoom = new PetChatRoom[ChatRoomSystem.MaxChatRoom];
-        private static TouhouPets instance;
+        private static TouhouPets instance;       
         public static PetChatRoom[] ChatRoom { get => chatRoom; set => chatRoom = value; }
         public static TouhouPets Instance { get => instance; set => instance = value; }
-
         public override void Load()
         {
             instance = this;
@@ -35,7 +33,7 @@ namespace TouhouPets
                 GensokyoSupport.Setup(result);
             }
 
-            bool addCallForTest = true;
+            bool addCallForTest = false;
             if (addCallForTest)
             {
                 this.SetModCall();

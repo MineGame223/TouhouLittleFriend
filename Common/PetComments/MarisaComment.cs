@@ -10,7 +10,7 @@ namespace TouhouPets
 {
     public static partial class MarisaComment
     {
-        private enum DictionaryID : int
+        private enum StartIndexID : int
         {
             Vanilla,
             Coralite,
@@ -88,7 +88,7 @@ namespace TouhouPets
             "TheSon"
             ];
 
-        private static int[] startIndex = new int[(int)DictionaryID.Count];
+        private static int[] startIndex = new int[(int)StartIndexID.Count];
 
         /// <summary>
         /// 处理注册评价的方法
@@ -96,12 +96,12 @@ namespace TouhouPets
         /// <param name="marisa"></param>
         /// <param name="modName">模组名</param>
         /// <param name="list">注册对象列表</param>
-        /// <param name="dictionaryID">起始索引字典枚举</param>
-        private static void HandleRegisterComment(this Marisa marisa, string modName, DictionaryID dictionaryID, object list)
+        /// <param name="startIndexID">起始索引枚举</param>
+        private static void HandleRegisterComment(this Marisa marisa, string modName, StartIndexID startIndexID, object list)
         {
             //记录对应字典的起始索引值
             int lastIndex = marisa.ChatDictionary.Count;
-            startIndex[(int)dictionaryID] = lastIndex + 1;
+            startIndex[(int)startIndexID] = lastIndex + 1;
 
             //根据对应列表长度赋予其索引值
             if (list is List<int> vanillaList)
@@ -111,7 +111,7 @@ namespace TouhouPets
                     for (int i = 0; i < vanillaList.Count; i++)
                     {
                         string text = Language.GetTextValue($"{Path}.{modName}_{i + 1}");
-                        marisa.ChatDictionary.TryAdd(startIndex[(int)dictionaryID] + i, text);
+                        marisa.ChatDictionary.TryAdd(startIndex[(int)startIndexID] + i, text);
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace TouhouPets
                     for (int i = 0; i < modList.Count; i++)
                     {
                         string text = Language.GetTextValue($"{Path}.{modName}_{i + 1}");
-                        marisa.ChatDictionary.TryAdd(startIndex[(int)dictionaryID] + i, text);
+                        marisa.ChatDictionary.TryAdd(startIndex[(int)startIndexID] + i, text);
                     }
                 }
             }
@@ -135,11 +135,11 @@ namespace TouhouPets
         /// <param name="marisa"></param>
         public static void RegisterComment(this Marisa marisa)
         {
-            marisa.HandleRegisterComment("Vanilla", DictionaryID.Vanilla, bossIDList_Vanilla);
-            marisa.HandleRegisterComment("Coralite", DictionaryID.Coralite, bossIDList_Coralite);
-            marisa.HandleRegisterComment("Coralite", DictionaryID.Coralite, bossIDList_Coralite);
-            marisa.HandleRegisterComment("Thorium", DictionaryID.Thorium, bossIDList_Thorium);
-            marisa.HandleRegisterComment("HJ", DictionaryID.HomewardJourney, bossIDList_HJ);
+            marisa.HandleRegisterComment("Vanilla", StartIndexID.Vanilla, bossIDList_Vanilla);
+            marisa.HandleRegisterComment("Coralite", StartIndexID.Coralite, bossIDList_Coralite);
+            marisa.HandleRegisterComment("Coralite", StartIndexID.Coralite, bossIDList_Coralite);
+            marisa.HandleRegisterComment("Thorium", StartIndexID.Thorium, bossIDList_Thorium);
+            marisa.HandleRegisterComment("HJ", StartIndexID.HomewardJourney, bossIDList_HJ);
             //由于被动添加的跨模组评价不采用索引值，因此无需注册流程
         }
         
@@ -176,7 +176,7 @@ namespace TouhouPets
             if (bossIDList_Vanilla.Count <= 0)
                 return;
 
-            int index = startIndex[(int)DictionaryID.Vanilla];
+            int index = startIndex[(int)StartIndexID.Vanilla];
 
             //若被检测的种类不包含在该列表中，则不执行后续
             if (!bossIDList_Vanilla.Contains(bossType))
@@ -197,15 +197,15 @@ namespace TouhouPets
         /// <param name="boss">Boss的实例</param>
         /// <param name="bossType">Boss名称</param>
         /// <param name="list">对应列表</param>
-        /// <param name="dictionaryID">对应起始索引字典枚举</param>
+        /// <param name="startIndexID">对应起始索引枚举</param>
         private static void HandleModBossChatFromList(this Projectile marisa, string modName,
-            NPC boss, string bossType, List<string> list, DictionaryID dictionaryID)
+            NPC boss, string bossType, List<string> list, StartIndexID startIndexID)
         {
             //以防万一（？）
             if (list.Count <= 0)
                 return;
 
-            int index = startIndex[(int)dictionaryID];
+            int index = startIndex[(int)startIndexID];
 
             //若被检测的种类不包含在该列表中，则不执行后续
             if (!list.Contains(bossType))
@@ -217,7 +217,7 @@ namespace TouhouPets
                 string actualType = bossType;
 
                 //三灾的评价是一样的
-                if (dictionaryID == DictionaryID.Thorium)
+                if (startIndexID == StartIndexID.Thorium)
                 {
                     if (bossType == "Aquaius" || bossType == "Omnicide")
                         actualType = "SlagFury";
@@ -236,7 +236,7 @@ namespace TouhouPets
         {
             string modName = "Coralite";
             List<string> list = bossIDList_Coralite;
-            DictionaryID dictionary = DictionaryID.Coralite;
+            StartIndexID dictionary = StartIndexID.Coralite;
 
             foreach (string name in list)
             {
@@ -253,7 +253,7 @@ namespace TouhouPets
         {
             string modName = "ThoriumMod";
             List<string> list = bossIDList_Thorium;
-            DictionaryID dictionary = DictionaryID.Thorium;
+            StartIndexID dictionary = StartIndexID.Thorium;
 
             foreach (string name in list)
             {
@@ -270,7 +270,7 @@ namespace TouhouPets
         {
             string modName = "ContinentOfJourney";
             List<string> list = bossIDList_HJ;
-            DictionaryID dictionary = DictionaryID.HomewardJourney;
+            StartIndexID dictionary = StartIndexID.HomewardJourney;
 
             foreach (string name in list)
             {

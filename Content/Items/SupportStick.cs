@@ -24,6 +24,11 @@ namespace TouhouPets.Content.Items
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
+            if (Main.gameMenu)
+            {
+                return true;
+            }
+
             Texture2D texture = offTex;
             spriteBatch.MyDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
 

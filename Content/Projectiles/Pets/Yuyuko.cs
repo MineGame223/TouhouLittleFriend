@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using Terraria.Localization;
+using static TouhouPets.YuyukoComment;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -90,9 +91,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 return;
 
             Item selectedItem = Owner.inventory[Owner.selectedItem];
-            if (selectedItem.type == ItemID.JojaCola)//请不要喂垃圾
+
+            if (Projectile.IsFoodOnRejectList(selectedItem.type, true))//不吃黑名单中的食物
             {
-                Projectile.SetChat(14);
                 return;
             }
 
@@ -170,6 +171,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             this.RegisterComment_Vanilla();
             this.RegisterComment_CrossMod();
+
+            this.RegisterRejectComment_Vanilla();
+            this.RegisterRejectComment_CrossMod();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -546,7 +550,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Item fd = player.inventory[j];
                 if (fd != null && !fd.IsAir && ItemID.Sets.IsFood[fd.type]
                     && fd != player.inventory[player.selectedItem]
-                    && !fd.favorited && fd.type != ItemID.JojaCola)
+                    && !fd.favorited && !Projectile.IsFoodOnRejectList(fd.type))
                 {
                     foodList.Add(fd);
                 }
@@ -556,7 +560,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         Item fd2 = player.bank4.item[j];
                         if (fd2 != null && !fd2.IsAir && ItemID.Sets.IsFood[fd2.type]
-                            && !fd2.favorited && fd.type != ItemID.JojaCola)
+                            && !fd2.favorited && !Projectile.IsFoodOnRejectList(fd.type))
                         {
                             foodList.Add(fd2);
                         }

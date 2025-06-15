@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using Terraria.ID;
 using Terraria.ModLoader.Config;
 
 namespace TouhouPets
@@ -16,5 +18,7 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool PetInvisWhenMouseHover;
+
+        public List<ItemDefinition> YuyukoBanList;
     }
 }

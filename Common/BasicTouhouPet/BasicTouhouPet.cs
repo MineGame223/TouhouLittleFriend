@@ -71,8 +71,8 @@ namespace TouhouPets
                 chatTurn = currentChatRoom.chatTurn.ToString();
 
             string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
-            string testMsg3 = $"{Projectile.localAI[0]}, {Projectile.localAI[1]}, {Projectile.localAI[2]}, {PetState}";
             string testMsg2 = $"{timeToType}, {totalTimeToType}, {Math.Round(chatOpacity, 1)}, {mainTimer}";
+            string testMsg3 = $"{Projectile.localAI[0]}, {Projectile.localAI[1]}, {Projectile.localAI[2]}, {PetState}";
             string testMsg4 = $"{Projectile.ai[0]}, {Projectile.ai[1]}, {Projectile.ai[2]}, {Projectile.ShouldPetTalking()}";
 
             DrawStatePanelForTesting(drawingForTest, testMsg1, new Vector2(0, 0));

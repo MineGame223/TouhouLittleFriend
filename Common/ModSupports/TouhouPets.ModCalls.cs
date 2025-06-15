@@ -43,8 +43,8 @@ namespace TouhouPets
         /// <summary>
         /// 跨模组添加的食物评论的列表
         /// </summary>
-        public static List<CommentInfo> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
-        private static List<CommentInfo> crossModFoodComment = [];
+        public static List<(CommentInfo info, bool accept)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
+        private static List<(CommentInfo, bool)> crossModFoodComment = [];
         private static void InitializCrossModList()
         {
             //需要对列表进行初始化
@@ -90,7 +90,8 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText)
+            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText
+                || args[3] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
                 return false;
@@ -111,18 +112,18 @@ namespace TouhouPets
                 return false;
             }
 
-            int npcType;
+            int type;
             if (args[1] is short)
             {
-                npcType = (short)args[1];
+                type = (short)args[1];
             }
             else
             {
-                npcType = (int)args[1];
+                type = (int)args[1];
             }
             LocalizedText text = (LocalizedText)args[2];
 
-            CommentInfo info = new(npcType, text);
+            CommentInfo info = new(type, text);
             CrossModBossComment.Add(info);
 
             Mod mod = (Mod)args[3];
@@ -130,7 +131,7 @@ namespace TouhouPets
             Logger.Info(ConsoleMessage("魔理沙Boss评价添加结果"
                     , $"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"对象ID：{npcType}\n" +
+                    $"对象ID：{type}\n" +
                     $"评价文本：{text.Value}"
                     ));
             return true;
@@ -142,7 +143,8 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText)
+            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText
+                || args[3] is not bool || args[4] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
                 return false;
@@ -159,31 +161,38 @@ namespace TouhouPets
             }
             if (args[3] == null)
             {
+                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：是否接受"));
+                return false;
+            }
+            if (args[4] == null)
+            {
                 Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
 
-            int npcType;
+            int type;
             if (args[1] is short)
             {
-                npcType = (short)args[1];
+                type = (short)args[1];
             }
             else
             {
-                npcType = (int)args[1];
+                type = (int)args[1];
             }
             LocalizedText text = (LocalizedText)args[2];
+            bool acceptable = (bool)args[3];
 
-            CommentInfo info = new(npcType, text);
-            CrossModFoodComment.Add(info);
+            CommentInfo info = new(type, text);
+            CrossModFoodComment.Add((info, acceptable));
 
-            Mod mod = (Mod)args[3];
+            Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
             Logger.Info(ConsoleMessage("幽幽子食物评价添加结果"
                     , $"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"对象ID：{npcType}\n" +
-                    $"评价文本：{text.Value}"
+                    $"对象ID：{type}\n" +
+                    $"评价文本：{text.Value}" +
+                    $"是否接受：{acceptable}"
                     ));
 
             return true;
@@ -196,7 +205,7 @@ namespace TouhouPets
                 return false;
             }
             if (args[1] is not int || args[2] is not LocalizedText
-                || args[3] is not Func<bool> || args[4] is not int)
+                || args[3] is not Func<bool> || args[4] is not int || args[5] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_2, Warning_WrongDataType));
                 return false;
@@ -269,7 +278,8 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_3, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int || args[2] is not List<(int, int, int)>)
+            if (args[1] is not int || args[2] is not List<(int, int, int)>
+                || args[3] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_3, Warning_WrongDataType));
                 return false;

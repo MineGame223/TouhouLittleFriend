@@ -130,7 +130,7 @@ namespace TouhouPets
         /// 宠物当前是否刚说完一句话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns>当 chatOpacity < 0 且 > -0.3 时返回 true</returns>
+        /// <returns>当 chatOpacity 小于 0 且 大于 -0.3 时返回 true</returns>
         public static bool CurrentDialogFinished(this Projectile projectile)
         {
             if (!projectile.IsATouhouPet())
@@ -143,13 +143,13 @@ namespace TouhouPets
         /// 宠物当前是否没有在说话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns>当 chatOpacity <= -0.3 时返回 true</returns>
+        /// <returns>当 chatOpacity 小于等于 -0.3 时返回 true</returns>
         public static bool CurrentlyNoDialog(this Projectile projectile)
         {
             if (!projectile.IsATouhouPet())
                 return false;
 
-            return projectile.ToPetClass().chatOpacity <= 0.3f;
+            return projectile.ToPetClass().chatOpacity <= -0.3f;
         }
 
         /// <summary>
@@ -344,11 +344,6 @@ namespace TouhouPets
 
             BasicTouhouPet pet = projectile.ToPetClass();
 
-            //若宠物非玩家本人召唤、或宠物有话还没说完，则不再执行后续
-            if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0)
-            {
-                return;
-            }
             string chat = string.Empty;
 
             //采用索引值设置，若当前索引值不等于目标索引值则进行设置
@@ -377,6 +372,10 @@ namespace TouhouPets
 
             //若都没有设置上则不执行后续
             if (chat == string.Empty)
+                return;
+
+            //若宠物非玩家本人召唤、或宠物有话还没说完，则不再执行后续
+            if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0)
                 return;
 
             //自动处理单个字符剩余时间
@@ -424,7 +423,6 @@ namespace TouhouPets
         /// <br/>当 ChatTimeLeft 大于0时不输出结果
         /// </summary>
         /// <param name="index">对话索引值</param>
-        /// <param name="config">对话属性配置</param>
         /// <param name="lag">说话前的延时</param>
         public static void SetChat(this Projectile projectile, int index, int lag = 0)
         {
@@ -451,10 +449,43 @@ namespace TouhouPets
         /// <br/>当 ChatTimeLeft 大于0时不输出结果
         /// </summary>
         /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
-        /// <param name="config">对话属性配置</param>
         /// <param name="lag">说话前的延时</param>
         public static void SetChat(this Projectile projectile, string text, int lag = 0)
         {
+            SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, -1, text);
+        }
+
+        /// <summary>
+        /// 设置宠物要说的话，无视当前索引值必须不等于目标索引值的限制
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="index">对话索引值</param>
+        /// <param name="lag">说话前的延时</param>
+        public static void SetChatForcely(this Projectile projectile, int index, int lag = 0)
+        {
+            if (!projectile.IsATouhouPet())
+                return;
+
+            BasicTouhouPet pet = projectile.ToPetClass();
+
+            pet.chatIndex = -1;
+            SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, index);
+        }
+
+        /// <summary>
+        /// 设置宠物要说的话，无视当前索引值必须不等于目标索引值的限制
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="text">对话文本，若宠物的聊天字典中存在匹配的文本，则自动为对话索引赋值</param>
+        /// <param name="lag">说话前的延时</param>
+        public static void SetChatForcely(this Projectile projectile, string text, int lag = 0)
+        {
+            if (!projectile.IsATouhouPet())
+                return;
+
+            BasicTouhouPet pet = projectile.ToPetClass();
+
+            pet.chatIndex = -1;
             SetChat_Inner(projectile, projectile.ToPetClass().ChatSettingConfig, lag, -1, text);
         }
         #endregion

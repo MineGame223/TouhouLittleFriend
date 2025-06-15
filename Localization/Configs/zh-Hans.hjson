@@ -138,6 +138,11 @@ Mods: {
 					Label: 光标悬停时宠物隐形
 					Tooltip: 当光标悬停在宠物身上时，宠物将隐形至几乎不可见（部分情况除外）
 				}
+
+				YuyukoBanList: {
+					Label: 幽幽子的忌口
+					Tooltip: 列表中的物品将不会被幽幽子吃掉，也不能被主动投喂
+				}
 			}
 
 			MiscConfig: {
@@ -154,12 +159,12 @@ Mods: {
 
 				AllowModCall_MarisasReaction: {
 					Label: 允许Mod.Call: [ MarisasReactionToBoss ]
-					Tooltip: 允许其他模组通过Mod.Call为魔理沙加入新的Boss遭遇反应或修改已有的反应
+					Tooltip: 允许其他模组通过Mod.Call为魔理沙加入新的Boss遭遇反应，或修改已有的反应
 				}
 
 				AllowModCall_YuyukosReaction: {
 					Label: 允许Mod.Call: [ YuyukosReactionToFood ]
-					Tooltip: 允许其他模组通过Mod.Call为幽幽子加入新的吃掉食物时的反应或修改已有的反应
+					Tooltip: 允许其他模组通过Mod.Call为幽幽子加入新的接受或拒绝食物时的反应，或修改已有的反应
 				}
 
 				AllowModCall_PetDialog: {

@@ -1,8 +1,8 @@
-﻿
+﻿using Terraria;
 
 namespace TouhouPets
 {
-    public class TouhouPetSystem:ModSystem
+    public class TouhouPetSystem : ModSystem
     {
         public override void PreUpdateProjectiles()
         {
