@@ -40,7 +40,7 @@ namespace TouhouPets.Content.Projectiles
             Color clr = Projectile.GetAlpha(lightColor);
             if (IsAliceExited)
             {
-                clr *= Alice.ToPetClass().mouseOpacity;
+                clr *= Alice.AsTouhouPet().mouseOpacity;
             }
 
             Vector2 orig = rect.Size() / 2;
@@ -66,7 +66,7 @@ namespace TouhouPets.Content.Projectiles
             float dist = Vector2.Distance(startP, Projectile.Center);
 
             Color clr = Projectile.GetAlpha(Lighting.GetColor(Projectile.Center.ToTileCoordinates(), lightColor));
-            clr *= Alice.ToPetClass().mouseOpacity;
+            clr *= Alice.AsTouhouPet().mouseOpacity;
 
             Vector2 orig = new Vector2(tex.Width / 2, 0);
             float rot = startP.DirectionTo(Projectile.Center).ToRotation() + MathHelper.PiOver2;
@@ -156,7 +156,7 @@ namespace TouhouPets.Content.Projectiles
             }
             if (IsAliceExited)
             {
-                int state = Alice.ToPetClass().PetState;
+                int state = Alice.AsTouhouPet().PetState;
                 if (state < 2 || state > 3)
                 {
                     Projectile.velocity = Vector2.Normalize(Alice.Center - Projectile.Center) * (5f + Alice.velocity.Length());

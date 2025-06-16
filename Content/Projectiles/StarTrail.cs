@@ -122,7 +122,7 @@ namespace TouhouPets.Content.Projectiles
                 Projectile.Opacity -= 0.1f;
             }
             Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity, 0, 1 - (Radius / 800));
-            Projectile.Opacity *= master.ToPetClass().mouseOpacity;
+            Projectile.Opacity *= master.AsTouhouPet().mouseOpacity;
         }
         public override bool? CanDamage()
         {

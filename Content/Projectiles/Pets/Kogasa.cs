@@ -214,7 +214,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(2))
                     {
-                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
+                        if (Main.rand.NextBool(3) && Projectile.CurrentlyNoDialog())
                         {
                             RandomCount = Main.rand.Next(6, 12);
                             CurrentState = States.MakeFace;

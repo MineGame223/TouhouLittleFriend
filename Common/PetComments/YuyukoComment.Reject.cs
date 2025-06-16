@@ -123,7 +123,7 @@ namespace TouhouPets
                 if (foodType != info.ObjectType)
                     continue;
 
-                yuyuko.SetChatForcely(info.CommentText.Value);
+                yuyuko.SetChat(info.CommentText.Value);
             }
         }
     }

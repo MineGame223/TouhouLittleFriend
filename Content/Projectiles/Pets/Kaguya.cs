@@ -237,7 +237,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (FindPet(out Projectile member, type))
             {
                 chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
+                member.AsTouhouPet().currentChatRoom = chatRoom;
             }
             else
             {
@@ -252,7 +252,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 //辉夜：菜就多练。
                 moku.CloseCurrentDialog();
 
-                if (kaguya.CurrentDialogFinished())
+                if (kaguya.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
             }
             else if (turn == 0)
@@ -260,7 +260,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 //妹红：你这家伙能不能消停一会儿？
                 moku.SetChat(6, 20);
 
-                if (moku.CurrentDialogFinished())
+                if (moku.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
             }
             else if (turn == 1)
@@ -268,7 +268,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 //辉夜：要你管！
                 kaguya.SetChat(6, 20);
 
-                if (kaguya.CurrentDialogFinished())
+                if (kaguya.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
             }
             else

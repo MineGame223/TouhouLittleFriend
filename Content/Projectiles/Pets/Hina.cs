@@ -196,8 +196,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                         RandomCount = Main.rand.Next(10, 20);
                         CurrentState = States.Turning;
 
-                        if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
-                            Projectile.SetChat(ChatSettingConfig, 3, 20);
+                        if (Main.rand.NextBool(2))
+                            Projectile.SetChat(3, 20);
                     }
                 }
             }

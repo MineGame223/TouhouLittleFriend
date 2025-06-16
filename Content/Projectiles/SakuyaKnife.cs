@@ -68,7 +68,7 @@ namespace TouhouPets.Content.Projectiles
                     {
                         Projectile.timeLeft = 0;
                         Projectile.netUpdate = true;
-                        t.ToPetClass().PetState = 7;
+                        t.AsTouhouPet().PetState = 7;
                         t.netUpdate = true;
                         return;
                     }

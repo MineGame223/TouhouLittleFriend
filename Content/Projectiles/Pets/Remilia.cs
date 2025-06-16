@@ -99,9 +99,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (sunlight || rain)
             {
                 bool isRemilia = projectile.type == ProjectileType<Remilia>()
-                    && projectile.ToPetClass().FindPet(ProjectileType<Sakuya>(), false);
+                    && projectile.AsTouhouPet().FindPet(ProjectileType<Sakuya>(), false);
                 bool isFlandre = projectile.type == ProjectileType<Flandre>()
-                    && projectile.ToPetClass().FindPet(ProjectileType<Meirin>(), false);
+                    && projectile.AsTouhouPet().FindPet(ProjectileType<Meirin>(), false);
                 if (isRemilia || isFlandre)
                     return false;
                 else

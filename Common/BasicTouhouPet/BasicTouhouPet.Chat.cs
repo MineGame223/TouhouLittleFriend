@@ -41,12 +41,14 @@ namespace TouhouPets
 
         /// <summary>
         /// 对话的持续剩余时间
+        /// <br>每当设置对话时，该值都会被赋予预设的时长并一直减少至 0</br>
+        /// <br>若该值小于等于 1 时、chatOpacity 尚未归0，则该值会保持为 1，直到 chatOpacity 归 0</br>
         /// </summary>
         internal int chatTimeLeft;
 
         /// <summary>
-        /// 完成一次对话后的间隔，在大于0且 <see cref="chatTimeLeft"/> 小于等于0时会一直减少至0
-        /// <br/>该值不为0时，宠物不会发起向其他宠物的对话或接受来自其他宠物的对话
+        /// 完成一次对话后的间隔，在大于0时会一直减少至0
+        /// <br/>该值大于0时，宠物不会发起向其他宠物的对话或接受来自其他宠物的对话
         /// </summary>
         internal int chatCD;
 
@@ -322,7 +324,8 @@ namespace TouhouPets
             {
                 chatLag = 0;
             }
-            if (chatTimeLeft > 0)
+
+            if (chatTimeLeft > 1)
             {
                 if (chatOpacity < 0)
                     chatOpacity = 0;
@@ -338,10 +341,20 @@ namespace TouhouPets
             }
             else
             {
-                chatBaseY = 0;
-                chatScale = 1;
-                chatTimeLeft = 0;
                 chatOpacity -= 0.05f;
+                if (chatTimeLeft <= 1 && chatTimeLeft > 0)
+                {
+                    if (chatOpacity <= 0)
+                    {
+                        chatTimeLeft--;
+                    }
+                }
+                else
+                {
+                    chatBaseY = 0;
+                    chatScale = 1;
+                    chatTimeLeft = 0;
+                }
             }
 
             if (chatOpacity > 0)
@@ -352,8 +365,7 @@ namespace TouhouPets
 
             chatBaseY = Math.Clamp(chatBaseY, -24, 0);
             chatScale = Math.Clamp(chatScale, 0, 1);
-            //最小值为负数，用于在宠物对话视觉上完全透明后依旧可以被判定为“正在说话”
-            chatOpacity = Math.Clamp(chatOpacity, -0.3f, 1);
+            chatOpacity = Math.Clamp(chatOpacity, 0, 1);
             timeToType = Math.Clamp(timeToType, 0, totalTimeToType);
 
             textShaking = false;

@@ -150,12 +150,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 640;//640
-            chance = 1;//6
+            chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<string> chat = new();
             {
                 if (IsRainWet)
                 {
@@ -172,7 +172,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         chat.Add(ChatDictionary[4]);
                         chat.Add(ChatDictionary[5]);
-                        chat.Add(ChatDictionary[9]);
+
+                        if (chatCD <= 0)
+                            chat.Add(ChatDictionary[9]);
                     }
                     if (!Owner.HasBuff<ReimuBuff>())
                         chat.Add(ChatDictionary[12], 3);
@@ -196,7 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             [
                 new ChatRoomInfo(sunny,9, -1),//桑尼：日光妖精~ 洁白身体~
                 new ChatRoomInfo(sunny,10, 0),//桑尼：日光妖精~ 碧蓝双眸~
-                new ChatRoomInfo(sunny,1, 1),//桑尼：日光妖精—— 桑尼！米尔克！
+                new ChatRoomInfo(sunny,11, 1),//桑尼：日光妖精—— 桑尼！米尔克！
             ];
 
             return list;

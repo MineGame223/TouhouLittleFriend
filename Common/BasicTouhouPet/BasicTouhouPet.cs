@@ -128,7 +128,7 @@ namespace TouhouPets
                     }
                     else if (id > TouhouPetID.None && id < TouhouPetID.Count)
                     {
-                        findType = p.ToPetClass().UniqueID == id;
+                        findType = p.AsTouhouPet().UniqueID == id;
                     }
                     if (findType
                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)

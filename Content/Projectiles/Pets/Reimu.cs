@@ -143,7 +143,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    this.Comment_TouhouLightPet(chat);
+                    this.Comment_TouhouLightPet(ref chat);
 
                     chat.Add(ChatDictionary[1]);
                     chat.Add(ChatDictionary[2]);
