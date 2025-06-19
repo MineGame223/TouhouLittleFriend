@@ -1,7 +1,6 @@
 ﻿using Terraria.ID;
 using Terraria;
 using static TouhouPets.ModUtils;
-using static TouhouPets.TouhouPets;
 using Terraria.Localization;
 using System.Collections.Generic;
 
@@ -9,6 +8,12 @@ namespace TouhouPets
 {
     public static partial class BossComment
     {
+        public const string Name_Vanilla = "Vanilla";
+        public const string Name_Coralite = "Coralite";
+        public const string Name_Thorium = "ThoriumMod";
+        public const string Name_HJ = "ContinentOfJourney";
+        public const string Name_Gensokyo = "Gensokyo";
+
         private const string Path_Marisa = $"Mods.{nameof(TouhouPets)}.Chat_Marisa";
         private const string Path_Youmu = $"Mods.{nameof(TouhouPets)}.Chat_Youmu";
         private enum StartIndexID : int
@@ -91,38 +96,11 @@ namespace TouhouPets
             ];
 
         /// <summary>
-        /// 给予特定Boss评价
+        /// 注册评价的方法
         /// </summary>
         /// <param name="pet"></param>
-        /// <param name="id">给予评价的宠物的独特ID</param>
-        /// <param name="boss"></param>
-        /// <returns></returns>
-        public static bool GiveCertainBossComment(this Projectile pet, NPC boss)
-        {
-            if (!pet.IsATouhouPet())
-                return false;
-
-            TouhouPetID id = pet.AsTouhouPet().UniqueID;
-
-            if (!pet.BossChat_CrossMod(boss.type, id)
-                    && !pet.BossChat_Vanilla(boss.type)
-                    && !pet.BossChat_Coralite(boss)
-                    && !pet.BossChat_Thorium(boss)
-                    && !pet.BossChat_HomewardHourney(boss)
-                    && !pet.BossChat_Gensokyo(boss))
-            {
-                return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// 处理注册评价的方法
-        /// </summary>
-        /// <param name="pet"></param>
-        /// <param name="modName">模组名</param>
-        /// <param name="list">注册对象列表</param>
-        /// <param name="startIndexID">起始索引枚举</param>
-        private static void HandleRegisterComment(this Projectile pet, string modName, StartIndexID startIndexID, object list)
+        /// <param name="modName">模组名（其实是Hjson文件中的末位路径名）</param>
+        public static void RegisterComment(this Projectile pet, string modName)
         {
             if (!pet.IsATouhouPet())
                 return;
@@ -134,6 +112,29 @@ namespace TouhouPets
                 TouhouPetID.Youmu => Path_Youmu,
                 _ => string.Empty,
             };
+
+            StartIndexID startIndexID = modName switch
+            {
+                Name_Vanilla => StartIndexID.Vanilla,
+                Name_Coralite => StartIndexID.Coralite,
+                Name_Thorium => StartIndexID.Thorium,
+                Name_HJ => StartIndexID.HomewardJourney,
+                Name_Gensokyo => StartIndexID.Gensokyo,
+                _ => StartIndexID.Count,
+            };
+
+            object list = modName switch
+            {
+                Name_Vanilla => bossIDList_Vanilla,
+                Name_Coralite => bossIDList_Coralite,
+                Name_Thorium => bossIDList_Thorium,
+                Name_HJ => bossIDList_HJ,
+                Name_Gensokyo => bossIDList_Gensokyo,
+                _ => null,
+            };
+
+            if (startIndexID >= StartIndexID.Count || list == null)
+                return;
 
             //若路径不存在，则不执行后续
             if (string.IsNullOrEmpty(chatPath))
@@ -153,7 +154,9 @@ namespace TouhouPets
                         string path = $"{chatPath}.{modName}_{i + 1}";
                         string text = Language.GetTextValue(path);
 
-                        //若发现并不存在实际文本，则将该注册值设为空字符串
+                        //由于列表的长度是固定的，为了防止出现获取到不该获取的索引的情况，
+                        //这里无论是否实际存在文本，都应注册进字典
+                        //不存在文本的将注册空字符串
                         if (path.Equals(text))
                             text = string.Empty;
 
@@ -171,7 +174,6 @@ namespace TouhouPets
                         string path = $"{chatPath}.{modName}_{i + 1}";
                         string text = Language.GetTextValue(path);
 
-                        //若发现并不存在实际文本，则将该注册值设为空字符串
                         if (path.Equals(text))
                             text = string.Empty;
 
@@ -182,40 +184,73 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 注册评价
+        /// 处理主动添加的跨模组Boss评价的方法
         /// </summary>
         /// <param name="pet"></param>
-        public static void RegisterComment(this Projectile pet)
+        /// <param name="modName">模组名</param>
+        /// <param name="boss">Boss的实例</param>
+        /// <param name="bossType">Boss名称</param>
+        /// <param name="list">对应列表</param>
+        /// <param name="startIndexID">对应起始索引枚举</param>
+        private static bool HandleModBossChatFromList(this Projectile pet, string modName, NPC boss)
         {
-            pet.HandleRegisterComment("Vanilla", StartIndexID.Vanilla, bossIDList_Vanilla);
-            pet.HandleRegisterComment("Coralite", StartIndexID.Coralite, bossIDList_Coralite);
-            pet.HandleRegisterComment("Coralite", StartIndexID.Coralite, bossIDList_Coralite);
-            pet.HandleRegisterComment("Thorium", StartIndexID.Thorium, bossIDList_Thorium);
-            pet.HandleRegisterComment("HJ", StartIndexID.HomewardJourney, bossIDList_HJ);
-            pet.HandleRegisterComment("Gensokyo", StartIndexID.Gensokyo, bossIDList_Gensokyo);
-            //由于被动添加的跨模组评价不采用索引值，因此无需注册流程
-        }
-
-        /// <summary>
-        /// 跨模组Boss评价
-        /// </summary>
-        /// <param name="pet"></param>
-        /// <param name="bossType"></param>
-        public static bool BossChat_CrossMod(this Projectile pet, int bossType, TouhouPetID uniqueID)
-        {
-            int id = (int)uniqueID;
-            List<CommentInfo> comments = CrossModBossComment[id];
-            //若列表不存在内容，则不执行后续
-            if (comments == null || comments.Count <= 0)
-            {
+            if (!pet.IsATouhouPet())
                 return false;
-            }
-            foreach (var i in comments)
+
+            StartIndexID startIndexID = modName switch
             {
-                if (bossType == i.ObjectType)
+                Name_Coralite => StartIndexID.Coralite,
+                Name_Thorium => StartIndexID.Thorium,
+                Name_HJ => StartIndexID.HomewardJourney,
+                Name_Gensokyo => StartIndexID.Gensokyo,
+                _ => StartIndexID.Count,
+            };
+
+            List<string> list = modName switch
+            {
+                Name_Coralite => bossIDList_Coralite,
+                Name_Thorium => bossIDList_Thorium,
+                Name_HJ => bossIDList_HJ,
+                Name_Gensokyo => bossIDList_Gensokyo,
+                _ => null,
+            };
+
+            if (startIndexID >= StartIndexID.Count || list == null)
+                return false;
+
+            if (!StartIndex.TryGetValue((pet.AsTouhouPet().UniqueID, startIndexID), out int index))
+                return false;
+
+            foreach (string type in list)
+            {
+                //若被检测的种类不包含在该列表中，则不执行后续
+                if (!list.Contains(type))
+                    return false;
+
+                //发现存在对应模组与生物时，进行评价
+                if (HasModAndFindNPC(modName, boss, type))
                 {
-                    pet.SetChat(i.CommentText.Get().Value);
-                    return true;
+                    string actualType = type;
+
+                    //三灾的评价是一样的
+                    if (startIndexID == StartIndexID.Thorium)
+                    {
+                        if (type == "Aquaius" || type == "Omnicide")
+                            actualType = "SlagFury";
+                    }
+
+                    int finalIndex = index + list.IndexOf(actualType);
+                    //由于无论是否实际添加了文本、字典中都会被注册，所以这里需要直接获取实际值
+                    if (pet.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out string value))
+                    {
+                        //排除先前注册中的空字符串
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            //使用索引值减少一次遍历
+                            pet.SetChat(finalIndex);
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
@@ -226,7 +261,7 @@ namespace TouhouPets
         /// </summary>
         /// <param name="pet"></param>
         /// <param name="bossType"></param>
-        private static bool BossChat_Vanilla(this Projectile pet, int bossType)
+        public static bool BossChat_Vanilla(this Projectile pet, int bossType)
         {
             if (!pet.IsATouhouPet())
                 return false;
@@ -262,74 +297,13 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 处理主动添加的跨模组Boss评价的方法
-        /// </summary>
-        /// <param name="pet"></param>
-        /// <param name="modName">模组名</param>
-        /// <param name="boss">Boss的实例</param>
-        /// <param name="bossType">Boss名称</param>
-        /// <param name="list">对应列表</param>
-        /// <param name="startIndexID">对应起始索引枚举</param>
-        private static bool HandleModBossChatFromList(this Projectile pet, string modName,
-            NPC boss, List<string> list, StartIndexID startIndexID)
-        {
-            if (!pet.IsATouhouPet())
-                return false;
-
-            //以防万一（？）
-            if (list.Count <= 0)
-                return false;
-
-            if (!StartIndex.TryGetValue((pet.AsTouhouPet().UniqueID, startIndexID), out int index))
-                return false;
-
-            foreach (string type in list)
-            {
-                //若被检测的种类不包含在该列表中，则不执行后续
-                if (!list.Contains(type))
-                    return false;
-
-                //发现存在对应模组与生物时，进行评价
-                if (HasModAndFindNPC(modName, boss, type))
-                {
-                    string actualType = type;
-
-                    //三灾的评价是一样的
-                    if (startIndexID == StartIndexID.Thorium)
-                    {
-                        if (type == "Aquaius" || type == "Omnicide")
-                            actualType = "SlagFury";
-                    }
-
-                    int finalIndex = index + list.IndexOf(actualType);
-                    //由于无论是否实际添加了文本、都会被注册到字典中，所以这里需要直接获取实际值
-                    if (pet.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out string value))
-                    {
-                        //排除先前注册中的空字符串
-                        if (!string.IsNullOrEmpty(value))
-                        {
-                            //使用索引值减少一次遍历
-                            pet.SetChat(finalIndex);
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
         /// 珊瑚石Boss评价
         /// </summary>
         /// <param name="pet"></param>
         /// <param name="boss"></param>
-        private static bool BossChat_Coralite(this Projectile pet, NPC boss)
+        public static bool BossChat_Coralite(this Projectile pet, NPC boss)
         {
-            string modName = "Coralite";
-            List<string> list = bossIDList_Coralite;
-            StartIndexID dictionary = StartIndexID.Coralite;
-
-            return pet.HandleModBossChatFromList(modName, boss, list, dictionary);
+            return pet.HandleModBossChatFromList(Name_Coralite, boss);
         }
 
         /// <summary>
@@ -337,13 +311,9 @@ namespace TouhouPets
         /// </summary>
         /// <param name="pet"></param>
         /// <param name="boss"></param>
-        private static bool BossChat_Thorium(this Projectile pet, NPC boss)
+        public static bool BossChat_Thorium(this Projectile pet, NPC boss)
         {
-            string modName = "ThoriumMod";
-            List<string> list = bossIDList_Thorium;
-            StartIndexID dictionary = StartIndexID.Thorium;
-
-            return pet.HandleModBossChatFromList(modName, boss, list, dictionary);
+            return pet.HandleModBossChatFromList(Name_Thorium, boss);
         }
 
         /// <summary>
@@ -351,13 +321,9 @@ namespace TouhouPets
         /// </summary>
         /// <param name="pet"></param>
         /// <param name="boss"></param>
-        private static bool BossChat_HomewardHourney(this Projectile pet, NPC boss)
+        public static bool BossChat_HomewardHourney(this Projectile pet, NPC boss)
         {
-            string modName = "ContinentOfJourney";
-            List<string> list = bossIDList_HJ;
-            StartIndexID dictionary = StartIndexID.HomewardJourney;
-
-            return pet.HandleModBossChatFromList(modName, boss, list, dictionary);
+            return pet.HandleModBossChatFromList(Name_HJ, boss);
         }
 
         /// <summary>
@@ -365,13 +331,9 @@ namespace TouhouPets
         /// </summary>
         /// <param name="marisa"></param>
         /// <param name="boss"></param>
-        private static bool BossChat_Gensokyo(this Projectile pet, NPC boss)
+        public static bool BossChat_Gensokyo(this Projectile pet, NPC boss)
         {
-            string modName = "Gensokyo";
-            List<string> list = bossIDList_Gensokyo;
-            StartIndexID dictionary = StartIndexID.Gensokyo;
-
-            return pet.HandleModBossChatFromList(modName, boss, list, dictionary);
+            return pet.HandleModBossChatFromList(Name_Gensokyo, boss);
         }
     }
 }

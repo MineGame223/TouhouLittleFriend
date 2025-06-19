@@ -8,7 +8,7 @@ namespace TouhouPets
 {
     partial class TouhouPets
     {
-        private const string Arg_1 = "PetReactionToBoss";
+        private const string Arg_1 = "PetsReactionToBoss";
         private const string Arg_2 = "PetDialog";
         private const string Arg_3 = "PetChatRoom";
         private const string Arg_4 = "YuyukosReactionToFood";
@@ -93,7 +93,7 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not string
+            if ((args[1] is not int && args[1] is not short) || args[2] is not int
                 || args[3] is not WeightedRandom<LocalizedText> || args[4] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
@@ -106,7 +106,7 @@ namespace TouhouPets
             }
             if (args[2] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：宠物对应名称"));
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：宠物索引"));
                 return false;
             }
             if (args[3] == null)
@@ -121,30 +121,19 @@ namespace TouhouPets
             }
 
             int type = args[1] is short ? (short)args[1] : (int)args[1];
-            string tag = (string)args[2];
+            int id = (int)args[2];
             WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[3];
 
             CommentInfo info = new(type, text);
-            switch (tag){
-                case "Marisa":
-                    CrossModBossComment[(int)TouhouPetID.Marisa].Add(info);
-                    break;
-
-                case "Youmu":
-                    CrossModBossComment[(int)TouhouPetID.Youmu].Add(info);
-                    break;
-
-                default:
-                    break;
-            };
+            CrossModBossComment[id].Add(info);
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
 
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"对象ID：{type}\n" +
-                    $"宠物名称：{tag}");
+                    $"对象种类：{type}\n" +
+                    $"宠物索引：{id}");
 
             foreach (var j in text.elements)
             {
@@ -200,7 +189,7 @@ namespace TouhouPets
 
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"对象ID：{type}\n" +
+                    $"对象种类：{type}\n" +
                     $"是否接受：{acceptable}");
 
             foreach (var j in text.elements)
@@ -344,7 +333,7 @@ namespace TouhouPets
 
                 foreach (var j in crossModChatRoom[id])
                 {
-                    logInfo.Append($"\n宠物ID：{j.UniqueID}；索引值：{j.ChatIndex}；回合数：{j.ChatTurn}");
+                    logInfo.Append($"\n宠物索引：{j.UniqueID}；文本索引：{j.ChatIndex}；回合数：{j.ChatTurn}");
                 }
 
                 Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));

@@ -121,7 +121,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[1]);
                 }
-                //chat.Add(ChatDictionary[2]);
+                chat.Add(ChatDictionary[2]);
                 if (FindPet(ProjectileType<Reisen>()))
                 {
                     chat.Add(ChatDictionary[3]);
@@ -129,7 +129,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void OnFindBoss(NPC boss)
+        public override void OnFindBoss(NPC boss, bool noReaction)
         {
             if (boss.type == NPCID.MoonLordCore)
             {

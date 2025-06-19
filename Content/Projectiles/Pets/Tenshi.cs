@@ -119,7 +119,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void OnFindBoss(NPC boss)
+        public override void OnFindBoss(NPC boss, bool noReaction)
         {
             if (ModUtils.HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
             {

@@ -218,8 +218,9 @@ namespace TouhouPets
                 //区分模组对话和原有对话的索引值偏移
                 int extraIndex = isCrossMod ? p.crossModDialogStartIndex : 0;
 
-                //仅当索引值大于0时设置要说的话
-                if (info[i].chatIndex > 0)
+                //若非跨模组聊天室，则仅当索引值大于 0 时设置要说的话（所有原有对话的索引值都从1开始）
+                //反之，则从 0 开始，因为被输入的索引值可能为 0
+                if (info[i].chatIndex >= (isCrossMod ? 0 : 1))
                 {
                     int chatIndex = info[i].chatIndex + extraIndex;
                     //起始回合时发起者不设置对话

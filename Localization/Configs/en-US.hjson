@@ -158,8 +158,8 @@ Mods: {
 				}
 
 				AllowModCall_MarisasReaction: {
-					Label: Enable Mod.Call: [ MarisasReactionToBoss ]
-					Tooltip: Allow other mods using Mod.Call to add new or edit Marisa's reaction to bosses
+					Label: Enable Mod.Call: [ PetsReactionToBoss ]
+					Tooltip: Allow other mods using Mod.Call to add new or edit pet's reaction to bosses
 				}
 
 				AllowModCall_YuyukosReaction: {

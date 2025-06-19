@@ -1,4 +1,6 @@
-﻿using Terraria.Utilities;
+﻿using System.Collections.Generic;
+using Terraria;
+using Terraria.Utilities;
 using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
@@ -94,6 +96,9 @@ namespace TouhouPets
             }
         }
 
+        /// <summary>
+        /// 更新跨模组聊天室
+        /// </summary>
         private void UpdateCrossModChatRoom()
         {
             //遍历模组聊天室列表并根据条件执行聊天方法
@@ -108,6 +113,31 @@ namespace TouhouPets
                 //这里需要额外加上模组对话索引的起始值
                 room.ModifyChatRoom(infoList, true);
             }
+        }
+
+        /// <summary>
+        /// 跨模组Boss评价
+        /// </summary>
+        /// <param name="bossType"></param>
+        /// <param name="uniqueID"></param>
+        private bool BossChat_CrossMod(int bossType, TouhouPetID uniqueID)
+        {
+            int id = (int)uniqueID;
+            List<CommentInfo> comments = CrossModBossComment[id];
+            //若列表不存在内容，则不执行后续
+            if (comments == null || comments.Count <= 0)
+            {
+                return false;
+            }
+            foreach (var i in comments)
+            {
+                if (bossType == i.ObjectType)
+                {
+                    Projectile.SetChat(i.CommentText.Get().Value);
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion
     }

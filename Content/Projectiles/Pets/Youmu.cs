@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -97,7 +96,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostRegisterChat()
         {
-            Projectile.RegisterComment();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -122,18 +120,20 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void OnFindBoss(NPC boss)
+        public override bool PreFindBoss(NPC boss)
         {
             if (Owner.HasBuff<YuyukoBuff>())
             {
                 Projectile.SetChat(11);
+                return false;
             }
-            else
+            return true;
+        }
+        public override void OnFindBoss(NPC boss, bool noReaction)
+        {         
+            if (noReaction)
             {
-                if (!Projectile.GiveCertainBossComment(boss))
-                {
-                    Projectile.SetChat(3);
-                }
+                Projectile.SetChat(3);
             }
         }
         public override void VisualEffectForPreview()

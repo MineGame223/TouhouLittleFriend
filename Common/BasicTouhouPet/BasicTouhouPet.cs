@@ -289,7 +289,10 @@ namespace TouhouPets
                 {
                     if (!findBoss)
                     {
-                        OnFindBoss(b);
+                        if (PreFindBoss(b))
+                        {
+                            OnFindBoss(b, !BossChat_CrossMod(b.type, UniqueID));
+                        }
                         findBoss = true;
                     }
                     ok = true;
@@ -361,9 +364,10 @@ namespace TouhouPets
         /// <summary>
         /// 鼠标置于宠物之上时执行的方法，可控制是否能点击宠物（于PostDraw中更新）
         /// <br/>仅在本地端更新
+        /// <br>默认返回 false</br>
         /// </summary>
         /// <param name="dontInvis">何时应当无视鼠标悬停时隐形的规则</param>
-        /// <returns></returns>
+        /// <returns>返回 false 时，阻断<see cref="OnMouseClick(bool, bool)"/>的执行</returns>
         public virtual bool OnMouseHover(ref bool dontInvis) => false;
         /// <summary>
         /// 点击宠物时执行的方法，需要OnMouseHover返回true才能执行
@@ -373,10 +377,21 @@ namespace TouhouPets
         /// <param name="rightMouse">右键点击</param>
         public virtual void OnMouseClick(bool leftMouse, bool rightMouse) { }
         /// <summary>
+        /// <see cref="OnFindBoss(NPC, bool)"/>前执行的内容，返回 false 时将阻断其执行
+        /// <br>默认返回 true</br>
+        /// </summary>
+        /// <param name="boss"></param>
+        /// <returns></returns>
+        public virtual bool PreFindBoss(NPC boss) => true;
+        /// <summary>
         /// 当Boss出场的一刻间执行的方法
         /// </summary>
         /// <param name="boss"></param>
-        public virtual void OnFindBoss(NPC boss) { }
+        /// <param name="noReaction">是否没有出现跨模组添加的反应</param>
+        public virtual void OnFindBoss(NPC boss, bool noReaction) { }
+        /// <summary>
+        /// 对话设置结构体
+        /// </summary>
         public virtual ChatSettingConfig ChatSettingConfig => new();
         /// <summary>
         /// 视觉效果，用于常驻动画表现（包含玩家选择界面）
@@ -385,6 +400,7 @@ namespace TouhouPets
         public virtual void VisualEffectForPreview() { }
         /// <summary>
         /// 绘制宠物，替代PreDraw
+        /// <br>默认返回 true</br>
         /// </summary>
         /// <param name="lightColor"></param>
         /// <returns></returns>

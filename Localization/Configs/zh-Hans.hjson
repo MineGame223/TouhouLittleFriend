@@ -158,8 +158,8 @@ Mods: {
 				}
 
 				AllowModCall_MarisasReaction: {
-					Label: 允许Mod.Call: [ MarisasReactionToBoss ]
-					Tooltip: 允许其他模组通过Mod.Call为魔理沙加入新的Boss遭遇反应，或修改已有的反应
+					Label: 允许Mod.Call: [ PetsReactionToBoss ]
+					Tooltip: 允许其他模组通过Mod.Call为宠物加入新的Boss遭遇反应，或修改已有的反应
 				}
 
 				AllowModCall_YuyukosReaction: {

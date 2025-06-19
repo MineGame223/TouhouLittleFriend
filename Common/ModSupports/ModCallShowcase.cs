@@ -33,9 +33,9 @@ namespace TouhouPets
             //时间处于夜晚且玩家位于太空高度
             Func<bool> condi_3 = delegate () { return !Main.dayTime && Main.LocalPlayer.ZoneSkyHeight; };
 
-            LocalizedText text_1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在海边出现");
-            LocalizedText text_2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在夜晚出现");
-            LocalizedText text_3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 给所有宠物添加的，只会在夜晚的太空出现");
+            LocalizedText text_1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在海边出现");
+            LocalizedText text_2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚出现");
+            LocalizedText text_3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚的太空出现");
 
             LocalizedText text_4 = Language.GetText($"你知道吗？其实这句话是由 {nameof(TouhouPets)} 通过Mod.Call添加的。");
             LocalizedText text_5 = Language.GetText($"是吗...为什么要告诉我？");
@@ -71,52 +71,56 @@ namespace TouhouPets
             youmu_1.Add(comment_ym1);
             youmu_1.Add(comment_ym2);
 
-            //遍历全部TouhouPetID表并为所有宠物添加上面的三句对话
-            for (int i = 1; i < (int)TouhouPetID.Count; i++)
-            {
-                //参数分别为：Call类型、宠物索引、文本、条件、权重、添加模组
-                //内部索引值由添加顺序决定、从0开始，此处可视为0、1、2
-                //最后一个参数为添加方模组的实例，用于日志信息
-                //虽然很想做成选填项，但TML不允许
-                mod.Call("PetDialog", i, text_1, condi_1, 1, mod);
-                mod.Call("PetDialog", i, text_2, condi_2, 1, mod);
-                mod.Call("PetDialog", i, text_3, condi_3, 1, mod);
-            }
-
             //宠物的独特ID值，详细见 TouhouPetUniqueID.cs
+            int cirno = 1;//琪露诺
             int junko = 13;//纯狐
+            int marisa = 25;//魔理沙
             int reisen = 39;//铃仙
+            int youmu = 58;//妖梦
+
+            //参数分别为：Call类型、宠物索引、文本、条件、权重、添加模组
+            //内部索引值由添加顺序决定、从0开始，此处可视为0、1、2
+            //最后一个参数为添加方模组的实例，用于日志信息
+            //虽然很想做成选填项，但TML不允许
+            mod.Call("PetDialog", cirno, text_1, condi_1, 1, mod);
+            mod.Call("PetDialog", cirno, text_2, condi_2, 1, mod);
+            mod.Call("PetDialog", cirno, text_3, condi_3, 1, mod);
 
             //先将聊天室所需的对话按照常规对话的形式加入，注意需要将仅在聊天室里出现的对话排除在常规对话之外
-            mod.Call("PetDialog", junko, text_4, isRegular, 1, mod);//索引为3
-            mod.Call("PetDialog", junko, text_6, notRegular, 1, mod);//索引为4，且这句话不会出现在常规对话里，下同
-            mod.Call("PetDialog", junko, text_7, notRegular, 1, mod);//索引为5
+            mod.Call("PetDialog", junko, text_4, isRegular, 1, mod);//索引为0
+            mod.Call("PetDialog", junko, text_6, notRegular, 1, mod);//索引为1，且这句话不会出现在常规对话里，下同
+            mod.Call("PetDialog", junko, text_7, notRegular, 1, mod);//索引为2
 
-            mod.Call("PetDialog", reisen, text_5, notRegular, 1, mod);//索引为3，且这句话不会出现在常规对话里，下同
-            mod.Call("PetDialog", reisen, text_7, notRegular, 1, mod);//索引为4
-            mod.Call("PetDialog", reisen, text_8, notRegular, 1, mod);//索引为5
+            mod.Call("PetDialog", reisen, text_5, notRegular, 1, mod);//索引为0，且这句话不会出现在常规对话里，下同
+            mod.Call("PetDialog", reisen, text_7, notRegular, 1, mod);//索引为1
+            mod.Call("PetDialog", reisen, text_8, notRegular, 1, mod);//索引为2
 
             //聊天室信息列表
+            //元组中的三个参数分别为：宠物索引、文本索引、回合数
+            //对话的回合值都是从 -1 开始的
             List<(int, int, int)> chatRoom1 = new()
             {
-                (junko,3,-1),
-                (reisen,3,0),
-                (junko,4,1),
+                (junko,0,-1),
+                (reisen,0,0),
+                (junko,1,1),
                 //这里表示纯狐和铃仙在第二回合时会同时说话
-                (reisen,4,2),
-                (junko,5,2),
-                (reisen,5,3),
+                (reisen,1,2),
+                (junko,2,2),
+                (reisen,2,3),
             };
 
-            //第二个参数的值一定要和聊天列表里第一个元素的Item1值相同
+            //下面参数分别为：Call类型、宠物索引、聊天室信息列表、添加模组
+            //第二个参数的值一定要和聊天列表里第一个元组的宠物索引相同，因为这是作为整个聊天室的开头对话
             mod.Call("PetChatRoom", junko, chatRoom1, mod);
 
+            //下面这些Call添加的文本都不会被计入宠物的对话字典中，也不会被赋予对话索引值，全部使用-1
+
             //为魔理沙添加三句覆盖原版独眼巨鹿评论的话
-            //参数分别为：Call类型、Boss种类、宠物类别名称、文本、添加模组
-            mod.Call("PetReactionToBoss", NPCID.Deerclops, "Marisa", marisa_1, mod);
+            //参数分别为：Call类型、Boss种类、宠物索引、文本、添加模组
+            mod.Call("PetsReactionToBoss", NPCID.Deerclops, marisa, marisa_1, mod);
 
             //为妖梦添加两句关于原版石巨人评论的话
-            mod.Call("PetReactionToBoss", NPCID.Golem, "Youmu", youmu_1, mod);
+            mod.Call("PetsReactionToBoss", NPCID.Golem, youmu, youmu_1, mod);
 
             //为幽幽子添加两句接受并覆盖原版汉堡评论的话
             //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组

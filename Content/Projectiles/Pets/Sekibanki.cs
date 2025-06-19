@@ -165,7 +165,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 //赤蛮奇：独来独往...
                 if (Projectile.CurrentlyNoDialog())
                 {
-                    if (Main.rand.NextBool(1))
+                    if (Main.rand.NextBool(10))
                     {
                         chatRoom.chatTurn++;
                         if (OwnerIsMyPlayer)
@@ -297,7 +297,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer > 0 && mainTimer % 555 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(7))
+                    if (Main.rand.NextBool(9))
                     {
                         RandomCount = Main.rand.Next(5, 10);
                         CurrentState = States.Posing;
