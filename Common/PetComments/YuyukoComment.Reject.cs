@@ -11,8 +11,6 @@ namespace TouhouPets
     {
         private static int startIndex_Reject = 0;
 
-        private static List<int> rejectIDList_Full = [];
-
         private readonly static List<int> rejectIDList_Vanilla = [
             ItemID.JojaCola,//请不要喂我垃圾...
             ];
@@ -34,25 +32,16 @@ namespace TouhouPets
                     if (foodType == i.Type)
                     {
                         if (giveComment)
-                            yuyuko.SetChatForcely(14);
+                            yuyuko.SetChat(14);
 
                         return true;
                     }
                 }
-                //若列表长度为0、或是被选取的食物种类不包含在总列表中，则不拒绝
-                if (rejectIDList_Full.Count <= 0 || !rejectIDList_Full.Contains(foodType))
+                //分列表读取以实现覆盖效果
+                //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
+                if (yuyuko.Reject_CrossMod(foodType, giveComment)
+                    || yuyuko.Reject_Vanilla(foodType, giveComment))
                 {
-                    return false;
-                }
-                else
-                {
-                    if (giveComment)
-                    {
-                        //分列表读取以实现覆盖效果
-                        //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
-                        yuyuko.RejectComment_CrossMod(foodType);
-                        yuyuko.RejectComment_Vanilla(foodType);
-                    }
                     return true;
                 }
             }
@@ -74,22 +63,6 @@ namespace TouhouPets
             {
                 yuyuko.ChatDictionary.TryAdd(startIndex_Reject + i, Language.GetTextValue($"{Path}.Food_Reject_{i + 1}"));
             }
-
-            //将该列表汇入总列表
-            rejectIDList_Full.AddRange(rejectIDList_Vanilla);
-        }
-
-        /// <summary>
-        /// 注册模组食物拒绝评价
-        /// </summary>
-        public static void RegisterRejectComment_CrossMod(this Yuyuko _)
-        {
-            //将该列表汇入总列表
-            foreach (var (info, accept) in CrossModFoodComment)
-            {
-                if (!accept)
-                    rejectIDList_Full.Add(info.ObjectType);
-            }
         }
 
         /// <summary>
@@ -97,13 +70,27 @@ namespace TouhouPets
         /// </summary>
         /// <param name="yuyuko"></param>
         /// <param name="foodType">食物种类</param>
-        private static void RejectComment_Vanilla(this Projectile yuyuko, int foodType)
+        private static bool Reject_Vanilla(this Projectile yuyuko, int foodType, bool giveComment = false)
         {
             //以防万一（？）
             if (rejectIDList_Vanilla.Count <= 0)
-                return;
+                return false;
 
-            yuyuko.SetChatForcely(startIndex_Reject + rejectIDList_Vanilla.IndexOf(foodType));
+            if (rejectIDList_Vanilla.Contains(foodType))
+            {
+                if (giveComment)
+                {
+                    int finalIndex = startIndex_Reject + rejectIDList_Vanilla.IndexOf(foodType);
+                    //不是很必要的双重保险
+                    if (yuyuko.AsTouhouPet().ChatDictionary.ContainsKey(finalIndex))
+                    {
+                        yuyuko.SetChat(finalIndex, 60);
+                        return true;
+                    }
+                }
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -111,20 +98,24 @@ namespace TouhouPets
         /// </summary>
         /// <param name="yuyuko"></param>
         /// <param name="foodType">食物种类</param>
-        private static void RejectComment_CrossMod(this Projectile yuyuko, int foodType)
+        private static bool Reject_CrossMod(this Projectile yuyuko, int foodType, bool giveComment = false)
         {
             //以防万一
             if (CrossModFoodComment.Count <= 0)
-                return;
+                return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, _) in CrossModFoodComment)
+            foreach (var (info, accept) in CrossModFoodComment)
             {
-                if (foodType != info.ObjectType)
-                    continue;
+                if (!accept && foodType == info.ObjectType)
+                {
+                    if (giveComment)
+                        yuyuko.SetChat(info.CommentText.Get().Value);
 
-                yuyuko.SetChat(info.CommentText.Value);
+                    return true;
+                }
             }
+            return false;
         }
     }
 }

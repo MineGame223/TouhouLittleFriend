@@ -103,7 +103,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -111,7 +111,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[4]);
                 chat.Add(ChatDictionary[5]);
                 chat.Add(ChatDictionary[6]);
-                chat.Add(ChatDictionary[9]);
+                if (FindBoss)
+                {
+                    chat.Add(ChatDictionary[7]);
+                }
+                chat.Add(ChatDictionary[8]);
             }
             return chat;
         }
@@ -119,11 +123,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (ModUtils.HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
             {
-                Projectile.SetChat(ChatSettingConfig, 7);
-            }
-            else
-            {
-                Projectile.SetChat(ChatSettingConfig, 8);
+                Projectile.SetChat(ChatSettingConfig, 9);
             }
         }
         public override void VisualEffectForPreview()

@@ -50,7 +50,7 @@ namespace TouhouPets
                     Player.QuickSpawnItemDirect(Player.GetSource_GiftOrReward(), ItemType<YukarisItem>());
 
                     if (Player.whoAmI == Main.myPlayer)
-                        Main.npcChatText = ModUtils.GetChatText("Portal", "5");
+                        Main.npcChatText = ModUtils.GetChatTextValue("Portal", "5");
                 }
             }
         }

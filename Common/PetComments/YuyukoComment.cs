@@ -13,9 +13,7 @@ namespace TouhouPets
 
         private static int startIndex = 0;
 
-        private static List<int> acceptIDList_Full = [];
-
-        private readonly static List<int> acceptIDList_Vanilla = [
+        private static readonly List<int> acceptIDList_Vanilla = [
             ItemID.ChocolateChipCookie,//现烤的最好吃！
             ItemID.GrubSoup,//奇特的丛林美食，富含蛋白质！
             ItemID.Sashimi,//是家乡的味道呢...但是冥界并没有海吧？
@@ -40,26 +38,25 @@ namespace TouhouPets
         /// <param name="feeded">是否主动投喂</param>
         public static void UpdateComment(this Projectile yuyuko, int foodType, bool feeded = false)
         {
+            if (!yuyuko.IsATouhouPet())
+                return;
+
             //若发现食物，则进行评价。反之会随机选取一个抱怨文本
             if (foodType > 0)
             {
-                //若列表长度为0、或是被选取的食物种类不包含在总列表中，则启用默认评价
-                if (acceptIDList_Full.Count <= 0 || !acceptIDList_Full.Contains(foodType))
+                //分列表读取以实现覆盖效果
+                //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
+                if (!yuyuko.Comment_CrossMod(foodType)
+                 && !yuyuko.Comment_Vanilla(foodType))
                 {
+                    //若获取到的食物的类别不属于上述列表内容，则启用默认评价
                     yuyuko.DefaultComment(feeded);
                 }
-                else
-                {
-                    //分列表读取以实现覆盖效果
-                    //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
-                    yuyuko.Comment_CrossMod(foodType);
-                    yuyuko.Comment_Vanilla(foodType);
-                }
             }
-            else
+            else if (!yuyuko.AsTouhouPet().FindBoss)
             {
                 int index = Main.rand.Next(8, 10 + 1);
-                yuyuko.SetChatForcely(index);
+                yuyuko.SetChat(index);
             }
         }
 
@@ -73,11 +70,11 @@ namespace TouhouPets
             //如果是主动投喂
             if (feeded)
             {
-                yuyuko.SetChatForcely(15, 60);
+                yuyuko.SetChat(15, 60);
             }
             else
             {
-                yuyuko.SetChatForcely(Main.rand.Next(5, 7 + 1), 60);
+                yuyuko.SetChat(Main.rand.Next(5, 7 + 1), 60);
             }
         }
 
@@ -96,22 +93,6 @@ namespace TouhouPets
             {
                 yuyuko.ChatDictionary.TryAdd(startIndex + i, Language.GetTextValue($"{Path}.Food_{i + 1}"));
             }
-
-            //将该列表汇入总列表
-            acceptIDList_Full.AddRange(acceptIDList_Vanilla);
-        }
-
-        /// <summary>
-        /// 注册模组食物评价
-        /// </summary>
-        public static void RegisterComment_CrossMod(this Yuyuko _)
-        {
-            //将该列表汇入总列表
-            foreach (var (info, accept) in CrossModFoodComment)
-            {
-                if (accept)
-                    acceptIDList_Full.Add(info.ObjectType);
-            }
         }
 
         /// <summary>
@@ -119,17 +100,27 @@ namespace TouhouPets
         /// </summary>
         /// <param name="yuyuko"></param>
         /// <param name="foodType">食物种类</param>
-        private static void Comment_Vanilla(this Projectile yuyuko, int foodType)
+        private static bool Comment_Vanilla(this Projectile yuyuko, int foodType)
         {
             //以防万一（？）
             if (acceptIDList_Vanilla.Count <= 0)
-                return;
+                return false;
 
-            //清酒和啤酒的评价是一样的
-            if (foodType == ItemID.Sake)
-                foodType = ItemID.Ale;
+            if (acceptIDList_Vanilla.Contains(foodType))
+            {
+                //清酒和啤酒的评价是一样的
+                if (foodType == ItemID.Sake)
+                    foodType = ItemID.Ale;
 
-            yuyuko.SetChatForcely(startIndex + acceptIDList_Vanilla.IndexOf(foodType), 60);
+                int finalIndex = startIndex + acceptIDList_Vanilla.IndexOf(foodType);
+                //不是很必要的双重保险
+                if (yuyuko.AsTouhouPet().ChatDictionary.ContainsKey(finalIndex))
+                {
+                    yuyuko.SetChat(finalIndex, 60);
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -137,20 +128,22 @@ namespace TouhouPets
         /// </summary>
         /// <param name="yuyuko"></param>
         /// <param name="foodType">食物种类</param>
-        private static void Comment_CrossMod(this Projectile yuyuko, int foodType)
+        private static bool Comment_CrossMod(this Projectile yuyuko, int foodType)
         {
             //以防万一
             if (CrossModFoodComment.Count <= 0)
-                return;
+                return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, _) in CrossModFoodComment)
+            foreach (var (info, accept) in CrossModFoodComment)
             {
-                if (foodType != info.ObjectType)
-                    continue;
-
-                yuyuko.SetChat(info.CommentText.Value, 60);
+                if (accept && foodType == info.ObjectType)
+                {
+                    yuyuko.SetChat(info.CommentText.Get().Value, 60);
+                    return true;
+                }
             }
+            return false;
         }
     }
 }

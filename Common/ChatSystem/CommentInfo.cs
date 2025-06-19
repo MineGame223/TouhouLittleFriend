@@ -1,10 +1,11 @@
 ﻿using Terraria.Localization;
+using Terraria.Utilities;
 
 namespace TouhouPets
 {
-    public struct CommentInfo(int type, LocalizedText commentText)
+    public struct CommentInfo(int type, WeightedRandom<LocalizedText> commentText)
     {
         public int ObjectType = type;
-        public LocalizedText CommentText = commentText;
+        public WeightedRandom<LocalizedText> CommentText = commentText;
     }
 }

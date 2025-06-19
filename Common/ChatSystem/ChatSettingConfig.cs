@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TouhouPets
 {

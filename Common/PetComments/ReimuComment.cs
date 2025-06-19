@@ -11,7 +11,7 @@ namespace TouhouPets
     {
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Reimu";
 
-        private readonly static List<int> petIDList_Touhou = [
+        private static readonly List<int> petIDList_Touhou = [
             ProjectileType<Cirno>(),
             ProjectileType<Doremy>(),
             ProjectileType<Eirin>(),

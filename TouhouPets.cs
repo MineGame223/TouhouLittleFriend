@@ -21,6 +21,8 @@ namespace TouhouPets
         public override void Unload()
         {
             instance = null;
+
+            InitializCrossModList();
         }
         public override void PostSetupContent()
         {
@@ -33,7 +35,7 @@ namespace TouhouPets
                 GensokyoSupport.Setup(result);
             }
 
-            bool addCallForTest = false;
+            bool addCallForTest = true;
             if (addCallForTest)
             {
                 this.SetModCall();

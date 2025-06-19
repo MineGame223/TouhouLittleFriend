@@ -182,7 +182,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 0)
             {
                 //赤蛮奇：...我将超越一切！
-                Projectile.SetChat(7, 20);
+                Projectile.SetChatForChatRoom(7, 20);
 
                 if (Projectile.CurrentlyNoDialog())
                 {
@@ -196,7 +196,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 1)
             {
                 //赤蛮奇：超——变——身——！！！
-                Projectile.SetChat(8, 20);
+                Projectile.SetChatForChatRoom(8, 20);
 
                 if (Projectile.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
@@ -204,7 +204,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 2)
             {
                 //赤蛮奇：......
-                Projectile.SetChat(9, 20);
+                Projectile.SetChatForChatRoom(9, 20);
 
                 if (Projectile.CurrentlyNoDialog())
                 {
@@ -218,7 +218,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 3)
             {
                 //赤蛮奇：...呃，你什么都没听见
-                Projectile.SetChat(10, 20);
+                Projectile.SetChatForChatRoom(10, 20);
 
                 if (Projectile.CurrentlyNoDialog())
                 {

@@ -133,7 +133,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (boss.type == NPCID.MoonLordCore)
             {
-                Projectile.SetChat(ChatSettingConfig, 4);
+                Projectile.SetChat(4);
             }
         }
         public override List<List<ChatRoomInfo>> RegisterChatRoom()

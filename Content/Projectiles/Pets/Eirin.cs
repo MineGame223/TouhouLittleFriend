@@ -257,7 +257,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.CloseCurrentDialog();
                 if (player.difficulty == PlayerDifficultyID.Hardcore)
                 {
-                    Projectile.SetChat(ModUtils.GetChatText("Eirin", "99", Owner.name));
+                    Projectile.SetChat(ModUtils.GetChatTextValue("Eirin", "99", Owner.name));
                 }
                 else
                 {

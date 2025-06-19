@@ -258,7 +258,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 0)
             {
                 //妹红：你这家伙能不能消停一会儿？
-                moku.SetChat(6, 20);
+                moku.SetChatForChatRoom(6, 20);
 
                 if (moku.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
@@ -266,7 +266,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 1)
             {
                 //辉夜：要你管！
-                kaguya.SetChat(6, 20);
+                kaguya.SetChatForChatRoom(6, 20);
 
                 if (kaguya.CurrentlyNoDialog())
                     chatRoom.chatTurn++;

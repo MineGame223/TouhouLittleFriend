@@ -25,16 +25,6 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPet"/> 类
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <returns></returns>
-        public static BasicTouhouPet AsTouhouPet(this Projectile projectile)
-        {
-            return projectile.ModProjectile as BasicTouhouPet;
-        }
-
-        /// <summary>
         /// 关闭当前聊天室，并将聊天发起者与其中成员的currentChatRoom设为空、chatIndex归零
         /// </summary>
         /// <param name="chatRoom">当前聊天室</param>
@@ -235,7 +225,7 @@ namespace TouhouPets
                     //起始回合时发起者不设置对话
                     if (info[i].chatTurn != -1 || pet != chatRoom.initiator)
                     {
-                        pet.SetChat(p.ChatSettingConfig, chatIndex, 20);
+                        pet.SetChatForChatRoom(chatIndex, 20);
                     }
                 }
                 //若索引值被设为小于等于0，则关闭当前对话
@@ -323,7 +313,7 @@ namespace TouhouPets
         #endregion
 
         #region 设置对话
-        private static void SetChat_Inner(Projectile projectile, ChatSettingConfig config, int lag = 0, int index = -1, string text = null, bool forcely = false)
+        private static void SetChat_Inner(Projectile projectile, ChatSettingConfig config, int lag = 0, int index = -1, string text = null, bool forcely = true)
         {
             //若被设置对象并非东方宠物，则不再执行后续
             if (!projectile.IsATouhouPet())
@@ -339,10 +329,13 @@ namespace TouhouPets
 
             //采用索引值设置
             //若目标索引值等于当前索引值、且并非强制赋值，则不会进行设置
-            //此举是为了避免重复设置导致宠物无法结束说话
+            //此举是为了避免重复设置导致聊天室内宠物无法结束说话
             if (index > 0 && (index != pet.chatIndex || forcely))
             {
-                chat = pet.ChatDictionary[index];
+                if (!pet.ChatDictionary.TryGetValue(index, out string value))
+                    return;
+
+                chat = value;
                 pet.chatIndex = index;
             }
             //采用文本设置
@@ -364,7 +357,7 @@ namespace TouhouPets
             }
 
             //若都没有设置上则不执行后续
-            if (chat == string.Empty)
+            if (string.IsNullOrEmpty(chat))
                 return;
 
             //自动处理单个字符剩余时间
@@ -405,7 +398,7 @@ namespace TouhouPets
         /// <param name="lag">说话前的延时</param>
         public static void SetChat(this Projectile projectile, ChatSettingConfig config, int index, int lag = 0)
         {
-            SetChat_Inner(projectile, config, lag, index);
+            SetChat_Inner(projectile, config, lag, index, null);
         }
 
         /// <summary>
@@ -420,7 +413,7 @@ namespace TouhouPets
             if (!projectile.IsATouhouPet())
                 return;
 
-            SetChat_Inner(projectile, projectile.AsTouhouPet().ChatSettingConfig, lag, index);
+            SetChat_Inner(projectile, projectile.AsTouhouPet().ChatSettingConfig, lag, index, null);
         }
 
         /// <summary>
@@ -448,18 +441,17 @@ namespace TouhouPets
 
         /// <summary>
         /// 设置宠物要说的话，自动调用ChatSettingConfig
-        /// <br>无论 index 参数是否等于宠物当前的对话索引值，都会进行设置</br>
-        /// <br>用于让宠物被动说话时可以重复进行（例如给幽幽子喂饭）</br>
+        /// <br>会检测 index 参数是否等于宠物当前的对话索引值，若相等则不继续设置</br>
         /// </summary>
         /// <param name="projectile"></param>
         /// <param name="index">对话索引值</param>
         /// <param name="lag">说话前的延时</param>
-        public static void SetChatForcely(this Projectile projectile, int index, int lag = 0)
+        public static void SetChatForChatRoom(this Projectile projectile, int index, int lag = 0)
         {
             if (!projectile.IsATouhouPet())
                 return;
 
-            SetChat_Inner(projectile, projectile.AsTouhouPet().ChatSettingConfig, lag, index, null, true);
+            SetChat_Inner(projectile, projectile.AsTouhouPet().ChatSettingConfig, lag, index, null, false);
         }
         #endregion
     }

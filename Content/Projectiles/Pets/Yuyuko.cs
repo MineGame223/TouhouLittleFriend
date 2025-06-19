@@ -170,10 +170,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void PostRegisterChat()
         {
             this.RegisterComment_Vanilla();
-            this.RegisterComment_CrossMod();
-
             this.RegisterRejectComment_Vanilla();
-            this.RegisterRejectComment_CrossMod();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {

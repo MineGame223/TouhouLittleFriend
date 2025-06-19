@@ -312,7 +312,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(15) && Timer == 0)
                     {
-                        Projectile.SetChat(ChatSettingConfig, 5);
+                        Projectile.SetChat(5);
                         Timer++;
                     }
                 }

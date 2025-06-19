@@ -92,10 +92,10 @@ namespace TouhouPets.Content.NPCs
 
             WeightedRandom<string> chat = new();
             {
-                chat.Add(ModUtils.GetChatText("Portal", "1"));
-                chat.Add(ModUtils.GetChatText("Portal", "2"));
-                chat.Add(ModUtils.GetChatText("Portal", "3"));
-                chat.Add(ModUtils.GetChatText("Portal", "4"));
+                chat.Add(ModUtils.GetChatTextValue("Portal", "1"));
+                chat.Add(ModUtils.GetChatTextValue("Portal", "2"));
+                chat.Add(ModUtils.GetChatTextValue("Portal", "3"));
+                chat.Add(ModUtils.GetChatTextValue("Portal", "4"));
             }
             return chat;
         }
@@ -173,17 +173,17 @@ namespace TouhouPets.Content.NPCs
         {
             TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (mp.totalPurchaseValueCount <= 0)
-                Main.npcChatText = ModUtils.GetChatText("Portal", "7");
+                Main.npcChatText = ModUtils.GetChatTextValue("Portal", "7");
             else
-                Main.npcChatText = ModUtils.GetChatText("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));
+                Main.npcChatText = ModUtils.GetChatTextValue("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));
         }
         private static void Chat_QQGroup()
         {
-            Main.npcChatText = ModUtils.GetChatText("Portal", "8");
+            Main.npcChatText = ModUtils.GetChatTextValue("Portal", "8");
         }
         private static void Chat_GoodsShop()
         {
-            Main.npcChatText = ModUtils.GetChatText("Portal", "9");
+            Main.npcChatText = ModUtils.GetChatTextValue("Portal", "9");
         }
         private void AddShopItem()
         {

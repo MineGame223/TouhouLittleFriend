@@ -3,6 +3,7 @@ using Terraria.Localization;
 using Terraria;
 using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.Utilities;
 
 namespace TouhouPets
 {
@@ -43,8 +44,32 @@ namespace TouhouPets
             LocalizedText text_8 = Language.GetText($"啊这...");
 
             LocalizedText comment_m1 = Language.GetText($"这句话覆盖了原本对独眼巨鹿的评价！");
+            LocalizedText comment_m2 = Language.GetText($"哇！鹿！");
+            LocalizedText comment_m3 = Language.GetText($"你知道吗？这句话会在独眼巨鹿出现时有1/3的几率出现。");
+            WeightedRandom<LocalizedText> marisa_1 = new();
+            marisa_1.Add(comment_m1);
+            marisa_1.Add(comment_m2);
+            marisa_1.Add(comment_m3);
+
             LocalizedText comment_y1 = Language.GetText($"这句话覆盖了原本对汉堡的评价！");
-            LocalizedText comment_y2 = Language.GetText($"当生活给了你柠檬...不，这个模组不让我吃。");
+            LocalizedText comment_y2 = Language.GetText($"你喜欢肯德基还是麦当劳？");
+            WeightedRandom<LocalizedText> yuyuko_1 = new();
+            yuyuko_1.Add(comment_y1);
+            yuyuko_1.Add(comment_y2);
+
+            LocalizedText comment_y3 = Language.GetText($"当生活给了你柠檬...不，这个模组不让我吃。");
+            LocalizedText comment_y4 = Language.GetText($"我能看见的只有那棵黄黄的柠檬树。");
+            LocalizedText comment_y5 = Language.GetText($"你有更大的几率在试图喂我柠檬时看到这句话哦。");
+            WeightedRandom<LocalizedText> yuyuko_2 = new();
+            yuyuko_2.Add(comment_y3);
+            yuyuko_2.Add(comment_y4);
+            yuyuko_2.Add(comment_y5, 3);
+
+            LocalizedText comment_ym1 = Language.GetText($"巨大石像来犯！");
+            LocalizedText comment_ym2 = Language.GetText($"就算是石头、观楼剑也劈得开！");
+            WeightedRandom<LocalizedText> youmu_1 = new();
+            youmu_1.Add(comment_ym1);
+            youmu_1.Add(comment_ym2);
 
             //遍历全部TouhouPetID表并为所有宠物添加上面的三句对话
             for (int i = 1; i < (int)TouhouPetID.Count; i++)
@@ -86,19 +111,20 @@ namespace TouhouPets
             //第二个参数的值一定要和聊天列表里第一个元素的Item1值相同
             mod.Call("PetChatRoom", junko, chatRoom1, mod);
 
-            //为魔理沙添加一句覆盖原版独眼巨鹿评论的话
-            //参数分别为：Call类型、Boss种类、文本、添加模组
-            mod.Call("MarisasReactionToBoss", NPCID.Deerclops, comment_m1, mod);
+            //为魔理沙添加三句覆盖原版独眼巨鹿评论的话
+            //参数分别为：Call类型、Boss种类、宠物类别名称、文本、添加模组
+            mod.Call("PetReactionToBoss", NPCID.Deerclops, "Marisa", marisa_1, mod);
 
-            //为幽幽子添加一句接受并覆盖原版汉堡评论的话
+            //为妖梦添加两句关于原版石巨人评论的话
+            mod.Call("PetReactionToBoss", NPCID.Golem, "Youmu", youmu_1, mod);
+
+            //为幽幽子添加两句接受并覆盖原版汉堡评论的话
             //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
-            mod.Call("YuyukosReactionToFood", ItemID.Burger, comment_y1, true, mod);
+            mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_1, true, mod);
 
-            //为幽幽子添加一句拒绝柠檬评论的话
-            mod.Call("YuyukosReactionToFood", ItemID.Lemon, comment_y2, false, mod);
-
+            //为幽幽子添加三句拒绝柠檬评论的话
             //若同一食物同时存在拒绝与接受的条件，则拒绝的优先级更高
-            mod.Call("YuyukosReactionToFood", ItemID.Lemon, comment_y2, true, mod);
+            mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_2, false, mod);
         }
     }
 }

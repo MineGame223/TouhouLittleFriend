@@ -220,7 +220,7 @@ namespace TouhouPets
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                string chatText = ModUtils.GetChatText(name, i.ToString());
+                string chatText = ModUtils.GetChatTextValue(name, i.ToString());
                 if (string.IsNullOrEmpty(chatText))
                 {
                     chatText = "这是一段空对话，你怎么找出来的？";
@@ -237,16 +237,16 @@ namespace TouhouPets
                 }
             }
 
-            PostRegisterChat();
-
             RegisterCrossModChat();
             RegisterCrossModChatRoom();
+
+            PostRegisterChat();
 
             //增加一个空位，防止WeightedRandom无法读取最后一个索引
             int lastIndex = ChatDictionary.Count;
             ChatDictionary.Add(lastIndex + 1, string.Empty);
         }
-        
+
         #endregion
 
         #region 对话更新方法
@@ -286,10 +286,13 @@ namespace TouhouPets
                 //将获取结果与对话字典中存在的语句进行匹配并设置说话
                 for (int i = 1; i < ChatDictionary.Count; i++)
                 {
+                    if (!ChatDictionary.ContainsKey(i))
+                        continue;
+
                     if (!result.Equals(ChatDictionary[i]))
                         continue;
 
-                    Projectile.SetChat(ChatSettingConfig, i);
+                    Projectile.SetChat(i);
                 }
             }
         }

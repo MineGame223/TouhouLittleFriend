@@ -89,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostRegisterChat()
         {
-            this.RegisterComment();
+            Projectile.RegisterComment();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -124,13 +124,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
-            Projectile.BossChat_CrossMod(boss.type);
-
-            Projectile.BossChat_Vanilla(boss.type);
-            Projectile.BossChat_Coralite(boss);
-            Projectile.BossChat_Thorium(boss);
-            Projectile.BossChat_HomewardHourney(boss);
-            Projectile.BossChat_Gensokyo(boss);
+            Projectile.GiveCertainBossComment(boss);
         }
         public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {

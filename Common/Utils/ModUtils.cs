@@ -1,13 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
 {
@@ -21,10 +17,21 @@ namespace TouhouPets
         /// </summary>
         /// <param name="proj"></param>
         /// <returns></returns>
-        public static bool IsATouhouPet(this Projectile proj)
+        public static bool IsATouhouPet(this Projectile projectile)
         {
-            return proj.ModProjectile is BasicTouhouPet;
+            return projectile.ModProjectile is BasicTouhouPet;
         }
+
+        /// <summary>
+        /// 将 <see cref="Projectile"/> 类转换为 <see cref="BasicTouhouPet"/> 类
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <returns></returns>
+        public static BasicTouhouPet AsTouhouPet(this Projectile projectile)
+        {
+            return projectile.ModProjectile as BasicTouhouPet;
+        }
+
         /// <summary>
         /// 查找其他模组的指定NPC
         /// </summary>
@@ -41,6 +48,7 @@ namespace TouhouPets
             }
             return false;
         }
+
         /// <summary>
         /// 判断是否为特定语言
         /// </summary>
@@ -50,6 +58,7 @@ namespace TouhouPets
         {
             return Language.ActiveCulture.LegacyId == (int)lang;
         }
+
         /// <summary>
         /// 将输入价格转换为货币单位价格的文本
         /// </summary>
@@ -67,6 +76,7 @@ namespace TouhouPets
             string textC = c <= 0 ? "" : $"[i/s{c}:{ItemID.CopperCoin}]";
             return textP + textG + textS + textC;
         }
+
         /// <summary>
         /// 在Buff内生成宠物并设置Buff时间
         /// </summary>
@@ -83,6 +93,7 @@ namespace TouhouPets
                 Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.Center, Vector2.Zero, petType, 0, 0f, player.whoAmI);
             }
         }
+
         /// <summary>
         /// 在已有物品描述后插入新描述(允许添加变量)
         /// </summary>
@@ -100,29 +111,18 @@ namespace TouhouPets
 
             tooltips.Insert(index + 1, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
         }
+
         /// <summary>
         /// 获取对话文本
         /// </summary>
         /// <param name="tag">角色对应标签</param>
         /// <param name="index">文本对应编号</param>
         /// <returns></returns>
-        public static string GetChatText(string tag, string index, params object[] args)
+        public static string GetChatTextValue(string tag, string index, params object[] args)
         {
             return Language.GetTextValue($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}", args);
         }
-        /// <summary>
-        /// 快速添加商店物品
-        /// </summary>
-        /// <param name="shop"></param>
-        /// <param name="ItemType">物品ID</param>
-        /// <param name="value">价值，默认为物品的原价值</param>
-        /// <param name="condition">添加入商店的条件</param>
-        public static void AddShopItemSimply(this NPCShop shop, int ItemType, int value = -1, params Condition[] condition)
-        {
-            shop.Add(ItemType, condition);
-            if (shop.TryGetEntry(ItemType, out NPCShop.Entry item) && value > -1)
-                item.Item.value = value;
-        }
+
         /// <summary>
         /// 额外设置宠物物品基础属性
         /// </summary>
@@ -138,6 +138,7 @@ namespace TouhouPets
             item.rare = rare;
             item.value = value;
         }
+
         /// <summary>
         /// 维持宠物弹幕的存在时间
         /// </summary>
@@ -150,19 +151,6 @@ namespace TouhouPets
             {
                 projectile.timeLeft = 2;
             }
-        }
-        /// <summary>
-        /// 打印带有物品贴图的文本
-        /// </summary>
-        /// <param name="id">物品ID</param>
-        /// <returns></returns>
-        public static string ItemText(int id)
-        {
-            StringBuilder result = new("[i");
-            result.Append(':');
-            result.Append(id);
-            result.Append(']');
-            return result.ToString();
         }
     }
 }

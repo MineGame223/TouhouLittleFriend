@@ -185,7 +185,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         RandomCount2 = Main.rand.Next(30, 90);
                         CurrentState = States.BlowingBubble;
 
-                        Projectile.SetChat(ChatSettingConfig, 4, 120);
+                        Projectile.SetChat(4, 120);
                     }
                 }
             }

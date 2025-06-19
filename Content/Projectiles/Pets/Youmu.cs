@@ -95,6 +95,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Youmu";
             indexRange = new Vector2(1, 11);
         }
+        public override void PostRegisterChat()
+        {
+            Projectile.RegisterComment();
+        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = IsAfraid ? 500 : 900;
@@ -103,7 +107,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new ();
             {
                 if (IsAfraid)
                 {
@@ -120,13 +124,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
-            if (FindPet(ProjectileType<Yuyuko>(), false))
+            if (Owner.HasBuff<YuyukoBuff>())
             {
                 Projectile.SetChat(11);
             }
             else
             {
-                Projectile.SetChat(3);
+                if (!Projectile.GiveCertainBossComment(boss))
+                {
+                    Projectile.SetChat(3);
+                }
             }
         }
         public override void VisualEffectForPreview()

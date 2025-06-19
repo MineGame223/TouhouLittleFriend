@@ -204,16 +204,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                         switch (chance)
                         {
                             case 1:
-                                Projectile.SetChat(ChatSettingConfig, 5, 90);
+                                Projectile.SetChat(5, 90);
                                 break;
                             case 2:
-                                Projectile.SetChat(ChatSettingConfig, 6, 90);
+                                Projectile.SetChat(6, 90);
                                 break;
                             case 3:
-                                Projectile.SetChat(ChatSettingConfig, 7, 90);
+                                Projectile.SetChat(7, 90);
                                 break;
                             default:
-                                Projectile.SetChat(ChatSettingConfig, 8, 90);
+                                Projectile.SetChat(8, 90);
                                 break;
                         }
                     }

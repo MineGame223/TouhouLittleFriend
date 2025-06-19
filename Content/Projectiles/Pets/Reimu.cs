@@ -157,7 +157,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss)
         {
-            Projectile.SetChat(ChatSettingConfig, 3);
+            Projectile.SetChat(3);
         }
         public override void VisualEffectForPreview()
         {
@@ -321,7 +321,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         CurrentState = States.BeforeNap;
 
                         if (Main.rand.NextBool(8))
-                            Projectile.SetChat(ChatSettingConfig, 11);
+                            Projectile.SetChat(11);
                     }
                 }
             }

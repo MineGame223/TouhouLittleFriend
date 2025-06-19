@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Terraria.Localization;
+using Terraria.Utilities;
 
 namespace TouhouPets
 {
     partial class TouhouPets
     {
-        private const string Arg_1 = "MarisasReactionToBoss";
+        private const string Arg_1 = "PetReactionToBoss";
         private const string Arg_2 = "PetDialog";
         private const string Arg_3 = "PetChatRoom";
         private const string Arg_4 = "YuyukosReactionToFood";
@@ -37,8 +38,8 @@ namespace TouhouPets
         /// <summary>
         /// 跨模组添加的Boss评论的列表
         /// </summary>
-        public static List<CommentInfo> CrossModBossComment { get => crossModBossComment; set => crossModBossComment = value; }
-        private static List<CommentInfo> crossModBossComment = [];
+        public static List<CommentInfo>[] CrossModBossComment { get => crossModBossComment; set => crossModBossComment = value; }
+        private static List<CommentInfo>[] crossModBossComment = new List<CommentInfo>[(int)TouhouPetID.Count];
 
         /// <summary>
         /// 跨模组添加的食物评论的列表
@@ -54,6 +55,8 @@ namespace TouhouPets
 
                 CrossModChatRoomList[i] = [];
                 crossModChatRoom[i] = [];
+
+                CrossModBossComment[i] = [];
             }
         }
         public override object Call(params object[] args)
@@ -69,7 +72,7 @@ namespace TouhouPets
                 switch (content)
                 {
                     case Arg_1:
-                        return AddMarisasReaction(args);
+                        return AddBossReaction(args);
 
                     case Arg_2:
                         return AddCrossModDialog(args);
@@ -83,15 +86,15 @@ namespace TouhouPets
             }
             return null;
         }
-        private object AddMarisasReaction(params object[] args)
+        private object AddBossReaction(params object[] args)
         {
             if (!GetInstance<MiscConfig>().AllowModCall_MarisasReaction)
             {
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText
-                || args[3] is not Mod)
+            if ((args[1] is not int && args[1] is not short) || args[2] is not string
+                || args[3] is not WeightedRandom<LocalizedText> || args[4] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
                 return false;
@@ -103,37 +106,52 @@ namespace TouhouPets
             }
             if (args[2] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：评价文本"));
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：宠物对应名称"));
                 return false;
             }
             if (args[3] == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：评价文本"));
+                return false;
+            }
+            if (args[4] == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
 
-            int type;
-            if (args[1] is short)
-            {
-                type = (short)args[1];
-            }
-            else
-            {
-                type = (int)args[1];
-            }
-            LocalizedText text = (LocalizedText)args[2];
+            int type = args[1] is short ? (short)args[1] : (int)args[1];
+            string tag = (string)args[2];
+            WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[3];
 
             CommentInfo info = new(type, text);
-            CrossModBossComment.Add(info);
+            switch (tag){
+                case "Marisa":
+                    CrossModBossComment[(int)TouhouPetID.Marisa].Add(info);
+                    break;
 
-            Mod mod = (Mod)args[3];
+                case "Youmu":
+                    CrossModBossComment[(int)TouhouPetID.Youmu].Add(info);
+                    break;
+
+                default:
+                    break;
+            };
+
+            Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
-            Logger.Info(ConsoleMessage("魔理沙Boss评价添加结果"
-                    , $"添加成功！\n" +
+
+            StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
                     $"对象ID：{type}\n" +
-                    $"评价文本：{text.Value}"
-                    ));
+                    $"宠物名称：{tag}");
+
+            foreach (var j in text.elements)
+            {
+                logInfo.Append($"\n评价文本：{j.Item1}；权重：{j.Item2}");
+            }
+
+            Logger.Info(ConsoleMessage("宠物Boss评价添加结果", logInfo.ToString()));
             return true;
         }
         private object AddYuyukoReaction(params object[] args)
@@ -143,7 +161,7 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not LocalizedText
+            if ((args[1] is not int && args[1] is not short) || args[2] is not WeightedRandom<LocalizedText>
                 || args[3] is not bool || args[4] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
@@ -170,16 +188,8 @@ namespace TouhouPets
                 return false;
             }
 
-            int type;
-            if (args[1] is short)
-            {
-                type = (short)args[1];
-            }
-            else
-            {
-                type = (int)args[1];
-            }
-            LocalizedText text = (LocalizedText)args[2];
+            int type = args[1] is short ? (short)args[1] : (int)args[1];
+            WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[2];
             bool acceptable = (bool)args[3];
 
             CommentInfo info = new(type, text);
@@ -187,13 +197,18 @@ namespace TouhouPets
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
-            Logger.Info(ConsoleMessage("幽幽子食物评价添加结果"
-                    , $"添加成功！\n" +
+
+            StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
                     $"对象ID：{type}\n" +
-                    $"评价文本：{text.Value}" +
-                    $"是否接受：{acceptable}"
-                    ));
+                    $"是否接受：{acceptable}");
+
+            foreach (var j in text.elements)
+            {
+                logInfo.Append($"\n评价文本：{j.Item1}；权重：{j.Item2}");
+            }
+
+            Logger.Info(ConsoleMessage("幽幽子食物评价添加结果", logInfo.ToString()));
 
             return true;
         }
@@ -332,8 +347,7 @@ namespace TouhouPets
                     logInfo.Append($"\n宠物ID：{j.UniqueID}；索引值：{j.ChatIndex}；回合数：{j.ChatTurn}");
                 }
 
-                Logger.Info(ConsoleMessage("宠物聊天室添加结果"
-                    , logInfo.ToString()));
+                Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));
             }
 
             return true;
