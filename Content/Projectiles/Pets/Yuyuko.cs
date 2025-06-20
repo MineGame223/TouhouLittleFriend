@@ -11,7 +11,6 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using Terraria.Localization;
-using static TouhouPets.YuyukoComment;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -108,7 +107,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
 
-            hungerPoint += 10800;
+            SetHungerPoint(food);
             CurrentState = States.BeforeEatting;
             Projectile.UpdateComment(food.type, true);
         }
@@ -537,6 +536,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (clothFrame > 10)
             {
                 clothFrame = 7;
+            }
+        }
+        private void SetHungerPoint(Item item)
+        {
+            if (item == null || item.IsAir)
+                return;
+
+            int timeMultiplier;
+            if (ItemID.Sets.IsFood[item.type])
+            {
+                timeMultiplier = item.buffType switch
+                {
+                    BuffID.WellFed => 1,
+                    BuffID.WellFed2 => 2,
+                    BuffID.WellFed3 => 3,
+                    _ => 0,
+                };
+
+                if (item.buffTime > 0)
+                {
+                    hungerPoint += item.buffTime * timeMultiplier;
+                }
             }
         }
         private void UpdateFoodList(Player player)

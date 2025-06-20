@@ -132,8 +132,8 @@ namespace TouhouPets
 
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"对象种类：{type}\n" +
-                    $"宠物索引：{id}");
+                    $"宠物索引：{(TouhouPetID)id}\n" +
+                    $"对象种类：{type}\n");
 
             foreach (var j in text.elements)
             {
@@ -282,30 +282,24 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_3, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int || args[2] is not List<(int, int, int)>
-                || args[3] is not Mod)
+            if (args[1] is not List<(int, int, int)>
+                || args[2] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_3, Warning_WrongDataType));
                 return false;
             }
             if (args[1] == null)
             {
-                Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：宠物索引"));
-                return false;
-            }
-            if (args[2] == null)
-            {
                 Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：聊天室成员信息列表"));
                 return false;
             }
-            if (args[3] == null)
+            if (args[2] == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
 
-            int id = (int)args[1];
-            List<(int, int, int)> infoList = (List<(int, int, int)>)args[2];
+            List<(int, int, int)> infoList = (List<(int, int, int)>)args[1];
 
             for (int j = 0; j < infoList.Count; j++)
             {
@@ -315,11 +309,13 @@ namespace TouhouPets
                     infoList[j].Item3
                     );
 
-                crossModChatRoom[id].Add(info);
+                crossModChatRoom[infoList[0].Item1].Add(info);
             }
+
+            int id = infoList[0].Item1;
             CrossModChatRoomList[id].Add(crossModChatRoom[id]);
 
-            Mod mod = (Mod)args[3];
+            Mod mod = (Mod)args[2];
             string modName = mod.DisplayNameClean;
             for (int i = 0; i < CrossModChatRoomList[id].Count; i++)
             {

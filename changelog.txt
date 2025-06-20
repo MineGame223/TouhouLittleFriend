@@ -4,5 +4,8 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入两个新的ModCall，详细信息可查阅 https://github.com/MineGame223/TouhouLittleFriend 中的README
+加入两个新的ModCall；详细信息可查阅 https://github.com/MineGame223/TouhouLittleFriend 中的README
 现在可以通过模组配置决定幽幽子不会吃掉哪些食物
+
+修改：
+移除了 MarisasReactionToBoss 的ModCall，该功能由更可以为本模组全部宠物添加相关对话的 PetsReactionToBoss 取代

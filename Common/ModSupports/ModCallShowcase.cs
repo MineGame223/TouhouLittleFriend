@@ -33,40 +33,40 @@ namespace TouhouPets
             //时间处于夜晚且玩家位于太空高度
             Func<bool> condi_3 = delegate () { return !Main.dayTime && Main.LocalPlayer.ZoneSkyHeight; };
 
-            LocalizedText text_1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在海边出现");
-            LocalizedText text_2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚出现");
-            LocalizedText text_3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚的太空出现");
+            LocalizedText text_1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在海边出现！");
+            LocalizedText text_2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚出现！");
+            LocalizedText text_3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚的太空出现！");
 
             LocalizedText text_4 = Language.GetText($"你知道吗？其实这句话是由 {nameof(TouhouPets)} 通过Mod.Call添加的。");
-            LocalizedText text_5 = Language.GetText($"是吗...为什么要告诉我？");
-            LocalizedText text_6 = Language.GetText($"没什么，只是想让你知道。");
-            LocalizedText text_7 = Language.GetText($"这铁打的...");
-            LocalizedText text_8 = Language.GetText($"啊这...");
+            LocalizedText text_5 = Language.GetText("是吗...为什么要告诉我？");
+            LocalizedText text_6 = Language.GetText("没什么，只是想让你知道。");
+            LocalizedText text_7 = Language.GetText("这铁打的...");
+            LocalizedText text_8 = Language.GetText("啊这...");
 
-            LocalizedText comment_m1 = Language.GetText($"这句话覆盖了原本对独眼巨鹿的评价！");
-            LocalizedText comment_m2 = Language.GetText($"哇！鹿！");
-            LocalizedText comment_m3 = Language.GetText($"你知道吗？这句话会在独眼巨鹿出现时有1/3的几率出现。");
+            LocalizedText comment_m1 = Language.GetText("这句话覆盖了原本对独眼巨鹿的评价！");
+            LocalizedText comment_m2 = Language.GetText("哇！鹿！");
+            LocalizedText comment_m3 = Language.GetText("你知道吗？这句话会在独眼巨鹿出现时有1/3的几率出现。");
             WeightedRandom<LocalizedText> marisa_1 = new();
             marisa_1.Add(comment_m1);
             marisa_1.Add(comment_m2);
             marisa_1.Add(comment_m3);
 
-            LocalizedText comment_y1 = Language.GetText($"这句话覆盖了原本对汉堡的评价！");
-            LocalizedText comment_y2 = Language.GetText($"你喜欢肯德基还是麦当劳？");
+            LocalizedText comment_y1 = Language.GetText("这句话覆盖了原本对汉堡的评价！");
+            LocalizedText comment_y2 = Language.GetText("你喜欢肯德基还是麦当劳？");
             WeightedRandom<LocalizedText> yuyuko_1 = new();
             yuyuko_1.Add(comment_y1);
             yuyuko_1.Add(comment_y2);
 
-            LocalizedText comment_y3 = Language.GetText($"当生活给了你柠檬...不，这个模组不让我吃。");
-            LocalizedText comment_y4 = Language.GetText($"我能看见的只有那棵黄黄的柠檬树。");
-            LocalizedText comment_y5 = Language.GetText($"你有更大的几率在试图喂我柠檬时看到这句话哦。");
+            LocalizedText comment_y3 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
+            LocalizedText comment_y4 = Language.GetText("我能看见的只有那棵黄黄的柠檬树。");
+            LocalizedText comment_y5 = Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。");
             WeightedRandom<LocalizedText> yuyuko_2 = new();
             yuyuko_2.Add(comment_y3);
             yuyuko_2.Add(comment_y4);
             yuyuko_2.Add(comment_y5, 3);
 
-            LocalizedText comment_ym1 = Language.GetText($"巨大石像来犯！");
-            LocalizedText comment_ym2 = Language.GetText($"就算是石头、观楼剑也劈得开！");
+            LocalizedText comment_ym1 = Language.GetText("巨大石像来犯！");
+            LocalizedText comment_ym2 = Language.GetText("就算是石头、观楼剑也劈得开！");
             WeightedRandom<LocalizedText> youmu_1 = new();
             youmu_1.Add(comment_ym1);
             youmu_1.Add(comment_ym2);
@@ -109,9 +109,8 @@ namespace TouhouPets
                 (reisen,2,3),
             };
 
-            //下面参数分别为：Call类型、宠物索引、聊天室信息列表、添加模组
-            //第二个参数的值一定要和聊天列表里第一个元组的宠物索引相同，因为这是作为整个聊天室的开头对话
-            mod.Call("PetChatRoom", junko, chatRoom1, mod);
+            //下面参数分别为：Call类型、聊天室信息列表、添加模组
+            mod.Call("PetChatRoom", chatRoom1, mod);
 
             //下面这些Call添加的文本都不会被计入宠物的对话字典中，也不会被赋予对话索引值，全部使用-1
 
