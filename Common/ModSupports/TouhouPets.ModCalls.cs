@@ -44,8 +44,8 @@ namespace TouhouPets
         /// <summary>
         /// 跨模组添加的食物评论的列表
         /// </summary>
-        public static List<(CommentInfo info, bool accept)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
-        private static List<(CommentInfo, bool)> crossModFoodComment = [];
+        public static List<(CommentInfo info, bool accept, bool cover)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
+        private static List<(CommentInfo, bool, bool)> crossModFoodComment = [];
         private static void InitializCrossModList()
         {
             //需要对列表进行初始化
@@ -151,7 +151,7 @@ namespace TouhouPets
                 return false;
             }
             if ((args[1] is not int && args[1] is not short) || args[2] is not WeightedRandom<LocalizedText>
-                || args[3] is not bool || args[4] is not Mod)
+                || args[3] is not bool || args[4] is not Mod || (args.Length > 5 && args[5] is not bool or null))
             {
                 Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
                 return false;
@@ -180,9 +180,10 @@ namespace TouhouPets
             int type = args[1] is short ? (short)args[1] : (int)args[1];
             WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[2];
             bool acceptable = (bool)args[3];
+            bool cover = args.Length > 5 && args[5] != null && (bool)args[5];
 
             CommentInfo info = new(type, text);
-            CrossModFoodComment.Add((info, acceptable));
+            CrossModFoodComment.Add((info, acceptable, cover));
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;

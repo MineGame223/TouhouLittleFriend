@@ -134,11 +134,21 @@ namespace TouhouPets
             if (CrossModFoodComment.Count <= 0)
                 return false;
 
+            bool random = false;
+
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, accept) in CrossModFoodComment)
+            foreach (var (info, accept, cover) in CrossModFoodComment)
             {
                 if (accept && foodType == info.ObjectType)
                 {
+                    if (!cover && !random && foodType < ItemID.Count)
+                    {
+                        random = true;
+
+                        if (Main.rand.NextBool(2))
+                            yuyuko.Comment_Vanilla(foodType);
+                    }
+
                     yuyuko.SetChat(info.CommentText.Get().Value, 60);
                     return true;
                 }
