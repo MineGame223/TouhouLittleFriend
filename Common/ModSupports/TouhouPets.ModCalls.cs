@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Terraria.Localization;
 using Terraria.Utilities;
@@ -44,8 +45,8 @@ namespace TouhouPets
         /// <summary>
         /// 跨模组添加的食物评论的列表
         /// </summary>
-        public static List<(CommentInfo info, bool accept)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
-        private static List<(CommentInfo, bool)> crossModFoodComment = [];
+        public static List<(CommentInfo info, bool accept, bool cover)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
+        private static List<(CommentInfo, bool, bool)> crossModFoodComment = [];
         private static void InitializCrossModList()
         {
             //需要对列表进行初始化
@@ -93,7 +94,7 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not int
+            if (args[1] is not int and not short || args[2] is not int
                 || args[3] is not WeightedRandom<LocalizedText> || args[4] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
@@ -150,8 +151,8 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not WeightedRandom<LocalizedText>
-                || args[3] is not bool || args[4] is not Mod)
+            if (args[1] is not int and not short || args[2] is not WeightedRandom<LocalizedText>
+                || args[3] is not bool || args[4] is not Mod || (args.Length > 5 && args[5] is not bool and not null))
             {
                 Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
                 return false;
@@ -180,9 +181,27 @@ namespace TouhouPets
             int type = args[1] is short ? (short)args[1] : (int)args[1];
             WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[2];
             bool acceptable = (bool)args[3];
+            bool cover = args.Length > 5 && args[5] != null && (bool)args[5];
+            var existingItem = CrossModFoodComment.FirstOrDefault(x => x.info.ObjectType == type && x.accept == acceptable);
 
-            CommentInfo info = new(type, text);
-            CrossModFoodComment.Add((info, acceptable));
+            if (!existingItem.Equals(default))
+            {
+                int index = CrossModFoodComment.IndexOf(existingItem);
+                var mergedText = new WeightedRandom<LocalizedText>();
+
+                foreach (var (commentText, weight) in existingItem.info.CommentText.elements)
+                    mergedText.Add(commentText, weight);
+
+                foreach (var (commentText, weight) in text.elements)
+                    mergedText.Add(commentText, weight);
+
+                CrossModFoodComment[index] = (
+                    new CommentInfo(type, mergedText),
+                    acceptable,
+                    existingItem.cover || cover
+                );
+            }
+            else CrossModFoodComment.Add((new CommentInfo(type, text), acceptable, cover));
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
@@ -190,7 +209,8 @@ namespace TouhouPets
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
                     $"对象种类：{type}\n" +
-                    $"是否接受：{acceptable}");
+                    $"是否接受：{acceptable}\n" +
+                    $"是否覆盖原版文本：{cover}");
 
             foreach (var j in text.elements)
             {

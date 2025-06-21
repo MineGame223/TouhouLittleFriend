@@ -51,19 +51,31 @@ namespace TouhouPets
             marisa_1.Add(comment_m2);
             marisa_1.Add(comment_m3);
 
-            LocalizedText comment_y1 = Language.GetText("这句话覆盖了原本对汉堡的评价！");
-            LocalizedText comment_y2 = Language.GetText("你喜欢肯德基还是麦当劳？");
+            LocalizedText comment_y1 = Language.GetText("这句话加入到了对汉堡的评价！");
             WeightedRandom<LocalizedText> yuyuko_1 = new();
             yuyuko_1.Add(comment_y1);
-            yuyuko_1.Add(comment_y2);
 
-            LocalizedText comment_y3 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
-            LocalizedText comment_y4 = Language.GetText("我能看见的只有那棵黄黄的柠檬树。");
-            LocalizedText comment_y5 = Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。");
+            LocalizedText comment_y2 = Language.GetText("你喜欢肯德基还是麦当劳？");
             WeightedRandom<LocalizedText> yuyuko_2 = new();
-            yuyuko_2.Add(comment_y3);
-            yuyuko_2.Add(comment_y4);
-            yuyuko_2.Add(comment_y5, 3);
+            yuyuko_2.Add(comment_y2);
+
+            LocalizedText comment_y3 = Language.GetText("正常来说你看不到这句话，除非你注释掉了下面拒绝食用柠檬的Call");
+            WeightedRandom<LocalizedText> yuyuko_3 = new();
+            yuyuko_3.Add(comment_y3);
+
+            LocalizedText comment_y4 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
+            LocalizedText comment_y5 = Language.GetText("我能看见的只有那棵黄黄的柠檬树。");
+            LocalizedText comment_y6 = Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。");
+            WeightedRandom<LocalizedText> yuyuko_4 = new();
+            yuyuko_4.Add(comment_y4);
+            yuyuko_4.Add(comment_y5);
+            yuyuko_4.Add(comment_y6, 3);
+
+            LocalizedText comment_y7 = Language.GetText("你已经看不到原有评论了哦~");
+            LocalizedText comment_y8 = Language.GetText("吃起来有点咯牙。");
+            WeightedRandom<LocalizedText> yuyuko_5 = new();
+            yuyuko_5.Add(comment_y7);
+            yuyuko_5.Add(comment_y8);
 
             LocalizedText comment_ym1 = Language.GetText("巨大石像来犯！");
             LocalizedText comment_ym2 = Language.GetText("就算是石头、观楼剑也劈得开！");
@@ -121,13 +133,25 @@ namespace TouhouPets
             //为妖梦添加两句关于原版石巨人评论的话
             mod.Call("PetsReactionToBoss", NPCID.Golem, youmu, youmu_1, mod);
 
-            //为幽幽子添加两句接受并覆盖原版汉堡评论的话
+            //为幽幽子添加一句接受汉堡评论的话
             //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
             mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_1, true, mod);
 
+            //再次为幽幽子添加一句接受汉堡评论的话，如果多次为同一个食物添加文本则会合并
+            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
+            mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_2, true, mod);
+
+            //为幽幽子添加一句接受并覆盖原有柠檬评论的话
+            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组、是否覆盖原版评论（Mod评价不受影响）
+            mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_3, true, mod, true);
+
             //为幽幽子添加三句拒绝柠檬评论的话
             //若同一食物同时存在拒绝与接受的条件，则拒绝的优先级更高
-            mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_2, false, mod);
+            mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_4, false, mod);
+
+            //为幽幽子添加两句接受并覆盖原有金怡口评论的话
+            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组、是否覆盖原版评论（Mod评价不受影响）
+            mod.Call("YuyukosReactionToFood", ItemID.GoldenDelight, yuyuko_5, true, mod, true);
         }
     }
 }
