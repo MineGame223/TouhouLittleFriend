@@ -86,7 +86,7 @@ namespace TouhouPets.Content.Items
             {
                 return true;
             }
-            if (player.altFunctionUse == 2)
+            if (player.altFunctionUse == ItemAlternativeFunctionID.ActivatedAndUsed)
             {
                 if (!ModPlayer.ManualConcert || !ModPlayer.ShouldBandPlaying)
                 {
@@ -96,7 +96,7 @@ namespace TouhouPets.Content.Items
                 ModPlayer.MusicRerolled = false;
                 if (ModPlayer.CustomModeOn)
                 {
-                    ModPlayer.ManualRerolled = true;
+                    ModPlayer.RerollManually = true;
                 }
             }
             else

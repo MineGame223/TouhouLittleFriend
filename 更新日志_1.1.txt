@@ -15,10 +15,10 @@ v1.1.5.5：
 现在可以通过模组配置决定幽幽子不会吃掉哪些食物
 
 修改：
-移除了 MarisasReactionToBoss 的ModCall，该功能由更可以为本模组全部宠物添加相关对话的 PetsReactionToBoss 取代
+移除了 MarisasReactionToBoss 的ModCall，该功能由可以为本模组全部宠物添加相关对话的 PetsReactionToBoss 取代
 
 修复：
-
+修复了一个使用应援棒随机选择音乐时可能出现的问题
 
 ----------
 v1.1.5.4：

@@ -70,11 +70,12 @@
 - `ChatText` ：与之相关的话语文本合集，`WeightedRandom<LocalizedText>` 类型
 - `Accept` ：幽幽子是否接受该种食物，被拒绝的食物将不会被幽幽子选择吃掉，`bool` 类型
 - `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
-- `Cover` ：添加对于原版食物的评价时，是否会覆盖本Mod自带的评价，`bool?` 类型（可不填写，不填写默认为不覆盖）
+- `Cover` ：添加对于原版食物的评价时，是否会覆盖本模组自带的评价，`bool?` 类型（选填，默认为不覆盖）
 
 #### 注意事项
 
-- `FoodType` 代指的物品必须能够被判定为食物，即 `ItemID.Sets.IsFood[item.type] = true`。
+- `FoodType` 代指的物品必须能够被判定为食物，即 `ItemID.Sets.IsFood[item.type] = true`
+- 其他模组通过 Mod.Call 添加的对同一种食物的评价会相互兼容，不受 `Cover` 影响
 
 ### PetDialog
 
@@ -90,7 +91,7 @@
 
 #### 注意事项
 
-- `Weight` 最小为1，任何小于0的填入数值都会被强制设置为1。
+- `Weight` 最小为1，任何小于0的填入数值都会被强制设置为1
 
 ### PetChatRoom
 

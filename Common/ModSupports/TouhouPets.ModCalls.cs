@@ -182,8 +182,8 @@ namespace TouhouPets
             WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[2];
             bool acceptable = (bool)args[3];
             bool cover = args.Length > 5 && args[5] != null && (bool)args[5];
-            var existingItem = CrossModFoodComment.FirstOrDefault(x => x.info.ObjectType == type && x.accept == acceptable);
 
+            var existingItem = CrossModFoodComment.FirstOrDefault(x => x.info.ObjectType == type && x.accept == acceptable);
             if (!existingItem.Equals(default))
             {
                 int index = CrossModFoodComment.IndexOf(existingItem);
@@ -201,7 +201,8 @@ namespace TouhouPets
                     existingItem.cover || cover
                 );
             }
-            else CrossModFoodComment.Add((new CommentInfo(type, text), acceptable, cover));
+            else
+                CrossModFoodComment.Add((new CommentInfo(type, text), acceptable, cover));
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;

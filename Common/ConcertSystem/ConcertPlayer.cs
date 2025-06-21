@@ -26,14 +26,14 @@ namespace TouhouPets
         private int lastMusicID = -1;
 
         private readonly List<int> constantMusicList = [MusicID.Title, MusicID.ConsoleMenu, MusicID.Credits];
-        private readonly List<int> bannedMusicList = [MusicID.RainSoundEffect, 45];
+        private readonly List<int> bannedMusicList = [0, MusicID.RainSoundEffect, 45];
         public bool ManualConcert { get => Player.HasBuff<ConcertBuff>(); }
         public int BandMusicID { get => musicID; }
         public bool ShouldBandPlaying { get => bandTimer > BAND_COUNTDOWN_TIME; }
         public bool ConcertStart { get => prismriverBand; set => prismriverBand = value; }
         public bool CustomModeOn { get => customMode; set => customMode = value; }
         public bool MusicRerolled { get => musicRerolled; set => musicRerolled = value; }
-        public bool ManualRerolled { get => manualRerolled; set => manualRerolled = value; }
+        public bool RerollManually { get => manualRerolled; set => manualRerolled = value; }
         private void ConcertVisualEffect()
         {
             if (!Player.HasBuff<RaikoBuff>())
@@ -90,8 +90,13 @@ namespace TouhouPets
                 }
                 musicList.Add(i);
             }
+
+            //以防万一
+            if (musicList.Count <= 0)
+                return;
+
             int randomID = Main.rand.NextFromCollection(musicList);
-            if (lastMusicID < 0)
+            if (lastMusicID <= 0)
             {
                 lastMusicID = randomID;
             }
@@ -117,8 +122,8 @@ namespace TouhouPets
                     {
                         if (CustomModeOn)
                         {
-                            CustomMusicManager.RollListedMusic(ManualRerolled, false);
-                            ManualRerolled = false;
+                            CustomMusicManager.RollListedMusic(RerollManually, false);
+                            RerollManually = false;
                             exitedFromCustomMode = false;
                         }
                         else
@@ -134,7 +139,7 @@ namespace TouhouPets
             {
                 bandTimer = 0;
                 MusicRerolled = false;
-                ManualRerolled = false;
+                RerollManually = false;
                 exitedFromCustomMode = true;
                 Player.ClearBuff(BuffType<ConcertBuff>());
             }

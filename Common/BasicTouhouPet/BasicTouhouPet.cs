@@ -296,6 +296,7 @@ namespace TouhouPets
                         findBoss = true;
                     }
                     ok = true;
+                    break;
                 }
             }
             if (!ok && findBoss)

@@ -43,23 +43,17 @@ namespace TouhouPets
             LocalizedText text_7 = Language.GetText("这铁打的...");
             LocalizedText text_8 = Language.GetText("啊这...");
 
-            LocalizedText comment_m1 = Language.GetText("这句话覆盖了原本对独眼巨鹿的评价！");
-            LocalizedText comment_m2 = Language.GetText("哇！鹿！");
-            LocalizedText comment_m3 = Language.GetText("你知道吗？这句话会在独眼巨鹿出现时有1/3的几率出现。");
-            WeightedRandom<LocalizedText> marisa_1 = new();
-            marisa_1.Add(comment_m1);
-            marisa_1.Add(comment_m2);
-            marisa_1.Add(comment_m3);
-
             LocalizedText comment_y1 = Language.GetText("这句话加入到了对汉堡的评价！");
             WeightedRandom<LocalizedText> yuyuko_1 = new();
             yuyuko_1.Add(comment_y1);
 
             LocalizedText comment_y2 = Language.GetText("你喜欢肯德基还是麦当劳？");
+            LocalizedText comment_y2_1 = Language.GetText("疯狂星期四？那是什么？");
             WeightedRandom<LocalizedText> yuyuko_2 = new();
             yuyuko_2.Add(comment_y2);
+            yuyuko_2.Add(comment_y2_1);
 
-            LocalizedText comment_y3 = Language.GetText("正常来说你看不到这句话，除非你注释掉了下面拒绝食用柠檬的Call");
+            LocalizedText comment_y3 = Language.GetText("正常来说你看不到这句话，除非你注释掉了下面拒绝食用柠檬的Call。");
             WeightedRandom<LocalizedText> yuyuko_3 = new();
             yuyuko_3.Add(comment_y3);
 
@@ -71,8 +65,8 @@ namespace TouhouPets
             yuyuko_4.Add(comment_y5);
             yuyuko_4.Add(comment_y6, 3);
 
-            LocalizedText comment_y7 = Language.GetText("你已经看不到原有评论了哦~");
-            LocalizedText comment_y8 = Language.GetText("吃起来有点咯牙。");
+            LocalizedText comment_y7 = Language.GetText("你已经看不到原有评论了哦。");
+            LocalizedText comment_y8 = Language.GetText("吃起来有点咯牙...");
             WeightedRandom<LocalizedText> yuyuko_5 = new();
             yuyuko_5.Add(comment_y7);
             yuyuko_5.Add(comment_y8);
@@ -86,14 +80,12 @@ namespace TouhouPets
             //宠物的独特ID值，详细见 TouhouPetUniqueID.cs
             int cirno = 1;//琪露诺
             int junko = 13;//纯狐
-            int marisa = 25;//魔理沙
             int reisen = 39;//铃仙
             int youmu = 58;//妖梦
 
             //参数分别为：Call类型、宠物索引、文本、条件、权重、添加模组
             //内部索引值由添加顺序决定、从0开始，此处可视为0、1、2
             //最后一个参数为添加方模组的实例，用于日志信息
-            //虽然很想做成选填项，但TML不允许
             mod.Call("PetDialog", cirno, text_1, condi_1, 1, mod);
             mod.Call("PetDialog", cirno, text_2, condi_2, 1, mod);
             mod.Call("PetDialog", cirno, text_3, condi_3, 1, mod);
@@ -112,37 +104,38 @@ namespace TouhouPets
             //对话的回合值都是从 -1 开始的
             List<(int, int, int)> chatRoom1 = new()
             {
-                (junko,0,-1),
-                (reisen,0,0),
-                (junko,1,1),
+                (junko, 0, -1),
+                (reisen, 0, 0),
+                (junko, 1, 1),
                 //这里表示纯狐和铃仙在第二回合时会同时说话
-                (reisen,1,2),
-                (junko,2,2),
-                (reisen,2,3),
+                (reisen, 1, 2),
+                (junko, 2, 2),
+                (reisen, 2, 3),
             };
 
+            //添加聊天室
             //下面参数分别为：Call类型、聊天室信息列表、添加模组
             mod.Call("PetChatRoom", chatRoom1, mod);
 
             //下面这些Call添加的文本都不会被计入宠物的对话字典中，也不会被赋予对话索引值，全部使用-1
 
-            //为魔理沙添加三句覆盖原版独眼巨鹿评论的话
+            //为妖梦添加两句关于石巨人评论的话
             //参数分别为：Call类型、Boss种类、宠物索引、文本、添加模组
-            mod.Call("PetsReactionToBoss", NPCID.Deerclops, marisa, marisa_1, mod);
-
-            //为妖梦添加两句关于原版石巨人评论的话
+            //若被添加对象为已存在相关评价的Boss，则会进行覆盖
+            //这是让你用来适配自己模组的Boss的，请不要随便覆盖已有内容
             mod.Call("PetsReactionToBoss", NPCID.Golem, youmu, youmu_1, mod);
 
-            //为幽幽子添加一句接受汉堡评论的话
+            //为幽幽子添加两句接受汉堡评论的话
             //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
+            //这是让你用来适配自己模组的食物的，请不要随便覆盖已有内容
             mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_1, true, mod);
 
             //再次为幽幽子添加一句接受汉堡评论的话，如果多次为同一个食物添加文本则会合并
-            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
             mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_2, true, mod);
 
             //为幽幽子添加一句接受并覆盖原有柠檬评论的话
-            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组、是否覆盖原版评论（Mod评价不受影响）
+            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组、是否覆盖原版评论
+            //模组添加的评价不受覆盖影响
             mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_3, true, mod, true);
 
             //为幽幽子添加三句拒绝柠檬评论的话
@@ -150,7 +143,6 @@ namespace TouhouPets
             mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_4, false, mod);
 
             //为幽幽子添加两句接受并覆盖原有金怡口评论的话
-            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组、是否覆盖原版评论（Mod评价不受影响）
             mod.Call("YuyukosReactionToFood", ItemID.GoldenDelight, yuyuko_5, true, mod, true);
         }
     }
