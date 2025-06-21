@@ -94,7 +94,7 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not int
+            if (args[1] is not int and not short || args[2] is not int
                 || args[3] is not WeightedRandom<LocalizedText> || args[4] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
@@ -151,8 +151,8 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
             }
-            if ((args[1] is not int && args[1] is not short) || args[2] is not WeightedRandom<LocalizedText>
-                || args[3] is not bool || args[4] is not Mod || (args.Length > 5 && args[5] is not bool or null))
+            if (args[1] is not int and not short || args[2] is not WeightedRandom<LocalizedText>
+                || args[3] is not bool || args[4] is not Mod || (args.Length > 5 && args[5] is not bool and not null))
             {
                 Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
                 return false;
