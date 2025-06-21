@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Terraria.Localization;
 using Terraria.Utilities;
@@ -181,9 +182,26 @@ namespace TouhouPets
             WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[2];
             bool acceptable = (bool)args[3];
             bool cover = args.Length > 5 && args[5] != null && (bool)args[5];
+            var existingItem = CrossModFoodComment.FirstOrDefault(x => x.info.ObjectType == type && x.accept == acceptable);
 
-            CommentInfo info = new(type, text);
-            CrossModFoodComment.Add((info, acceptable, cover));
+            if (!existingItem.Equals(default))
+            {
+                int index = CrossModFoodComment.IndexOf(existingItem);
+                var mergedText = new WeightedRandom<LocalizedText>();
+
+                foreach (var (commentText, weight) in existingItem.info.CommentText.elements)
+                    mergedText.Add(commentText, weight);
+
+                foreach (var (commentText, weight) in text.elements)
+                    mergedText.Add(commentText, weight);
+
+                CrossModFoodComment[index] = (
+                    new CommentInfo(type, mergedText),
+                    acceptable,
+                    existingItem.cover || cover
+                );
+            }
+            else CrossModFoodComment.Add((new CommentInfo(type, text), acceptable, cover));
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
@@ -191,7 +209,8 @@ namespace TouhouPets
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
                     $"对象种类：{type}\n" +
-                    $"是否接受：{acceptable}");
+                    $"是否接受：{acceptable}\n" +
+                    $"是否覆盖原版文本：{cover}");
 
             foreach (var j in text.elements)
             {

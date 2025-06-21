@@ -39,7 +39,7 @@ namespace TouhouPets
                 }
                 //分列表读取以实现覆盖效果
                 //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
-                if (yuyuko.Reject_CrossMod(foodType, giveComment)
+                if (yuyuko.Reject(foodType, giveComment)
                     || yuyuko.Reject_Vanilla(foodType, giveComment))
                 {
                     return true;
@@ -94,17 +94,15 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 关于跨模组食物的拒绝评价
+        /// 总食物的拒绝评价
         /// </summary>
         /// <param name="yuyuko"></param>
         /// <param name="foodType">食物种类</param>
-        private static bool Reject_CrossMod(this Projectile yuyuko, int foodType, bool giveComment = false)
+        private static bool Reject(this Projectile yuyuko, int foodType, bool giveComment = false)
         {
             //以防万一
             if (CrossModFoodComment.Count <= 0)
-                return false;
-
-            bool random = false;
+                return yuyuko.Reject_Vanilla(foodType, giveComment);
 
             //遍历食物评价信息列表并选取评价
             foreach (var (info, accept, cover) in CrossModFoodComment)
@@ -113,13 +111,8 @@ namespace TouhouPets
                 {
                     if (giveComment)
                     {
-                        if (!cover && !random && foodType < ItemID.Count)
-                        {
-                            random = true;
-
-                            if (Main.rand.NextBool(2))
-                                yuyuko.Reject_Vanilla(foodType, giveComment);
-                        }
+                        if (!cover && foodType < ItemID.Count && Main.rand.NextBool(2))
+                            return yuyuko.Reject_Vanilla(foodType, giveComment);
 
                         yuyuko.SetChat(info.CommentText.Get().Value);
                     }
