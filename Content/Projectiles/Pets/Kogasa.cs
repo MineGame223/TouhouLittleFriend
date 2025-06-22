@@ -98,7 +98,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(handFrame, lightColor, config, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(172, 69, 191);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(172, 69, 191),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Kogasa";
@@ -127,9 +130,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
@@ -144,8 +144,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.SetPetActive(Owner, BuffType<KogasaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
@@ -216,7 +214,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(2))
                     {
-                        if (Main.rand.NextBool(3) && chatTimeLeft <= 0)
+                        if (Main.rand.NextBool(3) && Projectile.CurrentlyNoDialog())
                         {
                             RandomCount = Main.rand.Next(6, 12);
                             CurrentState = States.MakeFace;

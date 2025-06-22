@@ -86,7 +86,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 225, 110);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 225, 110),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Luna";
@@ -128,15 +131,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             rgb = new Vector3(1.52f, 1.50f, 1.15f);
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<LunaBuff>());
             Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 
@@ -241,10 +239,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                             switch (chance)
                             {
                                 case 1:
-                                    Projectile.SetChat(ChatSettingConfig, 4);
+                                    Projectile.SetChat(4);
                                     break;
                                 default:
-                                    Projectile.SetChat(ChatSettingConfig, 5);
+                                    Projectile.SetChat(5);
                                     break;
                             }
                         }

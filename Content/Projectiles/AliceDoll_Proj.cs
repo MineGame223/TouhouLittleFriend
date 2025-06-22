@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Net;
 using Terraria;
 using Terraria.ID;
 using TouhouPets.Content.Projectiles.Pets;
@@ -29,7 +30,7 @@ namespace TouhouPets.Content.Projectiles
         {
             if (IsAliceExited)
             {
-                DrawLine(Color.LightSkyBlue);
+                DrawLine(Color.White);
             }
             Texture2D tex = AltVanillaFunction.ProjectileTexture(Type);
             Vector2 pos = Projectile.Center - Main.screenPosition;
@@ -39,7 +40,7 @@ namespace TouhouPets.Content.Projectiles
             Color clr = Projectile.GetAlpha(lightColor);
             if (IsAliceExited)
             {
-                clr *= Alice.ToPetClass().mouseOpacity;
+                clr *= Alice.AsTouhouPet().mouseOpacity;
             }
 
             Vector2 orig = rect.Size() / 2;
@@ -59,20 +60,25 @@ namespace TouhouPets.Content.Projectiles
         private void DrawLine(Color lightColor)
         {
             Vector2 startP = Alice.Center + AliceHandPoint() + new Vector2(0, 7f * Main.essScale);
-            Texture2D tex = AltVanillaFunction.ExtraTexture(ExtrasID.StardustTowerMark);
+            Texture2D tex = AssetLoader.GlowSpark.Value;
+
             Vector2 pos = Projectile.Center - Main.screenPosition;
-            Rectangle rect = new Rectangle(0, 0, tex.Width, (int)Vector2.Distance(startP, Projectile.Center));
+            float dist = Vector2.Distance(startP, Projectile.Center);
+
             Color clr = Projectile.GetAlpha(Lighting.GetColor(Projectile.Center.ToTileCoordinates(), lightColor));
-            clr *= Alice.ToPetClass().mouseOpacity;
+            clr *= Alice.AsTouhouPet().mouseOpacity;
+
             Vector2 orig = new Vector2(tex.Width / 2, 0);
             float rot = startP.DirectionTo(Projectile.Center).ToRotation() + MathHelper.PiOver2;
+
+            Vector2 scale = new Vector2(0.1f, dist / tex.Height);
             if (GetInstance<MiscConfig>().CompatibilityMode)
             {
-                Main.spriteBatch.MyDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
+                Main.spriteBatch.MyDraw(tex, pos, null, clr, rot, orig, scale, SpriteEffects.None, 0);
             }
             else
             {
-                Main.EntitySpriteDraw(tex, pos, rect, clr, rot, orig, 1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(tex, pos, null, clr, rot, orig, scale, SpriteEffects.None, 0);
             }
             Projectile.ResetDrawStateForPet();
         }
@@ -150,7 +156,7 @@ namespace TouhouPets.Content.Projectiles
             }
             if (IsAliceExited)
             {
-                int state = Alice.ToPetClass().PetState;
+                int state = Alice.AsTouhouPet().PetState;
                 if (state < 2 || state > 3)
                 {
                     Projectile.velocity = Vector2.Normalize(Alice.Center - Projectile.Center) * (5f + Alice.velocity.Length());

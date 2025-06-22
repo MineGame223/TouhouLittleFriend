@@ -120,17 +120,8 @@ Mods: {
 				}
 			}
 
-			MiscConfig: {
-				// DisplayName: Misc Function Config
-
-				CompatibilityMode: {
-					// Label: Compatibility Mode
-					/* Tooltip:
-						'''
-						Disable pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
-						Some pet's special dye effect won't be affected
-						''' */
-				}
+			MiscConfig_ClientSide: {
+				// DisplayName: Client Side Misc Function Config
 
 				EnableCustomMusicMode: {
 					// Label: Concert Custom Music Mode
@@ -149,6 +140,48 @@ Mods: {
 				PetInvisWhenMouseHover: {
 					// Label: Pet will be invisible while cursor hovering on it
 					// Tooltip: Toggle whether pet should invisible if cursor is hovering on it (Some special cases are excepted)
+				}
+
+				YuyukoBanList: {
+					// Label: Yuyuko's diet black list
+					// Tooltip: The items that this list contains will not be ate by Yuyuko, nor can they be fed to her.
+				}
+			}
+
+			MiscConfig: {
+				// DisplayName: Server Side Misc Function Config
+
+				CompatibilityMode: {
+					// Label: Compatibility Mode
+					/* Tooltip:
+						'''
+						Disable pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
+						Some pet's special dye effect won't be affected
+						''' */
+				}
+
+				AllowModCall_MarisasReaction: {
+					// Label: Enable Mod.Call: [ PetsReactionToBoss ]
+					// Tooltip: Allow other mods using Mod.Call to add new or edit pet's reaction to bosses
+				}
+
+				AllowModCall_YuyukosReaction: {
+					// Label: Enable Mod.Call: [ YuyukosReactionToFood ]
+					// Tooltip: Allow other mods using Mod.Call to add new or edit Yuyuko's reaction when eat or reject food
+				}
+
+				AllowModCall_PetDialog: {
+					// Label: Enable Mod.Call: [ PetDialog ]
+					/* Tooltip:
+						'''
+						Allow other mods using Mod.Call to add new regular dialog to pets
+						While disable this, the [ PetChatRoom ] option will not take effect
+						''' */
+				}
+
+				AllowModCall_PetChatRoom: {
+					// Label: Enable Mod.Call: [ PetChatRoom ]
+					// Tooltip: Allow other mods using Mod.Call to add new chat room to pets
 				}
 			}
 		}

@@ -104,7 +104,10 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             Projectile.DrawPet(Projectile.frame, lightColor, config, 2);
         }
-        public override Color ChatTextColor => new Color(144, 206, 237);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(144, 206, 237),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Merlin";
@@ -131,9 +134,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
@@ -147,8 +147,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.SetPetActive(Owner, BuffType<MerlinBuff>());
             Projectile.SetPetActive(Owner, BuffType<PoltergeistBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

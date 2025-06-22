@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -41,7 +42,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(71, 228, 63);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(71, 228, 63),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Daiyousei";
@@ -49,8 +53,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 960;
-            chance = 9;
+            timePerDialog = 960;//960
+            chance = 9;//9
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -77,90 +81,45 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateWingFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(4, 6))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+                Chatting2()
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Cirno>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile daiyousei = chatRoom.initiator;
-            Projectile cirno = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index == 4)
-            {
-                if (turn == -1)
-                {
-                    //大妖精：琪露诺酱，今天去哪里玩？
-                    cirno.CloseCurrentDialog();
+            TouhouPetID daiyousei = TouhouPetID.Daiyousei;
+            TouhouPetID cirno = TouhouPetID.Cirno;
 
-                    if (daiyousei.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //琪露诺：大酱去哪儿我就去哪儿！
-                    cirno.SetChat(ChatSettingConfig, 10, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(daiyousei, 4, -1), //大妖精：琪露诺酱，今天去哪里玩？
+                new ChatRoomInfo(cirno, 10, 0),//琪露诺：大酱去哪儿我就去哪儿！
+            ];
 
-                    if (cirno.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 5 || index == 6)
-            {
-                if (turn == -1)
-                {
-                    //大妖精：好...好可怕的地方！
-                    cirno.CloseCurrentDialog();
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting2()
+        {
+            TouhouPetID daiyousei = TouhouPetID.Daiyousei;
+            TouhouPetID cirno = TouhouPetID.Cirno;
 
-                    if (daiyousei.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //琪露诺：大酱别怕，有我在！
-                    cirno.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(daiyousei, 5, -1), //大妖精：好...好可怕的地方！
+                new ChatRoomInfo(cirno, 9, 0),//琪露诺：大酱别怕，有我在！
+                new ChatRoomInfo(daiyousei, 6, 1), //大妖精：嗯...我，我不怕！
+            ];
 
-                    if (cirno.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //大妖精：嗯...我，我不怕！
-                    daiyousei.SetChat(ChatSettingConfig, 6, 20);
-
-                    if (daiyousei.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
             Projectile.SetPetActive(player, BuffType<DaiyouseiBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
@@ -182,7 +141,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ChangeDir();
 
-            Vector2 point = new Vector2(-40 * Owner.direction, -30 + Owner.gfxOffY);
+            Vector2 point = new (-40 * Owner.direction, -30 + Owner.gfxOffY);
             if (FindPet(ProjectileType<Cirno>(), false))
             {
                 point = new Vector2(80 * Owner.direction, -30 + Owner.gfxOffY);

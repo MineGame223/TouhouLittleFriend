@@ -117,17 +117,8 @@ Mods: {
 				}
 			}
 
-			MiscConfig: {
-				DisplayName: 其他功能配置
-
-				CompatibilityMode: {
-					Label: 兼容模式
-					Tooltip:
-						'''
-						禁用宠物的染料效果，以避免一些因为模组冲突而产生的问题（例如灾厄模组）
-						部分宠物的染色特效不受影响
-						'''
-				}
+			MiscConfig_ClientSide: {
+				DisplayName: 客户端其他功能配置
 
 				EnableCustomMusicMode: {
 					Label: 演唱会启用自选音乐模式
@@ -146,6 +137,48 @@ Mods: {
 				PetInvisWhenMouseHover: {
 					Label: 光标悬停时宠物隐形
 					Tooltip: 当光标悬停在宠物身上时，宠物将隐形至几乎不可见（部分情况除外）
+				}
+
+				YuyukoBanList: {
+					Label: 幽幽子的忌口
+					Tooltip: 列表中的物品将不会被幽幽子吃掉，也不能被主动投喂
+				}
+			}
+
+			MiscConfig: {
+				DisplayName: 服务器端其他功能配置
+
+				CompatibilityMode: {
+					Label: 兼容模式
+					Tooltip:
+						'''
+						禁用宠物的染料效果，以避免一些因为模组冲突而产生的问题（例如灾厄模组）
+						部分宠物的染色特效不受影响
+						'''
+				}
+
+				AllowModCall_MarisasReaction: {
+					Label: 允许Mod.Call: [ PetsReactionToBoss ]
+					Tooltip: 允许其他模组通过Mod.Call为宠物加入新的Boss遭遇反应，或修改已有的反应
+				}
+
+				AllowModCall_YuyukosReaction: {
+					Label: 允许Mod.Call: [ YuyukosReactionToFood ]
+					Tooltip: 允许其他模组通过Mod.Call为幽幽子加入新的接受或拒绝食物时的反应，或修改已有的反应
+				}
+
+				AllowModCall_PetDialog: {
+					Label: 允许Mod.Call: [ PetDialog ]
+					Tooltip:
+						'''
+						允许其他模组通过Mod.Call为宠物加入新的常规对话文本
+						该项被禁用时，[ PetChatRoom ] 选项将不生效
+						'''
+				}
+
+				AllowModCall_PetChatRoom: {
+					Label: 允许Mod.Call: [ PetChatRoom ]
+					Tooltip: 允许其他模组通过Mod.Call为宠物加入新的聊天室
 				}
 			}
 		}

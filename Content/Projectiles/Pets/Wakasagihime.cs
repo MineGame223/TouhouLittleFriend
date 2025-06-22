@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -93,7 +92,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     });
             return false;
         }
-        public override Color ChatTextColor => new Color(87, 164, 255);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(87, 164, 255),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Wakasagihime";
@@ -115,10 +117,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-
-        }
         public override void VisualEffectForPreview()
         {
             UpdateTailFrame();
@@ -131,8 +129,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<WakasagihimeBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
@@ -189,7 +185,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         RandomCount2 = Main.rand.Next(30, 90);
                         CurrentState = States.BlowingBubble;
 
-                        Projectile.SetChat(ChatSettingConfig, 4, 120);
+                        Projectile.SetChat(4, 120);
                     }
                 }
             }

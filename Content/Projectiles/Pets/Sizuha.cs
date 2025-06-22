@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -64,7 +65,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(244, 150, 91);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(244, 150, 91),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Sizuha";
@@ -96,73 +100,28 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(6, 8))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Minoriko>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile sizuha = chatRoom.initiator;
-            Projectile minoriko = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
-                minoriko.CloseCurrentDialog();
+            TouhouPetID sizuha = TouhouPetID.Sizuha;
+            TouhouPetID minoriko = TouhouPetID.Minoriko;
 
-                if (sizuha.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
-                minoriko.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sizuha, 6, -1), //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
+                new ChatRoomInfo(minoriko, 6, 0),//穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
+                new ChatRoomInfo(sizuha, 7, 1), //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
+                new ChatRoomInfo(minoriko, 7, 2),//穰子：那姐姐要吃烤红薯吗？
+                new ChatRoomInfo(sizuha, 8, 3), //静叶：好欸！...我是说，好啊。
+            ];
 
-                if (minoriko.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
-                sizuha.SetChat(ChatSettingConfig, 7, 20);
-
-                if (sizuha.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //穰子：那姐姐要吃烤红薯吗？
-                minoriko.SetChat(ChatSettingConfig, 7, 20);
-
-                if (minoriko.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //静叶：好欸！...我是说，好啊。
-                sizuha.SetChat(ChatSettingConfig, 8, 20);
-
-                if (sizuha.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -175,8 +134,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<SizuhaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

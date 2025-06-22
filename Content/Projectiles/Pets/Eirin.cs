@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -100,7 +101,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override TouhouPetID UniqueID => TouhouPetID.Eirin;
         public override void OnSpawn(IEntitySource source)
         {
-            ChatDictionary[99] = ModUtils.GetChatText("Eirin", "99", Owner.name);
             base.OnSpawn(source);
         }
         public override bool DrawPetSelf(ref Color lightColor)
@@ -150,7 +150,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.spriteBatch.MyDraw(arrow, pos, null, Projectile.GetAlpha(Color.White) * mouseOpacity
                 , Projectile.rotation + MathHelper.PiOver2, arrow.Size() / 2, new Vector2(1.2f - arrowAlpha, 3 * arrowAlpha), SpriteEffects.None, 0);
         }
-        public override Color ChatTextColor => new Color(237, 237, 237);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(237, 237, 237),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Eirin";
@@ -158,8 +161,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 860;
-            chance = 8;
+            timePerDialog = 860;//860
+            chance = 8;//8
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -214,68 +217,27 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(18, 19))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Kaguya>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile eirin = chatRoom.initiator;
-            Projectile kaguya = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 18 && index <= 19)
-            {
-                if (turn == -1)
-                {
-                    //永琳：公主大人，上次我又看到您偷偷跑去人里了。
-                    kaguya.CloseCurrentDialog();
+            TouhouPetID eirin = TouhouPetID.Eirin;
+            TouhouPetID kaguya = TouhouPetID.Kaguya;
 
-                    if (eirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //辉夜：有、有吗？一定是你看错了吧...
-                    kaguya.SetChat(ChatSettingConfig, 16, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(eirin, 18, -1), //永琳：公主大人，上次我又看到您偷偷跑去人里了。
+                new ChatRoomInfo(kaguya, 16, 0),//辉夜：有、有吗？一定是你看错了吧...
+                new ChatRoomInfo(eirin, 19, 1), //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
+                new ChatRoomInfo(kaguya, 17, 2),//辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
+            ];
 
-                    if (kaguya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
-                    eirin.SetChat(ChatSettingConfig, 19, 20);
-
-                    if (eirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
-                    kaguya.SetChat(ChatSettingConfig, 17, 20);
-
-                    if (kaguya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -295,11 +257,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.CloseCurrentDialog();
                 if (player.difficulty == PlayerDifficultyID.Hardcore)
                 {
-                    Projectile.SetChat(ChatSettingConfig, 99);
+                    Projectile.SetChat(ModUtils.GetChatTextValue("Eirin", "99", Owner.name));
                 }
                 else
                 {
-                    Projectile.SetChat(ChatSettingConfig, 14);
+                    Projectile.SetChat(14);
                 }
                 CurrentState = States.OwnerIsDead;
             }
@@ -321,8 +283,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             SetEirinActive(Owner);
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

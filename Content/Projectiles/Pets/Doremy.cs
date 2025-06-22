@@ -97,7 +97,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 127, 222);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 127, 222),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Doremy";
@@ -146,9 +149,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
@@ -160,8 +160,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<DoremyBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

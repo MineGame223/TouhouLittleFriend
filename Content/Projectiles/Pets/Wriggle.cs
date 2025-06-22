@@ -99,7 +99,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
-        public override Color ChatTextColor => new Color(107, 252, 75);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(107, 252, 75),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Wriggle";
@@ -107,9 +110,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 910;
-            chance = 6;
-            whenShouldStop = !IsIdleState && CurrentState != States.Cold;
+            timePerDialog = 910;//910
+            chance = 6;//6
+            whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
@@ -131,49 +134,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(1))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Mystia>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile wriggle = chatRoom.initiator;
-            Projectile mystia = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //莉格露：一闪一闪亮晶晶~满天都是小蜻蜓~
-                mystia.CloseCurrentDialog();
+            TouhouPetID wriggle = TouhouPetID.Wriggle;
+            TouhouPetID mystia = TouhouPetID.Mystia;
 
-                if (wriggle.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
-                mystia.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(wriggle, 1, -1), //莉格露：一闪一闪亮晶晶~满天都是小蜻蜓~
+                new ChatRoomInfo(mystia, 9, 0),//米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
+            ];
 
-                if (mystia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -188,8 +167,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<WriggleBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
@@ -307,7 +284,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mainTimer % 270 == 0)
                 {
                     if (Main.rand.NextBool(4))
+                    {
                         AntennaeActive = true;
+                        Projectile.netUpdate = true;
+                    }
 
                     CurrentState = States.Blink;
                 }
@@ -438,11 +418,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (antennaeFrame > 3)
             {
                 antennaeFrame = 0;
-                if (OwnerIsMyPlayer)
-                {
-                    AntennaeActive = false;
-                    Projectile.netUpdate = true;
-                }
+                AntennaeActive = false;
             }
         }
         private void AttractInsect()
@@ -462,8 +438,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private static List<int> IsFlyInsect()
         {
-            return new List<int>
-            {
+            return
+            [
                 NPCID.Butterfly,
                 NPCID.EmpressButterfly,
                 NPCID.GoldButterfly,
@@ -481,7 +457,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 NPCID.RedDragonfly,
                 NPCID.YellowDragonfly,
                 NPCID.Stinkbug
-            };
+            ];
         }
     }
 }

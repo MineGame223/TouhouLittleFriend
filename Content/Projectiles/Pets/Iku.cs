@@ -78,7 +78,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(79, 215, 239);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(79, 215, 239),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Iku";
@@ -176,9 +179,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateClothFrame();
@@ -190,8 +190,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<IkuBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

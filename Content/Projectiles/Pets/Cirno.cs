@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -86,7 +87,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return false;
         }
-        public override Color ChatTextColor => new Color(76, 207, 239);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(76, 207, 239),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Cirno";
@@ -94,8 +98,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 480;
-            chance = 9;
+            timePerDialog = 480;//480
+            chance = 9;//9
             whenShouldStop = CurrentState == States.Laughing || CurrentState == States.AfterLaughing;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -126,97 +130,59 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
+        {
+            return new()
+            {
+                Chatting1(),
+                Chatting2()
+            };
+        }
+
         /// <summary>
-        /// 执行对话过程
+        /// 一份对话信息列表
         /// <br>对话系统原理如下：</br>
-        /// <br>随时检测自身可以引起对话回合的对话索引，若成功检测到则立刻创建一个聊天室，并将其赋值给 currentChatRoom。</br>
-        /// <br>创建成功后，若检测到玩家携带有相关宠物，则该宠物会被拉入聊天室作为其中一员，其自身的 currentChatRoom 也会被赋值；
-        /// 否则如果没有检测到（比如宠物中途消失），则聊天室将被立刻关闭。</br>
-        /// <br>同时，currentChatRoom 非空的情况下将不再更新常规对话，以确保对话回合不会被打扰。</br>
-        /// <br>聊天室依靠 chatTurn 变量进行对话回合的切换，每当当前回合内宠物的话说完后，chatTurn 应当+1以进入下一回合；
-        /// chatTurn的初始值为-1，该回合用于等待宠物说完第一句话。</br>
-        /// <br>若chatTrun已超过对话最终回合，则聊天室将被关闭。</br>
+        /// <br>将包含对话信息的列表作为元素加入二维列表 <see cref="RegisterChatRoom"/> 中，每份列表中的对话信
+        /// 息包括宠物独特ID、本回合对话文本的索引值与对话应当出现的回合数。</br>
+        /// <br>宠物的AI中会持续遍历二维列表，若发现宠物当前的对话索引值等于对话信息列表中首条
+        /// 对话信息（即聊天发起者的信息）的对话索引，则会创建一个聊天室并进行编辑。</br>
+        /// <br>开始编辑时，会根据输入的信息列表自动生成成员独特ID列表并统计该对话的总回合数。
+        /// 宠物会根据ID列表遍历玩家持有的所有东方宠物，若发现其独特ID被包含在列表中，则该宠物的实例将被加入聊天室。</br>
+        /// <br>期间，如果在列表中的宠物被发现不存在，聊天室会立刻关闭。</br>
+        /// <br>将实例加入聊天室后，会再生成一份包括[成员实例、对话索引、所属回合数]的元组列表并进行遍历，
+        /// 若实例对应的所属回合数与当前回合数相匹配，则进行对话。聊天的发起者在第一回合时将不会说话。</br>
+        /// <br>当前回合内的宠物若已说完话，当前回合数将会自动 +1 以进入下一回合。
+        /// 当本回合内存在多个说话者时，以排在第一位的说话者为准。</br>
+        /// <br>若当前回合数已超过对话最终回合，则聊天室将被关闭。</br>
         /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的chatIndex将归零、其 currentChatRoom 也将设为空。</br>
         /// </summary>
-        private void UpdateTalking()
+        private static List<ChatRoomInfo> Chatting1()
         {
-            if (FindChatIndex(4) || FindChatIndex(7, 8))//请确保这里包含了所有该宠物在对话期间使用到的对话索引
-            {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+            TouhouPetID cirno = TouhouPetID.Cirno;
+            TouhouPetID daiyousei = TouhouPetID.Daiyousei;
+
+            //设置对话相关信息的结构体列表，结构参数依次为：参与聊天的宠物独特ID，对话索引值，对话所在的回合数
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(cirno, 4, -1),//琪露诺：最喜欢大酱了！
+                new ChatRoomInfo(daiyousei, 7, 0),//大妖精：我也最喜欢琪露诺酱！
+            ];
+
+            return list;
         }
-        //由自己发起的对话过程（与大妖精）
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Daiyousei>();
-            if (FindPet(out Projectile member, type))//查找玩家是否携带大妖精
-            {
-                //将大妖精拉入聊天室
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else//否则立刻关闭聊天室
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile cirno = chatRoom.initiator;
-            Projectile daiyousei = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index == 4)//对话1，关联索引为4
-            {
-                if (turn == -1)//起始回合
-                {
-                    //琪露诺：最喜欢大酱了！
-                    daiyousei.CloseCurrentDialog();//将成员现有的对话关闭，以最大限度确保对话流畅性
+            TouhouPetID cirno = TouhouPetID.Cirno;
+            TouhouPetID daiyousei = TouhouPetID.Daiyousei;
 
-                    if (cirno.CurrentDialogFinished())//当琪露诺的话说完时进入下一回合
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //大妖精：我也最喜欢琪露诺酱！
-                    daiyousei.SetChat(ChatSettingConfig, 7, 20);//令大妖精说话
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(cirno, 7, -1),//琪露诺：热死了...要化了...
+                new ChatRoomInfo(daiyousei, 8, 0),//大妖精：琪露诺酱你没事吧...
+                new ChatRoomInfo(cirno, 8, 1),//琪露诺：我没事...大概...
+            ];
 
-                    if (daiyousei.CurrentDialogFinished())//当大妖精的话说完时进入下一回合
-                        chatRoom.chatTurn++;
-                }
-                else//对话回合完成后退出聊天室
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 7 || index == 8)//对话2，关联索引为7、8
-            {
-                if (turn == -1)//起始回合
-                {
-                    //琪露诺：热死了...要化了...
-                    daiyousei.CloseCurrentDialog();
-
-                    if (cirno.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //大妖精：琪露诺酱你没事吧...
-                    daiyousei.SetChat(ChatSettingConfig, 8, 20);
-
-                    if (daiyousei.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //琪露诺：我没事...大概...
-                    cirno.SetChat(ChatSettingConfig, 8, 20);//令琪露诺说话
-
-                    if (cirno.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -230,8 +196,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<CirnoBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

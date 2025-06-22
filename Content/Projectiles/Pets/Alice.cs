@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -95,7 +96,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             Projectile.DrawPet(auraFrame, Color.White * 0.7f, config, 1);
         }
-        public override Color ChatTextColor => new Color(185, 228, 255);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(185, 228, 255),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Alice";
@@ -103,13 +107,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 1200;
-            chance = 4;
+            timePerDialog = 1200;//1200
+            chance = 4;//4
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -130,144 +134,50 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateAuraFrame();
             UpdateClothFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(4, 7))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
-            if (FindChatIndex(16, 17))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Marisa>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile alice = chatRoom.initiator;
-            Projectile marisa = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //爱丽丝：我说，你上次偷走的我的蘑菇什么时候能还我？
-                marisa.CloseCurrentDialog();
+            TouhouPetID alice = TouhouPetID.Alice;
+            TouhouPetID marisa = TouhouPetID.Marisa;
 
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //魔理沙：哎呀，人家的事情那能叫偷嘛？那叫借啦！
-                marisa.SetChat(ChatSettingConfig, 12, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(alice, 4, -1),//爱丽丝：我说，你上次偷走的我的蘑菇什么时候能还我？
+                new ChatRoomInfo(marisa, 12, 0),//魔理沙：哎呀，人家的事情那能叫偷嘛？那叫借啦！
+                new ChatRoomInfo(alice, 5, 1),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
+                new ChatRoomInfo(marisa, 13, 2),//魔理沙：放心，死了以后保证还给你！
+                new ChatRoomInfo(alice, 6, 3),//爱丽丝：...你还是别还了...下次不许再偷了！
+                new ChatRoomInfo(marisa, 14, 4),//魔理沙：下次一定！
+                new ChatRoomInfo(alice, 7, 5),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
+            ];
 
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
-                alice.SetChat(ChatSettingConfig, 5, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //魔理沙：放心，死了以后保证还给你！
-                marisa.SetChat(ChatSettingConfig, 13, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //爱丽丝：...你还是别还了...下次不许再偷了！
-                alice.SetChat(ChatSettingConfig, 6, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //魔理沙：下次一定！
-                marisa.SetChat(ChatSettingConfig, 14, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 5)
-            {
-                //爱丽丝：你！......
-                alice.SetChat(ChatSettingConfig, 7, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<AliceOld>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile alice = chatRoom.initiator;
-            Projectile ecila = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //爱丽丝：你是谁？总感觉有点眼熟...
-                ecila.CloseCurrentDialog();
+            TouhouPetID alice = TouhouPetID.Alice;
+            TouhouPetID alice_L = TouhouPetID.AliceLegacy;
 
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //爱丽丝：不知道哦，可能是过去的你吧。
-                ecila.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(alice, 16, -1),//爱丽丝：你是谁？总感觉有点眼熟...
+                new ChatRoomInfo(alice_L, 6, 0),//爱丽丝：不知道哦，可能是过去的你吧。
+                new ChatRoomInfo(alice, 17, 1),//爱丽丝：过去的...我？过去的时候...呃啊，头疼...
+            ];
 
-                if (ecila.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //爱丽丝：过去的...我？过去的时候...呃啊，头疼...
-                alice.SetChat(ChatSettingConfig, 17, 20);
-
-                if (alice.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<AliceBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

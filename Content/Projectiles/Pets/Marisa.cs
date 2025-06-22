@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using static TouhouPets.BossComment;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -76,7 +78,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(lightFrame, Color.White, drawConfig, 1);
             return false;
         }
-        public override Color ChatTextColor => new(255, 249, 137);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new(255, 249, 137),
+        };
         private const int PresetMaxChat = 50;
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
@@ -85,16 +90,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void PostRegisterChat()
         {
-            this.RegisterComment_Vanilla();
-            this.RegisterComment_Coralite();
-            this.RegisterComment_Thorium();
-            this.RegisterComment_HJ();
-            this.RegisterComment_ByMod();
+            Projectile.RegisterComment_Marisa();
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 720;
-            chance = 5;
+            timePerDialog = 720;//720
+            chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -122,115 +123,36 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void OnFindBoss(NPC boss)
+        public override void OnFindBoss(NPC boss, bool noReaction)
         {
-            Projectile.BossChat_ByMod(ChatSettingConfig, boss);
-
-            Projectile.BossChat_Vanilla(ChatSettingConfig, boss);
-            Projectile.BossChat_Coralite(ChatSettingConfig, boss);
-            Projectile.BossChat_Thorium(ChatSettingConfig, boss);
-            Projectile.BossChat_HomewardHourney(ChatSettingConfig, boss);
-            Projectile.BossChat_Gensokyo(ChatSettingConfig, boss);
+            Projectile.GiveComment_Marisa(boss);
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(7, 11))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Reimu>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile marisa = chatRoom.initiator;
-            Projectile reimu = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //魔理沙：嘿，嘿，灵梦！
-                reimu.CloseCurrentDialog();
+            TouhouPetID marisa = TouhouPetID.Marisa;
+            TouhouPetID reimu = TouhouPetID.Reimu;
 
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //灵梦：咋了？
-                reimu.SetChat(ChatSettingConfig, 5, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(marisa, 7, -1), //魔理沙：嘿，嘿，灵梦！
+                new ChatRoomInfo(reimu, 5, 0),//灵梦：咋了？
+                new ChatRoomInfo(marisa, 8, 1), //魔理沙：我今天找到了一个很有意思的东西！
+                new ChatRoomInfo(reimu, 6, 2),//灵梦：是什么？不会又是从图书馆偷来的书吧...
+                new ChatRoomInfo(marisa, 9, 3), //魔理沙：不是啦...是一颗落星！货真价实的星星欸！
+                new ChatRoomInfo(reimu, 7, 4),//灵梦：...那东西不是一到夜晚满地都是么？
+                new ChatRoomInfo(marisa, 10, 5), //魔理沙：但这颗星星要更闪亮一些啊，你不觉得吗？
+                new ChatRoomInfo(reimu, 8, 6),//灵梦：不觉得，一定是你又闲得慌了...
+                new ChatRoomInfo(marisa, 11, 7), //魔理沙：欸嘿嘿嘿...
+            ];
 
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //魔理沙：我今天找到了一个很有意思的东西！
-                marisa.SetChat(ChatSettingConfig, 8, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //灵梦：是什么？不会又是从图书馆偷来的书吧...
-                reimu.SetChat(ChatSettingConfig, 6, 20);
-
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //魔理沙：不是啦...是一颗落星！货真价实的星星欸！
-                marisa.SetChat(ChatSettingConfig, 9, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //灵梦：...那东西不是一到夜晚满地都是么？
-                reimu.SetChat(ChatSettingConfig, 7, 20);
-
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 5)
-            {
-                //魔理沙：但这颗星星要更闪亮一些啊，你不觉得吗？
-                marisa.SetChat(ChatSettingConfig, 10, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 6)
-            {
-                //灵梦：不觉得，一定是你又闲得慌了...
-                reimu.SetChat(ChatSettingConfig, 8, 20);
-
-                if (reimu.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 7)
-            {
-                //魔理沙：欸嘿嘿嘿...
-                marisa.SetChat(ChatSettingConfig, 11, 20);
-
-                if (marisa.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -243,8 +165,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MarisaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

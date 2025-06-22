@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -85,7 +86,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(69, 170, 234);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(69, 170, 234),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Tenshin";
@@ -93,13 +97,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 740;
-            chance = 7;
+            timePerDialog = 740;//740
+            chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -107,19 +111,19 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[4]);
                 chat.Add(ChatDictionary[5]);
                 chat.Add(ChatDictionary[6]);
-                chat.Add(ChatDictionary[9]);
+                if (FindBoss)
+                {
+                    chat.Add(ChatDictionary[7]);
+                }
+                chat.Add(ChatDictionary[8]);
             }
             return chat;
         }
-        public override void OnFindBoss(NPC boss)
+        public override void OnFindBoss(NPC boss, bool noReaction)
         {
             if (ModUtils.HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
             {
-                Projectile.SetChat(ChatSettingConfig, 7);
-            }
-            else
-            {
-                Projectile.SetChat(ChatSettingConfig, 8);
+                Projectile.SetChat(ChatSettingConfig, 9);
             }
         }
         public override void VisualEffectForPreview()
@@ -127,55 +131,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateStoneFrame();
             UpdateClothAndHairFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(2))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Iku>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile tenshin = chatRoom.initiator;
-            Projectile iku = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //天子：今天也要大干一场！
-                iku.CloseCurrentDialog();
+            TouhouPetID tenshin = TouhouPetID.Tenshin;
+            TouhouPetID iku = TouhouPetID.Iku;
 
-                if (tenshin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //衣玖：天女大人您还是安分点吧...
-                iku.SetChat(ChatSettingConfig, 16, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(tenshin, 2, -1), //天子：今天也要大干一场！
+                new ChatRoomInfo(iku, 16, 0),//衣玖：天女大人您还是安分点吧...
+            ];
 
-                if (iku.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<TenshiBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

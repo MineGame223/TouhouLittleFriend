@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -74,18 +75,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             });
             return false;
         }
-        public override Color ChatTextColor
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
         {
-            get
+            TextColor = PlanteState switch
             {
-                return PlanteState switch
-                {
-                    1 => new Color(79, 215, 239),
-                    2 => new Color(255, 249, 137),
-                    _ => new Color(255, 120, 120),
-                };
-            }
-        }
+                1 => new Color(79, 215, 239),
+                2 => new Color(255, 249, 137),
+                _ => new Color(255, 120, 120),
+            },
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Hecatia";
@@ -93,8 +91,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 666;
-            chance = 6;
+            timePerDialog = 666;//666
+            chance = 6;//6
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -106,49 +104,25 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(2))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Piece>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile hecatia = chatRoom.initiator;
-            Projectile piece = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //赫卡提娅：我的穿搭是无可挑剔的...真的会有人不喜欢么？
-                piece.CloseCurrentDialog();
+            TouhouPetID hecatia = TouhouPetID.Hecatia;
+            TouhouPetID piece = TouhouPetID.Piece;
 
-                if (hecatia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //皮丝：主人大人的着装当然是最时尚的啦！
-                piece.SetChat(ChatSettingConfig, 3, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(hecatia, 2, -1), //赫卡提娅：我的穿搭是无可挑剔的...真的会有人不喜欢么？
+                new ChatRoomInfo(piece, 3, 0),//皮丝：主人大人的着装当然是最时尚的啦！
+            ];
 
-                if (piece.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -158,8 +132,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<HecatiaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

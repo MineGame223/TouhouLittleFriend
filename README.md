@@ -31,7 +31,7 @@
 - 宠物召唤物是否可以通过敌怪掉落或通过钓鱼获得，以及宠物商人是否会在世界中刷新
 - 宠物是否可以进行对话以及对话文本的呈现方式
 - 宠物是否可以施展其特殊能力
-- 其他体验相关的设置，例如光标放于宠物前是否会令其隐形、开启兼容模式牺牲部分视觉效果以避免出现部分问题等
+- 其他体验相关的设置，例如光标放于宠物前是否会令其隐形、开启兼容模式牺牲染料效果以避免出现部分问题等
 
 ## 模组联动相关
 
@@ -41,37 +41,72 @@
 
 ## 联动支持相关
 
-本模组目前提供了两个`Mod.Call`方法，允许您让自己的模组更好地与本模组对接！
+本模组目前提供了四个 `Mod.Call` 方法，允许您让自己的模组更好地与本模组对接！
 
-所有方法的返回值均为`bool`类型，以指示该操作是否成功执行
+所有方法的返回值均为 `bool` 类型，以指示该操作是否成功执行
 
-### MarisasReactionToBoss
+### PetsReactionToBoss
 
-设置魔理沙遭遇不同Boss时会说出的话，允许对已有的原版Boss相关文本进行覆盖，每个Boss只能对应一句文本。
+设置宠物遭遇不同Boss时会说出的话，允许对宠物已有的Boss相关文本进行覆盖，每种Boss可对应多句随机文本。
 
 #### 参数
 
-- `BossType` ：被指定的Boss生物的种类，`int` 类型
-- `ChatText` ：与之相关的话语文本，`string` 类型
+- `BossType` ：被指定的Boss生物的种类，`int` 或 `short` 类型
+- `UniquePetID` ：宠物索引值，可参考[TouhouPetID.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/TouhouPetUniqueID.cs)，建议您复制一份到自己的模组中以供便利，`int` 类型
+- `ChatText` ：与之相关的话语文本合集，`WeightedRandom<LocalizedText>` 类型
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
 
 #### 注意事项
 
 - `BossType` 代指的NPC必须能够被判定为Boss，即 `npc.boss = true`。
 
-### PetDialog
+### YuyukosReactionToFood
 
-为本模组宠物添加在特定条件下可能会说出的话，数量不限，仅支持常规讲话。
+设置幽幽子是否接受或拒绝某样食物并给出评价，允许对宠物已有的食物相关态度进行覆盖，每种食物可对应多句随机文本。
 
 #### 参数
 
-- `UniquePetID` ：被添加对话的宠物的独特ID值，可参考[TouhouPetID.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/TouhouPetUniqueID.cs)，建议您复制一份到自己的模组中以供便利，`int` 类型
-- `ChatText` ：与之相关的话语文本，`string` 类型
-- `Condition` ：允许说出相关话语的条件，`Func<bool>` 类型
-- `Weight` ：相关话语的出现权重，值越大则出现几率越高，`int` 类型
+- `FoodType` ：被指定的食物种类，`int` 或 `short` 类型
+- `ChatText` ：与之相关的话语文本合集，`WeightedRandom<LocalizedText>` 类型
+- `Accept` ：幽幽子是否接受该种食物，被拒绝的食物将不会被幽幽子选择吃掉，`bool` 类型
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `Cover` ：添加对于原版食物的评价时，是否会覆盖本模组自带的评价，`bool?` 类型（选填，默认为不覆盖）
 
 #### 注意事项
 
-- `Weight` 最小为1，任何小于0的填入数值都会被强制设置为1。
+- `FoodType` 代指的物品必须能够被判定为食物，即 `ItemID.Sets.IsFood[item.type] = true`
+- 其他模组通过 Mod.Call 添加的对同一种食物的评价会相互兼容，不受 `Cover` 影响
+
+### PetDialog
+
+为本模组宠物添加平常随机或在特定条件下可能会说出的话。
+
+#### 参数
+
+- `UniquePetID` ：被添加对话的宠物的索引值，`int` 类型
+- `ChatText` ：与之相关的话语文本，`LocalizedText` 类型
+- `Condition` ：允许说出相关话语的条件，`Func<bool>` 类型
+- `Weight` ：相关话语的出现权重，值越大则出现几率越高，`int` 类型
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+
+#### 注意事项
+
+- `Weight` 最小为1，任何小于0的填入数值都会被强制设置为1
+
+### PetChatRoom
+
+为本模组宠物添加包含单个或多个宠物之间进行互动的聊天室，必须与 `PetDialog` 配合使用！
+
+#### 参数
+
+- `ChatRoomInfoList` ：包含聊天室信息的列表，`List<(int, int, int)>` 类型
+- 列表中元组内的三个参数分别代表 `宠物索引` ，`文本索引` 和 `回合数`
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+
+#### 注意事项
+
+- `文本索引` 由上文中 `PetDialog` 的填写顺序决定，索引值从0开始，详细参考可查看[ModCallShowcase.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/ModSupports/ModCallShowcase.cs)
+- `回合数` 从-1开始！
 
 ## 其他内容
 

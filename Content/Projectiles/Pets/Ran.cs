@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -46,7 +47,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, 
+            Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     AltTexture = clothTex,
@@ -54,7 +55,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(254, 216, 82);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(254, 216, 82),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Ran";
@@ -62,8 +66,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 750;
-            chance = 8;
+            timePerDialog = 750;//750
+            chance = 8;//8
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -73,105 +77,47 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
-                if (FindPet(ProjectileType<Chen>()))
+                if (FindPet(ProjectileType<Chen>()) && chatCD <= 0)
                 {
                     chat.Add(ChatDictionary[7]);
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(3, 4))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
-            if (FindChatIndex(7))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Yukari>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile ran = chatRoom.initiator;
-            Projectile yukari = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //蓝：饕餮那家伙，依旧坚持在畜牲界混吗...
-                yukari.CloseCurrentDialog();
+            TouhouPetID ran = TouhouPetID.Ran;
+            TouhouPetID yukari = TouhouPetID.Yukari;
 
-                if (ran.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //紫：若是叨念的话，我允许你临时请假哦。
-                yukari.SetChat(ChatSettingConfig, 4, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(ran, 3, -1), //蓝：饕餮那家伙，依旧坚持在畜牲界混吗...
+                new ChatRoomInfo(yukari, 4, 0), //紫：若是叨念的话，我允许你临时请假哦。
+                new ChatRoomInfo(ran, 4, 1), //蓝：才、才没有啊紫大人！
+            ];
 
-                if (yukari.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //蓝：才、才没有啊紫大人！
-                ran.SetChat(ChatSettingConfig, 4, 20);
-
-                if (ran.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Chen>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile ran = chatRoom.initiator;
-            Projectile chen = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //蓝：橙，不要乱跑哦！
-                chen.CloseCurrentDialog();
+            TouhouPetID ran = TouhouPetID.Ran;
+            TouhouPetID chen = TouhouPetID.Chen;
 
-                if (ran.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //橙：知道啦蓝大人，橙可没有乱跑！
-                chen.SetChat(ChatSettingConfig, 3, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(ran, 7, -1), //蓝：橙，不要乱跑哦！
+                new ChatRoomInfo(chen, 3, 0), //橙：知道啦蓝大人，橙可没有乱跑！
+            ];
 
-                if (chen.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -181,8 +127,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<YukariBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

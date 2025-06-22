@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -94,7 +95,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, lightColor, config);
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 105, 105);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 105, 105),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Sekibanki";
@@ -102,13 +106,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 777;
-            chance = 7;
+            timePerDialog = 777;//777
+            chance = 7;//7
             whenShouldStop = !IsIdleState || chatCD > 0;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -127,52 +131,31 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (FindChatIndex(3, 6))
-            {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
             if (FindChatIndex(1) || FindChatIndex(7, 10))
             {
                 Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
             }
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
+            return new()
             {
-                //赤蛮奇：一直以来我都穿着斗篷，
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //赤蛮奇：因为我不喜欢被人类认出是妖怪。
-                Projectile.SetChat(ChatSettingConfig, 4, 20);
+                Chatting1(),
+            };
+        }
+        private static List<ChatRoomInfo> Chatting1()
+        {
+            TouhouPetID seki = TouhouPetID.Sekibanki;
 
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
-                Projectile.SetChat(ChatSettingConfig, 5, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(seki,3, -1),//赤蛮奇：一直以来我都穿着斗篷，
+                new ChatRoomInfo(seki,4, 0),//赤蛮奇：因为我不喜欢被人类认出是妖怪。
+                new ChatRoomInfo(seki,5, 1),//赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
+                new ChatRoomInfo(seki,6, 2),//赤蛮奇：...好吧，除了你。
+            ];
 
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //赤蛮奇：...好吧，除了你。
-                Projectile.SetChat(ChatSettingConfig, 6, 20);
-
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom(3600);
-            }
+            return list;
         }
         private void Chatting2(PetChatRoom chatRoom)
         {
@@ -180,9 +163,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (turn == -1)
             {
                 //赤蛮奇：独来独往...
-                if (Projectile.CurrentDialogFinished())
+                if (Projectile.CurrentlyNoDialog())
                 {
-                    if (Main.rand.NextBool(4))
+                    if (Main.rand.NextBool(10))
                     {
                         chatRoom.chatTurn++;
                         if (OwnerIsMyPlayer)
@@ -192,16 +175,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                     }
                     else
                     {
-                        chatRoom.CloseChatRoom();
+                        chatRoom.CloseChatRoom(60);
                     }
                 }
             }
             else if (turn == 0)
             {
                 //赤蛮奇：...我将超越一切！
-                Projectile.SetChat(ChatSettingConfig, 7, 20);
+                Projectile.SetChatForChatRoom(7, 20);
 
-                if (Projectile.CurrentDialogFinished())
+                if (Projectile.CurrentlyNoDialog())
                 {
                     chatRoom.chatTurn++;
                     if (OwnerIsMyPlayer)
@@ -213,17 +196,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 1)
             {
                 //赤蛮奇：超——变——身——！！！
-                Projectile.SetChat(ChatSettingConfig, 8, 20);
+                Projectile.SetChatForChatRoom(8, 20);
 
-                if (Projectile.CurrentDialogFinished())
+                if (Projectile.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
             }
             else if (turn == 2)
             {
                 //赤蛮奇：......
-                Projectile.SetChat(ChatSettingConfig, 9, 20);
+                Projectile.SetChatForChatRoom(9, 20);
 
-                if (Projectile.CurrentDialogFinished())
+                if (Projectile.CurrentlyNoDialog())
                 {
                     chatRoom.chatTurn++;
                     if (OwnerIsMyPlayer)
@@ -235,9 +218,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 3)
             {
                 //赤蛮奇：...呃，你什么都没听见
-                Projectile.SetChat(ChatSettingConfig, 10, 20);
+                Projectile.SetChatForChatRoom(10, 20);
 
-                if (Projectile.CurrentDialogFinished())
+                if (Projectile.CurrentlyNoDialog())
                 {
                     chatRoom.chatTurn++;
                 }
@@ -314,7 +297,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 if (mainTimer > 0 && mainTimer % 555 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
-                    if (Main.rand.NextBool(7))
+                    if (Main.rand.NextBool(9))
                     {
                         RandomCount = Main.rand.Next(5, 10);
                         CurrentState = States.Posing;
@@ -400,13 +383,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void AfterHenshin()
         {
+            if (Projectile.frame < 15)
+                Projectile.frame = 15;
+
             if (++Projectile.frameCounter > 4)
             {
                 Projectile.frameCounter = 0;
                 Projectile.frame++;
             }
-            if (Projectile.frame == 10)
-                Projectile.frame = 15;
             if (Projectile.frame > 16)
             {
                 Projectile.frame = 0;

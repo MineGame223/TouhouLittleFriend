@@ -86,7 +86,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(135, 143, 237);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(135, 143, 237),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Star";
@@ -113,9 +116,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
@@ -128,8 +128,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.SetPetActive(Owner, BuffType<StarBuff>());
             Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

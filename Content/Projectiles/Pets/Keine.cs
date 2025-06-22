@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Enums;
 using Terraria.Utilities;
@@ -57,7 +58,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(clothFrame, lightColor, config, currentRow);
             return false;
         }
-        public override Color ChatTextColor => IsAltForm ? new Color(69, 172, 105) : new Color(97, 103, 255);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = IsAltForm ? new Color(69, 172, 105) : new Color(97, 103, 255),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Keine";
@@ -65,8 +69,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 720;
-            chance = 7;
+            timePerDialog = 720;//720
+            chance = 7;//7
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -92,109 +96,41 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(6))
+            return new()
             {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
-            if (FindChatIndex(7, 8))
-            {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+                Chatting2(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Moku>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile keine = chatRoom.initiator;
-            Projectile moku = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 7 && index <= 8)
-            {
-                if (turn == -1)
-                {
-                    //慧音：最近你怎么样？
-                    moku.CloseCurrentDialog();
+            TouhouPetID keine = TouhouPetID.Keine;
+            TouhouPetID moku = TouhouPetID.Moku;
 
-                    if (keine.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //妹红：还好吧，还是和以前一样罢了。
-                    moku.SetChat(ChatSettingConfig, 7, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(keine, 7, -1), //慧音：最近你怎么样？
+                new ChatRoomInfo(moku, 7, 0),//妹红：还好吧，还是和以前一样罢了。
+                new ChatRoomInfo(keine, 8, 1), //慧音：还在纠结过去的事情么？
+                new ChatRoomInfo(moku, 8, 2),//妹红：不，我已经在试着忘掉那些了...
+            ];
 
-                    if (moku.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //慧音：还在纠结过去的事情么？
-                    keine.SetChat(ChatSettingConfig, 8, 20);
-
-                    if (keine.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //妹红：不，我已经在试着忘掉那些了...
-                    moku.SetChat(ChatSettingConfig, 8, 20);
-
-                    if (moku.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Cirno>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile keine = chatRoom.initiator;
-            Projectile cirno = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //慧音：让我看看谁没写作业...
-                cirno.CloseCurrentDialog();
+            TouhouPetID keine = TouhouPetID.Keine;
+            TouhouPetID cirno = TouhouPetID.Cirno;
 
-                if (keine.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //琪露诺：（糟了！要被慧音老师发现了...）
-                cirno.SetChat(ChatSettingConfig, 12, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(keine, 6, -1), //慧音：让我看看谁没写作业...
+                new ChatRoomInfo(cirno, 12, 0),//琪露诺：（糟了！要被慧音老师发现了...）
+            ];
 
-                if (cirno.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -203,8 +139,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<KeineBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

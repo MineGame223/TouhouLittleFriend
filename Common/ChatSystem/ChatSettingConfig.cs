@@ -1,4 +1,5 @@
-﻿
+﻿using Microsoft.Xna.Framework;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TouhouPets
 {
@@ -16,5 +17,13 @@ namespace TouhouPets
         /// 打字机模式打印文本所需总时长；默认为字符数 * 5、上限150刻
         /// </summary>
         public int TyperModeUseTime = -1;
+        /// <summary>
+        /// 文本颜色，默认为白色
+        /// </summary>
+        public Color TextColor = Color.White;
+        /// <summary>
+        /// 文本边框颜色，默认为黑色
+        /// </summary>
+        public Color TextBoardColor = Color.Black;
     }
 }

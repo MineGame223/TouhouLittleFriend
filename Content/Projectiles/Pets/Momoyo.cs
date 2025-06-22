@@ -77,7 +77,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(156, 172, 181);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(156, 172, 181),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Momoyo";
@@ -112,14 +115,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MomoyoBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

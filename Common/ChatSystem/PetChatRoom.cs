@@ -27,8 +27,6 @@ namespace TouhouPets
         /// <summary>
         /// 聊天室类的构造函数，最多存在50个；每个聊天室最多包括6名参与者+1名发起者
         /// </summary>
-        public PetChatRoom()
-        {
-        }
+        public PetChatRoom() { }
     }
 }

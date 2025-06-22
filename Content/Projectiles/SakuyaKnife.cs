@@ -60,12 +60,15 @@ namespace TouhouPets.Content.Projectiles
             {
                 if (t != null && t.active)
                 {
+                    if (!t.IsATouhouPet())
+                        continue;
+
                     if (t.type == ProjectileType<Meirin>() && t.owner == Projectile.owner
                         && t.Hitbox.Intersects(Projectile.Hitbox))
                     {
                         Projectile.timeLeft = 0;
                         Projectile.netUpdate = true;
-                        t.ToPetClass().PetState = 7;
+                        t.AsTouhouPet().PetState = 7;
                         t.netUpdate = true;
                         return;
                     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Localization;
@@ -44,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
-            ChatDictionary[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
+            ChatDictionary[1] = ModUtils.GetChatTextValue("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
 
             base.OnSpawn(source);
         }
@@ -69,7 +70,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => new Color(224, 78, 78);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(224, 78, 78),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Koakuma";
@@ -77,8 +81,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 666;
-            chance = 6;
+            timePerDialog = 666;//666
+            chance = 6;//6
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -105,114 +109,48 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateHairFrame();
             UpdateEarsFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(4, 7))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
+                Chatting1(),
+                Chatting2(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Patchouli>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile koakuma = chatRoom.initiator;
-            Projectile patchouli = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 4 && index <= 5)
-            {
-                if (turn == -1)
-                {
-                    //小恶魔：帕秋莉大人！该锻炼身体啦！
-                    patchouli.CloseCurrentDialog();
+            TouhouPetID koakuma = TouhouPetID.Koakuma;
+            TouhouPetID patchouli = TouhouPetID.Patchouli;
 
-                    if (koakuma.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //帕秋莉：不要！会累死人的...
-                    patchouli.SetChat(ChatSettingConfig, 16, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(koakuma, 4, -1), //小恶魔：帕秋莉大人！该锻炼身体啦！
+                new ChatRoomInfo(patchouli, 16, 0),//帕秋莉：不要！会累死人的...
+                new ChatRoomInfo(koakuma, 5, 1), //小恶魔：为了您的健康着想，这很必要的哦！
+                new ChatRoomInfo(patchouli, 17, 2),//帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
+                new ChatRoomInfo(patchouli, 18, 3),//帕秋莉：...我真的很好！
+            ];
 
-                    if (patchouli.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //小恶魔：为了您的健康着想，这很必要的哦！
-                    koakuma.SetChat(ChatSettingConfig, 5, 20);
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting2()
+        {
+            TouhouPetID koakuma = TouhouPetID.Koakuma;
+            TouhouPetID patchouli = TouhouPetID.Patchouli;
 
-                    if (koakuma.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
-                    patchouli.SetChat(ChatSettingConfig, 17, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(koakuma, 6, -1), //小恶魔：帕秋莉大人在看什么？
+                new ChatRoomInfo(patchouli, Main.rand.Next(19, 36), 0),//帕秋莉：是关于xxxx的书...
+                new ChatRoomInfo(koakuma, 7, 1), //小恶魔：好像很有趣啊！
+            ];
 
-                    if (patchouli.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 3)
-                {
-                    //帕秋莉：...我真的很好！
-                    patchouli.SetChat(ChatSettingConfig, 18, 20);
-
-                    if (patchouli.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 6 || index == 7)
-            {
-                if (turn == -1)
-                {
-                    //小恶魔：帕秋莉大人在看什么？
-                    patchouli.CloseCurrentDialog();
-
-                    if (koakuma.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //帕秋莉：是关于xxxx的书...
-                    patchouli.SetChat(ChatSettingConfig, Main.rand.Next(19, 36), 20);
-
-                    if (patchouli.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //小恶魔：好像很有趣啊！
-                    koakuma.SetChat(ChatSettingConfig, 7, 20);
-
-                    if (koakuma.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<KoakumaBuff>());
             Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 
@@ -258,6 +196,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Main.rand.NextBool(4))
                 {
                     EarActive = true;
+                    Projectile.netUpdate = true;
                 }
                 CurrentState = States.Blink;
             }
@@ -322,11 +261,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (earFrame > 3)
             {
                 earFrame = 0;
-                if (OwnerIsMyPlayer)
-                {
-                    EarActive = false;
-                    Projectile.netUpdate = true;
-                }
+                EarActive = false;
             }
         }
     }

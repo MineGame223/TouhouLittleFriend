@@ -40,15 +40,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool ReadyToShot
         {
-            get
-            {
-                return (int)Projectile.ai[2] == 1;
-            }
-            set
-            {
-                Projectile.ai[2] = value ? 1 : 0;
-                Projectile.netUpdate = true;
-            }
+            get => Projectile.ai[2] == 1;
+            set => Projectile.ai[2] = value ? 1 : 0;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
 
@@ -121,7 +114,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Main.spriteBatch.MyDraw(t, pos, rect, clr, Projectile.rotation, orig, new Vector2(0.4f, 0.5f) * flash * 1.6f, effect, 0f);
             Main.spriteBatch.MyDraw(t, pos, rect, clr, Projectile.rotation + MathHelper.Pi / 2, orig, new Vector2(0.5f, 1f) * flash * 1.6f, effect, 0f);
         }
-        public override Color ChatTextColor => new Color(255, 102, 85);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 102, 85),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Aya";
@@ -135,7 +131,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<string> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -144,25 +140,22 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         private void SetShotChat()
         {
             int chance = Main.rand.Next(6);
             switch (chance)
             {
                 case 1:
-                    Projectile.SetChat(ChatSettingConfig, 5);
+                    Projectile.SetChat(5);
                     break;
                 case 2:
-                    Projectile.SetChat(ChatSettingConfig, 6);
+                    Projectile.SetChat(6);
                     break;
                 case 3:
-                    Projectile.SetChat(ChatSettingConfig, 7);
+                    Projectile.SetChat(7);
                     break;
                 case 4:
-                    Projectile.SetChat(ChatSettingConfig, 8);
+                    Projectile.SetChat(8);
                     break;
                 default:
                     break;
@@ -176,8 +169,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<AyaBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
@@ -325,6 +316,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     flashChance -= 2;//减少下次拍照的概况
                     ReadyToShot = true;//准备拍照
+                    Projectile.netUpdate = true;
                 }
             }
         }

@@ -9,30 +9,20 @@ namespace TouhouPets
     public partial class TouhouPets : Mod
     {
         private static PetChatRoom[] chatRoom = new PetChatRoom[ChatRoomSystem.MaxChatRoom];
-        private static TouhouPets instance;
+        private static TouhouPets instance;       
         public static PetChatRoom[] ChatRoom { get => chatRoom; set => chatRoom = value; }
         public static TouhouPets Instance { get => instance; set => instance = value; }
-
         public override void Load()
         {
             instance = this;
 
-            //需要对列表进行初始化
-            for (int i = 0; i < (int)TouhouPetID.Count; i++)
-            {
-                CrossModChatText[i] = [];
-                CrossModChatCondition[i] = [];
-                CrossModChatWeight[i] = [];
-            }
+            InitializCrossModList();
         }
         public override void Unload()
         {
             instance = null;
 
-            //不知道有啥影响，先写着
-            CrossModChatText = null;
-            CrossModChatCondition = null;
-            CrossModChatWeight = null;
+            InitializCrossModList();
         }
         public override void PostSetupContent()
         {
@@ -44,6 +34,13 @@ namespace TouhouPets
             {
                 GensokyoSupport.Setup(result);
             }
+
+            bool addCallForTest = true;
+            if (addCallForTest)
+            {
+                this.SetModCall();
+            }
+
             LoadClient();
         }
         private static void LoadClient()

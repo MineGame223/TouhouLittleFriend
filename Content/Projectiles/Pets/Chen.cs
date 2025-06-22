@@ -61,7 +61,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(89, 196, 108);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(89, 196, 108),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Chen";
@@ -82,9 +85,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateTailFrame();
@@ -95,8 +95,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<YukariBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 
@@ -145,8 +143,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         CurrentState = States.Meow;
 
-                        if (Main.rand.NextBool(2) && chatTimeLeft <= 0)
-                            Projectile.SetChat(ChatSettingConfig, 1, 20);
+                        if (Main.rand.NextBool(2))
+                            Projectile.SetChat(1, 20);
                     }
                 }
             }

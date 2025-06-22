@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -86,11 +85,17 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return false;
         }
-        public override Color ChatTextColor => new Color(188, 248, 248);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(188, 248, 248),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Youmu";
             indexRange = new Vector2(1, 11);
+        }
+        public override void PostRegisterChat()
+        {
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -100,7 +105,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new ();
             {
                 if (IsAfraid)
                 {
@@ -115,19 +120,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        public override void OnFindBoss(NPC boss)
+        public override bool PreFindBoss(NPC boss)
         {
-            if (FindPet(ProjectileType<Yuyuko>(), false))
+            if (Owner.HasBuff<YuyukoBuff>())
             {
-                Projectile.SetChat(ChatSettingConfig, 11);
+                Projectile.SetChat(11);
+                return false;
             }
-            else
-            {
-                Projectile.SetChat(ChatSettingConfig, 3);
-            }
+            return true;
         }
-        private void UpdateTalking()
-        {
+        public override void OnFindBoss(NPC boss, bool noReaction)
+        {         
+            if (noReaction)
+            {
+                Projectile.SetChat(3);
+            }
         }
         public override void VisualEffectForPreview()
         {
@@ -140,8 +147,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<YoumuBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

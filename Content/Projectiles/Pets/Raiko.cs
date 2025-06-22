@@ -105,7 +105,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(skritFrame, lightColor, config, 1);
             return false;
         }
-        public override Color ChatTextColor => new Color(249, 101, 101);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(249, 101, 101),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Raiko";
@@ -127,9 +130,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             UpdateBackFrame();
@@ -139,8 +139,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<RaikoBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 
@@ -324,6 +322,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         if (Main.rand.NextBool(3))
                         {
                             ShouldKick = true;
+                            Projectile.netUpdate = true;
                         }
                     }
                 }

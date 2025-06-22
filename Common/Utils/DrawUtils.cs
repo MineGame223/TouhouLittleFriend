@@ -49,7 +49,7 @@ namespace TouhouPets
 
             if (!Main.gameMenu)
             {
-                clr *= projectile.ToPetClass().mouseOpacity;
+                clr *= projectile.AsTouhouPet().mouseOpacity;
             }
 
             int height = t.Height / Main.projFrames[projectile.type];

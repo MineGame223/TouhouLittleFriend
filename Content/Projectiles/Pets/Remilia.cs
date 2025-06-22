@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -98,9 +99,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (sunlight || rain)
             {
                 bool isRemilia = projectile.type == ProjectileType<Remilia>()
-                    && projectile.ToPetClass().FindPet(ProjectileType<Sakuya>(), false);
+                    && projectile.AsTouhouPet().FindPet(ProjectileType<Sakuya>(), false);
                 bool isFlandre = projectile.type == ProjectileType<Flandre>()
-                    && projectile.ToPetClass().FindPet(ProjectileType<Meirin>(), false);
+                    && projectile.AsTouhouPet().FindPet(ProjectileType<Meirin>(), false);
                 if (isRemilia || isFlandre)
                     return false;
                 else
@@ -108,7 +109,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return false;
         }
-        public override Color ChatTextColor => new Color(255, 10, 10);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 10, 10),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Remilia";
@@ -116,8 +120,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 720;
-            chance = 9;
+            timePerDialog = 720;//720
+            chance = 9;//9
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -142,88 +146,34 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateWingFrame();
             UpdateClothFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(6, 8))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Flandre>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile remilia = chatRoom.initiator;
-            Projectile flandre = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //蕾米：我亲爱的芙兰哟...
-                flandre.CloseCurrentDialog();
+            TouhouPetID remi = TouhouPetID.Remilia;
+            TouhouPetID flan = TouhouPetID.Flandre;
 
-                if (remilia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //芙兰：姐姐？叫芙兰有什么事嘛？
-                flandre.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(remi, 6, -1), //蕾米：我亲爱的芙兰哟...
+                new ChatRoomInfo(flan, 6, 0),//芙兰：姐姐？叫芙兰有什么事嘛？
+                new ChatRoomInfo(remi, 7, 1), //蕾米：没什么...只是想叫你一下。
+                new ChatRoomInfo(flan, 7, 2),//芙兰：...姐姐什么时候能和芙兰一起玩...
+                new ChatRoomInfo(remi, 8, 3), //蕾米：有空会陪你的啦~
+                new ChatRoomInfo(flan, 8, 4),//芙兰：姐姐老是这么说...
+            ];
 
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //蕾米：没什么...只是想叫你一下。
-                remilia.SetChat(ChatSettingConfig, 7, 20);
-
-                if (remilia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //芙兰：...姐姐什么时候能和芙兰一起玩...
-                flandre.SetChat(ChatSettingConfig, 7, 20);
-
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //蕾米：有空会陪你的啦~
-                remilia.SetChat(ChatSettingConfig, 8, 20);
-
-                if (remilia.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //芙兰：姐姐老是这么说...
-                flandre.SetChat(ChatSettingConfig, 8, 20);
-
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<RemiliaBuff>());
             Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 
@@ -244,6 +194,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     break;
 
                 case States.Defense:
+                    shouldNotTalking = true;
                     Defense();
                     break;
 
@@ -388,16 +339,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    if (Main.rand.NextBool(3) && currentChatRoom == null && Projectile.CurrentDialogFinished())
+                    if (Main.rand.NextBool(3) && currentChatRoom == null)
                     {
                         int chance = Main.rand.Next(2);
                         switch (chance)
                         {
                             case 1:
-                                Projectile.SetChat(ChatSettingConfig, 4, 20);
+                                Projectile.SetChat(4, 20);
                                 break;
                             default:
-                                Projectile.SetChat(ChatSettingConfig, 3, 20);
+                                Projectile.SetChat(3, 20);
                                 break;
                         }
                     }

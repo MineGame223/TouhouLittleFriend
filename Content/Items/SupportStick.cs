@@ -24,6 +24,11 @@ namespace TouhouPets.Content.Items
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
+            if (Main.gameMenu)
+            {
+                return true;
+            }
+
             Texture2D texture = offTex;
             spriteBatch.MyDraw(texture, position, frame, drawColor, 0f, origin, scale, SpriteEffects.None, 0);
 
@@ -81,7 +86,7 @@ namespace TouhouPets.Content.Items
             {
                 return true;
             }
-            if (player.altFunctionUse == 2)
+            if (player.altFunctionUse == ItemAlternativeFunctionID.ActivatedAndUsed)
             {
                 if (!ModPlayer.ManualConcert || !ModPlayer.ShouldBandPlaying)
                 {
@@ -91,7 +96,7 @@ namespace TouhouPets.Content.Items
                 ModPlayer.MusicRerolled = false;
                 if (ModPlayer.CustomModeOn)
                 {
-                    ModPlayer.ManualRerolled = true;
+                    ModPlayer.RerollManually = true;
                 }
             }
             else

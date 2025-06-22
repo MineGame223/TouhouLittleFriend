@@ -92,7 +92,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                     });
             return false;
         }
-        public override Color ChatTextColor => new Color(246, 110, 169);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(246, 110, 169),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Mystia";
@@ -121,13 +124,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateClothFrame();
             UpdateMiscData();
         }
-        private void UpdateTalking()
-        {
-        }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<MystiaBuff>());
-            UpdateTalking();
 
             ControlMovement();
 
@@ -205,16 +204,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                         switch (chance)
                         {
                             case 1:
-                                Projectile.SetChat(ChatSettingConfig, 5, 90);
+                                Projectile.SetChat(5, 90);
                                 break;
                             case 2:
-                                Projectile.SetChat(ChatSettingConfig, 6, 90);
+                                Projectile.SetChat(6, 90);
                                 break;
                             case 3:
-                                Projectile.SetChat(ChatSettingConfig, 7, 90);
+                                Projectile.SetChat(7, 90);
                                 break;
                             default:
-                                Projectile.SetChat(ChatSettingConfig, 8, 90);
+                                Projectile.SetChat(8, 90);
                                 break;
                         }
                     }

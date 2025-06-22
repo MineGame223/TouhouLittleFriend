@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -110,7 +111,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                         + posOffset
                 }, 1);
         }
-        public override Color ChatTextColor => new Color(255, 149, 170);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 149, 170),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Kokoro";
@@ -118,8 +122,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 1020;
-            chance = 5;
+            timePerDialog = 1020;//1020
+            chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -139,81 +143,29 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(7, 9))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Koishi>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile kokoro = chatRoom.initiator;
-            Projectile koishi = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //秦心：我的宿敌啊！
-                koishi.CloseCurrentDialog();
+            TouhouPetID kokoro = TouhouPetID.Kokoro;
+            TouhouPetID koishi = TouhouPetID.Koishi;
 
-                if (kokoro.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //恋恋：心酱叫我有何事？
-                koishi.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(kokoro, 7, -1), //秦心：我的宿敌啊！
+                new ChatRoomInfo(koishi, 9, 0),//恋恋：心酱叫我有何事？
+                new ChatRoomInfo(kokoro, 8, 1), //秦心：...你还有什么可以教会我的情绪吗？
+                new ChatRoomInfo(koishi, 10, 2),//恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
+                new ChatRoomInfo(kokoro, 9, 3), //秦心：不是很懂...啊，这就是“困惑”吗？
+                new ChatRoomInfo(koishi, 11, 4),//恋恋：好欸！学会“困惑”啦~
+            ];
 
-                if (koishi.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //秦心：...你还有什么可以教会我的情绪吗？
-                kokoro.SetChat(ChatSettingConfig, 8, 20);
-
-                if (kokoro.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
-                koishi.SetChat(ChatSettingConfig, 10, 20);
-
-                if (koishi.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //秦心：不是很懂...啊，这就是“困惑”吗？
-                kokoro.SetChat(ChatSettingConfig, 9, 20);
-
-                if (kokoro.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //恋恋：好欸！学会“困惑”啦~
-                koishi.SetChat(ChatSettingConfig, 11, 20);
-
-                if (koishi.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -226,8 +178,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<KokoroBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

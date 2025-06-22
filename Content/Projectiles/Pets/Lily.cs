@@ -61,7 +61,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override Color ChatTextColor => Color.White;
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = Color.White,
+            TextBoardColor = Color.DeepPink * 0.5f,
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Lily";
@@ -69,8 +73,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 720;
-            chance = 9;
+            timePerDialog = 720;//720
+            chance = 6;//9
             whenShouldStop = false;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -84,9 +88,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
-        {
-        }
         public override void VisualEffectForPreview()
         {
             IdleAnimation();
@@ -99,8 +100,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<LilyBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

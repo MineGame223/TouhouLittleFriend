@@ -98,10 +98,6 @@ namespace TouhouPets
         /// 指定文件夹的完整路径
         /// </summary>
         public static string FullPath { get => Path.Combine(ModLoader.ModPath, "TouhouPetCustomMusic"); }
-        /// <summary>
-        /// 控制台信息头
-        /// </summary>
-        public static string ConsoleMessageHead { get => $"[{DateTime.Now}] [TouhouPets]: "; }
         private static ConcertPlayer ModPlayer { get => Main.LocalPlayer.GetModPlayer<ConcertPlayer>(); }
         /// <summary>
         /// 确保文件夹存在
@@ -120,7 +116,7 @@ namespace TouhouPets
         {
             if (!Directory.Exists(musicsFolderPath))
             {
-                Console.WriteLine($"{ConsoleMessageHead}文件夹 {musicsFolderPath} 未找到！现已生成新的文件夹并跳过加载环节。");
+                TouhouPets.Instance.Logger.Info($"文件夹 {musicsFolderPath} 未找到！现已生成新的文件夹并跳过加载环节。");
                 Directory.CreateDirectory(musicsFolderPath);
                 return;
             }
@@ -148,24 +144,24 @@ namespace TouhouPets
 
                 try
                 {
-                    Console.WriteLine($"{ConsoleMessageHead}正在加载 {fileName}");
+                    TouhouPets.Instance.Logger.Info($"正在加载 {fileName}");
                     SoundEffect sound = LoadSoundEffect(file, extension);
                     if (sound != null)
                     {
                         _loadedSounds.Add(sound);
                         _loadedSoundFiles.Add(file);
-                        Console.WriteLine($"{ConsoleMessageHead}已加载 {fileName}");
+                        TouhouPets.Instance.Logger.Info($"已加载 {fileName}");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"{ConsoleMessageHead}加载音频 {file} 失败：{ex.Message}");
+                    TouhouPets.Instance.Logger.Info($"加载音频 {file} 失败：{ex.Message}");
                 }
             }
 
             if (_loadedSounds.Count == 0)
             {
-                Console.WriteLine($"{ConsoleMessageHead}未找到任何支持的音频文件。");
+                TouhouPets.Instance.Logger.Info($"未找到任何支持的音频文件。");
                 _noSoundFile = true;
             }
         }
@@ -235,7 +231,7 @@ namespace TouhouPets
             if (!File.Exists(_loadedSoundFiles[index]))
             {
                 Main.NewText(Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName), Color.Yellow);
-                Console.WriteLine(ConsoleMessageHead + Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName));
+                TouhouPets.Instance.Logger.Info(Language.GetTextValue("Mods.TouhouPets.FileNotExist", fileName));
                 index++;
                 if (index >= _loadedSoundFiles.Count - 1)
                 {
@@ -256,12 +252,12 @@ namespace TouhouPets
                 }
 
                 if (printMessage)
-                    Console.WriteLine($"{ConsoleMessageHead}正在播放：{fileName}");
+                    TouhouPets.Instance.Logger.Info($"正在播放：{fileName}");
             }
             catch (Exception ex)
             {
                 Main.NewText(Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message), Color.Yellow);
-                Console.WriteLine(ConsoleMessageHead + Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message));
+                TouhouPets.Instance.Logger.Info(Language.GetTextValue("Mods.TouhouPets.FailedToPlay", fileName, ex.Message));
             }
         }
         /// <summary>
@@ -345,7 +341,7 @@ namespace TouhouPets
             if (_rolledSoundIndex.Count >= _loadedSounds.Count && _playMode != PlayModeID.SingleLoop)
             {
                 _rolledSoundIndex.Clear();
-                Console.WriteLine($"{ConsoleMessageHead}已完成一次列表播放。");
+                TouhouPets.Instance.Logger.Info($"已完成一次列表播放。");
             }
             for (int i = 0; i < _loadedSounds.Count; i++)
             {
@@ -417,7 +413,7 @@ namespace TouhouPets
 
             if (_exitPlay == ExitProcess.NotExited)
             {
-                Console.WriteLine($"{ConsoleMessageHead}已退出播放。");
+                TouhouPets.Instance.Logger.Info($"已退出播放。");
                 _exitPlay = ExitProcess.PrintMessage;
             }
         }

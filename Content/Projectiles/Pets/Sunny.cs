@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -137,7 +137,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             }
         }
-        public override Color ChatTextColor => new Color(240, 196, 48);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(240, 196, 48),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Sunny";
@@ -145,13 +148,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 640;
-            chance = 6;
+            timePerDialog = 640;//640
+            chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<string> chat = new();
             {
                 if (IsRainWet)
                 {
@@ -168,144 +171,57 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         chat.Add(ChatDictionary[4]);
                         chat.Add(ChatDictionary[5]);
-                        chat.Add(ChatDictionary[9], 10);
+
+                        if (chatCD <= 0)
+                            chat.Add(ChatDictionary[9]);
                     }
                     if (!Owner.HasBuff<ReimuBuff>())
-                        chat.Add(ChatDictionary[12], 10);
+                        chat.Add(ChatDictionary[12], 3);
                 }
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(9, 11))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
-            if (FindChatIndex(12, 15))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2()
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //桑尼：日光妖精~ 洁白身体~
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //桑尼：日光妖精~ 碧蓝双眸~
-                Projectile.SetChat(ChatSettingConfig, 10, 20);
+            TouhouPetID sunny = TouhouPetID.Sunny;
 
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //桑尼：日光妖精—— 桑尼！米尔克！
-                Projectile.SetChat(ChatSettingConfig, 11, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sunny,9, -1),//桑尼：日光妖精~ 洁白身体~
+                new ChatRoomInfo(sunny,10, 0),//桑尼：日光妖精~ 碧蓝双眸~
+                new ChatRoomInfo(sunny,11, 1),//桑尼：日光妖精—— 桑尼！米尔克！
+            ];
 
-                if (Projectile.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Luna>();
-            int type2 = ProjectileType<StarPet>();
-            if (FindPet(out Projectile member, type) && FindPet(out Projectile member2, type2))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
+            TouhouPetID sunny = TouhouPetID.Sunny;
+            TouhouPetID luna = TouhouPetID.Luna;
+            TouhouPetID star = TouhouPetID.Star;
 
-                chatRoom.member[1] = member2;
-                member2.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(sunny, 12, -1),//桑尼：下一次该去哪里恶作剧呢？
+                new ChatRoomInfo(star, 6, 0),//斯塔：要不去偷那个黑白魔法使的蘑菇吧？
+                new ChatRoomInfo(luna, 9, 1),//露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
+                new ChatRoomInfo(sunny,13,2),//桑尼：没事的啦！露娜你只管殿后就好啦。
+                new ChatRoomInfo(luna, 10, 3),//露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
+                new ChatRoomInfo(sunny, 14, 4),//桑尼：呜哇！偷东西的时候你的能力超重要的好吗？
+                new ChatRoomInfo(star, 7, 5),//斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
+                new ChatRoomInfo(sunny,15, 6),//桑尼 & 露娜：不可以！！！
+                new ChatRoomInfo(luna,11, 6),
+            ];
 
-            Projectile sunny = chatRoom.initiator;
-            Projectile luna = chatRoom.member[0];
-            Projectile star = chatRoom.member[1];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //桑尼：下一次该去哪里恶作剧呢？
-                if (sunny.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //斯塔：要不去偷那个黑白魔法使的蘑菇吧？
-                star.SetChat(ChatSettingConfig, 6, 20);
-
-                if (star.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
-                luna.SetChat(ChatSettingConfig, 9, 20);
-
-                if (luna.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 2)
-            {
-                //桑尼：没事的啦！露娜你只管殿后就好啦。
-                sunny.SetChat(ChatSettingConfig, 13, 20);
-
-                if (sunny.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 3)
-            {
-                //露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
-                luna.SetChat(ChatSettingConfig, 10, 20);
-
-                if (luna.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 4)
-            {
-                //桑尼：呜哇！偷东西的时候你的能力超重要的好吗？
-                sunny.SetChat(ChatSettingConfig, 14, 20);
-
-                if (sunny.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 5)
-            {
-                //斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
-                star.SetChat(ChatSettingConfig, 7, 20);
-
-                if (star.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 6)
-            {
-                //桑尼&露娜：不可以！！！
-                sunny.SetChat(ChatSettingConfig, 15, 20);
-                luna.SetChat(ChatSettingConfig, 11, 20);
-
-                if (luna.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -320,8 +236,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.SetPetActive(Owner, BuffType<SunnyBuff>());
             Projectile.SetPetActive(Owner, BuffType<TheThreeFairiesBuff>());
-
-            UpdateTalking();
 
             ControlMovement(Owner);
 

@@ -1,0 +1,21 @@
+Mods: {
+	TouhouPets: {
+		Chat_Yuyuko: {
+			Food_1: Freshly baked is the best!
+			Food_2: A peculiar jungle delicacy with high protein!
+			Food_3: It's a homeland taste...But there is no sea in the Netherworld, right?
+			Food_4: Salute to the legendary commercial food!
+			Food_5: The fries without ketchup or cod are soulless...
+			Food_6: Oh! Gold taste!
+			Food_7: No matter if it's shucks, or something else, just eat them together.
+			Food_8: An apple a day keeps the doctor... wait, do I need a doctor?
+			Food_9: These won't explode, right?
+			Food_10: I've hidden all the pineapples...
+			Food_11: Could it be a pie?
+			Food_12: It's tasty if there are no small bones!
+			Food_13: Life won't be awesome without alcohol, Cheers!
+			Food_14: _
+			Food_Reject_1: Please don't feed me junk...
+		}
+	}
+}

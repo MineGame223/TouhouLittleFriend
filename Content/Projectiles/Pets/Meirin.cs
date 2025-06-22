@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Utilities;
@@ -109,7 +110,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 orig = tex.Size() / 2;
             Main.EntitySpriteDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
         }
-        public override Color ChatTextColor => new Color(255, 81, 81);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(255, 81, 81),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Meirin";
@@ -117,8 +121,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 960;
-            chance = 5;
+            timePerDialog = 960;//960
+            chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -137,172 +141,60 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             return chat;
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(10, 15))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
-            if (FindChatIndex(5, 6))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2(),
+                Chatting3(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Sakuya>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile meirin = chatRoom.initiator;
-            Projectile sakuya = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index >= 10 && index <= 12)
-            {
-                if (turn == -1)
-                {
-                    //美铃：咲夜小姐每天那么忙，有过休假的时候吗？
-                    sakuya.CloseCurrentDialog();
+            TouhouPetID meirin = TouhouPetID.Meirin;
+            TouhouPetID sakuya = TouhouPetID.Sakuya;
 
-                    if (meirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
-                    sakuya.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(meirin, 10, -1), //美铃：咲夜小姐每天那么忙，有过休假的时候吗？
+                new ChatRoomInfo(sakuya, 6, 0),//咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
+                new ChatRoomInfo(meirin, 11, 1), //美铃：这个工作和休假没啥区别啊...
+                new ChatRoomInfo(sakuya, 7, 2),//咲夜：什么？
+                new ChatRoomInfo(meirin, 12, 3), //美铃：没！没什么...
+            ];
 
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //美铃：这个工作和休假没啥区别啊...
-                    meirin.SetChat(ChatSettingConfig, 11, 20);
-
-                    if (meirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //咲夜：什么？
-                    sakuya.SetChat(ChatSettingConfig, 7, 20);
-
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 3)
-                {
-                    //美铃：没！没什么...
-                    meirin.SetChat(ChatSettingConfig, 12, 20);
-
-                    if (meirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 13 || index == 15)
-            {
-                if (turn == -1)
-                {
-                    //美铃：咲夜小姐，我最近发现了一本讲保安和女仆谈恋爱的漫画欸！
-                    sakuya.CloseCurrentDialog();
-
-                    if (meirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //咲夜：站岗期间你看漫画？
-                    sakuya.SetChat(ChatSettingConfig, 8, 20);
-
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 1)
-                {
-                    //美铃：啊，糟了！偷懒的事暴露了...
-                    meirin.SetChat(ChatSettingConfig, 14, 20);
-
-                    if (meirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 2)
-                {
-                    //咲夜：看我晚上不好好收拾你！...书记得给我看看...
-                    sakuya.SetChat(ChatSettingConfig, 9, 20);
-
-                    if (sakuya.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 3)
-                {
-                    //美铃：呜呜呜...欸？
-                    meirin.SetChat(ChatSettingConfig, 15, 20);
-
-                    if (meirin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Flandre>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile meirin = chatRoom.initiator;
-            Projectile flandre = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //美铃：易有太极，是生两仪...
-                flandre.CloseCurrentDialog();
+            TouhouPetID meirin = TouhouPetID.Meirin;
+            TouhouPetID sakuya = TouhouPetID.Sakuya;
 
-                if (meirin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //芙兰：美铃在说什么？
-                flandre.SetChat(ChatSettingConfig, 9, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(meirin, 13, -1), //美铃：咲夜小姐，我最近发现了一本讲保安和女仆谈恋爱的漫画欸！
+                new ChatRoomInfo(sakuya, 8, 0),//咲夜：站岗期间你看漫画？
+                new ChatRoomInfo(meirin, 14, 1), //美铃：啊，糟了！偷懒的事暴露了...
+                new ChatRoomInfo(sakuya, 9, 2),//咲夜：什么？
+                new ChatRoomInfo(meirin, 15, 3), //美铃：呜呜呜...欸？
+            ];
 
-                if (flandre.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 1)
-            {
-                //美铃：是我的家乡话哦，二小姐。
-                meirin.SetChat(ChatSettingConfig, 6, 20);
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting3()
+        {
+            TouhouPetID meirin = TouhouPetID.Meirin;
+            TouhouPetID flandre = TouhouPetID.Flandre;
 
-                if (meirin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(meirin, 5, -1), //美铃：易有太极，是生两仪...
+                new ChatRoomInfo(flandre, 9, 0),//芙兰：美铃在说什么？
+                new ChatRoomInfo(meirin, 6, 1), //美铃：是我的家乡话哦，二小姐。
+            ];
+
+            return list;
         }
         public override void VisualEffectForPreview()
         {
@@ -326,7 +218,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.SetPetActive(Owner, BuffType<MeirinBuff>());
             Projectile.SetPetActive(Owner, BuffType<ScarletBuff>());
 
-            UpdateTalking();
             ControlMovement(Owner);
 
             if (OwnerIsMyPlayer)
@@ -516,7 +407,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(25) && Timer == 0)
                     {
-                        Projectile.SetChat(ChatSettingConfig, 5);
+                        Projectile.SetChat(5);
                         Timer++;
                     }
                 }

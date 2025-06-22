@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -79,7 +80,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.DrawPet(Projectile.frame, Color.White * 0.8f, drawConfig, 2);
             return false;
         }
-        public override Color ChatTextColor => new Color(227, 59, 59);
+        public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
+        {
+            TextColor = new Color(227, 59, 59),
+        };
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Rin";
@@ -87,8 +91,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 641;
-            chance = 6;
+            timePerDialog = 641;//641
+            chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<string> RegularDialogText()
@@ -118,123 +122,58 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             UpdateMiscFrame();
         }
-        private void UpdateTalking()
+        public override List<List<ChatRoomInfo>> RegisterChatRoom()
         {
-            if (FindChatIndex(5, 6))
+            return new()
             {
-                Chatting1(currentChatRoom ?? Projectile.CreateChatRoomDirect(), chatIndex);
-            }
-            if (FindChatIndex(7))
-            {
-                Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
-            }
+                Chatting1(),
+                Chatting2(),
+                Chatting3(),
+            };
         }
-        private void Chatting1(PetChatRoom chatRoom, int index)
+        private static List<ChatRoomInfo> Chatting1()
         {
-            int type = ProjectileType<Satori>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile rin = chatRoom.initiator;
-            Projectile satori = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (index == 5)
-            {
-                if (turn == -1)
-                {
-                    //阿燐：觉大人最好了！
-                    satori.CloseCurrentDialog();
+            TouhouPetID rin = TouhouPetID.Rin;
+            TouhouPetID satori = TouhouPetID.Satori;
 
-                    if (rin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //觉：阿燐也是我最喜欢的猫咪哦。
-                    satori.SetChat(ChatSettingConfig, 5, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(rin, 5, -1), //阿燐：觉大人最好了！
+                new ChatRoomInfo(satori, 5, 0),//觉：阿燐也是我最喜欢的猫咪哦。
+            ];
 
-                    if (satori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
-            else if (index == 6)
-            {
-                if (turn == -1)
-                {
-                    //阿燐：今天觉大人有好好吃饭吗？
-                    satori.CloseCurrentDialog();
-
-                    if (rin.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else if (turn == 0)
-                {
-                    //觉：别担心啦。
-                    satori.SetChat(ChatSettingConfig, 7, 20);
-
-                    if (satori.CurrentDialogFinished())
-                        chatRoom.chatTurn++;
-                }
-                else
-                {
-                    chatRoom.CloseChatRoom();
-                }
-            }
+            return list;
         }
-        private void Chatting2(PetChatRoom chatRoom)
+        private static List<ChatRoomInfo> Chatting2()
         {
-            int type = ProjectileType<Utsuho>();
-            if (FindPet(out Projectile member, type))
-            {
-                chatRoom.member[0] = member;
-                member.ToPetClass().currentChatRoom = chatRoom;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-                return;
-            }
-            Projectile rin = chatRoom.initiator;
-            Projectile utsuho = chatRoom.member[0];
-            int turn = chatRoom.chatTurn;
-            if (turn == -1)
-            {
-                //阿燐：阿空，今天也要好好干活啊！
-                utsuho.CloseCurrentDialog();
+            TouhouPetID rin = TouhouPetID.Rin;
+            TouhouPetID satori = TouhouPetID.Satori;
 
-                if (rin.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else if (turn == 0)
-            {
-                //阿空：放心交给我吧！
-                utsuho.SetChat(ChatSettingConfig, 6, 20);
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(rin, 6, -1), //阿燐：今天觉大人有好好吃饭吗？
+                new ChatRoomInfo(satori, 7, 0),//觉：别担心啦。
+            ];
 
-                if (utsuho.CurrentDialogFinished())
-                    chatRoom.chatTurn++;
-            }
-            else
-            {
-                chatRoom.CloseChatRoom();
-            }
+            return list;
+        }
+        private static List<ChatRoomInfo> Chatting3()
+        {
+            TouhouPetID rin = TouhouPetID.Rin;
+            TouhouPetID utsuho = TouhouPetID.Utsuho;
+
+            List<ChatRoomInfo> list =
+            [
+                new ChatRoomInfo(rin, 7, -1), //阿燐：阿空，今天也要好好干活啊！
+                new ChatRoomInfo(utsuho, 6, 0),//阿空：放心交给我吧！
+            ];
+
+            return list;
         }
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<RinBuff>());
             Projectile.SetPetActive(Owner, BuffType<KomeijiBuff>());
-
-            UpdateTalking();
 
             ControlMovement();
 

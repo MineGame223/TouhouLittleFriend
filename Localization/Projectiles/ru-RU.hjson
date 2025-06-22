@@ -56,7 +56,7 @@ Mods: {
 			Raiko.DisplayName: Райко Хорикава
 			Keine.DisplayName: Кейна Камиширасава
 			Luna.DisplayName: Луна Чайлд
-			Star.DisplayName: Стар Сапфир
+			StarPet.DisplayName: Стар Сапфир
 			Sunny.DisplayName: Санни Милк
 			Reisen.DisplayName: Рейсен Удонгейн Инаба
 			Sizuha.DisplayName: Сидзуха Аки
@@ -75,7 +75,6 @@ Mods: {
 			// Lunasa.DisplayName: Lunasa Prismriver
 			// Merlin.DisplayName: Merlin Prismriver
 			// Lyrica.DisplayName: Lyrica Prismriver
-			// StarPet.DisplayName: Star Pet
 		}
 	}
 }
