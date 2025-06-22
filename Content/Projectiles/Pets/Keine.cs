@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Enums;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -73,9 +74,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;//7
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (UseAlternateForm)
                 {
@@ -104,30 +105,30 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID keine = TouhouPetID.Keine;
             TouhouPetID moku = TouhouPetID.Moku;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(keine, 7, -1), //慧音：最近你怎么样？
-                new ChatRoomInfo(moku, 7, 0),//妹红：还好吧，还是和以前一样罢了。
-                new ChatRoomInfo(keine, 8, 1), //慧音：还在纠结过去的事情么？
-                new ChatRoomInfo(moku, 8, 2),//妹红：不，我已经在试着忘掉那些了...
+                new ChatRoomInfo(keine, ChatDictionary[7], -1), //慧音：最近你怎么样？
+                new ChatRoomInfo(moku, ChatDictionary[7], 0),//妹红：还好吧，还是和以前一样罢了。
+                new ChatRoomInfo(keine, ChatDictionary[8], 1), //慧音：还在纠结过去的事情么？
+                new ChatRoomInfo(moku, ChatDictionary[8], 2),//妹红：不，我已经在试着忘掉那些了...
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID keine = TouhouPetID.Keine;
             TouhouPetID cirno = TouhouPetID.Cirno;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(keine, 6, -1), //慧音：让我看看谁没写作业...
-                new ChatRoomInfo(cirno, 12, 0),//琪露诺：（糟了！要被慧音老师发现了...）
+                new ChatRoomInfo(keine, ChatDictionary[6], -1), //慧音：让我看看谁没写作业...
+                new ChatRoomInfo(cirno, ChatDictionary[12], 0),//琪露诺：（糟了！要被慧音老师发现了...）
             ];
 
             return list;

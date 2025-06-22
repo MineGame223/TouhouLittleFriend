@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -111,9 +110,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 4;//4
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -142,35 +141,35 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID alice = TouhouPetID.Alice;
             TouhouPetID marisa = TouhouPetID.Marisa;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(alice, 4, -1),//爱丽丝：我说，你上次偷走的我的蘑菇什么时候能还我？
-                new ChatRoomInfo(marisa, 12, 0),//魔理沙：哎呀，人家的事情那能叫偷嘛？那叫借啦！
-                new ChatRoomInfo(alice, 5, 1),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
-                new ChatRoomInfo(marisa, 13, 2),//魔理沙：放心，死了以后保证还给你！
-                new ChatRoomInfo(alice, 6, 3),//爱丽丝：...你还是别还了...下次不许再偷了！
-                new ChatRoomInfo(marisa, 14, 4),//魔理沙：下次一定！
-                new ChatRoomInfo(alice, 7, 5),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
+                new ChatRoomInfo(alice, ChatDictionary[4], -1),//爱丽丝：我说，你上次偷走的我的蘑菇什么时候能还我？
+                new ChatRoomInfo(marisa, ChatDictionary[12], 0),//魔理沙：哎呀，人家的事情那能叫偷嘛？那叫借啦！
+                new ChatRoomInfo(alice, ChatDictionary[5], 1),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
+                new ChatRoomInfo(marisa, ChatDictionary[13], 2),//魔理沙：放心，死了以后保证还给你！
+                new ChatRoomInfo(alice, ChatDictionary[6], 3),//爱丽丝：...你还是别还了...下次不许再偷了！
+                new ChatRoomInfo(marisa, ChatDictionary[14], 4),//魔理沙：下次一定！
+                new ChatRoomInfo(alice, ChatDictionary[7], 5),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
             ];
 
             return list;
         }
 
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID alice = TouhouPetID.Alice;
             TouhouPetID alice_L = TouhouPetID.AliceLegacy;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(alice, 16, -1),//爱丽丝：你是谁？总感觉有点眼熟...
-                new ChatRoomInfo(alice_L, 6, 0),//爱丽丝：不知道哦，可能是过去的你吧。
-                new ChatRoomInfo(alice, 17, 1),//爱丽丝：过去的...我？过去的时候...呃啊，头疼...
+                new ChatRoomInfo(alice, ChatDictionary[16], -1),//爱丽丝：你是谁？总感觉有点眼熟...
+                new ChatRoomInfo(alice_L, ChatDictionary[6], 0),//爱丽丝：不知道哦，可能是过去的你吧。
+                new ChatRoomInfo(alice, ChatDictionary[17], 1),//爱丽丝：过去的...我？过去的时候...呃啊，头疼...
             ];
 
             return list;

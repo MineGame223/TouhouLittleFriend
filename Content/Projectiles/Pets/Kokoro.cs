@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -126,9 +127,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -150,19 +151,19 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID kokoro = TouhouPetID.Kokoro;
             TouhouPetID koishi = TouhouPetID.Koishi;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(kokoro, 7, -1), //秦心：我的宿敌啊！
-                new ChatRoomInfo(koishi, 9, 0),//恋恋：心酱叫我有何事？
-                new ChatRoomInfo(kokoro, 8, 1), //秦心：...你还有什么可以教会我的情绪吗？
-                new ChatRoomInfo(koishi, 10, 2),//恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
-                new ChatRoomInfo(kokoro, 9, 3), //秦心：不是很懂...啊，这就是“困惑”吗？
-                new ChatRoomInfo(koishi, 11, 4),//恋恋：好欸！学会“困惑”啦~
+                new ChatRoomInfo(kokoro, ChatDictionary[7], -1), //秦心：我的宿敌啊！
+                new ChatRoomInfo(koishi, ChatDictionary[9], 0),//恋恋：心酱叫我有何事？
+                new ChatRoomInfo(kokoro, ChatDictionary[8], 1), //秦心：...你还有什么可以教会我的情绪吗？
+                new ChatRoomInfo(koishi, ChatDictionary[10], 2),//恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
+                new ChatRoomInfo(kokoro, ChatDictionary[9], 3), //秦心：不是很懂...啊，这就是“困惑”吗？
+                new ChatRoomInfo(koishi, ChatDictionary[11], 4),//恋恋：好欸！学会“困惑”啦~
             ];
 
             return list;

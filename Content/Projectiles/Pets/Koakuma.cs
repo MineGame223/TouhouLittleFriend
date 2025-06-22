@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
-            ChatDictionary[1] = ModUtils.GetChatTextValue("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
+            ChatDictionary[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
 
             base.OnSpawn(source);
         }
@@ -85,9 +85,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -117,32 +117,32 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID koakuma = TouhouPetID.Koakuma;
             TouhouPetID patchouli = TouhouPetID.Patchouli;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(koakuma, 4, -1), //小恶魔：帕秋莉大人！该锻炼身体啦！
-                new ChatRoomInfo(patchouli, 16, 0),//帕秋莉：不要！会累死人的...
-                new ChatRoomInfo(koakuma, 5, 1), //小恶魔：为了您的健康着想，这很必要的哦！
-                new ChatRoomInfo(patchouli, 17, 2),//帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
-                new ChatRoomInfo(patchouli, 18, 3),//帕秋莉：...我真的很好！
+                new ChatRoomInfo(koakuma, ChatDictionary[4], -1), //小恶魔：帕秋莉大人！该锻炼身体啦！
+                new ChatRoomInfo(patchouli, ChatDictionary[16], 0),//帕秋莉：不要！会累死人的...
+                new ChatRoomInfo(koakuma, ChatDictionary[5], 1), //小恶魔：为了您的健康着想，这很必要的哦！
+                new ChatRoomInfo(patchouli, ChatDictionary[17], 2),//帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
+                new ChatRoomInfo(patchouli, ChatDictionary[18], 3),//帕秋莉：...我真的很好！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID koakuma = TouhouPetID.Koakuma;
             TouhouPetID patchouli = TouhouPetID.Patchouli;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(koakuma, 6, -1), //小恶魔：帕秋莉大人在看什么？
-                new ChatRoomInfo(patchouli, Main.rand.Next(19, 36), 0),//帕秋莉：是关于xxxx的书...
-                new ChatRoomInfo(koakuma, 7, 1), //小恶魔：好像很有趣啊！
+                new ChatRoomInfo(koakuma, ChatDictionary[6], -1), //小恶魔：帕秋莉大人在看什么？
+                new ChatRoomInfo(patchouli, ChatDictionary[Main.rand.Next(19, 36)], 0),//帕秋莉：是关于xxxx的书...
+                new ChatRoomInfo(koakuma, ChatDictionary[7], 1), //小恶魔：好像很有趣啊！
             ];
 
             return list;

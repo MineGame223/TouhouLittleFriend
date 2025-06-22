@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Danmaku;
@@ -161,15 +162,21 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Kaguya";
             indexRange = new Vector2(1, 21);
         }
+        public override void PostRegisterChat()
+        {
+            IsChatRoomActive.Add(ChatDictionary[3], false);
+            IsChatRoomActive.Add(ChatDictionary[4], false);
+            IsChatRoomActive.Add(ChatDictionary[5], false);
+        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 730;//730
             chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -183,7 +190,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (FindChatIndex(3, 6) && shouldMokuTalking)
+            bool allowChat = AllowToUseChatRoom(ChatDictionary[3])
+                || AllowToUseChatRoom(ChatDictionary[4])
+                || AllowToUseChatRoom(ChatDictionary[5]);
+
+            if (allowChat && shouldMokuTalking)
             {
                 Chatting3(currentChatRoom ?? Projectile.CreateChatRoomDirect());
             }
@@ -196,37 +207,37 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID kaguya = TouhouPetID.Kaguya;
             TouhouPetID moku = TouhouPetID.Moku;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(kaguya, 7, -1), //辉夜：你说，咱俩斗了多久了？
-                new ChatRoomInfo(moku, 3, 0),//妹红：我怎么知道，大概几千年了吧？
-                new ChatRoomInfo(kaguya, 8, 1), //辉夜：今天要不要尝试点新花样？
-                new ChatRoomInfo(moku, 4, 2),//妹红：...？你想干什么？
-                new ChatRoomInfo(kaguya, 9, 3), //辉夜：要不就...做一点更 刺 激 的事儿？
-                new ChatRoomInfo(moku, 5, 4),//妹红：想都不要想！...不过我知道哪里适合...
+                new ChatRoomInfo(kaguya, ChatDictionary[7], -1), //辉夜：你说，咱俩斗了多久了？
+                new ChatRoomInfo(moku, ChatDictionary[3], 0),//妹红：我怎么知道，大概几千年了吧？
+                new ChatRoomInfo(kaguya, ChatDictionary[8], 1), //辉夜：今天要不要尝试点新花样？
+                new ChatRoomInfo(moku, ChatDictionary[4], 2),//妹红：...？你想干什么？
+                new ChatRoomInfo(kaguya, ChatDictionary[9], 3), //辉夜：要不就...做一点更 刺 激 的事儿？
+                new ChatRoomInfo(moku, ChatDictionary[5], 4),//妹红：想都不要想！...不过我知道哪里适合...
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID kaguya = TouhouPetID.Kaguya;
             TouhouPetID moku = TouhouPetID.Moku;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(kaguya, 18, -1), //辉夜：我说，你保密工作做得不太行啊？
-                new ChatRoomInfo(moku, 16, 0), //妹红：啊？你在胡说什么...
-                new ChatRoomInfo(kaguya, 19, 1), //辉夜：我去人里玩的事情被永琳发现了，刚刚训了我一顿...
-                new ChatRoomInfo(moku, 17, 2), //妹红：哈哈哈哈！你活该呗。
-                new ChatRoomInfo(kaguya, 20, 3), //辉夜：你说什么？想干架是嘛？！
-                new ChatRoomInfo(moku, 18, 4), //妹红：下次我可就不带你去了。
-                new ChatRoomInfo(kaguya, 21, 5), //辉夜：欸欸欸别！...
+                new ChatRoomInfo(kaguya, ChatDictionary[18], -1), //辉夜：我说，你保密工作做得不太行啊？
+                new ChatRoomInfo(moku, ChatDictionary[16], 0), //妹红：啊？你在胡说什么...
+                new ChatRoomInfo(kaguya, ChatDictionary[19], 1), //辉夜：我去人里玩的事情被永琳发现了，刚刚训了我一顿...
+                new ChatRoomInfo(moku, ChatDictionary[17], 2), //妹红：哈哈哈哈！你活该呗。
+                new ChatRoomInfo(kaguya, ChatDictionary[20], 3), //辉夜：你说什么？想干架是嘛？！
+                new ChatRoomInfo(moku, ChatDictionary[18], 4), //妹红：下次我可就不带你去了。
+                new ChatRoomInfo(kaguya, ChatDictionary[21], 5), //辉夜：欸欸欸别！...
             ];
 
             return list;
@@ -258,7 +269,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 0)
             {
                 //妹红：你这家伙能不能消停一会儿？
-                moku.SetChatForChatRoom(6, 20);
+                moku.SetChatForChatRoom(ChatDictionary[6], 20);
 
                 if (moku.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
@@ -266,7 +277,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 1)
             {
                 //辉夜：要你管！
-                kaguya.SetChatForChatRoom(6, 20);
+                kaguya.SetChatForChatRoom(ChatDictionary[6], 20);
 
                 if (kaguya.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
@@ -604,19 +615,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Timer == 30)
                 {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(10);
-                            break;
-                        case 2:
-                            Projectile.SetChat(11);
-                            break;
-                        default:
-                            Projectile.SetChat(12);
-                            break;
-                    }
+                    Projectile.SetChat(ChatDictionary[Main.rand.Next(10, 13)]);
                 }
                 if (Timer > 480 || FindPet(ProjectileType<Moku>(), false, (int)States.BeforeBattle))
                 {
@@ -652,19 +651,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Timer == 30)
                 {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(13);
-                            break;
-                        case 2:
-                            Projectile.SetChat(14);
-                            break;
-                        default:
-                            Projectile.SetChat(15);
-                            break;
-                    }
+                    Projectile.SetChat(ChatDictionary[Main.rand.Next(13, 16)]);
                 }
                 if (Timer > 480 || FindPet(ProjectileType<Moku>(), false, (int)States.BeforeBattle))
                 {
@@ -768,13 +755,13 @@ namespace TouhouPets.Content.Projectiles.Pets
                 switch (chance)
                 {
                     case 1:
-                        Projectile.SetChat(4);
+                        Projectile.SetChat(ChatDictionary[4]);
                         break;
                     case 2:
-                        Projectile.SetChat(5);
+                        Projectile.SetChat(ChatDictionary[5]);
                         break;
                     default:
-                        Projectile.SetChat(3);
+                        Projectile.SetChat(ChatDictionary[3]);
                         break;
                 }
                 if (Main.rand.NextBool(8))

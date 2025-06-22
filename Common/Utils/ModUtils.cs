@@ -122,6 +122,30 @@ namespace TouhouPets
         {
             return Language.GetTextValue($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}", args);
         }
+        /// <summary>
+        /// 获取对话文本
+        /// </summary>
+        /// <param name="tag">角色对应标签</param>
+        /// <param name="index">文本对应编号</param>
+        /// <returns></returns>
+        public static LocalizedText GetChatText(string tag, string index, params object[] args)
+        {
+            return Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}").WithFormatArgs(args);
+        }
+        /// <summary>
+        /// 该 LocalizedText 是否为空
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static bool IsLocalizedTextEmpty(this LocalizedText text)
+        {
+            if (text == null)
+                return false;
+
+            bool noValue = text.Value.Equals(text);
+            bool emptyValue = string.IsNullOrEmpty(text.Value);
+            return noValue || emptyValue;
+        }
 
         /// <summary>
         /// 额外设置宠物物品基础属性

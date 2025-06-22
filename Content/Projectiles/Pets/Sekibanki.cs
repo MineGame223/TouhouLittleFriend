@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -104,15 +105,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Sekibanki";
             indexRange = new Vector2(1, 14);
         }
+        public override void PostRegisterChat()
+        {
+            IsChatRoomActive.Add(ChatDictionary[1], false);
+        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 777;//777
             chance = 7;//7
             whenShouldStop = !IsIdleState || chatCD > 0;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -131,7 +136,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void UpdateTalking()
         {
-            if (FindChatIndex(1) || FindChatIndex(7, 10))
+            if (AllowToUseChatRoom(ChatDictionary[1]))
             {
                 Chatting2(currentChatRoom ?? Projectile.CreateChatRoomDirect());
             }
@@ -143,16 +148,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID seki = TouhouPetID.Sekibanki;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(seki,3, -1),//赤蛮奇：一直以来我都穿着斗篷，
-                new ChatRoomInfo(seki,4, 0),//赤蛮奇：因为我不喜欢被人类认出是妖怪。
-                new ChatRoomInfo(seki,5, 1),//赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
-                new ChatRoomInfo(seki,6, 2),//赤蛮奇：...好吧，除了你。
+                new ChatRoomInfo(seki,ChatDictionary[3], -1),//赤蛮奇：一直以来我都穿着斗篷，
+                new ChatRoomInfo(seki,ChatDictionary[4], 0),//赤蛮奇：因为我不喜欢被人类认出是妖怪。
+                new ChatRoomInfo(seki,ChatDictionary[5], 1),//赤蛮奇：人类不喜欢妖怪，我也不怎么想亲近人类...
+                new ChatRoomInfo(seki,ChatDictionary[6], 2),//赤蛮奇：...好吧，除了你。
             ];
 
             return list;
@@ -182,7 +187,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 0)
             {
                 //赤蛮奇：...我将超越一切！
-                Projectile.SetChatForChatRoom(7, 20);
+                Projectile.SetChatForChatRoom(ChatDictionary[7], 20);
 
                 if (Projectile.CurrentlyNoDialog())
                 {
@@ -196,7 +201,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 1)
             {
                 //赤蛮奇：超——变——身——！！！
-                Projectile.SetChatForChatRoom(8, 20);
+                Projectile.SetChatForChatRoom(ChatDictionary[8], 20);
 
                 if (Projectile.CurrentlyNoDialog())
                     chatRoom.chatTurn++;
@@ -204,7 +209,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 2)
             {
                 //赤蛮奇：......
-                Projectile.SetChatForChatRoom(9, 20);
+                Projectile.SetChatForChatRoom(ChatDictionary[9], 20);
 
                 if (Projectile.CurrentlyNoDialog())
                 {
@@ -218,7 +223,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             else if (turn == 3)
             {
                 //赤蛮奇：...呃，你什么都没听见
-                Projectile.SetChatForChatRoom(10, 20);
+                Projectile.SetChatForChatRoom(ChatDictionary[10], 20);
 
                 if (Projectile.CurrentlyNoDialog())
                 {

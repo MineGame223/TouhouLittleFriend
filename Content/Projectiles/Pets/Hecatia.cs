@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -95,9 +96,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -111,15 +112,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID hecatia = TouhouPetID.Hecatia;
             TouhouPetID piece = TouhouPetID.Piece;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(hecatia, 2, -1), //赫卡提娅：我的穿搭是无可挑剔的...真的会有人不喜欢么？
-                new ChatRoomInfo(piece, 3, 0),//皮丝：主人大人的着装当然是最时尚的啦！
+                new ChatRoomInfo(hecatia, ChatDictionary[2], -1), //赫卡提娅：我的穿搭是无可挑剔的...真的会有人不喜欢么？
+                new ChatRoomInfo(piece, ChatDictionary[3], 0),//皮丝：主人大人的着装当然是最时尚的啦！
             ];
 
             return list;

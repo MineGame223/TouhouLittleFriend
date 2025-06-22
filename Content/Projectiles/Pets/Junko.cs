@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -113,9 +114,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 10;//10
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 if (!Main.dayTime && Main.cloudAlpha <= 0 && Main.GetMoonPhase() == MoonPhase.Full)
                 {
@@ -133,7 +134,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (boss.type == NPCID.MoonLordCore)
             {
-                Projectile.SetChat(4);
+                Projectile.SetChat(ChatDictionary[4]);
             }
         }
         public override List<List<ChatRoomInfo>> RegisterChatRoom()
@@ -143,15 +144,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID junko = TouhouPetID.Junko;
             TouhouPetID reisen = TouhouPetID.Reisen;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(junko, 3, -1), //纯狐：乌冬酱~最近还好嘛？
-                new ChatRoomInfo(reisen, 11, 0),//铃仙：嗯嗯...还、还好吧...
+                new ChatRoomInfo(junko, ChatDictionary[3], -1), //纯狐：乌冬酱~最近还好嘛？
+                new ChatRoomInfo(reisen, ChatDictionary[11], 0),//铃仙：嗯嗯...还、还好吧...
             ];
 
             return list;

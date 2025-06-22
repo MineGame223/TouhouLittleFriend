@@ -11,7 +11,7 @@ namespace TouhouPets
     {
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Reimu";
 
-        private static readonly List<int> petIDList_Touhou = [
+        private static readonly List<int> ReimuList_Touhou = [
             ProjectileType<Cirno>(),
             ProjectileType<Doremy>(),
             ProjectileType<Eirin>(),
@@ -19,7 +19,7 @@ namespace TouhouPets
             ProjectileType<Iku>(),
             ProjectileType<Junko>(),
             ProjectileType<Kokoro>(),
-            -1,
+            -1,//跳过7和25，因为这两条是根据Buff判定的
             ProjectileType<Meirin>(),
             ProjectileType<Moku>(),
             ProjectileType<Nitori>(),
@@ -37,7 +37,7 @@ namespace TouhouPets
             ProjectileType<Youmu>(),
             ProjectileType<Lily>(),
             ProjectileType<AliceOld>(),
-            -1,
+            -1,//25
             ProjectileType<Lunasa>(),
             ProjectileType<Merlin>(),
             ProjectileType<Lyrica>(),
@@ -55,9 +55,9 @@ namespace TouhouPets
             startIndex = index + 1;
 
             //以ID列表的长度为索引，注册相应对话
-            for (int i = 0; i < petIDList_Touhou.Count; i++)
+            for (int i = 0; i < ReimuList_Touhou.Count; i++)
             {
-                reimu.ChatDictionary.TryAdd(startIndex + i, Language.GetTextValue($"{Path}.LightPet_{i + 1}"));
+                reimu.ChatDictionary.TryAdd(startIndex + i, Language.GetText($"{Path}.LightPet_{i + 1}"));
             }
         }
 
@@ -66,10 +66,10 @@ namespace TouhouPets
         /// </summary>
         /// <param name="reimu"></param>
         /// <param name="chat">被添加的随机选择器</param>
-        public static void Comment_TouhouLightPet(this Reimu reimu, ref WeightedRandom<string> chat)
+        public static void Comment_TouhouLightPet(this Reimu reimu, ref WeightedRandom<LocalizedText> chat)
         {
             //以防万一（？）
-            if (petIDList_Touhou.Count <= 0)
+            if (ReimuList_Touhou.Count <= 0)
                 return;
 
             int index = startIndex;
@@ -78,10 +78,9 @@ namespace TouhouPets
                 if (pet.owner != reimu.Owner.whoAmI)
                     continue;
 
-                //跳过7和25，因为这两条是根据Buff判定的
-                if (petIDList_Touhou.Contains(pet.type))
+                if (ReimuList_Touhou.Contains(pet.type))
                 {
-                    chat.Add(reimu.ChatDictionary[index + petIDList_Touhou.IndexOf(pet.type)]);
+                    chat.Add(reimu.ChatDictionary[index + ReimuList_Touhou.IndexOf(pet.type)]);
                 }
             }
 

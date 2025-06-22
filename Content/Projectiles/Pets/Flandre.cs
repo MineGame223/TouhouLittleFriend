@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using static TouhouPets.Content.Projectiles.Pets.Remilia;
@@ -116,9 +117,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 12;//12
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -137,17 +138,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID flandre = TouhouPetID.Flandre;
             TouhouPetID meirin = TouhouPetID.Meirin;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(flandre, 10, -1), //芙兰：美铃在跳什么奇怪的舞蹈吗？
-                new ChatRoomInfo(meirin, 7, 0),//美铃：这叫"太极"哦，二小姐。
-                new ChatRoomInfo(flandre, 11, 1), //芙兰：好像很厉害...可以教教芙兰吗？
-                new ChatRoomInfo(meirin, 8, 2),//美铃：唔...可能需要大小姐的同意吧？
+                new ChatRoomInfo(flandre, ChatDictionary[10], -1), //芙兰：美铃在跳什么奇怪的舞蹈吗？
+                new ChatRoomInfo(meirin, ChatDictionary[7], 0),//美铃：这叫"太极"哦，二小姐。
+                new ChatRoomInfo(flandre, ChatDictionary[11], 1), //芙兰：好像很厉害...可以教教芙兰吗？
+                new ChatRoomInfo(meirin, ChatDictionary[8], 2),//美铃：唔...可能需要大小姐的同意吧？
             ];
 
             return list;
@@ -311,16 +312,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(3) && Timer == 0)
                     {
-                        int chance = Main.rand.Next(2);
-                        switch (chance)
-                        {
-                            case 1:
-                                Projectile.SetChat(4, 30);
-                                break;
-                            default:
-                                Projectile.SetChat(5, 30);
-                                break;
-                        }
+                        Projectile.SetChat(ChatDictionary[Main.rand.Next(4, 6)], 30);
                     }
                     Timer++;
                     if (Timer > RandomCount)

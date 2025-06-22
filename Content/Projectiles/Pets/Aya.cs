@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -129,9 +130,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;
             whenShouldStop = IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -139,27 +140,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 chat.Add(ChatDictionary[4]);
             }
             return chat;
-        }
-        private void SetShotChat()
-        {
-            int chance = Main.rand.Next(6);
-            switch (chance)
-            {
-                case 1:
-                    Projectile.SetChat(5);
-                    break;
-                case 2:
-                    Projectile.SetChat(6);
-                    break;
-                case 3:
-                    Projectile.SetChat(7);
-                    break;
-                case 4:
-                    Projectile.SetChat(8);
-                    break;
-                default:
-                    break;
-            }
         }
         public override void VisualEffectForPreview()
         {
@@ -303,7 +283,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     flashRandomCount = Main.rand.Next(180, 600);
 
                     if (Main.rand.NextBool(3))
-                        SetShotChat();
+                        Projectile.SetChat(ChatDictionary[Main.rand.Next(5, 9)]);
                 }
                 Timer++;
                 //大于时长则进入休息阶段

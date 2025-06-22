@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -102,9 +103,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;//9
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -120,17 +121,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID yukari = TouhouPetID.Yukari;
             TouhouPetID ran = TouhouPetID.Ran;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yukari, 5, -1), //紫：不知那位旧友最近是否安好呢。
-                new ChatRoomInfo(ran, 5, 0),//蓝：紫大人是指？
-                new ChatRoomInfo(yukari, 6, 1), //紫：没什么，吃这种事应该用不着我替她操心。
-                new ChatRoomInfo(ran, 6, 2),//蓝：大概知道是哪位了啊...
+                new ChatRoomInfo(yukari, ChatDictionary[5], -1), //紫：不知那位旧友最近是否安好呢。
+                new ChatRoomInfo(ran, ChatDictionary[5], 0),//蓝：紫大人是指？
+                new ChatRoomInfo(yukari, ChatDictionary[6], 1), //紫：没什么，吃这种事应该用不着我替她操心。
+                new ChatRoomInfo(ran, ChatDictionary[6], 2),//蓝：大概知道是哪位了啊...
             ];
 
             return list;

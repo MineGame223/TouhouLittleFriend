@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -103,9 +104,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = IsAfraid ? 3 : 12;
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (IsAfraid)
                 {
@@ -124,7 +125,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (Owner.HasBuff<YuyukoBuff>())
             {
-                Projectile.SetChat(11);
+                Projectile.SetChat(ChatDictionary[11]);
                 return false;
             }
             return true;
@@ -133,7 +134,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {         
             if (noReaction)
             {
-                Projectile.SetChat(3);
+                Projectile.SetChat(ChatDictionary[3]);
             }
         }
         public override void VisualEffectForPreview()

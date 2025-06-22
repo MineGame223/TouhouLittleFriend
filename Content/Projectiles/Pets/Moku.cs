@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Danmaku;
@@ -188,9 +189,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -208,15 +209,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID moku = TouhouPetID.Moku;
             TouhouPetID keine = TouhouPetID.Keine;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(moku, 9, -1), //妹红：每到满月你都会这样，怪吓人的！
-                new ChatRoomInfo(keine, 9, 0),///慧音：这是天性，也是使命。
+                new ChatRoomInfo(moku, ChatDictionary[9], -1), //妹红：每到满月你都会这样，怪吓人的！
+                new ChatRoomInfo(keine, ChatDictionary[9], 0),///慧音：这是天性，也是使命。
             ];
 
             return list;
@@ -554,19 +555,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Timer == 30)
                 {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(10);
-                            break;
-                        case 2:
-                            Projectile.SetChat(11);
-                            break;
-                        default:
-                            Projectile.SetChat(12);
-                            break;
-                    }
+                    Projectile.SetChat(ChatDictionary[Main.rand.Next(10, 13)]);
                 }
                 if (Timer > 480 || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
                 {
@@ -602,19 +591,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Timer == 30)
                 {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(13);
-                            break;
-                        case 2:
-                            Projectile.SetChat(14);
-                            break;
-                        default:
-                            Projectile.SetChat(15);
-                            break;
-                    }
+                    Projectile.SetChat(ChatDictionary[Main.rand.Next(13, 16)]);
                 }
                 if (Timer > 480 || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
                 {

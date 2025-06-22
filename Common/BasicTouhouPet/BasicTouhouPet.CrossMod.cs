@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using Terraria.Utilities;
 using static TouhouPets.TouhouPets;
 
@@ -10,7 +11,7 @@ namespace TouhouPets
         /// <summary>
         /// 模组添加的对话索引起始的地方
         /// </summary>
-        internal int crossModDialogStartIndex;
+        private int crossModDialogStartIndex;
 
         #region 对话注册
         /// <summary>
@@ -24,7 +25,7 @@ namespace TouhouPets
             int lastIndex = ChatDictionary.Count;
 
             int id = (int)UniqueID;
-            if (id <= (int)TouhouPetID.None)
+            if (id <= (int)TouhouPetID.None || id >= (int)TouhouPetID.Count)
                 return;
 
             var dialogList = CrossModDialog[id];
@@ -35,7 +36,7 @@ namespace TouhouPets
 
             for (int i = 0; i < dialogList.Count; i++)
             {
-                string text = dialogList[i].DialogText.Value;
+                LocalizedText text = dialogList[i].DialogText;
                 int startIndex = crossModDialogStartIndex + i;
 
                 ChatDictionary.Add(startIndex, text);
@@ -61,8 +62,8 @@ namespace TouhouPets
 
             foreach (var i in listRoom)
             {
-                int startIndex = crossModDialogStartIndex + i[0].ChatIndex;
-                IsChatRoomActive.TryAdd(startIndex, false);
+                LocalizedText startText = i[0].ChatText;
+                IsChatRoomActive.TryAdd(startText, false);
             }
         }
         #endregion
@@ -72,7 +73,7 @@ namespace TouhouPets
         /// 将跨模组常规对话加入被传入的随机选择器中
         /// </summary>
         /// <param name="chatText"></param>
-        private void GetCrossModChat(ref WeightedRandom<string> chatText)
+        private void GetCrossModChat(ref WeightedRandom<LocalizedText> chatText)
         {
             //若没有模组进行注册则不执行后续
             if (CrossModDialog == null)
@@ -106,13 +107,12 @@ namespace TouhouPets
             foreach (var infoList in CrossModChatRoomList[(int)UniqueID])
             {
                 //若发现模组聊天室信息列表中的第一个ChatRoomInfo中的索引值不在允许名单内，则不设置并维持聊天室
-                if (!AllowToUseChatRoom(crossModDialogStartIndex + infoList[0].ChatIndex))
+                if (!AllowToUseChatRoom(infoList[0].ChatText))
                     continue;
 
                 PetChatRoom room = currentChatRoom ?? Projectile.CreateChatRoomDirect();
 
-                //这里需要额外加上模组对话索引的起始值
-                room.ModifyChatRoom(infoList, true);
+                room.ModifyChatRoom(infoList);
             }
         }
 
@@ -134,7 +134,7 @@ namespace TouhouPets
             {
                 if (bossType == i.ObjectType)
                 {
-                    Projectile.SetChat(i.CommentText.Get().Value);
+                    Projectile.SetChat(i.CommentText.Get());
                     return true;
                 }
             }

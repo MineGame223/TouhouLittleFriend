@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -121,9 +122,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 12;//12
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (Projectile.velocity.Length() >= 4f)
                 {
@@ -160,38 +161,38 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID patchi = TouhouPetID.Patchouli;
             TouhouPetID remilia = TouhouPetID.Remilia;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(patchi, 8, -1), //帕秋莉：唔...蕾咪？
-                new ChatRoomInfo(remilia, 10, 0),//蕾米：嗯？帕琪？有啥事么？
-                new ChatRoomInfo(patchi, 9, 1), //帕秋莉：你身为吸血鬼，为什么不像书里说的一样怕十字架？
-                new ChatRoomInfo(remilia, 11, 2),//蕾米：哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰。
-                new ChatRoomInfo(patchi, 10, 3), //帕秋莉：好吧...看来书里说的不全是正确的。
-                new ChatRoomInfo(remilia, 12, 4),//蕾米：当然了，帕琪你也要多出来走走嘛。
-                new ChatRoomInfo(patchi, 11, 5), //帕秋莉：不要...
+                new ChatRoomInfo(patchi, ChatDictionary[8], -1), //帕秋莉：唔...蕾咪？
+                new ChatRoomInfo(remilia, ChatDictionary[10], 0),//蕾米：嗯？帕琪？有啥事么？
+                new ChatRoomInfo(patchi, ChatDictionary[9], 1), //帕秋莉：你身为吸血鬼，为什么不像书里说的一样怕十字架？
+                new ChatRoomInfo(remilia, ChatDictionary[11], 2),//蕾米：哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰。
+                new ChatRoomInfo(patchi, ChatDictionary[10], 3), //帕秋莉：好吧...看来书里说的不全是正确的。
+                new ChatRoomInfo(remilia, ChatDictionary[12], 4),//蕾米：当然了，帕琪你也要多出来走走嘛。
+                new ChatRoomInfo(patchi, ChatDictionary[11], 5), //帕秋莉：不要...
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID patchi = TouhouPetID.Patchouli;
             TouhouPetID alice = TouhouPetID.Alice;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(patchi, 12, -1), //帕秋莉：最近魔理沙那家伙还安分么？
-                new ChatRoomInfo(alice, 8, 0),//爱丽丝：别说了，上次刚顺走我一瓶魔药。
-                new ChatRoomInfo(patchi, 13, 1), //帕秋莉：她偷走的那好几本书也一直没还...
-                new ChatRoomInfo(alice, 9, 2),//帕秋莉 & 爱丽丝：...一定要找她算账！
-                new ChatRoomInfo(patchi, 14, 2),
-                new ChatRoomInfo(alice, 10, 3),//爱丽丝：...？还是我去找她吧，就不麻烦你了...
-                new ChatRoomInfo(patchi, 15, 4), //帕秋莉：不不不，我去就行，我去就行...
+                new ChatRoomInfo(patchi, ChatDictionary[12], -1), //帕秋莉：最近魔理沙那家伙还安分么？
+                new ChatRoomInfo(alice, ChatDictionary[8], 0),//爱丽丝：别说了，上次刚顺走我一瓶魔药。
+                new ChatRoomInfo(patchi, ChatDictionary[13], 1), //帕秋莉：她偷走的那好几本书也一直没还...
+                new ChatRoomInfo(alice, ChatDictionary[9], 2),//帕秋莉 & 爱丽丝：...一定要找她算账！
+                new ChatRoomInfo(patchi, ChatDictionary[14], 2),
+                new ChatRoomInfo(alice, ChatDictionary[10], 3),//爱丽丝：...？还是我去找她吧，就不麻烦你了...
+                new ChatRoomInfo(patchi, ChatDictionary[15], 4), //帕秋莉：不不不，我去就行，我去就行...
             ];
 
             return list;

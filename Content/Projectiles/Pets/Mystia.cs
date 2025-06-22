@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -107,9 +108,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -199,23 +200,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         RandomCount = Main.rand.Next(60, 180);
                         CurrentState = States.Singing;
-
-                        int chance = Main.rand.Next(4);
-                        switch (chance)
-                        {
-                            case 1:
-                                Projectile.SetChat(5, 90);
-                                break;
-                            case 2:
-                                Projectile.SetChat(6, 90);
-                                break;
-                            case 3:
-                                Projectile.SetChat(7, 90);
-                                break;
-                            default:
-                                Projectile.SetChat(8, 90);
-                                break;
-                        }
+                        Projectile.SetChat(ChatDictionary[Main.rand.Next(5, 9)], 90);
                     }
                 }
             }

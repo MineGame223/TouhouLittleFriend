@@ -1,4 +1,6 @@
-﻿namespace TouhouPets
+﻿using System.Collections.Generic;
+
+namespace TouhouPets
 {
     public enum TouhouPetID : int
     {
@@ -65,5 +67,12 @@
         Yukari = 60,
         Yuyuko = 61,
         Count
+    }
+    public static class TouhouPetUniqueID
+    {
+        public static Dictionary<TouhouPetID, string> PetIDToString = new()
+        {
+            
+        };
     }
 }

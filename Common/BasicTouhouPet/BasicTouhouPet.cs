@@ -65,10 +65,19 @@ namespace TouhouPets
         #region 调试信息绘制方法
         private void DrawTestInfo()
         {
-            bool drawingForTest = false;
+            bool drawingForTest = true;
             string chatTurn = "#";
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
+
+            int chatIndex = -1;
+            foreach (var t in ChatDictionary)
+            {
+                if (chatText != null && chatText.Equals(t.Value))
+                {
+                    chatIndex = t.Key;
+                }
+            }
 
             string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
             string testMsg2 = $"{timeToType}, {totalTimeToType}, {Math.Round(chatOpacity, 1)}, {mainTimer}";

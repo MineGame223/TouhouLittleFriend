@@ -44,15 +44,7 @@ namespace TouhouPets
                 {
                     for (int i = 0; i < vanillaList.Count; i++)
                     {
-                        string path = $"{chatPath}.Vanilla_{i + 1}";
-                        string text = Language.GetTextValue(path);
-
-                        //由于列表的长度与实际存在的文本数量未必匹配，为了防止出现获取到不该获取的索引的情况，
-                        //这里无论是否实际存在文本，都应注册进字典
-                        //不存在文本的将注册空字符串
-                        if (path.Equals(text))
-                            text = string.Empty;
-
+                        LocalizedText text = Language.GetText($"{chatPath}.Vanilla_{i + 1}");
                         pet.AsTouhouPet().ChatDictionary.TryAdd(startIndex_Vanilla[id] + i, text);
                     }
                 }
@@ -91,7 +83,7 @@ namespace TouhouPets
                     }
 
                     string path = $"{chatPath}.{modName}_{list.IndexOf(actualType) + 1}";
-                    string text = Language.GetTextValue(path);
+                    LocalizedText text = Language.GetText(path);
 
                     //排除不存在的文本
                     if (!text.Equals(path))
@@ -127,13 +119,12 @@ namespace TouhouPets
 
             int finalIndex = startIndex_Vanilla[id] + MarisaList_Vanilla.IndexOf(bossType);
             //由于无论是否实际添加了文本、字典中都会被注册，所以这里需要直接获取实际值
-            if (pet.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out string value))
+            if (pet.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out LocalizedText key))
             {
-                //排除先前注册中的空字符串
-                if (!string.IsNullOrEmpty(value))
+                //排除可能不存在的文本
+                if(!key.IsLocalizedTextEmpty())
                 {
-                    //使用索引值减少一次遍历
-                    pet.SetChat(finalIndex);
+                    pet.SetChat(key);
                     return true;
                 }
             }

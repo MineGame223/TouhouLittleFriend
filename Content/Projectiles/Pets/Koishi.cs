@@ -170,9 +170,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -195,15 +195,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID koishi = TouhouPetID.Koishi;
             TouhouPetID satori = TouhouPetID.Satori;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(koishi, 5, -1), //恋恋：就算是姐姐，也不知道恋在想什么哦。
-                new ChatRoomInfo(satori, 4, 0),///觉：姐姐现在就在看着你呢...
+                new ChatRoomInfo(koishi, ChatDictionary[5], -1), //恋恋：就算是姐姐，也不知道恋在想什么哦。
+                new ChatRoomInfo(satori, ChatDictionary[4], 0),///觉：姐姐现在就在看着你呢...
             ];
 
             return list;
@@ -544,11 +544,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                     };
                     if (Timer == 0)
                     {
-                        Projectile.SetChat(chatConfig, 6, 60);
+                        Projectile.SetChat(chatConfig, ChatDictionary[6], 60);
                     }
                     if (Timer == 360)
                     {
-                        Projectile.SetChat(chatConfig, 7, 60);
+                        Projectile.SetChat(chatConfig, ChatDictionary[7], 60);
                     }
                     if (Timer >= 360 + 540)
                     {
@@ -623,7 +623,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         TyperModeUseTime = 300,
                         TextColor = Color.Black,
                         TextBoardColor = Color.Red,
-                    }, 8, 0);
+                    }, ChatDictionary[8], 0);
                 }
                 if (Projectile.frame >= 9 && Timer > 540)
                 {

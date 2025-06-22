@@ -18,9 +18,6 @@ namespace TouhouPets
         {
             //使用方法委托作为判定条件参数
 
-            //使用此条件则表示永远不会出现在常规对话中
-            Func<bool> notRegular = delegate () { return false; };
-
             //使用此条件则表示会一直出现在常规对话中
             Func<bool> isRegular = delegate () { return true; };
 
@@ -90,27 +87,21 @@ namespace TouhouPets
             mod.Call("PetDialog", cirno, text_2, condi_2, 1, mod);
             mod.Call("PetDialog", cirno, text_3, condi_3, 1, mod);
 
-            //先将聊天室所需的对话按照常规对话的形式加入，注意需要将仅在聊天室里出现的对话排除在常规对话之外
-            mod.Call("PetDialog", junko, text_4, isRegular, 1, mod);//索引为0
-            mod.Call("PetDialog", junko, text_6, notRegular, 1, mod);//索引为1，且这句话不会出现在常规对话里，下同
-            mod.Call("PetDialog", junko, text_7, notRegular, 1, mod);//索引为2
-
-            mod.Call("PetDialog", reisen, text_5, notRegular, 1, mod);//索引为0，且这句话不会出现在常规对话里，下同
-            mod.Call("PetDialog", reisen, text_7, notRegular, 1, mod);//索引为1
-            mod.Call("PetDialog", reisen, text_8, notRegular, 1, mod);//索引为2
+            //先将聊天室所需的第一句对话按照常规对话的形式加入
+            mod.Call("PetDialog", junko, text_4, isRegular, 1, mod);
 
             //聊天室信息列表
             //元组中的三个参数分别为：宠物索引、文本索引、回合数
             //对话的回合值都是从 -1 开始的
-            List<(int, int, int)> chatRoom1 = new()
+            List<(int, LocalizedText, int)> chatRoom1 = new()
             {
-                (junko, 0, -1),
-                (reisen, 0, 0),
-                (junko, 1, 1),
+                (junko, text_4, -1),
+                (reisen, text_5, 0),
+                (junko, text_6, 1),
                 //这里表示纯狐和铃仙在第二回合时会同时说话
-                (reisen, 1, 2),
-                (junko, 2, 2),
-                (reisen, 2, 3),
+                (reisen, text_7, 2),
+                (junko, text_7, 2),
+                (reisen, text_8, 3),
             };
 
             //添加聊天室

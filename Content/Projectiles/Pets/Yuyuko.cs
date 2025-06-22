@@ -177,9 +177,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;//9
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -207,43 +207,43 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting3(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID yuyuko = TouhouPetID.Yuyuko;
             TouhouPetID youmu = TouhouPetID.Youmu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yuyuko, 12, -1), //幽幽子：妖梦酱有为未来做过打算嘛？
-                new ChatRoomInfo(youmu, 6, 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
-                new ChatRoomInfo(yuyuko, 13, 1), //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
-                new ChatRoomInfo(youmu, 10, 2),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
+                new ChatRoomInfo(yuyuko, ChatDictionary[12], -1), //幽幽子：妖梦酱有为未来做过打算嘛？
+                new ChatRoomInfo(youmu, ChatDictionary[6], 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
+                new ChatRoomInfo(yuyuko, ChatDictionary[13], 1), //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
+                new ChatRoomInfo(youmu, ChatDictionary[10], 2),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID yuyuko = TouhouPetID.Yuyuko;
             TouhouPetID youmu = TouhouPetID.Youmu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yuyuko, 11, -1), //幽幽子：妖梦酱，今天晚上吃什么？
-                new ChatRoomInfo(youmu, 8, 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
+                new ChatRoomInfo(yuyuko, ChatDictionary[11], -1), //幽幽子：妖梦酱，今天晚上吃什么？
+                new ChatRoomInfo(youmu, ChatDictionary[8], 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting3()
+        private List<ChatRoomInfo> Chatting3()
         {
             TouhouPetID yuyuko = TouhouPetID.Yuyuko;
             TouhouPetID youmu = TouhouPetID.Youmu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yuyuko, 1, -1), //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
-                new ChatRoomInfo(youmu, 9, 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
+                new ChatRoomInfo(yuyuko, ChatDictionary[1], -1), //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
+                new ChatRoomInfo(youmu, ChatDictionary[9], 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
             ];
 
             return list;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using static TouhouPets.Content.Projectiles.Pets.Remilia;
@@ -103,9 +104,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = Owner.HasBuff<ScarletBuff>() ? 30 : 12;//30 : 12
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[3]);
@@ -130,42 +131,42 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting3(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID sakuya = TouhouPetID.Sakuya;
             TouhouPetID remilia = TouhouPetID.Remilia;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sakuya, 1, -1), //咲夜：过去已为过去，如今只要侍奉大小姐便是。
-                new ChatRoomInfo(remilia, 14, 0),//蕾米：咲夜还记得你过去的日子吗？
-                new ChatRoomInfo(sakuya, 2, 1),//咲夜：从遇到您的那一刻起我的人生就重新开始了，没有所谓过去了。
+                new ChatRoomInfo(sakuya, ChatDictionary[1], -1), //咲夜：过去已为过去，如今只要侍奉大小姐便是。
+                new ChatRoomInfo(remilia, ChatDictionary[14], 0),//蕾米：咲夜还记得你过去的日子吗？
+                new ChatRoomInfo(sakuya, ChatDictionary[2], 1),//咲夜：从遇到您的那一刻起我的人生就重新开始了，没有所谓过去了。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID sakuya = TouhouPetID.Sakuya;
             TouhouPetID remilia = TouhouPetID.Remilia;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sakuya, 3, -1), //咲夜：大小姐能安好，我就安好。
-                new ChatRoomInfo(remilia, 13, 0),//蕾米：咲夜偶尔也得为自己考虑一下嘛。
+                new ChatRoomInfo(sakuya, ChatDictionary[3], -1), //咲夜：大小姐能安好，我就安好。
+                new ChatRoomInfo(remilia, ChatDictionary[13], 0),//蕾米：咲夜偶尔也得为自己考虑一下嘛。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting3()
+        private List<ChatRoomInfo> Chatting3()
         {
             TouhouPetID sakuya = TouhouPetID.Sakuya;
             TouhouPetID meirin = TouhouPetID.Meirin;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sakuya, 4, -1), //咲夜：美铃那家伙，是不是又在偷懒了...
-                new ChatRoomInfo(meirin, 9, 0),//美铃：我才没有呐！
+                new ChatRoomInfo(sakuya, ChatDictionary[4], -1), //咲夜：美铃那家伙，是不是又在偷懒了...
+                new ChatRoomInfo(meirin, ChatDictionary[9], 0),//美铃：我才没有呐！
             ];
 
             return list;
@@ -312,7 +313,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(15) && Timer == 0)
                     {
-                        Projectile.SetChat(5);
+                        Projectile.SetChat(ChatDictionary[5]);
                         Timer++;
                     }
                 }

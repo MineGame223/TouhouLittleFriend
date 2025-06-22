@@ -322,7 +322,7 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage(Arg_3, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not List<(int, int, int)>
+            if (args[1] is not List<(int, LocalizedText, int)>
                 || args[2] is not Mod)
             {
                 Logger.Warn(ConsoleMessage(Arg_3, Warning_WrongDataType));
@@ -339,7 +339,7 @@ namespace TouhouPets
                 return false;
             }
 
-            List<(int, int, int)> infoList = (List<(int, int, int)>)args[1];
+            List<(int, LocalizedText, int)> infoList = (List<(int, LocalizedText, int)>)args[1];
 
             for (int j = 0; j < infoList.Count; j++)
             {
@@ -369,7 +369,7 @@ namespace TouhouPets
 
                 foreach (var j in crossModChatRoom[id])
                 {
-                    logInfo.Append($"\n宠物索引：{j.UniqueID}；文本索引：{j.ChatIndex}；回合数：{j.ChatTurn}");
+                    logInfo.Append($"\n宠物索引：{j.UniqueID}；文本：{j.ChatText}；回合数：{j.ChatTurn}");
                 }
 
                 Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));
