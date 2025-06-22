@@ -41,6 +41,7 @@ namespace TouhouPets
                 ChatDictionary.Add(startIndex, text);
             }
         }
+
         /// <summary>
         /// 注册跨模组聊天室
         /// </summary>

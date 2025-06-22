@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Terraria;
 using Terraria.Localization;
 using Terraria.Utilities;
 
@@ -124,17 +125,35 @@ namespace TouhouPets
             int type = args[1] is short ? (short)args[1] : (int)args[1];
             int id = (int)args[2];
             WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[3];
+            List<CommentInfo> bossComment = CrossModBossComment[id];
 
-            CommentInfo info = new(type, text);
-            CrossModBossComment[id].Add(info);
+            var existingItem = bossComment.FirstOrDefault(x => x.ObjectType == type);
+            if (existingItem.CommentText != null)
+            {
+                int index = bossComment.IndexOf(existingItem);
+                var mergedText = new WeightedRandom<LocalizedText>();
+
+                foreach (var (commentText, weight) in existingItem.CommentText.elements)
+                    mergedText.Add(commentText, weight);
+
+                foreach (var (commentText, weight) in text.elements)
+                    mergedText.Add(commentText, weight);
+
+                bossComment[index] = new CommentInfo(type, mergedText);
+            }
+            else
+                bossComment.Add(new CommentInfo(type, text));
 
             Mod mod = (Mod)args[4];
             string modName = mod.DisplayNameClean;
 
+            NPC n = new();
+            n.SetDefaults(type);
+
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
                     $"宠物索引：{(TouhouPetID)id}\n" +
-                    $"对象种类：{type}\n");
+                    $"对象种类：{n.FullName}");
 
             foreach (var j in text.elements)
             {
@@ -209,7 +228,7 @@ namespace TouhouPets
 
             StringBuilder logInfo = new($"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"对象种类：{type}\n" +
+                    $"对象种类：{new Item(type).Name}\n" +
                     $"是否接受：{acceptable}\n" +
                     $"是否覆盖原版文本：{cover}");
 
