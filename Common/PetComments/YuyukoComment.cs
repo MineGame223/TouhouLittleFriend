@@ -117,15 +117,15 @@ namespace TouhouPets
                 return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, accept, cover) in CrossModFoodComment)
+            foreach (var (info, accept) in CrossModFoodComment)
             {
                 if (accept && foodType == info.ObjectType)
                 {
-                    if (!cover && acceptIDList_Vanilla.Contains(foodType) && Main.rand.NextBool(2))
-                        return false;
-
-                    projectile.SetChat(info.CommentText.Get(), 60);
-                    return true;
+                    if (info.Condition())
+                    {
+                        projectile.SetChat(info.CommentText, 60);
+                        return true;
+                    }
                 }
             }
             return false;

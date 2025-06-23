@@ -2,6 +2,12 @@
 
 namespace TouhouPets
 {
+    /// <summary>
+    /// 聊天室信息的结构体
+    /// </summary>
+    /// <param name="uniqueID"></param>
+    /// <param name="chatText"></param>
+    /// <param name="chatTurn"></param>
     public struct ChatRoomInfo(TouhouPetID uniqueID, LocalizedText chatText, int chatTurn)
     {
         /// <summary>

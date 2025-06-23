@@ -132,9 +132,9 @@ namespace TouhouPets
             }
             foreach (var i in comments)
             {
-                if (bossType == i.ObjectType)
+                if (bossType == i.ObjectType && i.Condition())
                 {
-                    Projectile.SetChat(i.CommentText.Get());
+                    Projectile.SetChat(i.CommentText);
                     return true;
                 }
             }

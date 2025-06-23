@@ -3,7 +3,6 @@ using Terraria.Localization;
 using Terraria;
 using System.Collections.Generic;
 using Terraria.ID;
-using Terraria.Utilities;
 
 namespace TouhouPets
 {
@@ -18,125 +17,126 @@ namespace TouhouPets
         {
             //使用方法委托作为判定条件参数
 
-            //使用此条件则表示会一直出现在常规对话中
-            Func<bool> isRegular = delegate () { return true; };
-
             //玩家位于海边
-            Func<bool> condi_1 = delegate () { return Main.LocalPlayer.ZoneBeach; };
+            Func<bool> condi_beach = delegate () { return Main.LocalPlayer.ZoneBeach; };
 
             //时间处于夜晚
-            Func<bool> condi_2 = delegate () { return !Main.dayTime; };
+            Func<bool> condi_night = delegate () { return !Main.dayTime; };
 
             //时间处于夜晚且玩家位于太空高度
-            Func<bool> condi_3 = delegate () { return !Main.dayTime && Main.LocalPlayer.ZoneSkyHeight; };
+            Func<bool> condi_night_space = delegate () { return !Main.dayTime && Main.LocalPlayer.ZoneSkyHeight; };
 
-            LocalizedText text_1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在海边出现！");
-            LocalizedText text_2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚出现！");
-            LocalizedText text_3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚的太空出现！");
+            //时间处于白天
+            Func<bool> condi_day = delegate () { return Main.dayTime; };
 
-            LocalizedText text_4 = Language.GetText($"你知道吗？其实这句话是由 {nameof(TouhouPets)} 通过Mod.Call添加的。");
-            LocalizedText text_5 = Language.GetText("是吗...为什么要告诉我？");
-            LocalizedText text_6 = Language.GetText("没什么，只是想让你知道。");
-            LocalizedText text_7 = Language.GetText("这铁打的...");
-            LocalizedText text_8 = Language.GetText("啊这...");
+            LocalizedText cirno1 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在海边出现！");
+            LocalizedText cirno2 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚出现！");
+            LocalizedText cirno3 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的，只会在夜晚的太空出现！");
+            LocalizedText cirno4 = Language.GetText($"这句话是由 {nameof(TouhouPets)} 添加的！");
 
-            WeightedRandom<LocalizedText> yuyuko_1 = new();
-            {
-                yuyuko_1.Add(Language.GetText("这句话加入到了对汉堡的评价！"));
-            }
+            LocalizedText junko1 = Language.GetText($"你知道吗？其实这句话是由 {nameof(TouhouPets)} 通过Mod.Call添加的。");
+            LocalizedText reisen1 = Language.GetText("是吗...为什么要告诉我？");
+            LocalizedText junko2 = Language.GetText("没什么，只是想让你知道。");
+            LocalizedText junko3 = Language.GetText("这铁打的...");
+            LocalizedText reisen2 = Language.GetText("啊这...");
 
-            WeightedRandom<LocalizedText> yuyuko_2 = new();
-            {
-                yuyuko_2.Add(Language.GetText("你喜欢肯德基还是麦当劳？"));
-                yuyuko_2.Add(Language.GetText("疯狂星期四？那是什么？"));
-            }
+            LocalizedText lunasa1 = Language.GetText("下一次的演出是什么时候？在哪儿？");
+            LocalizedText merlin1 = Language.GetText("好像是在下周一的太阳花田吧？");
+            LocalizedText lunasa2 = Language.GetText("要去那个花之妖怪的领地吗...");
+            LocalizedText lyrica1 = Language.GetText("沟通的事情就交给姐姐们吧~ 人家要帮忙准备器具哦。");
 
-            WeightedRandom<LocalizedText> yuyuko_3 = new();
-            {
-                yuyuko_3.Add(Language.GetText("正常来说你看不到这句话，除非你注释掉了下面拒绝食用柠檬的Call。"));
-            }
+            LocalizedText yuyuko1 = Language.GetText("汉堡是最棒的宵夜！");
+            LocalizedText yuyuko2 = Language.GetText("你喜欢肯德基还是麦当劳？");
+            LocalizedText yuyuko3 = Language.GetText("疯狂星期四？那是什么？");
 
-            WeightedRandom<LocalizedText> yuyuko_4 = new();
-            {
-                yuyuko_4.Add(Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。"));
-                yuyuko_4.Add(Language.GetText("我能看见的只有那棵黄黄的柠檬树。"));
-                yuyuko_4.Add(Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。"), 3);
-            }
+            LocalizedText yuyuko4 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
+            LocalizedText yuyuko5 = Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。");
 
-            WeightedRandom<LocalizedText> yuyuko_5 = new();
-            {
-                yuyuko_5.Add(Language.GetText("你已经看不到原有评论了哦。"));
-                yuyuko_5.Add(Language.GetText("吃起来有点咯牙..."));
-            }
+            LocalizedText youmu1 = Language.GetText("巨大石像来犯！");
+            LocalizedText youmu2 = Language.GetText("就算是石头、观楼剑也劈得开！");
 
-            WeightedRandom<LocalizedText> youmu_1 = new();
-            {
-                youmu_1.Add(Language.GetText("巨大石像来犯！"));
-                youmu_1.Add(Language.GetText("就算是石头、观楼剑也劈得开！"));
-            }        
+            LocalizedText youmu3 = Language.GetText("就算你是妖精女皇，也属于敌人！");
+            LocalizedText youmu4 = Language.GetText("这秒杀一切的气场？！...要小心啊！");
 
             //宠物的独特ID值，详细见 TouhouPetUniqueID.cs
             int cirno = 1;//琪露诺
             int junko = 13;//纯狐
             int reisen = 39;//铃仙
             int youmu = 58;//妖梦
+            int lunasa = 23;//露娜萨
+            int merlin = 27;//梅露兰
+            int lyrica = 24;//莉莉卡
 
-            //参数分别为：Call类型、宠物索引、文本、条件、权重、添加模组
-            //内部索引值由添加顺序决定、从0开始，此处可视为0、1、2
-            //最后一个参数为添加方模组的实例，用于日志信息
-            mod.Call("PetDialog", cirno, text_1, condi_1, 1, mod);
-            mod.Call("PetDialog", cirno, text_2, condi_2, 1, mod);
-            mod.Call("PetDialog", cirno, text_3, condi_3, 1, mod);
+            //为琪露诺添加四句常规对话，分别会在不同的条件下说出
+            //参数分别为：Call类型、添加模组、宠物索引、文本、条件、权重
+            //“添加模组”参数用于日志信息
+            //条件和权重为选填项，默认分别为 true 和 1
+            mod.Call("PetDialog", mod, cirno, cirno1, condi_beach, 2);
+            mod.Call("PetDialog", mod, cirno, cirno2, condi_night);
+            mod.Call("PetDialog", mod, cirno, cirno3, condi_night_space);
+            mod.Call("PetDialog", mod, cirno, cirno4);
 
+            //为纯狐和铃仙添加一个聊天室
             //先将聊天室所需的第一句对话按照常规对话的形式加入
-            mod.Call("PetDialog", junko, text_4, isRegular, 1, mod);
-
+            mod.Call("PetDialog", mod, junko, junko1);
             //聊天室信息列表
             //元组中的三个参数分别为：宠物索引、文本索引、回合数
             //对话的回合值都是从 -1 开始的
             List<(int, LocalizedText, int)> chatRoom1 = new()
             {
-                (junko, text_4, -1),
-                (reisen, text_5, 0),
-                (junko, text_6, 1),
+                (junko, junko1, -1),
+                (reisen, reisen1, 0),
+                (junko, junko2, 1),
                 //这里表示纯狐和铃仙在第二回合时会同时说话
-                (reisen, text_7, 2),
-                (junko, text_7, 2),
-                (reisen, text_8, 3),
+                (reisen, junko3, 2),
+                (junko, junko3, 2),
+                (reisen, reisen2, 3),
             };
-
             //添加聊天室
-            //下面参数分别为：Call类型、聊天室信息列表、添加模组
-            mod.Call("PetChatRoom", chatRoom1, mod);
+            //下面参数分别为：Call类型、添加模组、聊天室信息列表
+            mod.Call("PetChatRoom", mod, chatRoom1);
 
-            //下面这些Call添加的文本都不会被计入宠物的对话字典中，也不会被赋予对话索引值，全部使用-1
+            //为骚灵三姐妹添加一个聊天室
+            mod.Call("PetDialog", mod, lunasa, lunasa1);
+            List<(int, LocalizedText, int)> chatRoom2 = new()
+            {
+                (lunasa, lunasa1, -1),
+                (merlin, merlin1, 0),
+                (lunasa, lunasa2, 1),
+                (lyrica, lyrica1, 2),
+            };
+            mod.Call("PetChatRoom", mod, chatRoom2);
 
-            //为妖梦添加两句关于石巨人评论的话
-            //参数分别为：Call类型、Boss种类、宠物索引、文本、添加模组
+            //下面这些Call添加的文本都不会被计入宠物的对话字典中
+
+            //为妖梦添加两句关于石巨人的评论，其中第二句拥有更高的权重
+            //参数分别为：Call类型、添加模组、Boss种类、宠物索引、文本、条件、权重
+            //条件和权重为选填项，默认分别为 true 和 1
             //理论上讲可以对模组内已有的同种类评价进行覆盖
             //但这是让你用来适配自己模组的Boss的，请不要随便覆盖已有内容
             //若多个模组对同一种类的Boss添加了评价，则这些评价会共存
-            mod.Call("PetsReactionToBoss", NPCID.Golem, youmu, youmu_1, mod);
+            mod.Call("PetsReactionToBoss", mod, NPCID.Golem, youmu, youmu1);
+            mod.Call("PetsReactionToBoss", mod, NPCID.Golem, youmu, youmu2, null, 2);
 
-            //为幽幽子添加两句接受汉堡评论的话
-            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组
-            //这是让你用来适配自己模组的食物的，请不要随便覆盖已有内容
-            mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_1, true, mod);
+            //为妖梦添加两句关于光之女皇的评论
+            //分别会在夜晚和白天时说出
+            mod.Call("PetsReactionToBoss", mod, NPCID.HallowBoss, youmu, youmu3, condi_night);
+            mod.Call("PetsReactionToBoss", mod, NPCID.HallowBoss, youmu, youmu4, condi_day);
 
-            //再次为幽幽子添加一句接受汉堡评论的话，如果多次为同一个食物添加文本则会合并
-            mod.Call("YuyukosReactionToFood", ItemID.Burger, yuyuko_2, true, mod);
+            //为幽幽子添加三句接受汉堡评论的话，其中第一句只会在夜晚说出
+            //参数分别为：Call类型、添加模组、食物种类、文本、是否接受该食物、条件、权重
+            //条件和权重为选填项，默认分别为 true 和 1
+            //理论上讲可以对模组内已有的同种类评价进行覆盖
+            //但这是让你用来适配自己模组的食物的，请不要随便覆盖已有内容
+            //若多个模组对同一种类的食物添加了评价，则这些评价会共存
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko1, true, condi_night);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko2, true);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko3, true);
 
-            //为幽幽子添加一句接受并覆盖原有柠檬评论的话
-            //参数分别为：Call类型、食物种类、文本、是否接受该食物、添加模组、是否覆盖原版评论
-            //模组添加的评价不受覆盖影响
-            mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_3, true, mod, true);
-
-            //为幽幽子添加三句拒绝柠檬评论的话
+            //为幽幽子添加两句拒绝柠檬评论的话，其中第二句拥有更高的权重
             //若同一食物同时存在拒绝与接受的条件，则拒绝的优先级更高
-            mod.Call("YuyukosReactionToFood", ItemID.Lemon, yuyuko_4, false, mod);
-
-            //为幽幽子添加两句接受并覆盖原有金怡口评论的话
-            mod.Call("YuyukosReactionToFood", ItemID.GoldenDelight, yuyuko_5, true, mod, true);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Lemon, yuyuko4, false);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Lemon, yuyuko5, false, null, 3);
         }
     }
 }

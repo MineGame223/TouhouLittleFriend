@@ -58,7 +58,7 @@
 
 #### 注意事项
 
-- `BossType` 代指的NPC必须能够被判定为Boss，即 `npc.boss = true`。
+- `BossType` 代指的NPC必须能够被判定为Boss，即 `npc.boss = true`
 
 ### YuyukosReactionToFood
 
@@ -99,18 +99,18 @@
 
 #### 参数
 
-- `ChatRoomInfoList` ：包含聊天室信息的列表，`List<(int, int, int)>` 类型
-- 列表中元组内的三个参数分别代表 `宠物索引` ，`文本索引` 和 `回合数`
+- `ChatRoomInfoList` ：包含聊天室信息的元组列表，`List<(int, LocalizedText, int)>` 类型
+- 列表中元组内的三个参数分别代表 `宠物索引` ，`对话文本` 和 `回合数`
 - `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
 
 #### 注意事项
 
-- `文本索引` 由上文中 `PetDialog` 的填写顺序决定，索引值从0开始，详细参考可查看[ModCallShowcase.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/ModSupports/ModCallShowcase.cs)
+- `对话文本` 的第一句应当首先用 `PetDialog` 进行注册，详细参考可查看[ModCallShowcase.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/ModSupports/ModCallShowcase.cs)
 - `回合数` 从-1开始！
 
 ## 其他内容
 
-- 有那么几个喜欢音乐的宠物可能会一时兴起、更改游戏的背景音乐。您可以通过查看游戏内的`闹鬼的应援棒`物品，了解如何让她们演奏由您甄选的音乐！
+- 有那么几个喜欢音乐的宠物可能会一时兴起、更改游戏的背景音乐。您可以通过查看游戏内的 `闹鬼的应援棒` 物品，了解如何让她们演奏由您甄选的音乐！
 
 - 如果您在宠物商人那里消费了足够多的钱币，她或许会赠予您什么东西...
 

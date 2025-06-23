@@ -2,15 +2,12 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using TouhouPets.Content.Projectiles.Pets;
 using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
 {
     partial class YuyukoComment
     {
-        private static int startIndex_Reject = 0;
-
         private readonly static List<int> rejectIDList_Vanilla = [
             ItemID.JojaCola,//请不要喂我垃圾...
             ];
@@ -89,16 +86,13 @@ namespace TouhouPets
                 return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, accept, cover) in CrossModFoodComment)
+            foreach (var (info, accept) in CrossModFoodComment)
             {
                 if (!accept && foodType == info.ObjectType)
                 {
-                    if (giveComment)
+                    if (giveComment && info.Condition())
                     {
-                        if (!cover && rejectIDList_Vanilla.Contains(foodType) && Main.rand.NextBool(2))
-                            return false;
-
-                        projectile.SetChat(info.CommentText.Get());
+                        projectile.SetChat(info.CommentText);
                     }
                     return true;
                 }
