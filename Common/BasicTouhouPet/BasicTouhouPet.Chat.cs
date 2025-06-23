@@ -108,28 +108,55 @@ namespace TouhouPets
         /// </summary>
         internal PetChatRoom currentChatRoom;
 
-        internal bool AllowToUseChatRoom(LocalizedText startText)
+        #region 对话查找方法
+        /// <summary>
+        /// 是否允许启用对应聊天室
+        /// </summary>
+        /// <param name="startKey">文本键</param>
+        /// <returns>若当前文本键被包含在 <see cref="IsChatRoomActive"/> 中，则返回 true，反之返回 false</returns>
+        internal bool AllowToUseChatRoom(LocalizedText startKey)
         {
-            if (!IsChatRoomActive.ContainsKey(startText))
+            if (!IsChatRoomActive.ContainsKey(startKey))
             {
                 return false;
             }
-            if (chatText == startText)
+            if (chatText == startKey)
             {
-                IsChatRoomActive[startText] = true;
+                IsChatRoomActive[startKey] = true;
             }
-            return IsChatRoomActive[startText];
+            return IsChatRoomActive[startKey];
         }
+        /// <summary>
+        /// 是否允许启用对应聊天室
+        /// </summary>
+        /// <param name="startKeys">文本键列表</param>
+        /// <returns>若当前文本键被包含在 <see cref="IsChatRoomActive"/> 中，则返回 true，反之返回 false</returns>
+        internal bool AllowToUseChatRoom(List<LocalizedText> startKeys)
+        {
+            if (startKeys.Count <= 0)
+                return false;
+
+            foreach(var i in startKeys)
+            {
+                if (!IsChatRoomActive.ContainsKey(i))
+                    continue;
+
+                if (chatText == i)
+                {
+                    IsChatRoomActive[i] = true;
+                }
+                return IsChatRoomActive[i];
+            }
+            return false;
+        }
+        #endregion
 
         #region 文本绘制方法
         private void DrawChatText(Vector2 pos, float alpha, int maxWidth = 210)
         {
-            string text = chatText.Value ?? string.Empty;
-
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
+            if (chatText == null)
                 return;
-            }
+            string text = chatText.Value;
 
             Color color = textColor;
             Color bColor = boardColor;
@@ -166,12 +193,9 @@ namespace TouhouPets
         }
         private void DrawChatText_Koishi(Vector2 pos, float alpha, int maxWidth = 240)
         {
-            string text = chatText.Value ?? string.Empty;
-
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
+            if (chatText == null)
                 return;
-            }
+            string text = chatText.Value;
 
             Color color = textColor;
             Color bColor = boardColor;
@@ -276,17 +300,10 @@ namespace TouhouPets
                     return;
 
                 WeightedRandom<LocalizedText> chatText = RegularDialogText();
-
                 //将跨模组的常规对话加入随机选择器
                 GetCrossModChat(ref chatText);
-
-                LocalizedText result = chatText.Get();
-
-                //发现空对话时不执行后续
-                if (result.IsLocalizedTextEmpty())
-                    return;
-
-                Projectile.SetChat(result);
+                //设置说话
+                Projectile.SetChat(chatText.Get());
             }
         }
 

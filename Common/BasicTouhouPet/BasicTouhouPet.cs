@@ -5,11 +5,12 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
+using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
 {
     /// <summary>
-    /// 东方可交互宠物基类，基本示范见 <see cref="Cirno"/>
+    /// 可交互宠物基类，基本示范见 <see cref="Cirno"/>
     /// </summary>
     public abstract partial class BasicTouhouPet : ModProjectile
     {

@@ -122,7 +122,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     chat.Add(ChatDictionary[1]);
                 }
-                chat.Add(ChatDictionary[2]);
                 if (FindPet(ProjectileType<Reisen>()))
                 {
                     chat.Add(ChatDictionary[3]);
@@ -152,7 +151,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(junko, ChatDictionary[3], -1), //纯狐：乌冬酱~最近还好嘛？
-                new ChatRoomInfo(reisen, ChatDictionary[11], 0),//铃仙：嗯嗯...还、还好吧...
+                new ChatRoomInfo(reisen, GetChatText("Reisen",11), 0),//铃仙：嗯嗯...还、还好吧...
             ];
 
             return list;

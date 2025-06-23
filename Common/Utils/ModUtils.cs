@@ -111,17 +111,6 @@ namespace TouhouPets
 
             tooltips.Insert(index + 1, new TooltipLine(TouhouPets.Instance, "EachLine" + index.ToString(), text));
         }
-
-        /// <summary>
-        /// 获取对话文本
-        /// </summary>
-        /// <param name="tag">角色对应标签</param>
-        /// <param name="index">文本对应编号</param>
-        /// <returns></returns>
-        public static string GetChatTextValue(string tag, string index, params object[] args)
-        {
-            return Language.GetTextValue($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}", args);
-        }
         /// <summary>
         /// 获取对话文本
         /// </summary>
@@ -129,6 +118,16 @@ namespace TouhouPets
         /// <param name="index">文本对应编号</param>
         /// <returns></returns>
         public static LocalizedText GetChatText(string tag, string index, params object[] args)
+        {
+            return Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}").WithFormatArgs(args);
+        }
+        /// <summary>
+        /// 获取对话文本
+        /// </summary>
+        /// <param name="tag">角色对应标签</param>
+        /// <param name="index">文本对应编号</param>
+        /// <returns></returns>
+        public static LocalizedText GetChatText(string tag, int index, params object[] args)
         {
             return Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{tag}.Chat{index}").WithFormatArgs(args);
         }

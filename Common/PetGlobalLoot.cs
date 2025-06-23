@@ -26,32 +26,32 @@ namespace TouhouPets
         {
             string name = "Coralite";
 
-            if (ModUtils.HasModAndFindNPC(name, npc, "NightmarePlantera"))
+            if (HasModAndFindNPC(name, npc, "NightmarePlantera"))
                 npcLoot.Add(ItemDropRule.Common(ItemType<DoremyPillow>()));
         }
         private static void AddHomewardJourneyLoot(NPC npc, NPCLoot npcLoot)
         {
             string name = "ContinentOfJourney";
 
-            if (ModUtils.HasModAndFindNPC(name, npc, "TheOverwatcher"))
+            if (HasModAndFindNPC(name, npc, "TheOverwatcher"))
                 npcLoot.Add(ItemDropRule.Common(ItemType<SakuyaWatch>()));
         }
         private static void AddThoriumLoot(NPC npc, NPCLoot npcLoot)
         {
             string name = "ThoriumMod";
 
-            if (ModUtils.HasModAndFindNPC(name, npc, "Viscount"))
+            if (HasModAndFindNPC(name, npc, "Viscount"))
                 npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<RemiliaRedTea>(), ItemType<FlandrePudding>()));
 
-            if (ModUtils.HasModAndFindNPC(name, npc, "BoreanStrider")
-                || ModUtils.HasModAndFindNPC(name, npc, "BoreanStriderPopped"))
+            if (HasModAndFindNPC(name, npc, "BoreanStrider")
+                || HasModAndFindNPC(name, npc, "BoreanStriderPopped"))
                 npcLoot.Add(ItemDropRule.OneFromOptions(1, ItemType<LettyGlobe>()));
         }
         private static void AddCalamityLoot(NPC npc, NPCLoot npcLoot)
         {
             string name = "CalamityMod";
 
-            if (ModUtils.HasModAndFindNPC(name, npc, "OarfishHead"))
+            if (HasModAndFindNPC(name, npc, "OarfishHead"))
                 npcLoot.Add(ItemDropRule.Common(ItemType<IkuOarfish>(), 100));
         }
         #endregion

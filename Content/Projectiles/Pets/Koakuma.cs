@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
-            ChatDictionary[1] = ModUtils.GetChatText("Koakuma", "1", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
+            ChatDictionary[1] = GetChatText("Koakuma", 1, NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
 
             base.OnSpawn(source);
         }

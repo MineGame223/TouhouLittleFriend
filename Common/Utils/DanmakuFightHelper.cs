@@ -24,22 +24,22 @@ namespace TouhouPets
         }
         public static int PlayerA_Score
         {
-            get => playerA_Score; 
+            get => playerA_Score;
             set => playerA_Score = value;
         }
         public static int PlayerB_Score
         {
-            get => playerB_Score; 
+            get => playerB_Score;
             set => playerB_Score = value;
         }
         public static int Round
         {
-            get => round; 
+            get => round;
             set => round = value;
         }
         public static int RoundTimer
         {
-            get => roundTimer; 
+            get => roundTimer;
             set => roundTimer = value;
         }
         public static void UpdateDanmakuRingScale()
@@ -106,35 +106,23 @@ namespace TouhouPets
             int xOffset = 0;
             int yOffset = 0;
 
-            if (RoundTimer <= 1)
-            {
-                textAlpha = 0;
-                textScale = 3;
-            }
-            else if (RoundTimer <= 180 && RoundTimer > 1)
+            if (RoundTimer <= 180)
             {
                 if (!Main.gamePaused)
                 {
-                    textAlpha += 0.02f;
-                    textScale -= 0.03f;
+                    float count = MathHelper.Clamp(RoundTimer / 60f, 0, 1);
+                    textScale = MathHelper.SmoothStep(3, 1, count);
+                    textAlpha = MathHelper.SmoothStep(0, 1, count);
                 }
-                textScale = MathHelper.Clamp(textScale, 1, 3);
-                textAlpha = MathHelper.Clamp(textAlpha, 0, 1);
             }
             else if (RoundTimer >= 360)
             {
                 if (!Main.gamePaused)
                 {
-                    textAlpha -= 0.04f;
-                    textScale += 0.05f;
+                    float count = MathHelper.Clamp((RoundTimer - 360) / 20f, 0, 1);
+                    textScale = MathHelper.SmoothStep(1, 3, count);
+                    textAlpha = MathHelper.SmoothStep(1, 0, count);
                 }
-                textScale = MathHelper.Clamp(textScale, 1, 5);
-                textAlpha = MathHelper.Clamp(textAlpha, 0, 1);
-            }
-            else
-            {
-                textAlpha = 1;
-                textScale = 1;
             }
             if (RoundTimer > 180 && RoundTimer <= 300)
             {

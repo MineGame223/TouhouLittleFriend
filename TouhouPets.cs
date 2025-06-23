@@ -1,5 +1,6 @@
 global using Terraria.ModLoader;
 global using static Terraria.ModLoader.ModContent;
+global using static TouhouPets.ModUtils;
 
 using Terraria;
 using Terraria.ID;

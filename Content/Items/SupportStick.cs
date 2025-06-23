@@ -70,7 +70,7 @@ namespace TouhouPets.Content.Items
             {
                 text = Mod.GetLocalization("CustomModeDescrip").Value;
             }
-            ModUtils.InsertTooltipLine(tooltips, text);
+            tooltips.InsertTooltipLine(text);
         }
         public override Color? GetAlpha(Color lightColor)
         {

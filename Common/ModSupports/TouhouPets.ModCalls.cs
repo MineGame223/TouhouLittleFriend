@@ -306,9 +306,8 @@ namespace TouhouPets
                 Logger.Info(ConsoleMessage("宠物对话添加结果"
                     , $"添加成功！\n" +
                     $"添加者：{modName}\n" +
-                    $"索引：{(TouhouPetID)id}\n" +
-                    $"内容：{CrossModDialog[id][i].DialogText}\n" +
-                    $"权重：{CrossModDialog[id][i].Weight}"
+                    $"索引：{(TouhouPetID)id}；权重：{CrossModDialog[id][i].Weight}\n" +
+                    $"内容：{CrossModDialog[id][i].DialogText}"
                     ));
             }
 
@@ -369,7 +368,7 @@ namespace TouhouPets
 
                 foreach (var j in crossModChatRoom[id])
                 {
-                    logInfo.Append($"\n宠物索引：{j.UniqueID}；文本：{j.ChatText}；回合数：{j.ChatTurn}");
+                    logInfo.Append($"\n宠物索引：{j.UniqueID}；回合数：{j.ChatTurn}；文本：{j.ChatText}");
                 }
 
                 Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));

@@ -186,7 +186,7 @@ namespace TouhouPets
                             text4 += text2[num2++];
                         }
 
-                        if (!ModUtils.IsSpecificLanguage(Terraria.Localization.GameCulture.CultureName.Chinese))
+                        if (!IsSpecificLanguage(Terraria.Localization.GameCulture.CultureName.Chinese))
                         {
                             text4 += "-";
                         }

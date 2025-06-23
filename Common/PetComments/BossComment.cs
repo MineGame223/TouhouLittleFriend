@@ -1,6 +1,5 @@
 ﻿using Terraria.ID;
 using Terraria;
-using static TouhouPets.ModUtils;
 using Terraria.Localization;
 using System.Collections.Generic;
 

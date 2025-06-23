@@ -187,10 +187,8 @@ namespace TouhouPets
             }
 
             //根据长度遍历元组列表内容
-            for (int i = 0; i < info.Count; i++)
+            foreach((Projectile pet, LocalizedText text, int chatTurn) in info)
             {
-                Projectile pet = info[i].pet;
-
                 //如果加入的弹幕不存在，则不设置对话
                 if (pet == null || !pet.active)
                     continue;
@@ -200,21 +198,13 @@ namespace TouhouPets
                     continue;
 
                 //若回合数不等于当前回合值则跳过
-                if (info[i].chatTurn != chatRoom.chatTurn)
+                if (chatTurn != chatRoom.chatTurn)
                     continue;
 
-                if (!info[i].text.IsLocalizedTextEmpty())
+                //起始回合时发起者不设置对话
+                if (chatTurn != -1 || pet != chatRoom.initiator)
                 {
-                    //起始回合时发起者不设置对话
-                    if (info[i].chatTurn != -1 || pet != chatRoom.initiator)
-                    {
-                        pet.SetChatForChatRoom(info[i].text, 20);
-                    }
-                }
-                //若文本键无对应内容，则关闭当前对话
-                else
-                {
-                    pet.CloseCurrentDialog();
+                    pet.SetChatForChatRoom(text, 20);
                 }
 
                 //若当前对话已说完，则将回合值+1并跳出循环，防止多加

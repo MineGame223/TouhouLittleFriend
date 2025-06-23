@@ -150,7 +150,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 640;//640
-            chance = 1;//6
+            chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
@@ -165,7 +165,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    /*chat.Add(ChatDictionary[1]);
+                    chat.Add(ChatDictionary[1]);
                     chat.Add(ChatDictionary[2]);
                     chat.Add(ChatDictionary[3]);
                     if (UnderSunShine)
@@ -176,7 +176,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         if (chatCD <= 0)
                             chat.Add(ChatDictionary[9]);
                     }
-                    if (!Owner.HasBuff<ReimuBuff>())*/
+                    if (!Owner.HasBuff<ReimuBuff>())
                     chat.Add(ChatDictionary[12], 3);
                 }
             }
@@ -212,14 +212,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(sunny, ChatDictionary[12], -1),//桑尼：下一次该去哪里恶作剧呢？
-                new ChatRoomInfo(star, ModUtils.GetChatText("Star","6"), 0),//斯塔：要不去偷那个黑白魔法使的蘑菇吧？
-                new ChatRoomInfo(luna, ModUtils.GetChatText("Luna","9"), 1),//露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
+                new ChatRoomInfo(star, GetChatText("Star",6), 0),//斯塔：要不去偷那个黑白魔法使的蘑菇吧？
+                new ChatRoomInfo(luna, GetChatText("Luna",9), 1),//露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
                 new ChatRoomInfo(sunny,ChatDictionary[13],2),//桑尼：没事的啦！露娜你只管殿后就好啦。
-                new ChatRoomInfo(luna, ModUtils.GetChatText("Luna","10"), 3),//露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
+                new ChatRoomInfo(luna, GetChatText("Luna",10), 3),//露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
                 new ChatRoomInfo(sunny, ChatDictionary[14], 4),//桑尼：呜哇！偷东西的时候你的能力超重要的好吗？
-                new ChatRoomInfo(star, ModUtils.GetChatText("Star","7"), 5),//斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
+                new ChatRoomInfo(star, GetChatText("Star",7), 5),//斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
                 new ChatRoomInfo(sunny,ChatDictionary[15], 6),//桑尼 & 露娜：不可以！！！
-                new ChatRoomInfo(luna,ModUtils.GetChatText("Luna","11"), 6),
+                new ChatRoomInfo(luna,GetChatText("Luna",11), 6),
             ];
 
             return list;
