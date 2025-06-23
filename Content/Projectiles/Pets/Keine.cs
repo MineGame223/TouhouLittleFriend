@@ -113,9 +113,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(keine, ChatDictionary[7], -1), //慧音：最近你怎么样？
-                new ChatRoomInfo(moku, ChatDictionary[7], 0),//妹红：还好吧，还是和以前一样罢了。
+                new ChatRoomInfo(moku, GetChatText("Moku",7), 0),//妹红：还好吧，还是和以前一样罢了。
                 new ChatRoomInfo(keine, ChatDictionary[8], 1), //慧音：还在纠结过去的事情么？
-                new ChatRoomInfo(moku, ChatDictionary[8], 2),//妹红：不，我已经在试着忘掉那些了...
+                new ChatRoomInfo(moku, GetChatText("Moku",8), 2),//妹红：不，我已经在试着忘掉那些了...
             ];
 
             return list;
@@ -128,7 +128,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(keine, ChatDictionary[6], -1), //慧音：让我看看谁没写作业...
-                new ChatRoomInfo(cirno, ChatDictionary[12], 0),//琪露诺：（糟了！要被慧音老师发现了...）
+                new ChatRoomInfo(cirno, GetChatText("Cirno",12), 0),//琪露诺：（糟了！要被慧音老师发现了...）
             ];
 
             return list;

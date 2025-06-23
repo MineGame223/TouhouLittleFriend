@@ -40,39 +40,40 @@ namespace TouhouPets
             LocalizedText text_7 = Language.GetText("这铁打的...");
             LocalizedText text_8 = Language.GetText("啊这...");
 
-            LocalizedText comment_y1 = Language.GetText("这句话加入到了对汉堡的评价！");
             WeightedRandom<LocalizedText> yuyuko_1 = new();
-            yuyuko_1.Add(comment_y1);
+            {
+                yuyuko_1.Add(Language.GetText("这句话加入到了对汉堡的评价！"));
+            }
 
-            LocalizedText comment_y2 = Language.GetText("你喜欢肯德基还是麦当劳？");
-            LocalizedText comment_y2_1 = Language.GetText("疯狂星期四？那是什么？");
             WeightedRandom<LocalizedText> yuyuko_2 = new();
-            yuyuko_2.Add(comment_y2);
-            yuyuko_2.Add(comment_y2_1);
+            {
+                yuyuko_2.Add(Language.GetText("你喜欢肯德基还是麦当劳？"));
+                yuyuko_2.Add(Language.GetText("疯狂星期四？那是什么？"));
+            }
 
-            LocalizedText comment_y3 = Language.GetText("正常来说你看不到这句话，除非你注释掉了下面拒绝食用柠檬的Call。");
             WeightedRandom<LocalizedText> yuyuko_3 = new();
-            yuyuko_3.Add(comment_y3);
+            {
+                yuyuko_3.Add(Language.GetText("正常来说你看不到这句话，除非你注释掉了下面拒绝食用柠檬的Call。"));
+            }
 
-            LocalizedText comment_y4 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
-            LocalizedText comment_y5 = Language.GetText("我能看见的只有那棵黄黄的柠檬树。");
-            LocalizedText comment_y6 = Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。");
             WeightedRandom<LocalizedText> yuyuko_4 = new();
-            yuyuko_4.Add(comment_y4);
-            yuyuko_4.Add(comment_y5);
-            yuyuko_4.Add(comment_y6, 3);
+            {
+                yuyuko_4.Add(Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。"));
+                yuyuko_4.Add(Language.GetText("我能看见的只有那棵黄黄的柠檬树。"));
+                yuyuko_4.Add(Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。"), 3);
+            }
 
-            LocalizedText comment_y7 = Language.GetText("你已经看不到原有评论了哦。");
-            LocalizedText comment_y8 = Language.GetText("吃起来有点咯牙...");
             WeightedRandom<LocalizedText> yuyuko_5 = new();
-            yuyuko_5.Add(comment_y7);
-            yuyuko_5.Add(comment_y8);
+            {
+                yuyuko_5.Add(Language.GetText("你已经看不到原有评论了哦。"));
+                yuyuko_5.Add(Language.GetText("吃起来有点咯牙..."));
+            }
 
-            LocalizedText comment_ym1 = Language.GetText("巨大石像来犯！");
-            LocalizedText comment_ym2 = Language.GetText("就算是石头、观楼剑也劈得开！");
             WeightedRandom<LocalizedText> youmu_1 = new();
-            youmu_1.Add(comment_ym1);
-            youmu_1.Add(comment_ym2);
+            {
+                youmu_1.Add(Language.GetText("巨大石像来犯！"));
+                youmu_1.Add(Language.GetText("就算是石头、观楼剑也劈得开！"));
+            }        
 
             //宠物的独特ID值，详细见 TouhouPetUniqueID.cs
             int cirno = 1;//琪露诺

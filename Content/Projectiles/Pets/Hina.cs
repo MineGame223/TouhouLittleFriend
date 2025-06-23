@@ -112,11 +112,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(hina, ChatDictionary[4], -1), //转转：荷取，你知道吗？我一直有一个愿望。
-                new ChatRoomInfo(nitori, ChatDictionary[4], 0),//荷取：嗯？是什么愿望呢？
+                new ChatRoomInfo(nitori, GetChatText("Nitori",4), 0),//荷取：嗯？是什么愿望呢？
                 new ChatRoomInfo(hina, ChatDictionary[5], 1), //转转：我希望，把这个世界彻底净化成没有厄运的世界。
-                new ChatRoomInfo(nitori, ChatDictionary[5], 2),//荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
+                new ChatRoomInfo(nitori, GetChatText("Nitori",5), 2),//荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
                 new ChatRoomInfo(hina, ChatDictionary[6], 3), //转转：哈哈，所以说只是一个愿望啊。
-                new ChatRoomInfo(nitori, ChatDictionary[6], 4),//荷取：说不定哪一天真的可以实现哦！
+                new ChatRoomInfo(nitori, GetChatText("Nitori",6), 4),//荷取：说不定哪一天真的可以实现哦！
             ];
 
             return list;
@@ -129,9 +129,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(hina, ChatDictionary[7], -1), //转转：我们是...
-                new ChatRoomInfo(nitori, ChatDictionary[7], 0),//荷取：“旋转河童”组合！
+                new ChatRoomInfo(nitori, GetChatText("Nitori",7), 0),//荷取：“旋转河童”组合！
                 new ChatRoomInfo(hina, ChatDictionary[8], 1), //转转 & 荷取：哈哈哈哈！...
-                new ChatRoomInfo(nitori, ChatDictionary[8], 1),
+                new ChatRoomInfo(nitori, GetChatText("Nitori",8), 1),
             ];
 
             return list;

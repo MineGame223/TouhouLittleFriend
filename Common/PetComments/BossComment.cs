@@ -13,43 +13,6 @@ namespace TouhouPets
         public const string Name_HJ = "ContinentOfJourney";
         public const string Name_Gensokyo = "Gensokyo";
 
-        private static int[] startIndex_Vanilla = new int[(int)TouhouPetID.Count];
-
-        /// <summary>
-        /// 注册原版Boss评价
-        /// </summary>
-        /// <param name="pet"></param>
-        /// <param name="list"></param>
-        /// <param name="chatPath"></param>
-        public static void RegisterVanillaComment(this Projectile pet, List<int> list, string chatPath)
-        {
-            if (!pet.IsATouhouPet())
-                return;
-
-            //若列表为空、或路径不存在，则不执行后续
-            if (list.Count <= 0 || string.IsNullOrEmpty(chatPath))
-                return;
-
-            int id = (int)pet.AsTouhouPet().UniqueID;
-
-            //记录对应字典的起始索引值
-            int lastIndex = pet.AsTouhouPet().ChatDictionary.Count;
-            startIndex_Vanilla[id] = lastIndex + 1;
-
-            //根据对应列表长度赋予其索引值
-            if (list is List<int> vanillaList)
-            {
-                if (vanillaList.Count > 0)
-                {
-                    for (int i = 0; i < vanillaList.Count; i++)
-                    {
-                        LocalizedText text = Language.GetText($"{chatPath}.Vanilla_{i + 1}");
-                        pet.AsTouhouPet().ChatDictionary.TryAdd(startIndex_Vanilla[id] + i, text);
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// 主动添加的跨模组Boss评价
         /// </summary>
@@ -101,7 +64,7 @@ namespace TouhouPets
         /// <param name="pet"></param>
         /// <param name="list"></param>
         /// <param name="bossType"></param>
-        public static bool BossComment_Vanilla(this Projectile pet, List<int> list, int bossType)
+        public static bool BossComment_Vanilla(this Projectile pet, string chatPath, List<int> list, int bossType)
         {
             if (!pet.IsATouhouPet())
                 return false;
@@ -110,24 +73,13 @@ namespace TouhouPets
             if (list.Count <= 0 || !list.Contains(bossType))
                 return false;
 
-            int id = (int)pet.AsTouhouPet().UniqueID;
-
             //魔焰眼和激光眼的评价是一样的
             if (bossType == NPCID.Spazmatism)
                 bossType = NPCID.Retinazer;
 
-            int finalIndex = startIndex_Vanilla[id] + MarisaList_Vanilla.IndexOf(bossType);
-            //由于无论是否实际添加了文本、字典中都会被注册，所以这里需要直接获取实际值
-            if (pet.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out LocalizedText key))
-            {
-                //排除可能不存在的文本
-                if(!key.IsLocalizedTextEmpty())
-                {
-                    pet.SetChat(key);
-                    return true;
-                }
-            }
-            return false;
+            LocalizedText text = Language.GetText($"{chatPath}.Vanilla_{MarisaList_Vanilla.IndexOf(bossType) + 1}");
+            pet.SetChat(text);
+            return true;
         }
     }
 }

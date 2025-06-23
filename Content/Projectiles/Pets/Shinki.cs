@@ -128,15 +128,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(shinki, ChatDictionary[6], -1), //神绮：爱~丽~丝~酱~~
-                new ChatRoomInfo(alice, ChatDictionary[11], 0),//爱丽丝：别那么肉麻的叫我！...咱们、咱们认识吗？
+                new ChatRoomInfo(alice, GetChatText("Alice",11), 0),//爱丽丝：别那么肉麻的叫我！...咱们、咱们认识吗？
                 new ChatRoomInfo(shinki, ChatDictionary[7], 1), //神绮：别这样嘛！你难道连你亲爱的妈妈都不认识了？
-                new ChatRoomInfo(alice, ChatDictionary[12], 2),//爱丽丝：不熟，真的不熟...
+                new ChatRoomInfo(alice, GetChatText("Alice",12), 2),//爱丽丝：不熟，真的不熟...
                 new ChatRoomInfo(shinki, ChatDictionary[8], 3), //神绮：呜呜呜...被女儿冷落了...
-                new ChatRoomInfo(alice, ChatDictionary[13], 4),//爱丽丝：...好啦好啦，真受不了，我叫你一声母...神绮小姐。
+                new ChatRoomInfo(alice, GetChatText("Alice",13), 4),//爱丽丝：...好啦好啦，真受不了，我叫你一声母...神绮小姐。
                 new ChatRoomInfo(shinki, ChatDictionary[9], 5), //神绮：你刚刚是不是说“母亲”了？哇！妈妈好感动！
-                new ChatRoomInfo(alice, ChatDictionary[14], 6),//爱丽丝：（真是说不清道不明的关系啊...）
+                new ChatRoomInfo(alice, GetChatText("Alice",14), 6),//爱丽丝：（真是说不清道不明的关系啊...）
                 new ChatRoomInfo(shinki, ChatDictionary[10], 7), //神绮：再叫一声好不好？
-                new ChatRoomInfo(alice, ChatDictionary[15], 8), //爱丽丝：不、不行！
+                new ChatRoomInfo(alice, GetChatText("Alice",15), 8), //爱丽丝：不、不行！
             ];
 
             return list;
@@ -149,7 +149,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(shinki, ChatDictionary[1], -1), //神绮：所谓“巫女”，不过是神明的狗罢了~
-                new ChatRoomInfo(reimu, ChatDictionary[12], 0),//灵梦：*优美的博丽脏话
+                new ChatRoomInfo(reimu, GetChatText("Reimu",12), 0),//灵梦：*优美的博丽脏话
             ];
 
             return list;

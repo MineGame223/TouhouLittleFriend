@@ -139,7 +139,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(sakuya, ChatDictionary[1], -1), //咲夜：过去已为过去，如今只要侍奉大小姐便是。
-                new ChatRoomInfo(remilia, ChatDictionary[14], 0),//蕾米：咲夜还记得你过去的日子吗？
+                new ChatRoomInfo(remilia, GetChatText("Remilia",14), 0),//蕾米：咲夜还记得你过去的日子吗？
                 new ChatRoomInfo(sakuya, ChatDictionary[2], 1),//咲夜：从遇到您的那一刻起我的人生就重新开始了，没有所谓过去了。
             ];
 
@@ -153,7 +153,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(sakuya, ChatDictionary[3], -1), //咲夜：大小姐能安好，我就安好。
-                new ChatRoomInfo(remilia, ChatDictionary[13], 0),//蕾米：咲夜偶尔也得为自己考虑一下嘛。
+                new ChatRoomInfo(remilia, GetChatText("Remilia",13), 0),//蕾米：咲夜偶尔也得为自己考虑一下嘛。
             ];
 
             return list;
@@ -166,7 +166,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(sakuya, ChatDictionary[4], -1), //咲夜：美铃那家伙，是不是又在偷懒了...
-                new ChatRoomInfo(meirin, ChatDictionary[9], 0),//美铃：我才没有呐！
+                new ChatRoomInfo(meirin, GetChatText("Meirin",9), 0),//美铃：我才没有呐！
             ];
 
             return list;

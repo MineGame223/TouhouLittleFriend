@@ -120,7 +120,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(hecatia, ChatDictionary[2], -1), //赫卡提娅：我的穿搭是无可挑剔的...真的会有人不喜欢么？
-                new ChatRoomInfo(piece, ChatDictionary[3], 0),//皮丝：主人大人的着装当然是最时尚的啦！
+                new ChatRoomInfo(piece, GetChatText("Piece",3), 0),//皮丝：主人大人的着装当然是最时尚的啦！
             ];
 
             return list;

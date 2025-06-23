@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
-using Stubble.Core.Classes;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Localization;
@@ -19,14 +17,17 @@ namespace TouhouPets
         /// <br/>!--该属性会反复重置
         /// </summary>
         internal bool shouldNotTalking;
+
         /// <summary>
-        /// 
+        /// 实际采用的文字颜色
         /// </summary>
         internal Color textColor = Color.White;
+
         /// <summary>
-        /// 
+        /// 实际采用的文字边框颜色
         /// </summary>
         internal Color boardColor = Color.Black;
+
         /// <summary>
         /// 对话文本不透明度
         /// </summary>
@@ -54,11 +55,6 @@ namespace TouhouPets
         /// <br/>该值大于0时，宠物不会发起向其他宠物的对话或接受来自其他宠物的对话
         /// </summary>
         internal int chatCD;
-
-        /// <summary>
-        /// 对话文本对应的索引值
-        /// </summary>
-        //internal int chatIndex;
 
         /// <summary>
         /// 对话文本
@@ -247,12 +243,7 @@ namespace TouhouPets
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                LocalizedText chatKey = Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{name}.Chat{i}");
-                if (chatKey.IsLocalizedTextEmpty())
-                {
-                    chatKey = Language.GetText("这是一段空对话，你怎么找出来的？");
-                }
-                ChatDictionary.Add(i, chatKey);
+                ChatDictionary.Add(i, Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{name}.Chat{i}"));
             }
 
             //仅当聊天室列表存在内容时进行注册

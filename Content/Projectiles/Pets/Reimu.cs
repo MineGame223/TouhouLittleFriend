@@ -179,11 +179,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(reimu, ChatDictionary[13], -1), //灵梦：喂，魔理沙？
-                new ChatRoomInfo(marisa, ChatDictionary[15], 0),//魔理沙：怎么了灵梦？
+                new ChatRoomInfo(marisa, GetChatText("Marisa",15), 0),//魔理沙：怎么了灵梦？
                 new ChatRoomInfo(reimu, ChatDictionary[14], 1), //灵梦：你说，如果我们其实是什么人被制造出来的、并且存在的目的是为了哪个世界的延续，你会怎么想？
-                new ChatRoomInfo(marisa, ChatDictionary[16], 2),//魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
+                new ChatRoomInfo(marisa, GetChatText("Marisa",16), 2),//魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
                 new ChatRoomInfo(reimu, ChatDictionary[15], 3), //灵梦：你就说你会怎么想嘛！
-                new ChatRoomInfo(marisa, ChatDictionary[17], 4), //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
+                new ChatRoomInfo(marisa, GetChatText("Marisa",17), 4), //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
                 new ChatRoomInfo(reimu, ChatDictionary[16], 5), //灵梦：也许吧...
             ];
 

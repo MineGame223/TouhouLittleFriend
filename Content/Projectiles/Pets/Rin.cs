@@ -140,7 +140,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(rin, ChatDictionary[5], -1), //阿燐：觉大人最好了！
-                new ChatRoomInfo(satori, ChatDictionary[5], 0),//觉：阿燐也是我最喜欢的猫咪哦。
+                new ChatRoomInfo(satori, GetChatText("Satori",5), 0),//觉：阿燐也是我最喜欢的猫咪哦。
             ];
 
             return list;
@@ -153,7 +153,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(rin, ChatDictionary[6], -1), //阿燐：今天觉大人有好好吃饭吗？
-                new ChatRoomInfo(satori, ChatDictionary[7], 0),//觉：别担心啦。
+                new ChatRoomInfo(satori, GetChatText("Satori",7), 0),//觉：别担心啦。
             ];
 
             return list;
@@ -166,7 +166,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(rin, ChatDictionary[7], -1), //阿燐：阿空，今天也要好好干活啊！
-                new ChatRoomInfo(utsuho, ChatDictionary[6], 0),//阿空：放心交给我吧！
+                new ChatRoomInfo(utsuho, GetChatText("Utsuho",6), 0),//阿空：放心交给我吧！
             ];
 
             return list;

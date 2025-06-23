@@ -70,13 +70,9 @@ namespace TouhouPets
             "WorldsEndEverlastingFallingWhale",
             "TheSon"
             ];
-        public static void RegisterComment_Marisa(this Projectile marisa)
-        {
-            marisa.RegisterVanillaComment(MarisaList_Vanilla, Path_Marisa);
-        }
         public static void GiveComment_Marisa(this Projectile marisa, NPC boss)
         {
-            marisa.BossComment_Vanilla(MarisaList_Vanilla, boss.type);
+            marisa.BossComment_Vanilla(Path_Marisa, MarisaList_Vanilla, boss.type);
             marisa.BossComment_Mod(boss, Path_Marisa, Name_Coralite, MarisaList_Coralite);
             marisa.BossComment_Mod(boss, Path_Marisa, Name_Thorium, MarisaList_Thorium);
             marisa.BossComment_Mod(boss, Path_Marisa, Name_HJ, MarisaList_HJ);

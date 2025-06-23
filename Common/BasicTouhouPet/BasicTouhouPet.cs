@@ -66,7 +66,7 @@ namespace TouhouPets
         #region 调试信息绘制方法
         private void DrawTestInfo()
         {
-            bool drawingForTest = true;
+            bool drawingForTest = false;
             string chatTurn = "#";
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
@@ -223,17 +223,6 @@ namespace TouhouPets
                 Projectile.Center = pos;
 
             Vector2 vel = pos - Projectile.Center;
-
-            /*float distanceLimit = MathHelper.Clamp(dist / 200f, 0f, 1f);
-            float scaledSpeed = MathHelper.SmoothStep(0f, speed, distanceLimit);
-
-            vel.Normalize();
-            if (float.IsNaN(vel.X) || float.IsNaN(vel.Y))
-            {
-                vel = Vector2.One;
-            }
-            Projectile.velocity = vel * scaledSpeed;*/
-
             float closeValue = 1f;
 
             if (dist < closeValue)
@@ -254,16 +243,17 @@ namespace TouhouPets
         /// <param name="speed">移动速度</param>
         internal void MoveToPoint2(Vector2 point, float speed)
         {
-            float velMultiplier = 1f;
-            Vector2 dist = Owner.Center + point - Projectile.Center;
-            float length = (dist == Vector2.Zero) ? 0f : dist.Length();
-            if (length < speed)
-            {
-                velMultiplier = MathHelper.Lerp(0f, 1f, length / 16f);
-            }
-            Projectile.velocity = (length == 0f) ? Vector2.Zero : Vector2.Normalize(dist);
-            Projectile.velocity *= speed;
-            Projectile.velocity *= velMultiplier;
+            Vector2 targetPos = Owner.Center + point;
+            Vector2 targetVel = targetPos - Projectile.Center;
+
+            float length = (targetPos == Vector2.Zero) ? 0f : Projectile.Distance(targetPos);
+            float distanceLimit = MathHelper.Lerp(0f, speed, length / 200f);
+            float scaledSpeed = MathHelper.SmoothStep(0f, speed, distanceLimit);
+
+            if (scaledSpeed <= 0.1f)
+                scaledSpeed = 0f;
+
+            Projectile.velocity = targetVel.SafeNormalize(Vector2.One) * scaledSpeed;
         }
         /// <summary>
         /// 设置转向

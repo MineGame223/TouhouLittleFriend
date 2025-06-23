@@ -159,11 +159,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(kokoro, ChatDictionary[7], -1), //秦心：我的宿敌啊！
-                new ChatRoomInfo(koishi, ChatDictionary[9], 0),//恋恋：心酱叫我有何事？
+                new ChatRoomInfo(koishi, GetChatText("Koishi",9), 0),//恋恋：心酱叫我有何事？
                 new ChatRoomInfo(kokoro, ChatDictionary[8], 1), //秦心：...你还有什么可以教会我的情绪吗？
-                new ChatRoomInfo(koishi, ChatDictionary[10], 2),//恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
+                new ChatRoomInfo(koishi, GetChatText("Koishi",10), 2),//恋恋：不知道哦，恋总是随心所欲、没有那么多情绪。
                 new ChatRoomInfo(kokoro, ChatDictionary[9], 3), //秦心：不是很懂...啊，这就是“困惑”吗？
-                new ChatRoomInfo(koishi, ChatDictionary[11], 4),//恋恋：好欸！学会“困惑”啦~
+                new ChatRoomInfo(koishi, GetChatText("Koishi",11), 4),//恋恋：好欸！学会“困惑”啦~
             ];
 
             return list;

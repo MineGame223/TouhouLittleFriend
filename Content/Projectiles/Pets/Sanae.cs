@@ -186,7 +186,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(sanae, ChatDictionary[4], -1), //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
-                new ChatRoomInfo(reimu, ChatDictionary[9], 0),//灵梦：给我适可而止啊喂！
+                new ChatRoomInfo(reimu, GetChatText("Reimu",9), 0),//灵梦：给我适可而止啊喂！
             ];
 
             return list;

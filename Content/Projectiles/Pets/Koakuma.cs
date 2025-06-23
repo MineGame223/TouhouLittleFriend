@@ -125,9 +125,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(koakuma, ChatDictionary[4], -1), //小恶魔：帕秋莉大人！该锻炼身体啦！
-                new ChatRoomInfo(patchouli, ChatDictionary[16], 0),//帕秋莉：不要！会累死人的...
+                new ChatRoomInfo(patchouli, GetChatText("Patchouli",16), 0),//帕秋莉：不要！会累死人的...
                 new ChatRoomInfo(koakuma, ChatDictionary[5], 1), //小恶魔：为了您的健康着想，这很必要的哦！
-                new ChatRoomInfo(patchouli, ChatDictionary[17], 2),//帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
+                new ChatRoomInfo(patchouli, GetChatText("Patchouli",17), 2),//帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
                 new ChatRoomInfo(patchouli, ChatDictionary[18], 3),//帕秋莉：...我真的很好！
             ];
 
@@ -141,7 +141,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(koakuma, ChatDictionary[6], -1), //小恶魔：帕秋莉大人在看什么？
-                new ChatRoomInfo(patchouli, ChatDictionary[Main.rand.Next(19, 36)], 0),//帕秋莉：是关于xxxx的书...
+                new ChatRoomInfo(patchouli, GetChatText("Patchouli",Main.rand.Next(19, 36)), 0),//帕秋莉：是关于xxxx的书...
                 new ChatRoomInfo(koakuma, ChatDictionary[7], 1), //小恶魔：好像很有趣啊！
             ];
 

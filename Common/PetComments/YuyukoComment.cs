@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using TouhouPets.Content.Projectiles.Pets;
 using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
@@ -10,8 +9,6 @@ namespace TouhouPets
     public static partial class YuyukoComment
     {
         private const string Path = $"Mods.{nameof(TouhouPets)}.Chat_Yuyuko";
-
-        private static int startIndex = 0;
 
         private static readonly List<int> acceptIDList_Vanilla = [
             ItemID.ChocolateChipCookie,//现烤的最好吃！
@@ -83,23 +80,6 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 注册原版食物评价
-        /// </summary>
-        /// <param name="yuyuko"></param>
-        public static void RegisterComment_Vanilla(this Yuyuko yuyuko)
-        {
-            //记录起始索引值
-            int index = yuyuko.ChatDictionary.Count;
-            startIndex = index + 1;
-
-            //以ID列表的长度为索引，注册相应对话
-            for (int i = 0; i < acceptIDList_Vanilla.Count; i++)
-            {
-                yuyuko.ChatDictionary.TryAdd(startIndex + i, Language.GetText($"{Path}.Food_{i + 1}"));
-            }
-        }
-
-        /// <summary>
         /// 关于原版食物的评价
         /// </summary>
         /// <param name="projectile"></param>
@@ -119,13 +99,8 @@ namespace TouhouPets
                 if (foodType == ItemID.Sake)
                     foodType = ItemID.Ale;
 
-                int finalIndex = startIndex + acceptIDList_Vanilla.IndexOf(foodType);
-                //不是很必要的双重保险
-                if (projectile.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out LocalizedText value))
-                {
-                    projectile.SetChat(value, 60);
-                    return true;
-                }
+                projectile.SetChat(Language.GetText($"{Path}.Food_{acceptIDList_Vanilla.IndexOf(foodType) + 1}"), 60);
+                return true;
             }
             return false;
         }

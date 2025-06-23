@@ -146,9 +146,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(flandre, ChatDictionary[10], -1), //芙兰：美铃在跳什么奇怪的舞蹈吗？
-                new ChatRoomInfo(meirin, ChatDictionary[7], 0),//美铃：这叫"太极"哦，二小姐。
+                new ChatRoomInfo(meirin, GetChatText("Meirin",7), 0),//美铃：这叫"太极"哦，二小姐。
                 new ChatRoomInfo(flandre, ChatDictionary[11], 1), //芙兰：好像很厉害...可以教教芙兰吗？
-                new ChatRoomInfo(meirin, ChatDictionary[8], 2),//美铃：唔...可能需要大小姐的同意吧？
+                new ChatRoomInfo(meirin, GetChatText("Meirin",8), 2),//美铃：唔...可能需要大小姐的同意吧？
             ];
 
             return list;

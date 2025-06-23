@@ -233,9 +233,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(eirin, ChatDictionary[18], -1), //永琳：公主大人，上次我又看到您偷偷跑去人里了。
-                new ChatRoomInfo(kaguya, ChatDictionary[16], 0),//辉夜：有、有吗？一定是你看错了吧...
+                new ChatRoomInfo(kaguya, GetChatText("Kaguya",16), 0),//辉夜：有、有吗？一定是你看错了吧...
                 new ChatRoomInfo(eirin, ChatDictionary[19], 1), //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
-                new ChatRoomInfo(kaguya, ChatDictionary[17], 2),//辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
+                new ChatRoomInfo(kaguya, GetChatText("Kaguya",17), 2),//辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
             ];
 
             return list;

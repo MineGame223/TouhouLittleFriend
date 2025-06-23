@@ -187,7 +187,7 @@ namespace TouhouPets
             }
 
             //根据长度遍历元组列表内容
-            foreach((Projectile pet, LocalizedText text, int chatTurn) in info)
+            foreach ((Projectile pet, LocalizedText text, int chatTurn) in info)
             {
                 //如果加入的弹幕不存在，则不设置对话
                 if (pet == null || !pet.active)
@@ -298,8 +298,8 @@ namespace TouhouPets
             if (projectile.owner != Main.myPlayer || pet.chatTimeLeft > 0)
                 return;
 
-            //若都没有设置上则不执行后续
-            if (text.IsLocalizedTextEmpty())
+            //若文本为空则不执行后续
+            if (text == null)
                 return;
 
             //若目标文本键等于当前文本键、且并非强制赋值，则不会进行设置

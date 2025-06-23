@@ -203,7 +203,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(koishi, ChatDictionary[5], -1), //恋恋：就算是姐姐，也不知道恋在想什么哦。
-                new ChatRoomInfo(satori, ChatDictionary[4], 0),///觉：姐姐现在就在看着你呢...
+                new ChatRoomInfo(satori, GetChatText("Satori",4), 0),///觉：姐姐现在就在看着你呢...
             ];
 
             return list;

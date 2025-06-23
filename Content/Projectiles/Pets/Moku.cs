@@ -216,7 +216,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(moku, ChatDictionary[9], -1), //妹红：每到满月你都会这样，怪吓人的！
-                new ChatRoomInfo(keine, ChatDictionary[9], 0),///慧音：这是天性，也是使命。
+                new ChatRoomInfo(keine, GetChatText("Keine",9), 0),///慧音：这是天性，也是使命。
             ];
 
             return list;
@@ -249,6 +249,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Timer = 0;
                 CurrentState = States.Idle;
+                Projectile.ClearDanmaku();
             }
 
             switch (CurrentState)
@@ -448,8 +449,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.spriteDirection = 1;
-            Vector2 point = new Vector2(-200, -200);
-            MoveToPoint2(point, 15f);
+            Vector2 point = new (-200, -200);
+            MoveToPoint2(point, 5f);
         }
         private void Battling()
         {
@@ -517,16 +518,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PlayerB_Score++;
                     Timer = 0;
                     CurrentState = States.Win;
+                    Projectile.ClearDanmaku();
                 }
                 else if (health <= 0)
                 {
                     Timer = 0;
                     CurrentState = States.Lose;
+                    Projectile.ClearDanmaku();
                 }
             }
 
             Projectile.spriteDirection = 1;
-            Vector2 point = new Vector2(-200 + floatingX, -200 + floatingY);
+            Vector2 point = new (-200 + floatingX, -200 + floatingY);
             MoveToPoint2(point, 4f);
         }
         private void Win()

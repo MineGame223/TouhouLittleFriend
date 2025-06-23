@@ -150,7 +150,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(wriggle, ChatDictionary[1], -1), //莉格露：一闪一闪亮晶晶~满天都是小蜻蜓~
-                new ChatRoomInfo(mystia, ChatDictionary[9], 0),//米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
+                new ChatRoomInfo(mystia, GetChatText("Mystia",9), 0),//米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
             ];
 
             return list;

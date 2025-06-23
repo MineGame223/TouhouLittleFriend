@@ -101,7 +101,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(ran, ChatDictionary[3], -1), //蓝：饕餮那家伙，依旧坚持在畜牲界混吗...
-                new ChatRoomInfo(yukari, ChatDictionary[4], 0), //紫：若是叨念的话，我允许你临时请假哦。
+                new ChatRoomInfo(yukari, GetChatText("Yukari",4), 0), //紫：若是叨念的话，我允许你临时请假哦。
                 new ChatRoomInfo(ran, ChatDictionary[4], 1), //蓝：才、才没有啊紫大人！
             ];
 
@@ -115,7 +115,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(ran, ChatDictionary[7], -1), //蓝：橙，不要乱跑哦！
-                new ChatRoomInfo(chen, ChatDictionary[3], 0), //橙：知道啦蓝大人，橙可没有乱跑！
+                new ChatRoomInfo(chen, GetChatText("Chen",3), 0), //橙：知道啦蓝大人，橙可没有乱跑！
             ];
 
             return list;

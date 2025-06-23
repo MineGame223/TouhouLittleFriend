@@ -95,9 +95,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Youmu";
             indexRange = new Vector2(1, 11);
         }
-        public override void PostRegisterChat()
-        {
-        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = IsAfraid ? 500 : 900;

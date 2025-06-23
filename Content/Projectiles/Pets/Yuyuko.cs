@@ -166,11 +166,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Yuyuko";
             indexRange = new Vector2(1, 15);
         }
-        public override void PostRegisterChat()
-        {
-            this.RegisterComment_Vanilla();
-            this.RegisterRejectComment_Vanilla();
-        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 970;//970
@@ -215,9 +210,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(yuyuko, ChatDictionary[12], -1), //幽幽子：妖梦酱有为未来做过打算嘛？
-                new ChatRoomInfo(youmu, ChatDictionary[6], 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
+                new ChatRoomInfo(youmu, GetChatText("Youmu",6), 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
                 new ChatRoomInfo(yuyuko, ChatDictionary[13], 1), //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
-                new ChatRoomInfo(youmu, ChatDictionary[10], 2),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
+                new ChatRoomInfo(youmu, GetChatText("Youmu",7), 2),//妖梦：唔...不太能理解...
+                new ChatRoomInfo(youmu, GetChatText("Youmu",10), 3),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
             ];
 
             return list;
@@ -230,7 +226,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(yuyuko, ChatDictionary[11], -1), //幽幽子：妖梦酱，今天晚上吃什么？
-                new ChatRoomInfo(youmu, ChatDictionary[8], 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
+                new ChatRoomInfo(youmu, GetChatText("Youmu",8), 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
             ];
 
             return list;
@@ -243,7 +239,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(yuyuko, ChatDictionary[1], -1), //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
-                new ChatRoomInfo(youmu, ChatDictionary[9], 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
+                new ChatRoomInfo(youmu, GetChatText("Youmu",9), 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
             ];
 
             return list;

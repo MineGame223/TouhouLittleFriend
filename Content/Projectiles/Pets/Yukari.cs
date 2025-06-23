@@ -129,9 +129,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(yukari, ChatDictionary[5], -1), //紫：不知那位旧友最近是否安好呢。
-                new ChatRoomInfo(ran, ChatDictionary[5], 0),//蓝：紫大人是指？
+                new ChatRoomInfo(ran, GetChatText("Ran",5), 0),//蓝：紫大人是指？
                 new ChatRoomInfo(yukari, ChatDictionary[6], 1), //紫：没什么，吃这种事应该用不着我替她操心。
-                new ChatRoomInfo(ran, ChatDictionary[6], 2),//蓝：大概知道是哪位了啊...
+                new ChatRoomInfo(ran, GetChatText("Ran",6), 2),//蓝：大概知道是哪位了啊...
             ];
 
             return list;

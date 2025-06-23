@@ -116,9 +116,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(sizuha, ChatDictionary[6], -1), //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
-                new ChatRoomInfo(minoriko, ChatDictionary[6], 0),//穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
+                new ChatRoomInfo(minoriko, GetChatText("Minoriko",6), 0),//穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
                 new ChatRoomInfo(sizuha, ChatDictionary[7], 1), //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
-                new ChatRoomInfo(minoriko, ChatDictionary[7], 2),//穰子：那姐姐要吃烤红薯吗？
+                new ChatRoomInfo(minoriko, GetChatText("Minoriko",7), 2),//穰子：那姐姐要吃烤红薯吗？
                 new ChatRoomInfo(sizuha, ChatDictionary[8], 3), //静叶：好欸！...我是说，好啊。
             ];
 

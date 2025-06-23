@@ -166,7 +166,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(cirno, ChatDictionary[4], -1),//琪露诺：最喜欢大酱了！
-                new ChatRoomInfo(daiyousei, ChatDictionary[7], 0),//大妖精：我也最喜欢琪露诺酱！
+                new ChatRoomInfo(daiyousei, GetChatText("Daiyousei",7), 0),//大妖精：我也最喜欢琪露诺酱！
             ];
 
             return list;
@@ -179,7 +179,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(cirno, ChatDictionary[7], -1),//琪露诺：热死了...要化了...
-                new ChatRoomInfo(daiyousei, ChatDictionary[8], 0),//大妖精：琪露诺酱你没事吧...
+                new ChatRoomInfo(daiyousei, GetChatText("Daiyousei",8), 0),//大妖精：琪露诺酱你没事吧...
                 new ChatRoomInfo(cirno, ChatDictionary[8], 1),//琪露诺：我没事...大概...
             ];
 

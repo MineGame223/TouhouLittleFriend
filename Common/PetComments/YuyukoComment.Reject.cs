@@ -52,23 +52,6 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 注册原版食物拒绝评价
-        /// </summary>
-        /// <param name="yuyuko"></param>
-        public static void RegisterRejectComment_Vanilla(this Yuyuko yuyuko)
-        {
-            //记录起始索引值
-            int index = yuyuko.ChatDictionary.Count;
-            startIndex_Reject = index + 1;
-
-            //以ID列表的长度为索引，注册相应对话
-            for (int i = 0; i < rejectIDList_Vanilla.Count; i++)
-            {
-                yuyuko.ChatDictionary.TryAdd(startIndex_Reject + i, Language.GetText($"{Path}.Food_Reject_{i + 1}"));
-            }
-        }
-
-        /// <summary>
         /// 关于原版食物的拒绝评价
         /// </summary>
         /// <param name="projectile"></param>
@@ -87,13 +70,7 @@ namespace TouhouPets
             {
                 if (giveComment)
                 {
-                    int finalIndex = startIndex_Reject + rejectIDList_Vanilla.IndexOf(foodType);
-                    //不是很必要的双重保险
-                    if (projectile.AsTouhouPet().ChatDictionary.TryGetValue(finalIndex, out LocalizedText value))
-                    {
-                        projectile.SetChat(value);
-                        return true;
-                    }
+                    projectile.SetChat(Language.GetText($"{Path}.Food_Reject_{rejectIDList_Vanilla.IndexOf(foodType) + 1}"));
                 }
                 return true;
             }

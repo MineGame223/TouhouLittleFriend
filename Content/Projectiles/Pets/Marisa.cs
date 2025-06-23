@@ -89,10 +89,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Marisa";
             indexRange = new Vector2(1, PresetMaxChat);
         }
-        public override void PostRegisterChat()
-        {
-            Projectile.RegisterComment_Marisa();
-        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 720;//720
@@ -143,13 +139,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(marisa, ChatDictionary[7], -1), //魔理沙：嘿，嘿，灵梦！
-                new ChatRoomInfo(reimu, ChatDictionary[5], 0),//灵梦：咋了？
+                new ChatRoomInfo(reimu, GetChatText("Reimu",5), 0),//灵梦：咋了？
                 new ChatRoomInfo(marisa, ChatDictionary[8], 1), //魔理沙：我今天找到了一个很有意思的东西！
-                new ChatRoomInfo(reimu, ChatDictionary[6], 2),//灵梦：是什么？不会又是从图书馆偷来的书吧...
+                new ChatRoomInfo(reimu, GetChatText("Reimu",6), 2),//灵梦：是什么？不会又是从图书馆偷来的书吧...
                 new ChatRoomInfo(marisa, ChatDictionary[9], 3), //魔理沙：不是啦...是一颗落星！货真价实的星星欸！
-                new ChatRoomInfo(reimu, ChatDictionary[7], 4),//灵梦：...那东西不是一到夜晚满地都是么？
+                new ChatRoomInfo(reimu, GetChatText("Reimu",7), 4),//灵梦：...那东西不是一到夜晚满地都是么？
                 new ChatRoomInfo(marisa, ChatDictionary[10], 5), //魔理沙：但这颗星星要更闪亮一些啊，你不觉得吗？
-                new ChatRoomInfo(reimu, ChatDictionary[8], 6),//灵梦：不觉得，一定是你又闲得慌了...
+                new ChatRoomInfo(reimu, GetChatText("Reimu",8), 6),//灵梦：不觉得，一定是你又闲得慌了...
                 new ChatRoomInfo(marisa, ChatDictionary[11], 7), //魔理沙：欸嘿嘿嘿...
             ];
 

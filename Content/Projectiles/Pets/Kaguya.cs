@@ -316,6 +316,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Timer = 0;
                 CurrentState = States.Idle;
+                Projectile.ClearDanmaku();
             }
 
             switch (CurrentState)
@@ -508,8 +509,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.spriteDirection = -1;
-            Vector2 point = new Vector2(200, -200);
-            MoveToPoint2(point, 15f);
+            Vector2 point = new (200, -200);
+            MoveToPoint2(point, 5f);
         }
         private void Battling()
         {
@@ -578,16 +579,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PlayerA_Score++;
                     Timer = 0;
                     CurrentState = States.Win;
+                    Projectile.ClearDanmaku();
                 }
                 else if (health <= 0)
                 {
                     Timer = 0;
                     CurrentState = States.Lose;
+                    Projectile.ClearDanmaku();
                 }
             }
 
             Projectile.spriteDirection = -1;
-            Vector2 point = new Vector2(200 + floatingX, -200 + floatingY);
+            Vector2 point = new (200 + floatingX, -200 + floatingY);
             MoveToPoint2(point, 3f);
         }
         private void Win()

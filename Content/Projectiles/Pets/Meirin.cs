@@ -159,9 +159,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(meirin, ChatDictionary[10], -1), //美铃：咲夜小姐每天那么忙，有过休假的时候吗？
-                new ChatRoomInfo(sakuya, ChatDictionary[6], 0),//咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",6), 0),//咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
                 new ChatRoomInfo(meirin, ChatDictionary[11], 1), //美铃：这个工作和休假没啥区别啊...
-                new ChatRoomInfo(sakuya, ChatDictionary[7], 2),//咲夜：什么？
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",7), 2),//咲夜：什么？
                 new ChatRoomInfo(meirin, ChatDictionary[12], 3), //美铃：没！没什么...
             ];
 
@@ -175,9 +175,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(meirin, ChatDictionary[13], -1), //美铃：咲夜小姐，我最近发现了一本讲保安和女仆谈恋爱的漫画欸！
-                new ChatRoomInfo(sakuya, ChatDictionary[8], 0),//咲夜：站岗期间你看漫画？
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",8), 0),//咲夜：站岗期间你看漫画？
                 new ChatRoomInfo(meirin, ChatDictionary[14], 1), //美铃：啊，糟了！偷懒的事暴露了...
-                new ChatRoomInfo(sakuya, ChatDictionary[9], 2),//咲夜：什么？
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",9), 2),//咲夜：什么？
                 new ChatRoomInfo(meirin, ChatDictionary[15], 3), //美铃：呜呜呜...欸？
             ];
 
@@ -191,7 +191,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(meirin, ChatDictionary[5], -1), //美铃：易有太极，是生两仪...
-                new ChatRoomInfo(flandre, ChatDictionary[9], 0),//芙兰：美铃在说什么？
+                new ChatRoomInfo(flandre, GetChatText("Flandre",9), 0),//芙兰：美铃在说什么？
                 new ChatRoomInfo(meirin, ChatDictionary[6], 1), //美铃：是我的家乡话哦，二小姐。
             ];
 

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -162,11 +161,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(remi, ChatDictionary[6], -1), //蕾米：我亲爱的芙兰哟...
-                new ChatRoomInfo(flan, ChatDictionary[6], 0),//芙兰：姐姐？叫芙兰有什么事嘛？
+                new ChatRoomInfo(flan, GetChatText("Flandre",6), 0),//芙兰：姐姐？叫芙兰有什么事嘛？
                 new ChatRoomInfo(remi, ChatDictionary[7], 1), //蕾米：没什么...只是想叫你一下。
-                new ChatRoomInfo(flan, ChatDictionary[7], 2),//芙兰：...姐姐什么时候能和芙兰一起玩...
+                new ChatRoomInfo(flan, GetChatText("Flandre",7), 2),//芙兰：...姐姐什么时候能和芙兰一起玩...
                 new ChatRoomInfo(remi, ChatDictionary[8], 3), //蕾米：有空会陪你的啦~
-                new ChatRoomInfo(flan, ChatDictionary[8], 4),//芙兰：姐姐老是这么说...
+                new ChatRoomInfo(flan, GetChatText("Flandre",8), 4),//芙兰：姐姐老是这么说...
             ];
 
             return list;

@@ -161,7 +161,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(utsuho, ChatDictionary[5], -1), //阿空：觉大人最好了！
-                new ChatRoomInfo(satori, ChatDictionary[6], 0),//觉：阿空也是我最喜欢的乌鸦哦。
+                new ChatRoomInfo(satori, GetChatText("Satori",6), 0),//觉：阿空也是我最喜欢的乌鸦哦。
             ];
 
             return list;

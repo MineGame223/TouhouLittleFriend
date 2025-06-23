@@ -169,11 +169,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(patchi, ChatDictionary[8], -1), //帕秋莉：唔...蕾咪？
-                new ChatRoomInfo(remilia, ChatDictionary[10], 0),//蕾米：嗯？帕琪？有啥事么？
+                new ChatRoomInfo(remilia, GetChatText("Remilia",10), 0),//蕾米：嗯？帕琪？有啥事么？
                 new ChatRoomInfo(patchi, ChatDictionary[9], 1), //帕秋莉：你身为吸血鬼，为什么不像书里说的一样怕十字架？
-                new ChatRoomInfo(remilia, ChatDictionary[11], 2),//蕾米：哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰。
+                new ChatRoomInfo(remilia, GetChatText("Remilia",11), 2),//蕾米：哈哈，那都是瞎扯，吸血鬼怕十字架不过是人类打不过吸血鬼而臆想出来的心理安慰。
                 new ChatRoomInfo(patchi, ChatDictionary[10], 3), //帕秋莉：好吧...看来书里说的不全是正确的。
-                new ChatRoomInfo(remilia, ChatDictionary[12], 4),//蕾米：当然了，帕琪你也要多出来走走嘛。
+                new ChatRoomInfo(remilia, GetChatText("Remilia",12), 4),//蕾米：当然了，帕琪你也要多出来走走嘛。
                 new ChatRoomInfo(patchi, ChatDictionary[11], 5), //帕秋莉：不要...
             ];
 
@@ -187,11 +187,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(patchi, ChatDictionary[12], -1), //帕秋莉：最近魔理沙那家伙还安分么？
-                new ChatRoomInfo(alice, ChatDictionary[8], 0),//爱丽丝：别说了，上次刚顺走我一瓶魔药。
+                new ChatRoomInfo(alice, GetChatText("Alice",8), 0),//爱丽丝：别说了，上次刚顺走我一瓶魔药。
                 new ChatRoomInfo(patchi, ChatDictionary[13], 1), //帕秋莉：她偷走的那好几本书也一直没还...
-                new ChatRoomInfo(alice, ChatDictionary[9], 2),//帕秋莉 & 爱丽丝：...一定要找她算账！
+                new ChatRoomInfo(alice, GetChatText("Alice",9), 2),//帕秋莉 & 爱丽丝：...一定要找她算账！
                 new ChatRoomInfo(patchi, ChatDictionary[14], 2),
-                new ChatRoomInfo(alice, ChatDictionary[10], 3),//爱丽丝：...？还是我去找她吧，就不麻烦你了...
+                new ChatRoomInfo(alice, GetChatText("Alice",10), 3),//爱丽丝：...？还是我去找她吧，就不麻烦你了...
                 new ChatRoomInfo(patchi, ChatDictionary[15], 4), //帕秋莉：不不不，我去就行，我去就行...
             ];
 

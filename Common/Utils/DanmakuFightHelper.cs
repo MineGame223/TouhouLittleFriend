@@ -215,5 +215,16 @@ namespace TouhouPets
                 }
             }
         }
+        public static void ClearDanmaku(this Projectile projectile)
+        {
+            foreach(Projectile p in Main.ActiveProjectiles)
+            {
+                if (p.owner == projectile.owner&&p.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku)
+                {
+                    p.timeLeft = 0;
+                    p.netUpdate = true;
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-namespace TouhouPets
+﻿namespace TouhouPets
 {
     public class TouhouPetGlobalProj : GlobalProjectile
     {

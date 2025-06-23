@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -147,7 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             List<ChatRoomInfo> list =
             [
                 new ChatRoomInfo(tenshin, ChatDictionary[2], -1), //天子：今天也要大干一场！
-                new ChatRoomInfo(iku, ChatDictionary[16], 0),//衣玖：天女大人您还是安分点吧...
+                new ChatRoomInfo(iku, GetChatText("Iku",16), 0),//衣玖：天女大人您还是安分点吧...
             ];
 
             return list;
