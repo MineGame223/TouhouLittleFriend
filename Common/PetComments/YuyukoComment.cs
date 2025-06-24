@@ -27,7 +27,7 @@ namespace TouhouPets
             ItemID.Ale,//人生得意须尽欢，莫使金樽空对月。干了！
             ItemID.Sake,
             ];
-
+        private static WeightedRandom<LocalizedText> commentCollection = new();
         /// <summary>
         /// 更新评价
         /// </summary>
@@ -113,10 +113,11 @@ namespace TouhouPets
         /// <param name="foodType">食物种类</param>
         private static bool Comment_CrossMod(this Projectile projectile, int foodType)
         {
-            //以防万一
+            //若列表不存在内容，则不执行后续
             if (CrossModFoodComment_Accept.Count <= 0)
                 return false;
 
+            WeightedRandom<LocalizedText> result = new();
             //遍历食物评价信息列表并选取评价
             foreach (var info in CrossModFoodComment_Accept)
             {
@@ -125,18 +126,17 @@ namespace TouhouPets
 
                 if (info.CommentContent.Count <= 0)
                     continue;
-
-                WeightedRandom<LocalizedText> result = new();
+             
                 foreach (var j in info.CommentContent)
                 {
                     if (j.Condition())
                         result.Add(j.DialogText, j.Weight);
                 }
-                if (result.elements.Count > 0)
-                {
-                    projectile.SetChat(result, 60);
-                    return true;
-                }
+            }
+            if (result.elements.Count > 0)
+            {
+                projectile.SetChat(result, 60);
+                return true;
             }
             return false;
         }

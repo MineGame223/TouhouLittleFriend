@@ -9,6 +9,7 @@ This mod no longer supports English change log from v1.0.6
 
 修改：
 移除了 MarisasReactionToBoss 的ModCall，该功能由可以为本模组全部宠物添加相关对话的 PetsReactionToBoss 取代
+“宠物是否说话”模组配置被替换为“宠物说话频率”模组配置
 
 修复：
 修复了一个使用应援棒随机选择音乐时可能出现的问题

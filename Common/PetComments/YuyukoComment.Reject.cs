@@ -83,10 +83,12 @@ namespace TouhouPets
         /// <param name="giveComment">是否给出评价</param>
         private static bool Reject_CrossMod(this Projectile projectile, int foodType, bool giveComment = false)
         {
-            //以防万一
+            //若列表不存在内容，则不执行后续
             if (CrossModFoodComment_Reject.Count <= 0)
                 return false;
 
+            bool reject = false;
+            WeightedRandom<LocalizedText> result = new();
             //遍历食物评价信息列表并选取评价
             foreach (var info in CrossModFoodComment_Reject)
             {
@@ -94,21 +96,20 @@ namespace TouhouPets
                     continue;
 
                 if (giveComment && info.CommentContent.Count > 0)
-                {
-                    WeightedRandom<LocalizedText> result = new();
+                {                 
                     foreach (var j in info.CommentContent)
                     {
                         if (j.Condition())
                             result.Add(j.DialogText, j.Weight);
                     }
-                    if (result.elements.Count > 0)
-                    {
-                        projectile.SetChat(result);
-                    }
                 }
-                return true;
+                reject = true;
             }
-            return false;
+            if (result.elements.Count > 0)
+            {
+                projectile.SetChat(result);
+            }
+            return reject;
         }
     }
 }

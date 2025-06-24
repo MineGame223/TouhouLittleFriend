@@ -158,6 +158,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
+            if (!noReaction)
+                return;
+
             Projectile.SetChat(ChatDictionary[3]);
         }
         public override void VisualEffectForPreview()

@@ -301,6 +301,19 @@ namespace TouhouPets
             //设置说话间隔、说话几率以及说话条件
             SetRegularDialog(ref time, ref chance, ref stop);
 
+            float freq = GetInstance<PetDialogConfig>().ChatFrequency;
+            if (freq > 0)
+            {
+                time = (int)(time / freq);
+                chance = (int)(chance / freq);
+                if (chance < 1)
+                    chance = 1;
+            }
+            else
+                time = 0;
+            if (time <= 0)
+                return;
+
             if (mainTimer % time == 0 && Main.rand.NextBool(chance) && !stop)
             {
                 //若当前还有没说完的话则不设置
@@ -400,8 +413,8 @@ namespace TouhouPets
         /// </summary>
         private void UpdateChat_Full()
         {
-            //仅在本地端、且Config允许说话时执行
-            if (!OwnerIsMyPlayer || !GetInstance<PetDialogConfig>().CanPetChat)
+            //仅在本地端执行
+            if (!OwnerIsMyPlayer)
                 return;
 
             UpdateChatState();

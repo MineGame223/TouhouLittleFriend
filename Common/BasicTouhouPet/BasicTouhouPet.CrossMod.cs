@@ -65,10 +65,10 @@ namespace TouhouPets
             int id = (int)uniqueID;
             List<CommentInfo> comments = CrossModBossComment[id];
             //若列表不存在内容，则不执行后续
-            if (comments == null || comments.Count <= 0)
-            {
+            if (comments.Count <= 0)
                 return false;
-            }
+
+            WeightedRandom<LocalizedText> result = new();
             foreach (var i in comments)
             {
                 if (bossType != i.ObjectType)
@@ -77,17 +77,17 @@ namespace TouhouPets
                 if (i.CommentContent.Count <= 0)
                     continue;
 
-                WeightedRandom<LocalizedText> result = new();
+                
                 foreach (var j in i.CommentContent)
                 {
                     if (j.Condition())
                         result.Add(j.DialogText, j.Weight);
                 }
-                if (result.elements.Count > 0)
-                {
-                    Projectile.SetChat(result);
-                    return true;
-                }
+            }
+            if (result.elements.Count > 0)
+            {
+                Projectile.SetChat(result);
+                return true;
             }
             return false;
         }

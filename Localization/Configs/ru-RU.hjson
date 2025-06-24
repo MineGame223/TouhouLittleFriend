@@ -87,9 +87,13 @@ Mods: {
 					Tooltip: Показывать диалог питомцев в стиле 'печатной машинки'
 				}
 
-				CanPetChat: {
-					Label: Показывать Диалоги Питомцев
-					Tooltip: Показывать диалоги питомцев
+				ChatFrequency: {
+					Label: Speaking Frequency
+					Tooltip:
+						'''
+						Adjust the frequency of pet's speaking. The higher the value is, the more frequency the pet speaking
+						Set to 0 will stop pet from speaking
+						'''
 				}
 			}
 

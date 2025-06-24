@@ -122,6 +122,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
+            if (!noReaction)
+                return;
+
             Projectile.GiveComment_Marisa(boss);
         }
         public override List<List<ChatRoomInfo>> RegisterChatRoom()

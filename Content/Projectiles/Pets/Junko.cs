@@ -131,6 +131,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
+            if (!noReaction)
+                return;
+
             if (boss.type == NPCID.MoonLordCore)
             {
                 Projectile.SetChat(ChatDictionary[4]);

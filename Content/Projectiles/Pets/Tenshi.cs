@@ -121,6 +121,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
+            if (!noReaction)
+                return;
+
             if (HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
             {
                 Projectile.SetChat(ChatDictionary[9]);

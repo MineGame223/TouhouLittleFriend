@@ -50,12 +50,12 @@ namespace TouhouPets
             LocalizedText yuyuko3 = Language.GetText("疯狂星期四？那是什么？");
 
             LocalizedText yuyuko4 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
-            LocalizedText yuyuko5 = Language.GetText("你有更大的几率在试图喂我柠檬时看到这句话哦。");
+            LocalizedText yuyuko5 = Language.GetText("你有更小的几率在试图喂我柠檬时看到这句话哦。");
 
             LocalizedText youmu1 = Language.GetText("巨大石像来犯！");
-            LocalizedText youmu2 = Language.GetText("就算是石头、观楼剑也劈得开！");
+            LocalizedText youmu2 = Language.GetText("哪怕是石头、观楼剑也劈得开！");
 
-            LocalizedText youmu3 = Language.GetText("就算你是妖精女皇，也属于敌人！");
+            LocalizedText youmu3 = Language.GetText("无论你是妖精女皇还是什么，都算作敌人！");
             LocalizedText youmu4 = Language.GetText("这秒杀一切的气场？！...要小心啊！");
 
             //宠物的独特ID值，详细见 TouhouPetUniqueID.cs
@@ -71,7 +71,7 @@ namespace TouhouPets
             //参数分别为：Call类型、添加模组、宠物索引、文本、条件、权重
             //“添加模组”参数用于日志信息
             //条件和权重为选填项，默认分别为 true 和 1
-            mod.Call("PetDialog", mod, cirno, cirno1, condi_beach, 2);
+            mod.Call("PetDialog", mod, cirno, cirno1, condi_beach);
             mod.Call("PetDialog", mod, cirno, cirno2, condi_night);
             mod.Call("PetDialog", mod, cirno, cirno3, condi_night_space);
             mod.Call("PetDialog", mod, cirno, cirno4);
@@ -125,18 +125,18 @@ namespace TouhouPets
 
             //为幽幽子添加三句接受汉堡评论的话，其中第一句只会在夜晚说出
             //参数分别为：Call类型、添加模组、食物种类、文本、是否接受该食物、条件、权重
-            //条件和权重为选填项，默认分别为 true 和 1
+            //是否接受该食物、条件和权重均为选填项，默认分别为true, true 和 1
             //理论上讲可以对模组内已有的同种类评价进行覆盖
             //但这是让你用来适配自己模组的食物的，请不要随便覆盖已有内容
             //若多个模组对同一种类的食物添加了评价，则这些评价会共存
             mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko1, true, condi_night);
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko2, true);
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko3, true);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko2);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko3);
 
-            //为幽幽子添加两句拒绝柠檬评论的话，其中第二句拥有更高的权重
+            //为幽幽子添加两句拒绝柠檬评论的话，其中第一句拥有更高的权重
             //若同一食物同时存在拒绝与接受的条件，则拒绝的优先级更高
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Lemon, yuyuko4, false);
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Lemon, yuyuko5, false, null, 3);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Lemon, yuyuko4, false, null, 3);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Lemon, yuyuko5, false);
         }
     }
 }

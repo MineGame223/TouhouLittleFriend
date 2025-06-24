@@ -473,7 +473,7 @@ namespace TouhouPets
             if (!GetInstance<MiscConfig>().CompatibilityMode)
                 Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
 
-            if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
+            if (chatOpacity > 0 && GetInstance<PetDialogConfig>().ChatFrequency > 0f)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
                 float alpha = MathHelper.Clamp(chatOpacity * Projectile.Opacity * mouseOpacity, 0, 1);

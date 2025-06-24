@@ -209,7 +209,7 @@ namespace TouhouPets
             if (args[1] is not Mod
                 || args[2] is not int and not short
                 || args[3] is not LocalizedText
-                || args[4] is not bool
+                || (args.Length > 4 && args[4] is not bool and not null)
                 || (args.Length > 5 && args[5] is not Func<bool> and not null)
                 || (args.Length > 6 && args[6] is not int and not null))
             {
@@ -219,7 +219,7 @@ namespace TouhouPets
             object arg_Mod = args[1];
             object arg_Type = args[2];
             object arg_Text = args[3];
-            object arg_Accept = args[4];
+            object arg_Accept = args.Length > 4 ? args[4] : null;
             object arg_Condi = args.Length > 5 ? args[5] : null;
             object arg_Weight = args.Length > 6 ? args[6] : null;
 
@@ -238,15 +238,10 @@ namespace TouhouPets
                 Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：评价文本"));
                 return false;
             }
-            if (arg_Accept == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：是否接受"));
-                return false;
-            }
 
             int type = arg_Type is short ? (short)arg_Type : (int)arg_Type;
             LocalizedText text = (LocalizedText)arg_Text;
-            bool acceptable = (bool)arg_Accept;
+            bool acceptable = arg_Accept == null || (bool)arg_Accept;
             Func<bool> condition = (arg_Condi != null) ? (Func<bool>)arg_Condi : null;
             int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
             if (weight < 1) weight = 1;
@@ -347,8 +342,7 @@ namespace TouhouPets
             LocalizedText text = (LocalizedText)arg_Text;
             Func<bool> condition = (arg_Condi != null) ? (Func<bool>)arg_Condi : null;
             int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
-            if (weight < 1)
-                weight = 1;
+            if (weight < 1) weight = 1;
 
             SingleDialogInfo info = new(text, weight, condition);
             CrossModDialog[id].Add(info);

@@ -36,7 +36,7 @@ namespace TouhouPets
                 GensokyoSupport.Setup(result);
             }
 
-            bool addCallForTest = true;
+            bool addCallForTest = false;
             if (addCallForTest)
             {
                 this.SetModCall();
