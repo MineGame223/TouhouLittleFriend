@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using static TouhouPets.TouhouPets;
+using Terraria.Utilities;
 
 namespace TouhouPets
 {
@@ -82,20 +82,30 @@ namespace TouhouPets
         /// <param name="giveComment">是否给出评价</param>
         private static bool Reject_CrossMod(this Projectile projectile, int foodType, bool giveComment = false)
         {
-            if (CrossModFoodComment.Count <= 0)
+            //以防万一
+            if (rejectList.Count <= 0)
                 return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, accept) in CrossModFoodComment)
+            foreach (var info in rejectList)
             {
-                if (!accept && foodType == info.ObjectType)
+                if (foodType != info.ObjectType)
+                    continue;
+
+                if (giveComment && info.CommentContent.Count > 0)
                 {
-                    if (giveComment && info.Condition())
+                    WeightedRandom<LocalizedText> result = new();
+                    foreach (var j in info.CommentContent)
                     {
-                        projectile.SetChat(info.CommentText);
+                        if (j.Condition())
+                            result.Add(j.DialogText, j.Weight);
                     }
-                    return true;
+                    if (result.elements.Count > 0)
+                    {
+                        projectile.SetChat(result);
+                    }
                 }
+                return true;
             }
             return false;
         }

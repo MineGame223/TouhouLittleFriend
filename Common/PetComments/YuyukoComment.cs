@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.Utilities;
 using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
@@ -26,6 +27,28 @@ namespace TouhouPets
             ItemID.Ale,//人生得意须尽欢，莫使金樽空对月。干了！
             ItemID.Sake,
             ];
+
+        private static List<CommentInfo> acceptList = [];
+        private static List<CommentInfo> rejectList = [];
+
+        /// <summary>
+        /// 通过将列表分开以减少后续的遍历次数
+        /// </summary>
+        public static void DivideList()
+        {
+            //以防万一
+            if (CrossModFoodComment.Count <= 0)
+                return;
+
+            //遍历食物评价信息列表并根据接受与否进行分类
+            foreach (var (info, accept) in CrossModFoodComment)
+            {
+                if (accept)
+                    acceptList.Add(info);
+                else
+                    rejectList.Add(info);
+            }
+        }
 
         /// <summary>
         /// 更新评价
@@ -113,19 +136,28 @@ namespace TouhouPets
         private static bool Comment_CrossMod(this Projectile projectile, int foodType)
         {
             //以防万一
-            if (CrossModFoodComment.Count <= 0)
+            if (acceptList.Count <= 0)
                 return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, accept) in CrossModFoodComment)
+            foreach (var info in acceptList)
             {
-                if (accept && foodType == info.ObjectType)
+                if (foodType != info.ObjectType)
+                    continue;
+
+                if (info.CommentContent.Count <= 0)
+                    continue;
+
+                WeightedRandom<LocalizedText> result = new();
+                foreach (var j in info.CommentContent)
                 {
-                    if (info.Condition())
-                    {
-                        projectile.SetChat(info.CommentText, 60);
-                        return true;
-                    }
+                    if (j.Condition())
+                        result.Add(j.DialogText, j.Weight);
+                }
+                if (result.elements.Count > 0)
+                {
+                    projectile.SetChat(result, 60);
+                    return true;
                 }
             }
             return false;

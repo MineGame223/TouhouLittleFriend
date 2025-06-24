@@ -144,23 +144,31 @@ namespace TouhouPets
             if (weight < 1) weight = 1;
 
             List<CommentInfo> bossComment = CrossModBossComment[id];
-            //在列表中查找对象种类与条件和当前信息相等的元素
-            var existingItem = bossComment.FirstOrDefault(x => x.ObjectType == type && x.Condition == condition);
+            //在列表中查找对象种类与条件方法和当前信息相等的元素
+            var existingItem = bossComment.FirstOrDefault(
+                x => x.ObjectType == type
+            );
+
             //若查找到对象，则对对象进行重置，否则按新元素加入列表中
-            if (existingItem.CommentText != null)
+            if (existingItem.CommentContent != null)
             {
                 //当前对象的索引值
                 int index = bossComment.IndexOf(existingItem);
+                var mergedList = new List<SingleDialogInfo>();
 
-                //将原有的文本加入随机选择器中
-                foreach (var (commentText, w) in existingItem.CommentText.elements)
-                    bossComment[index].CommentText.Add(commentText, w);
+                //由于遍历不可对其中的合集元素进行修改
+                //因此需要将原有的文本加入新的随机选择器中，并在后续修改
+                foreach (var c in existingItem.CommentContent)
+                    mergedList.Add(c);
+
+                mergedList.Add(new SingleDialogInfo(text, weight, condition));
+
+                bossComment[index] = new CommentInfo(type, mergedList);
             }
             else
             {
-                WeightedRandom<LocalizedText> resultText = new();
-                resultText.Add(text, weight);
-                bossComment.Add(new CommentInfo(type, resultText, condition));
+                List<SingleDialogInfo> resultContent = [new SingleDialogInfo(text, weight, condition)];
+                bossComment.Add(new CommentInfo(type, resultContent));
             }
 
             Mod mod = (Mod)arg_Mod;
@@ -171,7 +179,7 @@ namespace TouhouPets
 
             StringBuilder logInfo = new($"添加成功！" +
                     $"\n添加者：{modName}；宠物索引：{(TouhouPetID)id}；对象种类：{n.FullName}" +
-                    $"\n评价文本：{text}；权重：{weight}");
+                    $"\n权重：{weight}；评价文本：{text}");
 
             Logger.Info(ConsoleMessage("宠物Boss评价添加结果", logInfo.ToString()));
             return true;
@@ -229,25 +237,33 @@ namespace TouhouPets
             int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
             if (weight < 1) weight = 1;
 
-            //在列表中查找对象种类、条件与接受与否和当前信息相等的元素
-            var existingItem = CrossModFoodComment.FirstOrDefault(x => x.info.ObjectType == type
-            && x.accept == acceptable && x.info.Condition == condition);
+            List<(CommentInfo info, bool accept)> foodComment = CrossModFoodComment;
+            //在列表中查找对象种类与条件方法和当前信息相等的元素
+            var existingItem = foodComment.FirstOrDefault(
+                x => x.info.ObjectType == type
+                && x.accept == acceptable
+            );
 
             //若查找到对象，则对对象进行重置，否则按新元素加入列表中
-            if (existingItem.info.CommentText != null)
+            if (existingItem.info.CommentContent != null)
             {
                 //当前对象的索引值
-                int index = CrossModFoodComment.IndexOf(existingItem);
+                int index = foodComment.IndexOf(existingItem);
+                var mergedList = new List<SingleDialogInfo>();
 
-                //将原有的文本加入随机选择器中
-                foreach (var (commentText, w) in existingItem.info.CommentText.elements)
-                    CrossModFoodComment[index].info.CommentText.Add(commentText, w);
+                //由于遍历不可对其中的合集元素进行修改
+                //因此需要将原有的文本加入新的随机选择器中，并在后续修改
+                foreach (var c in existingItem.info.CommentContent)
+                    mergedList.Add(c);
+
+                mergedList.Add(new SingleDialogInfo(text, weight, condition));
+
+                foodComment[index] = (new CommentInfo(type, mergedList), acceptable);
             }
             else
             {
-                WeightedRandom<LocalizedText> resultText = new();
-                resultText.Add(text, weight);
-                CrossModFoodComment.Add((new CommentInfo(type, resultText), acceptable));
+                List<SingleDialogInfo> resultContent = [new SingleDialogInfo(text, weight, condition)];
+                foodComment.Add((new CommentInfo(type, resultContent), acceptable));
             }
 
             Mod mod = (Mod)arg_Mod;
@@ -255,7 +271,7 @@ namespace TouhouPets
 
             StringBuilder logInfo = new($"添加成功！" +
                     $"\n添加者：{modName}；对象种类：{new Item(type).Name}；是否接受：{acceptable}" +
-                    $"\n评价文本：{text}；权重：{weight}");
+                    $"\n权重：{weight}；评价文本：{text}");
 
             Logger.Info(ConsoleMessage("幽幽子食物评价添加结果", logInfo.ToString()));
 
@@ -320,7 +336,7 @@ namespace TouhouPets
 
             StringBuilder logInfo = new($"添加成功！" +
                     $"\n添加者：{modName}；索引：{(TouhouPetID)id}" +
-                    $"\n文本：{text}；权重：{weight}");
+                    $"\n权重：{weight}；文本：{text}");
 
             Logger.Info(ConsoleMessage("宠物对话添加结果", logInfo.ToString()));
 

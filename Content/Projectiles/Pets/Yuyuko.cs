@@ -67,6 +67,10 @@ namespace TouhouPets.Content.Projectiles.Pets
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(11, 5, 12);
         }
+        public override void PostRegisterChat()
+        {
+            YuyukoComment.DivideList();
+        }
         public override TouhouPetID UniqueID => TouhouPetID.Yuyuko;
         public override bool OnMouseHover(ref bool dontInvis)
         {

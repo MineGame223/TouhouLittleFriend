@@ -132,9 +132,21 @@ namespace TouhouPets
             }
             foreach (var i in comments)
             {
-                if (bossType == i.ObjectType && i.Condition())
+                if (bossType != i.ObjectType)
+                    continue;
+
+                if (i.CommentContent.Count <= 0)
+                    continue;
+
+                WeightedRandom<LocalizedText> result = new();
+                foreach (var j in i.CommentContent)
                 {
-                    Projectile.SetChat(i.CommentText);
+                    if (j.Condition())
+                        result.Add(j.DialogText, j.Weight);
+                }
+                if (result.elements.Count > 0)
+                {
+                    Projectile.SetChat(result);
                     return true;
                 }
             }
