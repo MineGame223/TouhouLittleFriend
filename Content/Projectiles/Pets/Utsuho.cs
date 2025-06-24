@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow");
         private readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
         private readonly Texture2D sunTex = AltVanillaFunction.GetExtraTexture("UtsuhoSun");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;

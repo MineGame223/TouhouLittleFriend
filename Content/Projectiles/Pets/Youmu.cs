@@ -24,7 +24,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => PetState = (int)value;
         }
         private bool IsAfraid => CurrentState == States.Afraid;
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;

@@ -14,9 +14,8 @@ namespace TouhouPets.Content.Projectiles.Danmaku
         {
             Projectile.width = 40;
             Projectile.height = 40;
-            Projectile.aiStyle = -1;
             Projectile.friendly = true;
-            Projectile.alpha = 255;
+            Projectile.Opacity = 0f;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.scale = 1.2f;
@@ -49,15 +48,12 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Projectile.HandleDanmakuCollide();
             if (Projectile.localAI[0] < 240)
             {
-                if (Projectile.alpha > 10)
-                {
-                    Projectile.alpha -= 40;
-                }
+                Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity + 0.1f, 0, 1);
             }
             else
             {
-                Projectile.alpha += 5;
-                if (Projectile.alpha > 255)
+                Projectile.Opacity -= 0.12f;
+                if (Projectile.Opacity <= 0f)
                 {
                     Projectile.active = false;
                     Projectile.netUpdate = true;

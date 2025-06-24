@@ -88,9 +88,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 });
             return false;
         }
-        public override void SetDefaults()
+        public override void PetDefaults()
         {
-            base.SetDefaults();
             Projectile.width = Projectile.height = 30;
             Projectile.tileCollide = true;
         }

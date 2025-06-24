@@ -9,92 +9,31 @@ namespace TouhouPets
     partial class BasicTouhouPet
     {
         /// <summary>
-        /// 模组添加的对话索引起始的地方
-        /// </summary>
-        private int crossModDialogStartIndex;
-
-        #region 对话注册
-        /// <summary>
-        /// 注册跨模组常规对话
-        /// </summary>
-        private void RegisterCrossModChat()
-        {
-            if (CrossModDialog == null)
-                return;
-
-            int lastIndex = ChatDictionary.Count;
-
-            int id = (int)UniqueID;
-            if (id <= (int)TouhouPetID.None || id >= (int)TouhouPetID.Count)
-                return;
-
-            var dialogList = CrossModDialog[id];
-            if (dialogList.Count <= 0)
-                return;
-
-            crossModDialogStartIndex = lastIndex + 1;
-
-            for (int i = 0; i < dialogList.Count; i++)
-            {
-                LocalizedText text = dialogList[i].DialogText;
-                int startIndex = crossModDialogStartIndex + i;
-
-                ChatDictionary.Add(startIndex, text);
-            }
-        }
-
-        /// <summary>
-        /// 注册跨模组聊天室
-        /// </summary>
-        private void RegisterCrossModChatRoom()
-        {
-            //若没有模组注册聊天室列表，则不执行后续
-            if (CrossModChatRoomList == null)
-                return;
-
-            int id = (int)UniqueID;
-            if (id <= (int)TouhouPetID.None)
-                return;
-
-            var listRoom = CrossModChatRoomList[id];
-            if (listRoom.Count <= 0)
-                return;
-
-            foreach (var i in listRoom)
-            {
-                LocalizedText startText = i[0].ChatText;
-                IsChatRoomActive.TryAdd(startText, false);
-            }
-        }
-        #endregion
-
-        #region 对话更新
-        /// <summary>
         /// 将跨模组常规对话加入被传入的随机选择器中
         /// </summary>
         /// <param name="chatText"></param>
         private void GetCrossModChat(ref WeightedRandom<LocalizedText> chatText)
         {
-            //若没有模组进行注册则不执行后续
+            //以防万一
             if (CrossModDialog == null)
                 return;
 
             int id = (int)UniqueID;
-            if (id <= (int)TouhouPetID.None)
+            if (id <= (int)TouhouPetID.None || id >= (int)TouhouPetID.Count)
                 return;
 
+            //若没有模组进行注册则不执行后续
             var dialogList = CrossModDialog[id];
             if (dialogList.Count <= 0)
                 return;
 
-            for (int i = 0; i < dialogList.Count; i++)
+            foreach(var info in dialogList)
             {
-                SingleDialogInfo info = dialogList[i];
                 //若符合注册时写入的条件，则加入随机选择器
-                if (info.Condition())
-                {
-                    chatText.Add(ChatDictionary[crossModDialogStartIndex + i], info.Weight);
-                }
+                if (!info.Condition())
+                    continue;
+
+                chatText.Add(info.DialogText, info.Weight);
             }
         }
 
@@ -152,6 +91,5 @@ namespace TouhouPets
             }
             return false;
         }
-        #endregion
     }
 }

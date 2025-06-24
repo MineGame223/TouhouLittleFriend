@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
+using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
 {
@@ -83,11 +84,11 @@ namespace TouhouPets
         private static bool Reject_CrossMod(this Projectile projectile, int foodType, bool giveComment = false)
         {
             //以防万一
-            if (rejectList.Count <= 0)
+            if (CrossModFoodComment_Reject.Count <= 0)
                 return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var info in rejectList)
+            foreach (var info in CrossModFoodComment_Reject)
             {
                 if (foodType != info.ObjectType)
                     continue;

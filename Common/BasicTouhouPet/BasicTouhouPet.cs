@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -406,9 +405,24 @@ namespace TouhouPets
         /// <param name="lightColor"></param>
         /// <returns></returns>
         public virtual bool DrawPetSelf(ref Color lightColor) => true;
+
+        /// <summary>
+        /// 设置种类属性，替代SetStaticDefaults
+        /// </summary>
+        public virtual void PetStaticDefaults() { }
+
+        /// <summary>
+        /// 设置实例属性，替代SetDefaults
+        /// </summary>
+        public virtual void PetDefaults() { }
         #endregion
 
         #region 原有重写函数
+        public override void SetStaticDefaults()
+        {
+            PetStaticDefaults();
+            RegisterChat_Full();
+        }
         public override void SetDefaults()
         {
             Projectile.netImportant = true;
@@ -418,10 +432,9 @@ namespace TouhouPets
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.timeLeft *= 5;
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            RegisterChat_Full();
+
+            PetDefaults();
+            DynamicRegisterForDebug();
         }
         public override bool PreAI()
         {

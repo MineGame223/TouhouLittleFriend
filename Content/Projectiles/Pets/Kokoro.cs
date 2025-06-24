@@ -48,7 +48,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Kokoro_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;

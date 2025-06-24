@@ -92,12 +92,20 @@ namespace TouhouPets
         /// <summary>
         /// 对话字典
         /// </summary>
-        internal Dictionary<int, LocalizedText> ChatDictionary = [];
+        internal Dictionary<int, LocalizedText> ChatDictionary
+        {
+            get => TouhouPets.ChatDictionry[(int)UniqueID];
+            set => TouhouPets.ChatDictionry[(int)UniqueID] = value;
+        }
 
         /// <summary>
         /// 对应聊天室是否启动
         /// </summary>
-        internal Dictionary<LocalizedText, bool> IsChatRoomActive = [];
+        internal Dictionary<LocalizedText, bool> IsChatRoomActive
+        {
+            get => TouhouPets.IsChatRoomActive[(int)UniqueID];
+            set => TouhouPets.IsChatRoomActive[(int)UniqueID] = value;
+        }
 
         /// <summary>
         /// 当前聊天室
@@ -132,7 +140,7 @@ namespace TouhouPets
             if (startKeys.Count <= 0)
                 return false;
 
-            foreach(var i in startKeys)
+            foreach (var i in startKeys)
             {
                 if (!IsChatRoomActive.ContainsKey(i))
                     continue;
@@ -228,15 +236,19 @@ namespace TouhouPets
         /// </summary>
         private void RegisterChat_Full()
         {
+            //先清空字典
+            ChatDictionary.Clear();
+
             string name = string.Empty;
             Vector2 indexRange = Vector2.Zero;
 
             //通过该方法设置字符标签与索引范围
             RegisterChat(ref name, ref indexRange);
 
-            //若标签为空则不执行后续
-            if (string.IsNullOrWhiteSpace(name))
+            //若标签为空、或范围为0，则不执行后续
+            if (string.IsNullOrWhiteSpace(name) || indexRange == Vector2.Zero)
             {
+                Console.WriteLine("\nno chat\n");
                 return;
             }
 
@@ -251,18 +263,23 @@ namespace TouhouPets
             {
                 foreach (var infoList in RegisterChatRoom())
                 {
-                    IsChatRoomActive.Add(infoList[0].ChatText, false);
+                    IsChatRoomActive.TryAdd(infoList[0].ChatText, false);
                 }
             }
 
-            RegisterCrossModChat();
-            RegisterCrossModChatRoom();
-
             PostRegisterChat();
+        }
 
-            //增加一个空位，防止WeightedRandom无法读取最后一个文本
-            int lastIndex = ChatDictionary.Count;
-            ChatDictionary.Add(lastIndex + 1, Language.GetText(string.Empty));
+        /// <summary>
+        /// 用于Debug的注册方法
+        /// </summary>
+        private void DynamicRegisterForDebug()
+        {
+            bool dynamicRegister = false;
+            if (dynamicRegister && !Main.gameMenu)
+            {
+                RegisterChat_Full();
+            }
         }
 
         #endregion

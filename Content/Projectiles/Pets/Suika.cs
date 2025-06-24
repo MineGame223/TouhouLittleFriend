@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Suika_Cloth");
         private readonly Texture2D decorTex = AltVanillaFunction.GetExtraTexture("Suika_Decoration");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;

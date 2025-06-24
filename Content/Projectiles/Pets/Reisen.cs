@@ -53,7 +53,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Reisen_Glow");
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth");
         private readonly Texture2D altClothTex = AltVanillaFunction.GetExtraTexture("Reisen_Cloth_Alt");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;

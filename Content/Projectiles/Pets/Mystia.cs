@@ -38,7 +38,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => Projectile.localAI[2] = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;

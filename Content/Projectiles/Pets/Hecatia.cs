@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(3);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hecatia_Cloth");
         private readonly Texture2D planetTex = AltVanillaFunction.GetExtraTexture("HecatiaPlanets");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;

@@ -28,28 +28,6 @@ namespace TouhouPets
             ItemID.Sake,
             ];
 
-        private static List<CommentInfo> acceptList = [];
-        private static List<CommentInfo> rejectList = [];
-
-        /// <summary>
-        /// 通过将列表分开以减少后续的遍历次数
-        /// </summary>
-        public static void DivideList()
-        {
-            //以防万一
-            if (CrossModFoodComment.Count <= 0)
-                return;
-
-            //遍历食物评价信息列表并根据接受与否进行分类
-            foreach (var (info, accept) in CrossModFoodComment)
-            {
-                if (accept)
-                    acceptList.Add(info);
-                else
-                    rejectList.Add(info);
-            }
-        }
-
         /// <summary>
         /// 更新评价
         /// </summary>
@@ -136,11 +114,11 @@ namespace TouhouPets
         private static bool Comment_CrossMod(this Projectile projectile, int foodType)
         {
             //以防万一
-            if (acceptList.Count <= 0)
+            if (CrossModFoodComment_Accept.Count <= 0)
                 return false;
 
             //遍历食物评价信息列表并选取评价
-            foreach (var info in acceptList)
+            foreach (var info in CrossModFoodComment_Accept)
             {
                 if (foodType != info.ObjectType)
                     continue;

@@ -15,9 +15,8 @@ namespace TouhouPets.Content.Projectiles.Danmaku
         {
             Projectile.width = 16;
             Projectile.height = 16;
-            Projectile.aiStyle = -1;
             Projectile.friendly = true;
-            Projectile.alpha = 255;
+            Projectile.Opacity = 0f;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 360;
@@ -40,7 +39,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Vector2 pos = Projectile.Center - Main.screenPosition;
             int height = tex.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
-            Color clr = Projectile.GetAlpha(lightColor);
+            Color clr = Projectile.GetAlpha(Color.White);
             Vector2 orig = rect.Size() / 2;
             Main.spriteBatch.MyDraw(tex, pos, rect, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
             return false;
@@ -64,15 +63,12 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Projectile.HandleDanmakuCollide();
             if (Projectile.localAI[0] < 90)
             {
-                if (Projectile.alpha > 10)
-                {
-                    Projectile.alpha -= 40;
-                }
+                Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity + 0.1f, 0, 1);
             }
             else
             {
-                Projectile.alpha += 5;
-                if (Projectile.alpha > 255)
+                Projectile.Opacity -= 0.05f;
+                if (Projectile.Opacity <= 0f)
                 {
                     Projectile.active = false;
                     Projectile.netUpdate = true;
@@ -89,10 +85,6 @@ namespace TouhouPets.Content.Projectiles.Danmaku
                 Dust dust = Main.dust[d];
                 dust.velocity *= 0.3f;
             }
-        }
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return new Color?(new Color(255 - Projectile.alpha, 255 - Projectile.alpha, 255 - Projectile.alpha, 255 - Projectile.alpha));
         }
         public override void OnKill(int timeLeft)
         {

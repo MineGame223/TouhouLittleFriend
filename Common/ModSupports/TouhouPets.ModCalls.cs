@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Terraria;
 using Terraria.Localization;
-using Terraria.Utilities;
 
 namespace TouhouPets
 {
@@ -43,11 +42,17 @@ namespace TouhouPets
         private static List<CommentInfo>[] crossModBossComment = new List<CommentInfo>[(int)TouhouPetID.Count];
 
         /// <summary>
-        /// 跨模组添加的食物评论的列表
+        /// 跨模组添加的可接受食物评论的列表
         /// </summary>
-        public static List<(CommentInfo info, bool accept)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
-        private static List<(CommentInfo, bool)> crossModFoodComment = [];
-        private static void InitializCrossModList()
+        public static List<CommentInfo> CrossModFoodComment_Accept { get => crossModFoodComment_Accept; set => crossModFoodComment_Accept = value; }
+        private static List<CommentInfo> crossModFoodComment_Accept = [];
+
+        /// <summary>
+        /// 跨模组添加的不可接受食物评论的列表
+        /// </summary>
+        public static List<CommentInfo> CrossModFoodComment_Reject { get => crossModFoodComment_Reject; set => crossModFoodComment_Reject = value; }
+        private static List<CommentInfo> crossModFoodComment_Reject = [];
+        private static void InitializeCrossModList()
         {
             //需要对列表进行初始化
             for (int i = 0; i < (int)TouhouPetID.Count; i++)
@@ -56,6 +61,16 @@ namespace TouhouPets
                 CrossModChatRoomList[i] = [];
                 CrossModBossComment[i] = [];
             }
+            CrossModFoodComment_Accept = [];
+            CrossModFoodComment_Reject = [];
+        }
+        private static void NullifyCrossModList()
+        {
+            CrossModDialog = null;
+            CrossModChatRoomList = null;
+            CrossModBossComment = null;
+            CrossModFoodComment_Accept = null;
+            CrossModFoodComment_Reject = null;
         }
         public override object Call(params object[] args)
         {
@@ -162,7 +177,6 @@ namespace TouhouPets
                     mergedList.Add(c);
 
                 mergedList.Add(new SingleDialogInfo(text, weight, condition));
-
                 bossComment[index] = new CommentInfo(type, mergedList);
             }
             else
@@ -237,7 +251,7 @@ namespace TouhouPets
             int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
             if (weight < 1) weight = 1;
 
-            List<(CommentInfo info, bool accept)> foodComment = CrossModFoodComment;
+            List<(CommentInfo info, bool accept)> foodComment = [];
             //在列表中查找对象种类与条件方法和当前信息相等的元素
             var existingItem = foodComment.FirstOrDefault(
                 x => x.info.ObjectType == type
@@ -257,13 +271,21 @@ namespace TouhouPets
                     mergedList.Add(c);
 
                 mergedList.Add(new SingleDialogInfo(text, weight, condition));
-
                 foodComment[index] = (new CommentInfo(type, mergedList), acceptable);
             }
             else
             {
                 List<SingleDialogInfo> resultContent = [new SingleDialogInfo(text, weight, condition)];
                 foodComment.Add((new CommentInfo(type, resultContent), acceptable));
+            }
+
+            //遍历食物评价信息列表并根据接受与否进行分类
+            foreach (var (info, accept) in foodComment)
+            {
+                if (accept)
+                    CrossModFoodComment_Accept.Add(info);
+                else
+                    CrossModFoodComment_Reject.Add(info);
             }
 
             Mod mod = (Mod)arg_Mod;
@@ -371,22 +393,24 @@ namespace TouhouPets
                 return false;
             }
 
-            List<(int, LocalizedText, int)> infoList = (List<(int, LocalizedText, int)>)arg_Info;
+            List<(int petID, LocalizedText chatText, int chatTurn)> infoList = (List<(int, LocalizedText, int)>)arg_Info;
 
             List<ChatRoomInfo> resultList = [];
             for (int j = 0; j < infoList.Count; j++)
             {
                 ChatRoomInfo info = new(
-                    (TouhouPetID)infoList[j].Item1,
-                    infoList[j].Item2,
-                    infoList[j].Item3
+                    (TouhouPetID)infoList[j].petID,
+                    infoList[j].chatText,
+                    infoList[j].chatTurn
                     );
 
                 resultList.Add(info);
             }
 
-            int id = infoList[0].Item1;
+            int id = infoList[0].petID;
             CrossModChatRoomList[id].Add(resultList);
+            //注册聊天室活动信息
+            IsChatRoomActive[id].Add(infoList[0].chatText, false);
 
             Mod mod = (Mod)arg_Mod;
             string modName = mod.DisplayNameClean;

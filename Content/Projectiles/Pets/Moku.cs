@@ -59,14 +59,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private float floatingX, floatingY;
         private float ringAlpha, flameAlhpa;
-        private int[] abilityCD;
+        private int[] abilityCD = new int[2];
         private int health;
 
         private const int MaxHealth = 360;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Moku_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;
@@ -157,7 +157,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (CurrentState == States.Win || CurrentState == States.Lose)
             {
-                Projectile.DrawIndividualScore(PlayerB_Score);
+                Projectile.DrawIndividualScore(PlayerB_Score, CurrentState == States.Win);
             }
         }
         private void DrawDanmakuRing()
@@ -228,11 +228,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
             rgb = new Vector3(2.15f, 1.84f, 0.87f);
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-            abilityCD = new int[2];
         }
         public override void AI()
         {
@@ -449,7 +444,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.spriteDirection = 1;
-            Vector2 point = new (-200, -200);
+            Vector2 point = new(-200, -200);
             MoveToPoint2(point, 5f);
         }
         private void Battling()
@@ -529,7 +524,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.spriteDirection = 1;
-            Vector2 point = new (-200 + floatingX, -200 + floatingY);
+            Vector2 point = new(-200 + floatingX, -200 + floatingY);
             MoveToPoint2(point, 4f);
         }
         private void Win()

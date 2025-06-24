@@ -89,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Eirin_Cloth");
         //private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Eirin_Glow");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
@@ -100,10 +100,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 .WhenSelected(4, 0);
         }
         public override TouhouPetID UniqueID => TouhouPetID.Eirin;
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with

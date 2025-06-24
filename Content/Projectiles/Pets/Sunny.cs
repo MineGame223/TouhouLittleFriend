@@ -46,7 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
         private bool UnderSunShine => Main.cloudAlpha <= 0 && Main.dayTime &&
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
@@ -177,7 +177,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             chat.Add(ChatDictionary[9]);
                     }
                     if (!Owner.HasBuff<ReimuBuff>())
-                    chat.Add(ChatDictionary[12], 3);
+                    chat.Add(ChatDictionary[12]);
                 }
             }
             return chat;

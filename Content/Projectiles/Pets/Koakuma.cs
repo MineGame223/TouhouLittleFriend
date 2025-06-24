@@ -27,6 +27,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => Projectile.ai[2] = value ? 0 : 1;
         }
 
+        private static string KoakumaNumber
+        {
+            get
+            {
+                int number = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>().koakumaNumber;
+                return NumberToCNCharacter.GetNumberText(number);
+            }
+        }
+
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
         private int earFrame, earFrameCounter;
@@ -34,7 +43,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koakuma_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
             Main.projPet[Type] = true;
@@ -45,9 +54,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             TouhouPetPlayer lp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             lp.koakumaNumber = Main.rand.Next(1, 301);
             Projectile.Name = Language.GetTextValue("Mods.TouhouPets.Projectiles.Koakuma.DisplayName", NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
-            ChatDictionary[1] = GetChatText("Koakuma", 1, NumberToCNCharacter.GetNumberText(lp.koakumaNumber));
-
-            base.OnSpawn(source);
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
@@ -77,7 +83,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void RegisterChat(ref string name, ref Vector2 indexRange)
         {
             name = "Koakuma";
-            indexRange = new Vector2(2, 7);
+            indexRange = new Vector2(1, 7);
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
@@ -87,18 +93,18 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
-                chat.Add(ChatDictionary[1]);
+                chat.Add(ChatDictionary[1].WithFormatArgs(KoakumaNumber));
                 chat.Add(ChatDictionary[2]);
                 chat.Add(ChatDictionary[3]);
                 if (FindPet(ProjectileType<Patchouli>()))
                 {
-                    chat.Add(ChatDictionary[4], 4);
+                    chat.Add(ChatDictionary[4], 2);
                 }
                 if (FindPet(ProjectileType<Patchouli>(), true, 2, 4))
                 {
-                    chat.Add(ChatDictionary[6], 4);
+                    chat.Add(ChatDictionary[6], 2);
                 }
             }
             return chat;
@@ -128,7 +134,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 new ChatRoomInfo(patchouli, GetChatText("Patchouli",16), 0),//帕秋莉：不要！会累死人的...
                 new ChatRoomInfo(koakuma, ChatDictionary[5], 1), //小恶魔：为了您的健康着想，这很必要的哦！
                 new ChatRoomInfo(patchouli, GetChatText("Patchouli",17), 2),//帕秋莉：一点都不必要，我现在挺好的...咳咳！咳！
-                new ChatRoomInfo(patchouli, ChatDictionary[18], 3),//帕秋莉：...我真的很好！
+                new ChatRoomInfo(patchouli, GetChatText("Patchouli",18), 3),//帕秋莉：...我真的很好！
             ];
 
             return list;

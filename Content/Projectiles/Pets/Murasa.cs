@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Murasa_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 22;
             Main.projPet[Type] = true;

@@ -57,7 +57,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int itemFrame, itemFrameCounter;
         private int flyTimeleft = 0;
         private bool seeCoin = false;
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;

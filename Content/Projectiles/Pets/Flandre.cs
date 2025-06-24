@@ -51,7 +51,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Flandre_Cloth");
         private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Flandre_Glow");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 23;
             Main.projPet[Type] = true;

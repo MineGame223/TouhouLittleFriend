@@ -61,14 +61,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private float floatingX, floatingY;
         private float ringAlpha;
-        private int[] abilityCD;
+        private int[] abilityCD = new int[2];
         private int health;
 
         private const int MaxHealth = 360;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Kaguya_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 21;
             Main.projPet[Type] = true;
@@ -131,7 +131,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (CurrentState == States.Win || CurrentState == States.Lose)
             {
-                Projectile.DrawIndividualScore(PlayerA_Score);
+                Projectile.DrawIndividualScore(PlayerA_Score, CurrentState == States.Win);
             }
             if (CurrentState == States.BeforeBattle)
             {
@@ -292,11 +292,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void VisualEffectForPreview()
         {
             UpdateMiscFrame();
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-            abilityCD = new int[2];
         }
         public override void AI()
         {

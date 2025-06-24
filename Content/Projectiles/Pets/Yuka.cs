@@ -49,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             PositionOffset = new Vector2(0, -10),
         };
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuka_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;

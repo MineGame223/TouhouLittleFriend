@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[2];
             set => Projectile.localAI[2] = value;
         }
-        private bool IsIdleState => PetState <= 1;
+        private bool IsIdleState => PetState <= (int)States.Blink;
         private bool IsEattingState => PetState >= (int)States.BeforeEatting && PetState <= (int)States.Eatting;
 
         private int hatFrame, hatFrameCounter;
@@ -58,7 +58,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuyuko_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 20;
             Main.projPet[Type] = true;
@@ -66,10 +66,6 @@ namespace TouhouPets.Content.Projectiles.Pets
             ProjectileID.Sets.CharacterPreviewAnimations[Type] =
                 ProjectileID.Sets.SimpleLoop(0, 1)
                 .WhenSelected(11, 5, 12);
-        }
-        public override void PostRegisterChat()
-        {
-            YuyukoComment.DivideList();
         }
         public override TouhouPetID UniqueID => TouhouPetID.Yuyuko;
         public override bool OnMouseHover(ref bool dontInvis)

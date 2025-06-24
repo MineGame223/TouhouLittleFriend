@@ -43,7 +43,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Wakasagihime_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 10;
             Main.projPet[Type] = true;

@@ -7,15 +7,10 @@ namespace TouhouPets.Content.Projectiles.Danmaku
 {
     public class KaguyaWave : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            Main.projFrames[Type] = 1;
-        }
         public override void SetDefaults()
         {
             Projectile.width = 128;
             Projectile.height = 128;
-            Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.Opacity = 0f;
             Projectile.ignoreWater = true;
@@ -39,7 +34,7 @@ namespace TouhouPets.Content.Projectiles.Danmaku
             Vector2 pos = Projectile.Center - Main.screenPosition;
             int height = tex.Height / Main.projFrames[Type];
             Rectangle rect = new Rectangle(0, Projectile.frame * height, tex.Width, height);
-            Color clr = Projectile.GetAlpha(lightColor) * 0.8f;
+            Color clr = Projectile.GetAlpha(Main.DiscoColor) * 0.8f;
             Vector2 orig = rect.Size() / 2;
             Main.spriteBatch.MyDraw(tex, pos, rect, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
             return false;
@@ -54,15 +49,12 @@ namespace TouhouPets.Content.Projectiles.Danmaku
 
             if (Projectile.localAI[0] < 60)
             {
-                if (Projectile.Opacity < 1)
-                {
-                    Projectile.Opacity += 0.1f;
-                }
+                Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity + 0.1f, 0, 1);
             }
             else
             {
-                Projectile.Opacity -= 0.05f;
-                if (Projectile.Opacity <= 0.1f)
+                Projectile.Opacity -= 0.055f;
+                if (Projectile.Opacity <= 0f)
                 {
                     Projectile.active = false;
                     Projectile.netUpdate = true;
@@ -97,10 +89,6 @@ namespace TouhouPets.Content.Projectiles.Danmaku
                     ParticleOrchestrator.SpawnParticlesDirect(ParticleOrchestraType.PrincessWeapon, settings);
                 }
             }
-        }
-        public override Color? GetAlpha(Color lightColor)
-        {
-            return Main.DiscoColor * Projectile.Opacity;
         }
     }
 }

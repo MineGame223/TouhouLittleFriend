@@ -47,7 +47,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int blinkFrame, blinkFrameCounter;
         private int broomFrame, broomFrameCounter;
         private int lightFrame, lightFrameCounter;
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;

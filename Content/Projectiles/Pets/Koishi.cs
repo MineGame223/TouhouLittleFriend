@@ -63,7 +63,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Koishi_Cloth");
         private readonly Texture2D whiteTex = AltVanillaFunction.GetExtraTexture("Koishi_White");
         private readonly Texture2D newTex = AltVanillaFunction.GetExtraTexture("Koishi_New");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 18;
             Main.projPet[Type] = true;

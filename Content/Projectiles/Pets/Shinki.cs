@@ -21,7 +21,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (States)PetState;
             set => PetState = (int)value;
         }
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;

@@ -76,12 +76,12 @@ namespace TouhouPets
                 d.velocity = new Vector2(0, -Main.rand.NextFloat(2, 5)).RotatedBy(MathHelper.ToRadians(360 / circle * i));
             }
         }
-        public static void DrawIndividualScore(this Projectile projectile, int score, int offsetY = 36)
+        public static void DrawIndividualScore(this Projectile projectile, int score, bool win, int offsetY = 36)
         {
             string sourceText = "Win: " + score.ToString();
             Vector2 pos = new Vector2(projectile.Center.X - FontAssets.MouseText.Value.MeasureString(sourceText).X / 2, projectile.Center.Y + offsetY) - Main.screenPosition;
             Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, sourceText
-                , pos.X, pos.Y, Color.White, Color.Black, Vector2.Zero, 1f);
+                , pos.X, pos.Y, win ? Color.Yellow : Color.White, Color.Black, Vector2.Zero, 1f);
         }
         [Obsolete]
         public static void DrawBattleScore()
@@ -133,8 +133,8 @@ namespace TouhouPets
             {
                 roundText = "FIGHT!";
                 clr = Color.Red;
-                xOffset = Main.rand.Next(-1, 1);
-                yOffset = Main.rand.Next(-1, 1);
+                xOffset = Main.rand.Next(-2, 2);
+                yOffset = Main.rand.Next(-2, 2);
             }
             Vector2 pos = new Vector2(player.Center.X - FontAssets.DeathText.Value.MeasureString(roundText).X / 2 * textScale
                 , player.Center.Y - FontAssets.DeathText.Value.MeasureString(roundText).Y / 2 * textScale - 202) - Main.screenPosition;
@@ -217,9 +217,9 @@ namespace TouhouPets
         }
         public static void ClearDanmaku(this Projectile projectile)
         {
-            foreach(Projectile p in Main.ActiveProjectiles)
+            foreach (Projectile p in Main.ActiveProjectiles)
             {
-                if (p.owner == projectile.owner&&p.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku)
+                if (p.owner == projectile.owner && p.GetGlobalProjectile<TouhouPetGlobalProj>().isADanmaku)
                 {
                     p.timeLeft = 0;
                     p.netUpdate = true;

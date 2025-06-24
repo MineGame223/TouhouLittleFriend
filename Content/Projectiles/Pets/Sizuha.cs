@@ -32,7 +32,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sizuha_Cloth");
         private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Sizuha_Glow");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
