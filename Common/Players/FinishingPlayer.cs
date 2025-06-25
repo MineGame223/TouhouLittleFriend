@@ -10,7 +10,7 @@ namespace TouhouPets.Common
     {
         public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
         {
-            if (!GetInstance<PetObtainConfig>().ObtainPetByFishing)
+            if (!ObtainPetByFishing)
                 return;
 
             bool junkCondition = Main.rand.Next(50) > attempt.fishingLevel && attempt.waterTilesCount < attempt.waterNeededToFish;

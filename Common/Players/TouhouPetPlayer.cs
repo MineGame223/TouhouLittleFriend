@@ -16,7 +16,7 @@ namespace TouhouPets
         public bool lettyCold;
         public override void ResetEffects()
         {
-            if (!Player.HasBuff<LettyBuff>() || !GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty)
+            if (!Player.HasBuff<LettyBuff>() || !SpecialAbility_Letty)
             {
                 lettyCold = false;
             }

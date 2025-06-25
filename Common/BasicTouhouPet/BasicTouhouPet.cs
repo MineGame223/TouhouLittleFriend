@@ -14,6 +14,9 @@ namespace TouhouPets
     public abstract partial class BasicTouhouPet : ModProjectile
     {
         #region 字段与属性
+
+        internal bool useDye = false;
+
         /// <summary>
         /// 是否发现Boss
         /// <br/>该变量会自动更新，无需手动更改
@@ -306,7 +309,7 @@ namespace TouhouPets
         }
         private void UpdatePetLight()
         {
-            Vector2 position = GetInstance<MiscConfig_ClientSide>().PetLightOnPlayer ? Owner.Center : Projectile.Center;
+            Vector2 position = PetLightOnPlayer ? Owner.Center : Projectile.Center;
             Vector3 rgb = new(0, 0, 0);
             bool inactive = false;
             SetPetLight(ref position, ref rgb, ref inactive);
@@ -336,7 +339,7 @@ namespace TouhouPets
                             OnMouseClick(true, false);
                         }
                     }
-                    if (!dontInvis && GetInstance<MiscConfig_ClientSide>().PetInvisWhenMouseHover)
+                    if (!dontInvis && PetInvisWhenMouseHover)
                     {
                         mouseOpacity = MathHelper.Clamp(mouseOpacity - 0.1f, 0.05f, 1);
                     }
@@ -465,15 +468,14 @@ namespace TouhouPets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.ResetDrawStateForPet();//用于让染料正常工作
+            //Projectile.ResetDrawStateForPet();//用于让染料正常工作
             return DrawPetSelf(ref lightColor);
         }
         public override void PostDraw(Color lightColor)
         {
-            if (!GetInstance<MiscConfig>().CompatibilityMode)
-                Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
+            Projectile.ResetDrawStateForPet();
 
-            if (chatOpacity > 0 && GetInstance<PetDialogConfig>().ChatFrequency > 0f)
+            if (chatOpacity > 0 && PetChatFrequency > 0f)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
                 float alpha = MathHelper.Clamp(chatOpacity * Projectile.Opacity * mouseOpacity, 0, 1);

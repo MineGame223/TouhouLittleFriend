@@ -248,8 +248,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                solutionClone = new(Solution.type);
-                solutionClone.shoot = SolutionSprayType(Solution.type);
+                solutionClone = new(Solution.type)
+                {
+                    shoot = GetSprayInfo(Solution.type).SprayType
+                };
             }
             if (Projectile.frame >= 8)
             {
@@ -282,7 +284,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
                     for (int i = 0; i < 5; i++)
                     {
-                        Dust.NewDustPerfect(pos, SolutionSprayDust(solutionClone.shoot)
+                        Dust.NewDustPerfect(pos, GetSprayInfo(Solution.type).SprayDust
                         , new Vector2(0, Main.rand.NextFloat(2.4f, 4.8f)).RotatedByRandom(MathHelper.TwoPi), 100
                         , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
                     }

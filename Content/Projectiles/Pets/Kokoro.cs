@@ -109,7 +109,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     PositionOffset = new Vector2(24, 0)
                         .RotatedBy(MathHelper.ToRadians(angle * maskIndex) + Main.GlobalTimeWrappedHourly)
-                        + posOffset
+                        + posOffset,
                 }, 1);
         }
         public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
@@ -129,7 +129,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);

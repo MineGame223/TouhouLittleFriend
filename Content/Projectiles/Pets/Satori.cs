@@ -251,7 +251,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void MindReading()
         {
-            if (GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori)
+            if (SpecialAbility_Satori)
             {
                 Owner.detectCreature = true;
             }

@@ -1,11 +1,10 @@
-﻿using Terraria;
-using Terraria.Localization;
+﻿using Terraria.Localization;
 
 namespace TouhouPets
 {
     public static class NumberToCNCharacter
     {
-        public static string SetCNNumber_SingleDigits(int value)
+        private static string SetCNNumber_SingleDigits(int value)
         {
             return value switch
             {
@@ -21,7 +20,7 @@ namespace TouhouPets
                 _ => "零",
             };
         }
-        public static string SetCNNumber_TensDigits(int value)
+        private static string SetCNNumber_TensDigits(int value)
         {
             return value switch
             {
@@ -37,7 +36,7 @@ namespace TouhouPets
                 _ => "零",
             };
         }
-        public static string SetCNNumber_HundredDigits(int value)
+        private static string SetCNNumber_HundredDigits(int value)
         {
             return value switch
             {

@@ -149,7 +149,7 @@ Mods: {
 				}
 			}
 
-			MiscConfig: {
+			MiscConfig_ServerSide: {
 				DisplayName: Server Side Misc Function Config
 
 				CompatibilityMode: {

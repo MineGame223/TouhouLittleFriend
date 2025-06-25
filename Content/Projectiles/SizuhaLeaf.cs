@@ -36,7 +36,7 @@ namespace TouhouPets.Content.Projectiles
 
             DrawData data = new DrawData(tex, pos, rect, clr, Projectile.rotation, orig, 1f, SpriteEffects.None, 0);
             
-            if (GetInstance<MiscConfig>().CompatibilityMode)
+            if (CompatibilityMode)
             {
                 data.Draw(Main.spriteBatch);
                 return false;

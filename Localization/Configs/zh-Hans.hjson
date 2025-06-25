@@ -149,7 +149,7 @@ Mods: {
 				}
 			}
 
-			MiscConfig: {
+			MiscConfig_ServerSide: {
 				DisplayName: 服务器端其他功能配置
 
 				CompatibilityMode: {

@@ -101,7 +101,7 @@ namespace TouhouPets
         }
         private object AddBossReaction(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_MarisasReaction)
+            if (!AllowCall_MarisasReaction)
             {
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
@@ -200,7 +200,7 @@ namespace TouhouPets
         }
         private object AddYuyukoReaction(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_YuyukosReaction)
+            if (!AllowCall_YuyukosReaction)
             {
                 Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
@@ -296,7 +296,7 @@ namespace TouhouPets
         }
         private object AddCrossModDialog(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_PetDialog)
+            if (!AllowCall_PetDialog)
             {
                 Logger.Info(ConsoleMessage(Arg_2, Warning_PreventedByConfig));
                 return false;
@@ -360,8 +360,8 @@ namespace TouhouPets
         }
         private object AddCrossModChatRoom(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_PetChatRoom
-                || !GetInstance<MiscConfig>().AllowModCall_PetDialog)
+            if (!AllowCall_PetChatRoom
+                || !AllowCall_PetDialog)
             {
                 Logger.Info(ConsoleMessage(Arg_3, Warning_PreventedByConfig));
                 return false;

@@ -198,7 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(5))
                     {
-                        RandomCount = Main.rand.Next(10, 20);
+                        RandomCount = Main.rand.Next(3, 7);
                         CurrentState = States.Drinking;
 
                         if (Main.rand.NextBool(2))

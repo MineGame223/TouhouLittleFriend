@@ -11,7 +11,7 @@ namespace TouhouPets
         public override bool InstancePerEntity => true;
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            if (!GetInstance<PetObtainConfig>().PetCanDropFromBoss)
+            if (!PetCanDropFromBoss)
                 return;
 
             AddHomewardJourneyLoot(npc, npcLoot);

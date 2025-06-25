@@ -167,7 +167,7 @@ namespace TouhouPets
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             float totalScale = 0.9f;
             string _text = text;
-            bool typerStyle = GetInstance<PetDialogConfig>().TyperStyleChat;
+            bool typerStyle = TyperStylePetDialog;
 
             if (typerStyle)
             {
@@ -301,7 +301,7 @@ namespace TouhouPets
             //设置说话间隔、说话几率以及说话条件
             SetRegularDialog(ref time, ref chance, ref stop);
 
-            float freq = GetInstance<PetDialogConfig>().ChatFrequency;
+            float freq = PetChatFrequency;
             if (freq > 0)
             {
                 time = (int)(time / freq);

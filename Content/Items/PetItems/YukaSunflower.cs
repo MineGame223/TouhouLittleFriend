@@ -17,7 +17,7 @@ namespace TouhouPets.Content.Items.PetItems
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            if (!GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka)
+            if (!SpecialAbility_Yuka)
                 return;
 
             Item solution = Main.LocalPlayer.ChooseAmmo(new Item(ItemID.Clentaminator2));

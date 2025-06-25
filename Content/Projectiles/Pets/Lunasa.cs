@@ -222,7 +222,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (OwnerIsMyPlayer)
             {
                 bool useTicket = Owner.HasBuff<ConcertBuff>();
-                if ((Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver) || useTicket)
+                if ((Owner.afkCounter >= 600 && SpecialAbility_Prismriver) || useTicket)
                 {
                     bool readyForBand = ((mainTimer % 60 == 0 && Main.rand.NextBool(2) && ActionCD <= 0) || useTicket)
                         && Owner.HasBuff<PoltergeistBuff>() && !IsBandState;

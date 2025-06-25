@@ -45,9 +45,9 @@ namespace TouhouPets
             LocalizedText lunasa2 = Language.GetText("要去那个花之妖怪的领地吗...");
             LocalizedText lyrica1 = Language.GetText("沟通的事情就交给姐姐们吧~ 人家要帮忙准备器具哦。");
 
-            LocalizedText yuyuko1 = Language.GetText("汉堡是最棒的宵夜！");
-            LocalizedText yuyuko2 = Language.GetText("你喜欢肯德基还是麦当劳？");
-            LocalizedText yuyuko3 = Language.GetText("疯狂星期四？那是什么？");
+            LocalizedText yuyuko1 = Language.GetText("热狗是最棒的宵夜！");
+            LocalizedText yuyuko2 = Language.GetText("你喜欢加蛋黄酱还是番茄酱？");
+            LocalizedText yuyuko3 = Language.GetText("我想试试能不能叠在头上。");
 
             LocalizedText yuyuko4 = Language.GetText("当生活给了你柠檬...不，这个模组不让我吃。");
             LocalizedText yuyuko5 = Language.GetText("你有更小的几率在试图喂我柠檬时看到这句话哦。");
@@ -123,15 +123,15 @@ namespace TouhouPets
             mod.Call("PetsReactionToBoss", mod, NPCID.HallowBoss, youmu, youmu3, condi_night);
             mod.Call("PetsReactionToBoss", mod, NPCID.HallowBoss, youmu, youmu4, condi_day);
 
-            //为幽幽子添加三句接受汉堡评论的话，其中第一句只会在夜晚说出
+            //为幽幽子添加三句接受热狗评论的话，其中第一句只会在夜晚说出
             //参数分别为：Call类型、添加模组、食物种类、文本、是否接受该食物、条件、权重
             //是否接受该食物、条件和权重均为选填项，默认分别为true, true 和 1
             //理论上讲可以对模组内已有的同种类评价进行覆盖
             //但这是让你用来适配自己模组的食物的，请不要随便覆盖已有内容
             //若多个模组对同一种类的食物添加了评价，则这些评价会共存
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko1, true, condi_night);
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko2);
-            mod.Call("YuyukosReactionToFood", mod, ItemID.Burger, yuyuko3);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Hotdog, yuyuko1, true, condi_night);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Hotdog, yuyuko2);
+            mod.Call("YuyukosReactionToFood", mod, ItemID.Hotdog, yuyuko3);
 
             //为幽幽子添加两句拒绝柠檬评论的话，其中第一句拥有更高的权重
             //若同一食物同时存在拒绝与接受的条件，则拒绝的优先级更高

@@ -60,10 +60,9 @@ namespace TouhouPets.Content.NPCs
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (!GetInstance<PetObtainConfig>().AllowGapToSpawn)
-            {
+            if (!AllowGapToSpawn)
                 return 0f;
-            }
+
             bool zoneOverworld = Main.remixWorld ?
                 spawnInfo.Player.ZoneUnderworldHeight : spawnInfo.Player.ZoneOverworldHeight;
             if (!Main.dayTime && zoneOverworld && !NPC.AnyNPCs(Type)

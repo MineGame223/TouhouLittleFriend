@@ -28,7 +28,7 @@ namespace TouhouPets
             if (foodType > 0)
             {
                 //若物品类别位于黑名单中，则直接拒绝并返回
-                foreach (var i in GetInstance<MiscConfig_ClientSide>().YuyukoBanList)
+                foreach (var i in YuyukoBanList)
                 {
                     if (foodType == i.Type)
                     {
