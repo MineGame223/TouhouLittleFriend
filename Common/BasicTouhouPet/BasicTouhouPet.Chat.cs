@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.Utilities;
 
 namespace TouhouPets
@@ -16,14 +17,17 @@ namespace TouhouPets
         /// <br/>!--该属性会反复重置
         /// </summary>
         internal bool shouldNotTalking;
+
         /// <summary>
-        /// 
+        /// 实际采用的文字颜色
         /// </summary>
         internal Color textColor = Color.White;
+
         /// <summary>
-        /// 
+        /// 实际采用的文字边框颜色
         /// </summary>
         internal Color boardColor = Color.Black;
+
         /// <summary>
         /// 对话文本不透明度
         /// </summary>
@@ -53,14 +57,9 @@ namespace TouhouPets
         internal int chatCD;
 
         /// <summary>
-        /// 对话文本对应的索引值
-        /// </summary>
-        internal int chatIndex;
-
-        /// <summary>
         /// 对话文本
         /// </summary>
-        internal string chatText;
+        internal LocalizedText chatText;
 
         /// <summary>
         /// 说话前的延时
@@ -93,47 +92,82 @@ namespace TouhouPets
         /// <summary>
         /// 对话字典
         /// </summary>
-        internal Dictionary<int, string> ChatDictionary = [];
+        internal Dictionary<int, LocalizedText> ChatDictionary
+        {
+            get => TouhouPets.ChatDictionry[(int)UniqueID];
+            set => TouhouPets.ChatDictionry[(int)UniqueID] = value;
+        }
 
         /// <summary>
         /// 对应聊天室是否启动
         /// </summary>
-        internal Dictionary<int, bool> IsChatRoomActive = [];
+        internal Dictionary<LocalizedText, bool> IsChatRoomActive
+        {
+            get => TouhouPets.IsChatRoomActive[(int)UniqueID];
+            set => TouhouPets.IsChatRoomActive[(int)UniqueID] = value;
+        }
 
         /// <summary>
         /// 当前聊天室
         /// </summary>
         internal PetChatRoom currentChatRoom;
 
-        internal bool AllowToUseChatRoom(int indexOfChatRoom)
+        #region 对话查找方法
+        /// <summary>
+        /// 是否允许启用对应聊天室
+        /// </summary>
+        /// <param name="startKey">文本键</param>
+        /// <returns>若当前文本键被包含在 <see cref="IsChatRoomActive"/> 中，则返回 true，反之返回 false</returns>
+        internal bool AllowToUseChatRoom(LocalizedText startKey)
         {
-            if (!IsChatRoomActive.ContainsKey(indexOfChatRoom))
+            if (!IsChatRoomActive.ContainsKey(startKey))
             {
                 return false;
             }
-            if (FindChatIndex(indexOfChatRoom))
+            if (chatText == startKey)
             {
-                IsChatRoomActive[indexOfChatRoom] = true;
+                IsChatRoomActive[startKey] = true;
             }
-            return IsChatRoomActive[indexOfChatRoom];
+            return IsChatRoomActive[startKey];
         }
+        /// <summary>
+        /// 是否允许启用对应聊天室
+        /// </summary>
+        /// <param name="startKeys">文本键列表</param>
+        /// <returns>若当前文本键被包含在 <see cref="IsChatRoomActive"/> 中，则返回 true，反之返回 false</returns>
+        internal bool AllowToUseChatRoom(List<LocalizedText> startKeys)
+        {
+            if (startKeys.Count <= 0)
+                return false;
+
+            foreach (var i in startKeys)
+            {
+                if (!IsChatRoomActive.ContainsKey(i))
+                    continue;
+
+                if (chatText == i)
+                {
+                    IsChatRoomActive[i] = true;
+                }
+                return IsChatRoomActive[i];
+            }
+            return false;
+        }
+        #endregion
 
         #region 文本绘制方法
         private void DrawChatText(Vector2 pos, float alpha, int maxWidth = 210)
         {
-            string text = chatText;
-
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
+            if (chatText == null)
                 return;
-            }
+            string text = chatText.Value;
 
             Color color = textColor;
             Color bColor = boardColor;
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             float totalScale = 0.9f;
             string _text = text;
-            bool typerStyle = GetInstance<PetDialogConfig>().TyperStyleChat;
+            bool typerStyle = TyperStylePetDialog;
 
             if (typerStyle)
             {
@@ -163,12 +197,9 @@ namespace TouhouPets
         }
         private void DrawChatText_Koishi(Vector2 pos, float alpha, int maxWidth = 240)
         {
-            string text = chatText;
-
-            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
-            {
+            if (chatText == null)
                 return;
-            }
+            string text = chatText.Value;
 
             Color color = textColor;
             Color bColor = boardColor;
@@ -205,27 +236,26 @@ namespace TouhouPets
         /// </summary>
         private void RegisterChat_Full()
         {
+            //先清空字典
+            ChatDictionary.Clear();
+
             string name = string.Empty;
             Vector2 indexRange = Vector2.Zero;
 
             //通过该方法设置字符标签与索引范围
             RegisterChat(ref name, ref indexRange);
 
-            //若标签为空则不执行后续
-            if (string.IsNullOrWhiteSpace(name))
+            //若标签为空、或范围为0，则不执行后续
+            if (string.IsNullOrWhiteSpace(name) || indexRange == Vector2.Zero)
             {
+                Console.WriteLine("\nno chat\n");
                 return;
             }
 
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                string chatText = ModUtils.GetChatTextValue(name, i.ToString());
-                if (string.IsNullOrEmpty(chatText))
-                {
-                    chatText = "这是一段空对话，你怎么找出来的？";
-                }
-                ChatDictionary.Add(i, chatText);
+                ChatDictionary.Add(i, Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{name}.Chat{i}"));
             }
 
             //仅当聊天室列表存在内容时进行注册
@@ -233,18 +263,23 @@ namespace TouhouPets
             {
                 foreach (var infoList in RegisterChatRoom())
                 {
-                    IsChatRoomActive.Add(infoList[0].ChatIndex, false);
+                    IsChatRoomActive.TryAdd(infoList[0].ChatText, false);
                 }
             }
 
-            RegisterCrossModChat();
-            RegisterCrossModChatRoom();
-
             PostRegisterChat();
+        }
 
-            //增加一个空位，防止WeightedRandom无法读取最后一个索引
-            int lastIndex = ChatDictionary.Count;
-            ChatDictionary.Add(lastIndex + 1, string.Empty);
+        /// <summary>
+        /// 用于Debug的注册方法
+        /// </summary>
+        private void DynamicRegisterForDebug()
+        {
+            bool dynamicRegister = false;
+            if (dynamicRegister && !Main.gameMenu)
+            {
+                RegisterChat_Full();
+            }
         }
 
         #endregion
@@ -266,34 +301,30 @@ namespace TouhouPets
             //设置说话间隔、说话几率以及说话条件
             SetRegularDialog(ref time, ref chance, ref stop);
 
+            float freq = PetChatFrequency;
+            if (freq > 0)
+            {
+                time = (int)(time / freq);
+                chance = (int)(chance / freq);
+                if (chance < 1)
+                    chance = 1;
+            }
+            else
+                time = 0;
+            if (time <= 0)
+                return;
+
             if (mainTimer % time == 0 && Main.rand.NextBool(chance) && !stop)
             {
                 //若当前还有没说完的话则不设置
                 if (!Projectile.CurrentlyNoDialog())
                     return;
 
-                WeightedRandom<string> chatText = RegularDialogText();
-
+                WeightedRandom<LocalizedText> chatText = RegularDialogText();
                 //将跨模组的常规对话加入随机选择器
                 GetCrossModChat(ref chatText);
-
-                string result = chatText.Get();
-
-                //发现空对话时不执行后续
-                if (string.IsNullOrEmpty(result))
-                    return;
-
-                //将获取结果与对话字典中存在的语句进行匹配并设置说话
-                for (int i = 1; i < ChatDictionary.Count; i++)
-                {
-                    if (!ChatDictionary.ContainsKey(i))
-                        continue;
-
-                    if (!result.Equals(ChatDictionary[i]))
-                        continue;
-
-                    Projectile.SetChat(i);
-                }
+                //设置说话
+                Projectile.SetChat(chatText.Get());
             }
         }
 
@@ -305,8 +336,9 @@ namespace TouhouPets
             //遍历聊天室列表并根据条件执行聊天方法
             foreach (var infoList in RegisterChatRoom())
             {
-                //若发现聊天室信息列表中的第一个ChatRoomInfo中的索引值不在允许名单内，则不设置并维持聊天室
-                if (!AllowToUseChatRoom(infoList[0].ChatIndex))
+                LocalizedText key = infoList[0].ChatText;
+                //若发现聊天室信息列表中的第一个ChatRoomInfo中的文本键不在允许名单内，则不设置并维持聊天室
+                if (!AllowToUseChatRoom(key))
                     continue;
 
                 PetChatRoom room = currentChatRoom ?? Projectile.CreateChatRoomDirect();
@@ -357,6 +389,7 @@ namespace TouhouPets
                     chatBaseY = 0;
                     chatScale = 1;
                     chatTimeLeft = 0;
+                    chatText = null;
                 }
             }
 
@@ -380,8 +413,8 @@ namespace TouhouPets
         /// </summary>
         private void UpdateChat_Full()
         {
-            //仅在本地端、且Config允许说话时执行
-            if (!OwnerIsMyPlayer || !GetInstance<PetDialogConfig>().CanPetChat)
+            //仅在本地端执行
+            if (!OwnerIsMyPlayer)
                 return;
 
             UpdateChatState();
@@ -396,27 +429,6 @@ namespace TouhouPets
 
             UpdateChatRoom();
             UpdateCrossModChatRoom();
-        }
-        #endregion
-
-        #region 对话相关查找方法
-        /// <summary>
-        /// 查找自身的<see cref="chatIndex"/>
-        /// </summary>
-        /// <param name="minIndex">最小索引值</param>
-        /// <param name="maxIndex">最大索引值，默认等于最小索引值</param>
-        /// <returns></returns>
-        internal bool FindChatIndex(int minIndex, int maxIndex = 0)
-        {
-            if (maxIndex <= minIndex)
-            {
-                maxIndex = minIndex;
-            }
-            if (chatIndex >= minIndex && chatIndex <= maxIndex)
-            {
-                return true;
-            }
-            return false;
         }
         #endregion
 
@@ -445,7 +457,7 @@ namespace TouhouPets
         /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
-        public virtual WeightedRandom<string> RegularDialogText() => null;
+        public virtual WeightedRandom<LocalizedText> RegularDialogText() => null;
         /// <summary>
         /// 注册聊天室列表
         /// </summary>

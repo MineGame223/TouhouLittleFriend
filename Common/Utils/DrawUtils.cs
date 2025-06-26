@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using Terraria;
-using tModPorter;
-using TouhouPets.Content.Projectiles.Pets;
+using Terraria.DataStructures;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Terraria.Graphics.Shaders;
 
 namespace TouhouPets
 {
@@ -23,6 +23,7 @@ namespace TouhouPets
             result.A = alpha;
             return result;
         }
+
         /// <summary>
         /// 宠物们默认的绘制位置
         /// </summary>
@@ -32,6 +33,7 @@ namespace TouhouPets
         {
             return projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
         }
+
         /// <summary>
         /// 绘制宠物的基本方法
         /// </summary>
@@ -42,6 +44,9 @@ namespace TouhouPets
         /// <param name="currentRow">当前贴图应当采用哪一列</param>
         public static void DrawPet(this Projectile projectile, int frame, Color lightColor, DrawPetConfig config, int currentRow = 0)
         {
+            if (!projectile.IsATouhouPet())
+                return;
+
             Texture2D t = config.AltTexture ?? AltVanillaFunction.ProjectileTexture(projectile.type);
 
             Vector2 pos = projectile.DefaultDrawPetPosition() + config.PositionOffset;
@@ -60,22 +65,28 @@ namespace TouhouPets
 
             SpriteEffects effect = projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-            if (config.ShouldUseEntitySpriteDraw && !GetInstance<MiscConfig>().CompatibilityMode)
+            if (config.ShouldUseEntitySpriteDraw && !CompatibilityMode)
+            {
                 Main.EntitySpriteDraw(t, pos, rect, clr, projectile.rotation, orig, projectile.scale * scale, effect, 0f);
+            }
             else
+            {
                 Main.spriteBatch.MyDraw(t, pos, rect, clr, projectile.rotation, orig, projectile.scale * scale, effect, 0f);
+            }
         }
+
         /// <summary>
         /// 将宠物的绘制状态重置，防止被染料的Shader影响
         /// <br>仅需要插在不需要着色的语句之前和执行着色的语句之后</br>
         /// </summary>
         public static void ResetDrawStateForPet(this Projectile projectile)
         {
-            if (GetInstance<MiscConfig>().CompatibilityMode)
+            if (CompatibilityMode)
                 return;
 
             Main.spriteBatch.QuickEndAndBegin(true, projectile.isAPreviewDummy);
         }
+
         /// <summary>
         /// 快速设置End Begin
         /// </summary>
@@ -90,6 +101,7 @@ namespace TouhouPets
                 , Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null
                 , useUIMatrix ? Main.UIScaleMatrix : Main.Transform);
         }
+
         /// <summary>
         /// 绘制带有边框的文字，允许设置旋转
         /// </summary>
@@ -137,6 +149,7 @@ namespace TouhouPets
                 sb.DrawString(font, text, zero, color, rotation, origin, scale, SpriteEffects.None, 0f);
             }
         }
+
         /// <summary>
         /// 自用WordwrapString方法，针对中文取消连字符
         /// </summary>
@@ -186,7 +199,7 @@ namespace TouhouPets
                             text4 += text2[num2++];
                         }
 
-                        if (!ModUtils.IsSpecificLanguage(Terraria.Localization.GameCulture.CultureName.Chinese))
+                        if (!IsSpecificLanguage(Terraria.Localization.GameCulture.CultureName.Chinese))
                         {
                             text4 += "-";
                         }

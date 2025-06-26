@@ -60,10 +60,9 @@ namespace TouhouPets.Content.NPCs
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (!GetInstance<PetObtainConfig>().AllowGapToSpawn)
-            {
+            if (!AllowGapToSpawn)
                 return 0f;
-            }
+
             bool zoneOverworld = Main.remixWorld ?
                 spawnInfo.Player.ZoneUnderworldHeight : spawnInfo.Player.ZoneOverworldHeight;
             if (!Main.dayTime && zoneOverworld && !NPC.AnyNPCs(Type)
@@ -90,14 +89,14 @@ namespace TouhouPets.Content.NPCs
             InitializeTopic();
             Main.LocalPlayer.currentShoppingSettings.HappinessReport = "";
 
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
-                chat.Add(ModUtils.GetChatTextValue("Portal", "1"));
-                chat.Add(ModUtils.GetChatTextValue("Portal", "2"));
-                chat.Add(ModUtils.GetChatTextValue("Portal", "3"));
-                chat.Add(ModUtils.GetChatTextValue("Portal", "4"));
+                chat.Add(GetChatText("Portal", 1));
+                chat.Add(GetChatText("Portal", 2));
+                chat.Add(GetChatText("Portal", 3));
+                chat.Add(GetChatText("Portal", 4));
             }
-            return chat;
+            return chat.Get().Value;
         }
         private void InitializeTopic()
         {
@@ -147,7 +146,7 @@ namespace TouhouPets.Content.NPCs
             }
             else if (topic == 2)
             {
-                if (ModUtils.IsSpecificLanguage(GameCulture.CultureName.Chinese))
+                if (IsSpecificLanguage(GameCulture.CultureName.Chinese))
                 {
                     buttonText = Language.GetTextValue("Mods.TouhouPets.QQGroup");
                     topic++;
@@ -173,17 +172,17 @@ namespace TouhouPets.Content.NPCs
         {
             TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (mp.totalPurchaseValueCount <= 0)
-                Main.npcChatText = ModUtils.GetChatTextValue("Portal", "7");
+                Main.npcChatText = GetChatText("Portal", 7).Value;
             else
-                Main.npcChatText = ModUtils.GetChatTextValue("Portal", "6", ModUtils.CoinValue(mp.totalPurchaseValueCount));
+                Main.npcChatText = GetChatText("Portal", 6).Format(CoinValue(mp.totalPurchaseValueCount));
         }
         private static void Chat_QQGroup()
         {
-            Main.npcChatText = ModUtils.GetChatTextValue("Portal", "8");
+            Main.npcChatText = GetChatText("Portal", 8).Value;
         }
         private static void Chat_GoodsShop()
         {
-            Main.npcChatText = ModUtils.GetChatTextValue("Portal", "9");
+            Main.npcChatText = GetChatText("Portal", 9).Value;
         }
         private void AddShopItem()
         {

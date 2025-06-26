@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -20,7 +21,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (States)PetState;
             set => PetState = (int)value;
         }
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
@@ -92,9 +93,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;//9
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -119,36 +120,36 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID shinki = TouhouPetID.Shinki;
             TouhouPetID alice = TouhouPetID.Alice;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(shinki, 6, -1), //神绮：爱~丽~丝~酱~~
-                new ChatRoomInfo(alice, 11, 0),//爱丽丝：别那么肉麻的叫我！...咱们、咱们认识吗？
-                new ChatRoomInfo(shinki, 7, 1), //神绮：别这样嘛！你难道连你亲爱的妈妈都不认识了？
-                new ChatRoomInfo(alice, 12, 2),//爱丽丝：不熟，真的不熟...
-                new ChatRoomInfo(shinki, 8, 3), //神绮：呜呜呜...被女儿冷落了...
-                new ChatRoomInfo(alice, 13, 4),//爱丽丝：...好啦好啦，真受不了，我叫你一声母...神绮小姐。
-                new ChatRoomInfo(shinki, 9, 5), //神绮：你刚刚是不是说“母亲”了？哇！妈妈好感动！
-                new ChatRoomInfo(alice, 14, 6),//爱丽丝：（真是说不清道不明的关系啊...）
-                new ChatRoomInfo(shinki, 10, 7), //神绮：再叫一声好不好？
-                new ChatRoomInfo(alice, 15, 8), //爱丽丝：不、不行！
+                new ChatRoomInfo(shinki, ChatDictionary[6], -1), //神绮：爱~丽~丝~酱~~
+                new ChatRoomInfo(alice, GetChatText("Alice",11), 0),//爱丽丝：别那么肉麻的叫我！...咱们、咱们认识吗？
+                new ChatRoomInfo(shinki, ChatDictionary[7], 1), //神绮：别这样嘛！你难道连你亲爱的妈妈都不认识了？
+                new ChatRoomInfo(alice, GetChatText("Alice",12), 2),//爱丽丝：不熟，真的不熟...
+                new ChatRoomInfo(shinki, ChatDictionary[8], 3), //神绮：呜呜呜...被女儿冷落了...
+                new ChatRoomInfo(alice, GetChatText("Alice",13), 4),//爱丽丝：...好啦好啦，真受不了，我叫你一声母...神绮小姐。
+                new ChatRoomInfo(shinki, ChatDictionary[9], 5), //神绮：你刚刚是不是说“母亲”了？哇！妈妈好感动！
+                new ChatRoomInfo(alice, GetChatText("Alice",14), 6),//爱丽丝：（真是说不清道不明的关系啊...）
+                new ChatRoomInfo(shinki, ChatDictionary[10], 7), //神绮：再叫一声好不好？
+                new ChatRoomInfo(alice, GetChatText("Alice",15), 8), //爱丽丝：不、不行！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID shinki = TouhouPetID.Shinki;
             TouhouPetID reimu = TouhouPetID.Reimu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(shinki, 1, -1), //神绮：所谓“巫女”，不过是神明的狗罢了~
-                new ChatRoomInfo(reimu, 12, 0),//灵梦：*优美的博丽脏话
+                new ChatRoomInfo(shinki, ChatDictionary[1], -1), //神绮：所谓“巫女”，不过是神明的狗罢了~
+                new ChatRoomInfo(reimu, GetChatText("Reimu",12), 0),//灵梦：*优美的博丽脏话
             ];
 
             return list;

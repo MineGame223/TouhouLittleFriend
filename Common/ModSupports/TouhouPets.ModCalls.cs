@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
-using Terraria.Utilities;
 
 namespace TouhouPets
 {
@@ -14,6 +14,7 @@ namespace TouhouPets
         private const string Arg_2 = "PetDialog";
         private const string Arg_3 = "PetChatRoom";
         private const string Arg_4 = "YuyukosReactionToFood";
+        private const string Arg_5 = "YukaSolutionInfo";
 
         #region 日志信息
         private const string Warning_NullException = "ModCall填入内容不可为空！";
@@ -35,7 +36,6 @@ namespace TouhouPets
         /// </summary>
         public static List<List<ChatRoomInfo>>[] CrossModChatRoomList { get => crossModChatRoomList; set => crossModChatRoomList = value; }
         private static List<List<ChatRoomInfo>>[] crossModChatRoomList = new List<List<ChatRoomInfo>>[(int)TouhouPetID.Count];
-        private static List<ChatRoomInfo>[] crossModChatRoom = new List<ChatRoomInfo>[(int)TouhouPetID.Count];
 
         /// <summary>
         /// 跨模组添加的Boss评论的列表
@@ -44,22 +44,44 @@ namespace TouhouPets
         private static List<CommentInfo>[] crossModBossComment = new List<CommentInfo>[(int)TouhouPetID.Count];
 
         /// <summary>
-        /// 跨模组添加的食物评论的列表
+        /// 跨模组添加的可接受食物评论的列表
         /// </summary>
-        public static List<(CommentInfo info, bool accept, bool cover)> CrossModFoodComment { get => crossModFoodComment; set => crossModFoodComment = value; }
-        private static List<(CommentInfo, bool, bool)> crossModFoodComment = [];
-        private static void InitializCrossModList()
+        public static List<CommentInfo> CrossModFoodComment_Accept { get => crossModFoodComment_Accept; set => crossModFoodComment_Accept = value; }
+        private static List<CommentInfo> crossModFoodComment_Accept = [];
+
+        /// <summary>
+        /// 跨模组添加的不可接受食物评论的列表
+        /// </summary>
+        public static List<CommentInfo> CrossModFoodComment_Reject { get => crossModFoodComment_Reject; set => crossModFoodComment_Reject = value; }
+        private static List<CommentInfo> crossModFoodComment_Reject = [];
+
+        /// <summary>
+        /// 跨模组添加的环境溶液的字典
+        /// </summary>
+        public static Dictionary<int, SprayInfo> CrossModSprayInfo { get => crossModSprayInfo; set => crossModSprayInfo = value; }
+        private static Dictionary<int, SprayInfo> crossModSprayInfo = [];
+
+        private static void InitializeCrossModList()
         {
             //需要对列表进行初始化
             for (int i = 0; i < (int)TouhouPetID.Count; i++)
             {
                 CrossModDialog[i] = [];
-
                 CrossModChatRoomList[i] = [];
-                crossModChatRoom[i] = [];
-
                 CrossModBossComment[i] = [];
             }
+            CrossModFoodComment_Accept = [];
+            CrossModFoodComment_Reject = [];
+            CrossModSprayInfo = [];
+        }
+        private static void NullifyCrossModList()
+        {
+            CrossModDialog = null;
+            CrossModChatRoomList = null;
+            CrossModBossComment = null;
+            CrossModFoodComment_Accept = null;
+            CrossModFoodComment_Reject = null;
+            CrossModSprayInfo = null;
         }
         public override object Call(params object[] args)
         {
@@ -84,158 +106,203 @@ namespace TouhouPets
 
                     case Arg_4:
                         return AddYuyukoReaction(args);
+
+                    case Arg_5:
+                        return AddCrossModSolution(args);
                 }
             }
             return null;
         }
         private object AddBossReaction(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_MarisasReaction)
+            if (!AllowCall_MarisasReaction)
             {
                 Logger.Info(ConsoleMessage(Arg_1, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int and not short || args[2] is not int
-                || args[3] is not WeightedRandom<LocalizedText> || args[4] is not Mod)
+
+            if (args[1] is not Mod
+                || args[2] is not int and not short
+                || args[3] is not int
+                || args[4] is not LocalizedText
+                || args.Length > 5 && args[5] is not Func<bool> and not null
+                || args.Length > 6 && args[6] is not int and not null)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_WrongDataType));
                 return false;
             }
-            if (args[1] == null)
+            object arg_Mod = args[1];
+            object arg_Type = args[2];
+            object arg_Index = args[3];
+            object arg_Text = args[4];
+            object arg_Condi = args.Length > 5 ? args[5] : null;
+            object arg_Weight = args.Length > 6 ? args[6] : null;
+
+            if (arg_Mod == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：添加模组"));
+                return false;
+            }
+            if (arg_Type == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：对象种类"));
                 return false;
             }
-            if (args[2] == null)
+            //防止索引值超限
+            if ((int)arg_Index >= (int)TouhouPetID.Count)
+            {
+                Logger.Warn(ConsoleMessage(Arg_1, Warning_IndexOutOfRange));
+                return false;
+            }
+            if (arg_Index == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：宠物索引"));
                 return false;
             }
-            if (args[3] == null)
+            if (arg_Text == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：评价文本"));
                 return false;
             }
-            if (args[4] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_1, $"{Warning_NullValue}，空值对象：添加对象"));
-                return false;
-            }
 
-            int type = args[1] is short ? (short)args[1] : (int)args[1];
-            int id = (int)args[2];
-            WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[3];
+            int type = arg_Type is short ? (short)arg_Type : (int)arg_Type;
+            int id = (int)arg_Index;
+            LocalizedText text = (LocalizedText)arg_Text;
+            Func<bool> condition = (arg_Condi != null) ? (Func<bool>)arg_Condi : null;
+            int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
+            if (weight < 1) weight = 1;
+
             List<CommentInfo> bossComment = CrossModBossComment[id];
+            //在列表中查找对象种类与条件方法和当前信息相等的元素
+            var existingItem = bossComment.FirstOrDefault(
+                x => x.ObjectType == type
+            );
 
-            var existingItem = bossComment.FirstOrDefault(x => x.ObjectType == type);
-            if (existingItem.CommentText != null)
+            //若查找到对象，则对对象进行重置，否则按新元素加入列表中
+            if (existingItem.CommentContent != null)
             {
+                //当前对象的索引值
                 int index = bossComment.IndexOf(existingItem);
-                var mergedText = new WeightedRandom<LocalizedText>();
+                var mergedList = new List<SingleDialogInfo>();
 
-                foreach (var (commentText, weight) in existingItem.CommentText.elements)
-                    mergedText.Add(commentText, weight);
+                //由于遍历不可对其中的合集元素进行修改
+                //因此需要将原有的文本加入新的随机选择器中，并在后续修改
+                foreach (var c in existingItem.CommentContent)
+                    mergedList.Add(c);
 
-                foreach (var (commentText, weight) in text.elements)
-                    mergedText.Add(commentText, weight);
-
-                bossComment[index] = new CommentInfo(type, mergedText);
+                mergedList.Add(new SingleDialogInfo(text, weight, condition));
+                bossComment[index] = new CommentInfo(type, mergedList);
             }
             else
-                bossComment.Add(new CommentInfo(type, text));
+            {
+                List<SingleDialogInfo> resultContent = [new SingleDialogInfo(text, weight, condition)];
+                bossComment.Add(new CommentInfo(type, resultContent));
+            }
 
-            Mod mod = (Mod)args[4];
+            Mod mod = (Mod)arg_Mod;
             string modName = mod.DisplayNameClean;
 
             NPC n = new();
             n.SetDefaults(type);
 
-            StringBuilder logInfo = new($"添加成功！\n" +
-                    $"添加者：{modName}\n" +
-                    $"宠物索引：{(TouhouPetID)id}\n" +
-                    $"对象种类：{n.FullName}");
-
-            foreach (var j in text.elements)
-            {
-                logInfo.Append($"\n评价文本：{j.Item1}；权重：{j.Item2}");
-            }
+            StringBuilder logInfo = new($"添加成功！" +
+                    $"\n添加者：{modName}；宠物索引：{(TouhouPetID)id}；对象种类：{n.FullName}" +
+                    $"\n权重：{weight}；评价文本：{text}");
 
             Logger.Info(ConsoleMessage("宠物Boss评价添加结果", logInfo.ToString()));
             return true;
         }
         private object AddYuyukoReaction(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_YuyukosReaction)
+            if (!AllowCall_YuyukosReaction)
             {
                 Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int and not short || args[2] is not WeightedRandom<LocalizedText>
-                || args[3] is not bool || args[4] is not Mod || (args.Length > 5 && args[5] is not bool and not null))
+
+            if (args[1] is not Mod
+                || args[2] is not int and not short
+                || args[3] is not LocalizedText
+                || (args.Length > 4 && args[4] is not bool and not null)
+                || (args.Length > 5 && args[5] is not Func<bool> and not null)
+                || (args.Length > 6 && args[6] is not int and not null))
             {
                 Logger.Warn(ConsoleMessage(Arg_4, Warning_WrongDataType));
                 return false;
             }
-            if (args[1] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：对象种类"));
-                return false;
-            }
-            if (args[2] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：评价文本"));
-                return false;
-            }
-            if (args[3] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：是否接受"));
-                return false;
-            }
-            if (args[4] == null)
+            object arg_Mod = args[1];
+            object arg_Type = args[2];
+            object arg_Text = args[3];
+            object arg_Accept = args.Length > 4 ? args[4] : null;
+            object arg_Condi = args.Length > 5 ? args[5] : null;
+            object arg_Weight = args.Length > 6 ? args[6] : null;
+
+            if (arg_Mod == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
-
-            int type = args[1] is short ? (short)args[1] : (int)args[1];
-            WeightedRandom<LocalizedText> text = (WeightedRandom<LocalizedText>)args[2];
-            bool acceptable = (bool)args[3];
-            bool cover = args.Length > 5 && args[5] != null && (bool)args[5];
-
-            var existingItem = CrossModFoodComment.FirstOrDefault(x => x.info.ObjectType == type && x.accept == acceptable);
-            if (!existingItem.Equals(default))
+            if (arg_Type == null)
             {
-                int index = CrossModFoodComment.IndexOf(existingItem);
-                var mergedText = new WeightedRandom<LocalizedText>();
+                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：对象种类"));
+                return false;
+            }
+            if (arg_Text == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_4, $"{Warning_NullValue}，空值对象：评价文本"));
+                return false;
+            }
 
-                foreach (var (commentText, weight) in existingItem.info.CommentText.elements)
-                    mergedText.Add(commentText, weight);
+            int type = arg_Type is short ? (short)arg_Type : (int)arg_Type;
+            LocalizedText text = (LocalizedText)arg_Text;
+            bool acceptable = arg_Accept == null || (bool)arg_Accept;
+            Func<bool> condition = (arg_Condi != null) ? (Func<bool>)arg_Condi : null;
+            int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
+            if (weight < 1) weight = 1;
 
-                foreach (var (commentText, weight) in text.elements)
-                    mergedText.Add(commentText, weight);
+            List<(CommentInfo info, bool accept)> foodComment = [];
+            //在列表中查找对象种类与条件方法和当前信息相等的元素
+            var existingItem = foodComment.FirstOrDefault(
+                x => x.info.ObjectType == type
+                && x.accept == acceptable
+            );
 
-                CrossModFoodComment[index] = (
-                    new CommentInfo(type, mergedText),
-                    acceptable,
-                    existingItem.cover || cover
-                );
+            //若查找到对象，则对对象进行重置，否则按新元素加入列表中
+            if (existingItem.info.CommentContent != null)
+            {
+                //当前对象的索引值
+                int index = foodComment.IndexOf(existingItem);
+                var mergedList = new List<SingleDialogInfo>();
+
+                //由于遍历不可对其中的合集元素进行修改
+                //因此需要将原有的文本加入新的随机选择器中，并在后续修改
+                foreach (var c in existingItem.info.CommentContent)
+                    mergedList.Add(c);
+
+                mergedList.Add(new SingleDialogInfo(text, weight, condition));
+                foodComment[index] = (new CommentInfo(type, mergedList), acceptable);
             }
             else
-                CrossModFoodComment.Add((new CommentInfo(type, text), acceptable, cover));
+            {
+                List<SingleDialogInfo> resultContent = [new SingleDialogInfo(text, weight, condition)];
+                foodComment.Add((new CommentInfo(type, resultContent), acceptable));
+            }
 
-            Mod mod = (Mod)args[4];
+            //遍历食物评价信息列表并根据接受与否进行分类
+            foreach (var (info, accept) in foodComment)
+            {
+                if (accept)
+                    CrossModFoodComment_Accept.Add(info);
+                else
+                    CrossModFoodComment_Reject.Add(info);
+            }
+
+            Mod mod = (Mod)arg_Mod;
             string modName = mod.DisplayNameClean;
 
-            StringBuilder logInfo = new($"添加成功！\n" +
-                    $"添加者：{modName}\n" +
-                    $"对象种类：{new Item(type).Name}\n" +
-                    $"是否接受：{acceptable}\n" +
-                    $"是否覆盖原版文本：{cover}");
-
-            foreach (var j in text.elements)
-            {
-                logInfo.Append($"\n评价文本：{j.Item1}；权重：{j.Item2}");
-            }
+            StringBuilder logInfo = new($"添加成功！" +
+                    $"\n添加者：{modName}；对象种类：{new Item(type).Name}；是否接受：{acceptable}" +
+                    $"\n权重：{weight}；评价文本：{text}");
 
             Logger.Info(ConsoleMessage("幽幽子食物评价添加结果", logInfo.ToString()));
 
@@ -243,137 +310,183 @@ namespace TouhouPets
         }
         private object AddCrossModDialog(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_PetDialog)
+            if (!AllowCall_PetDialog)
             {
                 Logger.Info(ConsoleMessage(Arg_2, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not int || args[2] is not LocalizedText
-                || args[3] is not Func<bool> || args[4] is not int || args[5] is not Mod)
+
+            if (args[1] is not Mod
+                || args[2] is not int
+                || args[3] is not LocalizedText
+                || (args.Length > 4 && args[4] is not Func<bool> and not null)
+                || (args.Length > 5 && args[5] is not int and not null))
             {
                 Logger.Warn(ConsoleMessage(Arg_2, Warning_WrongDataType));
                 return false;
             }
-            if ((int)args[1] >= (int)TouhouPetID.Count)
-            {
-                Logger.Warn(ConsoleMessage(Arg_2, Warning_IndexOutOfRange));
-                return false;
-            }
-            if (args[1] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：宠物索引"));
-                return false;
-            }
-            if (args[2] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话文本"));
-                return false;
-            }
-            if (args[3] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话条件"));
-                return false;
-            }
-            if (args[4] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话权重"));
-                return false;
-            }
-            if (args[5] == null)
+            object arg_Mod = args[1];
+            object arg_Index = args[2];
+            object arg_Text = args[3];
+            object arg_Condi = args.Length > 4 ? args[4] : null;
+            object arg_Weight = args.Length > 5 ? args[5] : null;
+
+            if (arg_Mod == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
+            if ((int)arg_Index >= (int)TouhouPetID.Count)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, Warning_IndexOutOfRange));
+                return false;
+            }
+            if (arg_Index == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：宠物索引"));
+                return false;
+            }
+            if (arg_Text == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：对话文本"));
+                return false;
+            }
 
-            int id = (int)args[1];
-            LocalizedText text = (LocalizedText)args[2];
-            Func<bool> condition = (Func<bool>)args[3];
-            int weight = (int)args[4];
+            int id = (int)arg_Index;
+            LocalizedText text = (LocalizedText)arg_Text;
+            Func<bool> condition = (arg_Condi != null) ? (Func<bool>)arg_Condi : null;
+            int weight = (arg_Weight != null) ? (int)arg_Weight : 1;
+            if (weight < 1) weight = 1;
 
-            if (weight < 1)
-                weight = 1;
-
-            SingleDialogInfo info = new(text, condition, weight);
+            SingleDialogInfo info = new(text, weight, condition);
             CrossModDialog[id].Add(info);
 
-            Mod mod = (Mod)args[5];
+            Mod mod = (Mod)arg_Mod;
             string modName = mod.DisplayNameClean;
-            for (int i = 0; i < CrossModDialog[id].Count; i++)
-            {
-                if (i < CrossModDialog[id].Count - 1)
-                    continue;
 
-                Logger.Info(ConsoleMessage("宠物对话添加结果"
-                    , $"添加成功！\n" +
-                    $"添加者：{modName}\n" +
-                    $"索引：{(TouhouPetID)id}\n" +
-                    $"内容：{CrossModDialog[id][i].DialogText}\n" +
-                    $"权重：{CrossModDialog[id][i].Weight}"
-                    ));
-            }
+            StringBuilder logInfo = new($"添加成功！" +
+                    $"\n添加者：{modName}；索引：{(TouhouPetID)id}" +
+                    $"\n权重：{weight}；文本：{text}");
+
+            Logger.Info(ConsoleMessage("宠物对话添加结果", logInfo.ToString()));
 
             return true;
         }
         private object AddCrossModChatRoom(params object[] args)
         {
-            if (!GetInstance<MiscConfig>().AllowModCall_PetChatRoom
-                || !GetInstance<MiscConfig>().AllowModCall_PetDialog)
+            if (!AllowCall_PetChatRoom
+                || !AllowCall_PetDialog)
             {
                 Logger.Info(ConsoleMessage(Arg_3, Warning_PreventedByConfig));
                 return false;
             }
-            if (args[1] is not List<(int, int, int)>
-                || args[2] is not Mod)
+
+            if (args[1] is not Mod
+                || args[2] is not List<(int, LocalizedText, int)>)
             {
                 Logger.Warn(ConsoleMessage(Arg_3, Warning_WrongDataType));
                 return false;
             }
-            if (args[1] == null)
-            {
-                Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：聊天室成员信息列表"));
-                return false;
-            }
-            if (args[2] == null)
+            object arg_Mod = args[1];
+            object arg_Info = args[2];
+
+            if (arg_Mod == null)
             {
                 Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
+            if (arg_Info == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_3, $"{Warning_NullValue}，空值对象：聊天室成员信息列表"));
+                return false;
+            }
 
-            List<(int, int, int)> infoList = (List<(int, int, int)>)args[1];
+            List<(int petID, LocalizedText chatText, int chatTurn)> infoList = (List<(int, LocalizedText, int)>)arg_Info;
 
+            List<ChatRoomInfo> resultList = [];
             for (int j = 0; j < infoList.Count; j++)
             {
                 ChatRoomInfo info = new(
-                    (TouhouPetID)infoList[j].Item1,
-                    infoList[j].Item2,
-                    infoList[j].Item3
+                    (TouhouPetID)infoList[j].petID,
+                    infoList[j].chatText,
+                    infoList[j].chatTurn
                     );
 
-                crossModChatRoom[infoList[0].Item1].Add(info);
+                resultList.Add(info);
             }
 
-            int id = infoList[0].Item1;
-            CrossModChatRoomList[id].Add(crossModChatRoom[id]);
+            int id = infoList[0].petID;
+            CrossModChatRoomList[id].Add(resultList);
+            //注册聊天室活动信息
+            IsChatRoomActive[id].Add(infoList[0].chatText, false);
 
-            Mod mod = (Mod)args[2];
+            Mod mod = (Mod)arg_Mod;
             string modName = mod.DisplayNameClean;
-            for (int i = 0; i < CrossModChatRoomList[id].Count; i++)
+            StringBuilder logInfo = new($"添加成功！" +
+                   $"\n添加者：{modName}；" +
+                   $"{(TouhouPetID)id}的第{CrossModChatRoomList[id].Count}个聊天室；");
+
+            foreach (var j in resultList)
             {
-                if (i < CrossModChatRoomList[id].Count - 1)
-                    continue;
-
-                StringBuilder logInfo = new($"添加成功！\n" +
-                    $"添加者：{modName}；\n" +
-                    $"第{i + 1}个聊天室；\n" +
-                    $"发起者索引：{(TouhouPetID)id}");
-
-                foreach (var j in crossModChatRoom[id])
-                {
-                    logInfo.Append($"\n宠物索引：{j.UniqueID}；文本索引：{j.ChatIndex}；回合数：{j.ChatTurn}");
-                }
-
-                Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));
+                logInfo.Append($"\n宠物索引：{j.UniqueID}；回合数：{j.ChatTurn}；文本：{j.ChatText}");
             }
+
+            Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));
+
+            return true;
+        }
+        private object AddCrossModSolution(params object[] args)
+        {
+            if (args[1] is not Mod
+                || args[2] is not int
+                || args[3] is not int
+                || args[4] is not int and not Func<int>)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, Warning_WrongDataType));
+                return false;
+            }
+            object arg_Mod = args[1];
+            object arg_Item = args[2];
+            object arg_Spray = args[3];
+            object arg_Dust = args[4];
+
+            if (arg_Mod == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：添加对象"));
+                return false;
+            }
+            if (arg_Item == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：环境溶液物品"));
+                return false;
+            }
+            if (arg_Spray == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：环境溶液射弹"));
+                return false;
+            }
+            if (arg_Dust == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：环境溶液粒子"));
+                return false;
+            }
+
+            int itemType = (int)arg_Item;
+            int sprayType = (int)arg_Spray;
+
+            if (itemType > ItemID.None && !CrossModSprayInfo.ContainsKey(itemType))
+            {
+                if (arg_Dust is int)
+                    CrossModSprayInfo.Add(itemType, new SprayInfo(sprayType, (int)arg_Dust));
+                else
+                    CrossModSprayInfo.Add(itemType, new SprayInfo(sprayType, -1, (Func<int>)arg_Dust));
+            }
+
+            Mod mod = (Mod)arg_Mod;
+            string modName = mod.DisplayNameClean;
+            StringBuilder logInfo = new($"添加成功！添加者：{modName}");
+
+            Logger.Info(ConsoleMessage("环境溶液添加结果", logInfo.ToString()));
 
             return true;
         }

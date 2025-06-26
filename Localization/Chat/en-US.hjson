@@ -640,6 +640,7 @@ Mods: {
 		}
 
 		Chat_Eirin: {
+			ChatHardCoreDeath: Let's mourn for {0} forever...
 			Chat1: Have I been on the ground for too long? Well, everything is good if I stay with the princess.
 			Chat2: I need a way to make the princess get some exercise in...
 			Chat3: Maybe I should let Tei be my guinea pig next time? Udongein hasn't looked too good recently.
@@ -659,7 +660,6 @@ Mods: {
 			Chat17: My god! How many potion you have drink? Can you hold on?
 			Chat18: Princess, I saw you went to the human's village last time.
 			Chat19: *Sigh...Indeed I have told you that always staying at home is not good, but the village is not a place we can go to.
-			Chat99: Let's mourn for {0} forever...
 		}
 
 		Chat_Shinki: {

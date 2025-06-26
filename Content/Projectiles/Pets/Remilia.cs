@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -50,7 +50,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Remilia_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 25;
             Main.projPet[Type] = true;
@@ -124,9 +124,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;//9
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -153,19 +153,19 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID remi = TouhouPetID.Remilia;
             TouhouPetID flan = TouhouPetID.Flandre;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(remi, 6, -1), //蕾米：我亲爱的芙兰哟...
-                new ChatRoomInfo(flan, 6, 0),//芙兰：姐姐？叫芙兰有什么事嘛？
-                new ChatRoomInfo(remi, 7, 1), //蕾米：没什么...只是想叫你一下。
-                new ChatRoomInfo(flan, 7, 2),//芙兰：...姐姐什么时候能和芙兰一起玩...
-                new ChatRoomInfo(remi, 8, 3), //蕾米：有空会陪你的啦~
-                new ChatRoomInfo(flan, 8, 4),//芙兰：姐姐老是这么说...
+                new ChatRoomInfo(remi, ChatDictionary[6], -1), //蕾米：我亲爱的芙兰哟...
+                new ChatRoomInfo(flan, GetChatText("Flandre",6), 0),//芙兰：姐姐？叫芙兰有什么事嘛？
+                new ChatRoomInfo(remi, ChatDictionary[7], 1), //蕾米：没什么...只是想叫你一下。
+                new ChatRoomInfo(flan, GetChatText("Flandre",7), 2),//芙兰：...姐姐什么时候能和芙兰一起玩...
+                new ChatRoomInfo(remi, ChatDictionary[8], 3), //蕾米：有空会陪你的啦~
+                new ChatRoomInfo(flan, GetChatText("Flandre",8), 4),//芙兰：姐姐老是这么说...
             ];
 
             return list;
@@ -339,18 +339,9 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
                 else
                 {
-                    if (Main.rand.NextBool(3) && currentChatRoom == null)
+                    if (Main.rand.NextBool(3))
                     {
-                        int chance = Main.rand.Next(2);
-                        switch (chance)
-                        {
-                            case 1:
-                                Projectile.SetChat(4, 20);
-                                break;
-                            default:
-                                Projectile.SetChat(3, 20);
-                                break;
-                        }
+                        Projectile.SetChat(ChatDictionary[Main.rand.Next(3, 5)], 20);
                     }
                     CurrentState = States.Drinking;
                 }

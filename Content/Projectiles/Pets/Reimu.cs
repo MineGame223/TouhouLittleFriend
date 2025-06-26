@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -56,7 +57,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private int itemFrame, itemFrameCounter;
         private int flyTimeleft = 0;
         private bool seeCoin = false;
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
@@ -132,9 +133,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 if (Main.bloodMoon || Main.eclipse || Main.slimeRain)
                 {
@@ -157,7 +158,10 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
-            Projectile.SetChat(3);
+            if (!noReaction || Owner.HasBuff<MarisaBuff>())
+                return;
+
+            Projectile.SetChat(ChatDictionary[3]);
         }
         public override void VisualEffectForPreview()
         {
@@ -170,20 +174,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID reimu = TouhouPetID.Reimu;
             TouhouPetID marisa = TouhouPetID.Marisa;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(reimu, 13, -1), //灵梦：喂，魔理沙？
-                new ChatRoomInfo(marisa, 15, 0),//魔理沙：怎么了灵梦？
-                new ChatRoomInfo(reimu, 14, 1), //灵梦：你说，如果我们其实是什么人被制造出来的、并且存在的目的是为了哪个世界的延续，你会怎么想？
-                new ChatRoomInfo(marisa, 16, 2),//魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
-                new ChatRoomInfo(reimu, 15, 3), //灵梦：你就说你会怎么想嘛！
-                new ChatRoomInfo(marisa, 17, 4), //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
-                new ChatRoomInfo(reimu, 16, 5), //灵梦：也许吧...
+                new ChatRoomInfo(reimu, ChatDictionary[13], -1), //灵梦：喂，魔理沙？
+                new ChatRoomInfo(marisa, GetChatText("Marisa",15), 0),//魔理沙：怎么了灵梦？
+                new ChatRoomInfo(reimu, ChatDictionary[14], 1), //灵梦：你说，如果我们其实是什么人被制造出来的、并且存在的目的是为了哪个世界的延续，你会怎么想？
+                new ChatRoomInfo(marisa, GetChatText("Marisa",16), 2),//魔理沙：呃啊...怎么突然说这个？感觉怪怪的...
+                new ChatRoomInfo(reimu, ChatDictionary[15], 3), //灵梦：你就说你会怎么想嘛！
+                new ChatRoomInfo(marisa, GetChatText("Marisa",17), 4), //魔理沙：嗯...感觉、挺好的？这说明我们肩负着伟大的使命daze！
+                new ChatRoomInfo(reimu, ChatDictionary[16], 5), //灵梦：也许吧...
             ];
 
             return list;
@@ -321,7 +325,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         CurrentState = States.BeforeNap;
 
                         if (Main.rand.NextBool(8))
-                            Projectile.SetChat(11);
+                            Projectile.SetChat(ChatDictionary[11]);
                     }
                 }
             }

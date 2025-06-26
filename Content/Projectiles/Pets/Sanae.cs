@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -54,7 +55,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sanae_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;
@@ -155,9 +156,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -177,15 +178,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID sanae = TouhouPetID.Sanae;
             TouhouPetID reimu = TouhouPetID.Reimu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sanae, 4, -1), //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
-                new ChatRoomInfo(reimu, 9, 0),//灵梦：给我适可而止啊喂！
+                new ChatRoomInfo(sanae, ChatDictionary[4], -1), //早苗：加入守矢神社，信仰伟大的乾神和坤神吧！
+                new ChatRoomInfo(reimu, GetChatText("Reimu",9), 0),//灵梦：给我适可而止啊喂！
             ];
 
             return list;

@@ -35,9 +35,9 @@ namespace TouhouPets.Content.Projectiles
             Vector2 orig = rect.Size() / 2;
             Player player = Main.player[Projectile.owner];
 
-            DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig, 1f, SpriteEffects.None, 0);
+            DrawData data = new (tex, pos, rect, clr, 0f, orig, 1f, SpriteEffects.None, 0);
 
-            if (GetInstance<MiscConfig>().CompatibilityMode)
+            if (CompatibilityMode)
             {
                 data.Draw(Main.spriteBatch);
                 return false;

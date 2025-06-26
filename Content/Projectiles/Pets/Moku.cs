@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using TouhouPets.Content.Projectiles.Danmaku;
@@ -58,14 +59,14 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private float floatingX, floatingY;
         private float ringAlpha, flameAlhpa;
-        private int[] abilityCD;
+        private int[] abilityCD = new int[2];
         private int health;
 
         private const int MaxHealth = 360;
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Moku_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
             Main.projPet[Type] = true;
@@ -156,7 +157,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             if (CurrentState == States.Win || CurrentState == States.Lose)
             {
-                Projectile.DrawIndividualScore(PlayerB_Score);
+                Projectile.DrawIndividualScore(PlayerB_Score, CurrentState == States.Win);
             }
         }
         private void DrawDanmakuRing()
@@ -165,13 +166,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             Vector2 pos = Projectile.Center - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
             Rectangle rect = new Rectangle(0, 0, t.Width, t.Height / 3);
             Vector2 orig = rect.Size() / 2;
-            Color clr = Projectile.GetAlpha(Color.White * ringAlpha).ModifiedAlphaColor();
+            Color clr = Projectile.GetAlpha(Color.White) * ringAlpha;
+            clr.A *= 0;
             float scale = Projectile.scale * DanmakuRingScale;
-            for (int i = 0; i < 2; i++)
-            {
-                Main.EntitySpriteDraw(t, pos + new Vector2(Main.rand.NextFloat(-1.3f, 1.3f)), rect, clr * 0.34f, Main.GlobalTimeWrappedHourly, orig, scale * 0.65f, SpriteEffects.None, 0f);
-                Main.EntitySpriteDraw(t, pos + new Vector2(Main.rand.NextFloat(-1.3f, 1.3f)), rect, clr * 0.3f, -Main.GlobalTimeWrappedHourly, orig, scale * 0.5f, SpriteEffects.FlipHorizontally, 0f);
-            }
+
+            Main.EntitySpriteDraw(t, pos, rect, clr * 0.9f, Main.GlobalTimeWrappedHourly * 2, orig, scale * 0.65f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(t, pos, rect, clr * 0.75f, -Main.GlobalTimeWrappedHourly * 2, orig, scale * 0.45f, SpriteEffects.FlipHorizontally, 0f);
         }
         public override ChatSettingConfig ChatSettingConfig => new ChatSettingConfig() with
         {
@@ -188,9 +188,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -208,15 +208,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID moku = TouhouPetID.Moku;
             TouhouPetID keine = TouhouPetID.Keine;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(moku, 9, -1), //妹红：每到满月你都会这样，怪吓人的！
-                new ChatRoomInfo(keine, 9, 0),///慧音：这是天性，也是使命。
+                new ChatRoomInfo(moku, ChatDictionary[9], -1), //妹红：每到满月你都会这样，怪吓人的！
+                new ChatRoomInfo(keine, GetChatText("Keine",9), 0),///慧音：这是天性，也是使命。
             ];
 
             return list;
@@ -228,11 +228,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void SetPetLight(ref Vector2 position, ref Vector3 rgb, ref bool inactive)
         {
             rgb = new Vector3(2.15f, 1.84f, 0.87f);
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-            abilityCD = new int[2];
         }
         public override void AI()
         {
@@ -249,6 +244,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 Timer = 0;
                 CurrentState = States.Idle;
+                Projectile.ClearDanmaku();
             }
 
             switch (CurrentState)
@@ -385,10 +381,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.frame = 0;
             if (OwnerIsMyPlayer)
             {
-                if (Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_MokuAndKaguya)
+                if (Owner.afkCounter >= 600 && SpecialAbility_MokuAndKaguya)
                 {
                     bool ableToFight = mainTimer % 60 == 0 && Main.rand.NextBool(2)
-                        && FindPet(ProjectileType<Kaguya>(), false, 0, 1);
+                        && FindPet(ProjectileType<Kaguya>(), false, 0, 1)
+                        && Projectile.CurrentlyNoDialog();
                     if (ableToFight || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
                     {
                         InitializeFightData();
@@ -405,7 +402,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(4))
                     {
-                        RandomCount = Main.rand.Next(120, 240);
+                        RandomCount = Main.rand.Next(120, 160);
                         CurrentState = States.Burning;
                     }
                 }
@@ -439,7 +436,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Round++;
             }
             Timer++;
-            if (OwnerIsMyPlayer && Timer > 375)
+            if (OwnerIsMyPlayer && Timer > 390)
             {
                 Timer = 0;
                 health = MaxHealth;
@@ -447,8 +444,8 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
 
             Projectile.spriteDirection = 1;
-            Vector2 point = new Vector2(-200, -200);
-            MoveToPoint2(point, 15f);
+            Vector2 point = new(-200, -200);
+            MoveToPoint2(point, 5f);
         }
         private void Battling()
         {
@@ -516,16 +513,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                     PlayerB_Score++;
                     Timer = 0;
                     CurrentState = States.Win;
+                    Projectile.ClearDanmaku();
                 }
                 else if (health <= 0)
                 {
                     Timer = 0;
                     CurrentState = States.Lose;
+                    Projectile.ClearDanmaku();
                 }
             }
 
             Projectile.spriteDirection = 1;
-            Vector2 point = new Vector2(-200 + floatingX, -200 + floatingY);
+            Vector2 point = new(-200 + floatingX, -200 + floatingY);
             MoveToPoint2(point, 4f);
         }
         private void Win()
@@ -554,19 +553,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Timer == 30)
                 {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(10);
-                            break;
-                        case 2:
-                            Projectile.SetChat(11);
-                            break;
-                        default:
-                            Projectile.SetChat(12);
-                            break;
-                    }
+                    Projectile.SetChat(ChatDictionary[Main.rand.Next(10, 13)]);
                 }
                 if (Timer > 480 || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
                 {
@@ -602,19 +589,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 if (Timer == 30)
                 {
-                    int chance = Main.rand.Next(3);
-                    switch (chance)
-                    {
-                        case 1:
-                            Projectile.SetChat(13);
-                            break;
-                        case 2:
-                            Projectile.SetChat(14);
-                            break;
-                        default:
-                            Projectile.SetChat(15);
-                            break;
-                    }
+                    Projectile.SetChat(ChatDictionary[Main.rand.Next(13, 16)]);
                 }
                 if (Timer > 480 || FindPet(ProjectileType<Kaguya>(), false, (int)States.BeforeBattle))
                 {

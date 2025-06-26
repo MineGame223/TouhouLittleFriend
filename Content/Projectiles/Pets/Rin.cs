@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -45,7 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(3);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Rin_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
@@ -95,9 +96,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -131,41 +132,41 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting3(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID rin = TouhouPetID.Rin;
             TouhouPetID satori = TouhouPetID.Satori;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(rin, 5, -1), //阿燐：觉大人最好了！
-                new ChatRoomInfo(satori, 5, 0),//觉：阿燐也是我最喜欢的猫咪哦。
+                new ChatRoomInfo(rin, ChatDictionary[5], -1), //阿燐：觉大人最好了！
+                new ChatRoomInfo(satori, GetChatText("Satori",5), 0),//觉：阿燐也是我最喜欢的猫咪哦。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID rin = TouhouPetID.Rin;
             TouhouPetID satori = TouhouPetID.Satori;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(rin, 6, -1), //阿燐：今天觉大人有好好吃饭吗？
-                new ChatRoomInfo(satori, 7, 0),//觉：别担心啦。
+                new ChatRoomInfo(rin, ChatDictionary[6], -1), //阿燐：今天觉大人有好好吃饭吗？
+                new ChatRoomInfo(satori, GetChatText("Satori",7), 0),//觉：别担心啦。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting3()
+        private List<ChatRoomInfo> Chatting3()
         {
             TouhouPetID rin = TouhouPetID.Rin;
             TouhouPetID utsuho = TouhouPetID.Utsuho;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(rin, 7, -1), //阿燐：阿空，今天也要好好干活啊！
-                new ChatRoomInfo(utsuho, 6, 0),//阿空：放心交给我吧！
+                new ChatRoomInfo(rin, ChatDictionary[7], -1), //阿燐：阿空，今天也要好好干活啊！
+                new ChatRoomInfo(utsuho, GetChatText("Utsuho",6), 0),//阿空：放心交给我吧！
             ];
 
             return list;

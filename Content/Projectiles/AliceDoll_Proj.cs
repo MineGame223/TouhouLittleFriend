@@ -47,7 +47,7 @@ namespace TouhouPets.Content.Projectiles
             SpriteEffects effect = Projectile.spriteDirection == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             Main.spriteBatch.MyDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
             tex = AltVanillaFunction.GetExtraTexture("AliceDoll_Proj_Cloth");
-            if (GetInstance<MiscConfig>().CompatibilityMode)
+            if (CompatibilityMode)
             {
                 Main.spriteBatch.MyDraw(tex, pos, rect, clr, 0f, orig, 1f, effect, 0);
             }
@@ -72,7 +72,7 @@ namespace TouhouPets.Content.Projectiles
             float rot = startP.DirectionTo(Projectile.Center).ToRotation() + MathHelper.PiOver2;
 
             Vector2 scale = new Vector2(0.1f, dist / tex.Height);
-            if (GetInstance<MiscConfig>().CompatibilityMode)
+            if (CompatibilityMode)
             {
                 Main.spriteBatch.MyDraw(tex, pos, null, clr, rot, orig, scale, SpriteEffects.None, 0);
             }

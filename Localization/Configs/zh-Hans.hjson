@@ -87,9 +87,13 @@ Mods: {
 					Tooltip: 宠物对话文本是否以打字机的形式呈现
 				}
 
-				CanPetChat: {
-					Label: 显示宠物对话文本
-					Tooltip: 是否显示宠物的对话文本
+				ChatFrequency: {
+					Label: 宠物说话频次
+					Tooltip:
+						'''
+						调整宠物说话的频率，值越高则频率越快
+						为 0 时宠物将不再显示对话
+						'''
 				}
 			}
 
@@ -145,7 +149,7 @@ Mods: {
 				}
 			}
 
-			MiscConfig: {
+			MiscConfig_ServerSide: {
 				DisplayName: 服务器端其他功能配置
 
 				CompatibilityMode: {

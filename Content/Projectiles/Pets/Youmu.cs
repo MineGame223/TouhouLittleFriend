@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -23,7 +24,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => PetState = (int)value;
         }
         private bool IsAfraid => CurrentState == States.Afraid;
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
@@ -94,18 +95,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Youmu";
             indexRange = new Vector2(1, 11);
         }
-        public override void PostRegisterChat()
-        {
-        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = IsAfraid ? 500 : 900;
             chance = IsAfraid ? 3 : 12;
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new ();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (IsAfraid)
                 {
@@ -124,7 +122,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (Owner.HasBuff<YuyukoBuff>())
             {
-                Projectile.SetChat(11);
+                Projectile.SetChat(ChatDictionary[11]);
                 return false;
             }
             return true;
@@ -133,7 +131,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {         
             if (noReaction)
             {
-                Projectile.SetChat(3);
+                Projectile.SetChat(ChatDictionary[3]);
             }
         }
         public override void VisualEffectForPreview()

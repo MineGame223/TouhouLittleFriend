@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -63,7 +64,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Wriggle_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 8;
             Main.projPet[Type] = true;
@@ -114,9 +115,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (CurrentState == States.Cold)
                 {
@@ -141,15 +142,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID wriggle = TouhouPetID.Wriggle;
             TouhouPetID mystia = TouhouPetID.Mystia;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(wriggle, 1, -1), //莉格露：一闪一闪亮晶晶~满天都是小蜻蜓~
-                new ChatRoomInfo(mystia, 9, 0),//米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
+                new ChatRoomInfo(wriggle, ChatDictionary[1], -1), //莉格露：一闪一闪亮晶晶~满天都是小蜻蜓~
+                new ChatRoomInfo(mystia, GetChatText("Mystia",9), 0),//米斯蒂娅：挂在天空放光明~好似无数...欸蜻蜓不会发光啊！
             ];
 
             return list;
@@ -350,7 +351,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (Timer % 2 == 0 && Owner.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
                 {
                     Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
-                    if (CheckEmptyPlace(point) && GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle)
+                    if (CheckEmptyPlace(point) && SpecialAbility_Wriggle)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), point
                             , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
@@ -423,7 +424,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void AttractInsect()
         {
-            if (!GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle)
+            if (!SpecialAbility_Wriggle)
                 return;
 
             foreach (NPC bug in Main.npc)

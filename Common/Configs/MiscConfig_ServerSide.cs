@@ -3,7 +3,7 @@ using Terraria.ModLoader.Config;
 
 namespace TouhouPets
 {
-    public class MiscConfig : ModConfig
+    public class MiscConfig_ServerSide : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
 

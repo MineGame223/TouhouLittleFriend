@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -31,7 +32,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sizuha_Cloth");
         private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Sizuha_Glow");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
@@ -80,9 +81,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (!IsIdleState)
                 {
@@ -107,18 +108,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID sizuha = TouhouPetID.Sizuha;
             TouhouPetID minoriko = TouhouPetID.Minoriko;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sizuha, 6, -1), //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
-                new ChatRoomInfo(minoriko, 6, 0),//穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
-                new ChatRoomInfo(sizuha, 7, 1), //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
-                new ChatRoomInfo(minoriko, 7, 2),//穰子：那姐姐要吃烤红薯吗？
-                new ChatRoomInfo(sizuha, 8, 3), //静叶：好欸！...我是说，好啊。
+                new ChatRoomInfo(sizuha, ChatDictionary[6], -1), //静叶：明明我才是姐姐，为什么人气会赶不上妹妹呢...
+                new ChatRoomInfo(minoriko, GetChatText("Minoriko",6), 0),//穰子：毕竟对于人类来说吃饱饭才是第一位吧...不过也有很多人喜欢秋天的落叶呢！
+                new ChatRoomInfo(sizuha, ChatDictionary[7], 1), //静叶：...那、那是当然了，落叶好歹也是组成秋天的重要部分啦！
+                new ChatRoomInfo(minoriko, GetChatText("Minoriko",7), 2),//穰子：那姐姐要吃烤红薯吗？
+                new ChatRoomInfo(sizuha, ChatDictionary[8], 3), //静叶：好欸！...我是说，好啊。
             ];
 
             return list;

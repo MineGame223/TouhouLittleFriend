@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -43,7 +44,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Hina_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 17;
             Main.projPet[Type] = true;
@@ -81,9 +82,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -103,34 +104,34 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID hina = TouhouPetID.Hina;
             TouhouPetID nitori = TouhouPetID.Nitori;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(hina, 4, -1), //转转：荷取，你知道吗？我一直有一个愿望。
-                new ChatRoomInfo(nitori, 4, 0),//荷取：嗯？是什么愿望呢？
-                new ChatRoomInfo(hina, 5, 1), //转转：我希望，把这个世界彻底净化成没有厄运的世界。
-                new ChatRoomInfo(nitori, 5, 2),//荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
-                new ChatRoomInfo(hina, 6, 3), //转转：哈哈，所以说只是一个愿望啊。
-                new ChatRoomInfo(nitori, 6, 4),//荷取：说不定哪一天真的可以实现哦！
+                new ChatRoomInfo(hina, ChatDictionary[4], -1), //转转：荷取，你知道吗？我一直有一个愿望。
+                new ChatRoomInfo(nitori, GetChatText("Nitori",4), 0),//荷取：嗯？是什么愿望呢？
+                new ChatRoomInfo(hina, ChatDictionary[5], 1), //转转：我希望，把这个世界彻底净化成没有厄运的世界。
+                new ChatRoomInfo(nitori, GetChatText("Nitori",5), 2),//荷取：那不就是你的能力嘛，不过全世界的厄运即便对你而言也不太现实吧...
+                new ChatRoomInfo(hina, ChatDictionary[6], 3), //转转：哈哈，所以说只是一个愿望啊。
+                new ChatRoomInfo(nitori, GetChatText("Nitori",6), 4),//荷取：说不定哪一天真的可以实现哦！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID hina = TouhouPetID.Hina;
             TouhouPetID nitori = TouhouPetID.Nitori;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(hina, 7, -1), //转转：我们是...
-                new ChatRoomInfo(nitori, 7, 0),//荷取：“旋转河童”组合！
-                new ChatRoomInfo(hina, 8, 1), //转转 & 荷取：哈哈哈哈！...
-                new ChatRoomInfo(nitori, 8, 1),
+                new ChatRoomInfo(hina, ChatDictionary[7], -1), //转转：我们是...
+                new ChatRoomInfo(nitori, GetChatText("Nitori",7), 0),//荷取：“旋转河童”组合！
+                new ChatRoomInfo(hina, ChatDictionary[8], 1), //转转 & 荷取：哈哈哈哈！...
+                new ChatRoomInfo(nitori, GetChatText("Nitori",8), 1),
             ];
 
             return list;
@@ -197,7 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         CurrentState = States.Turning;
 
                         if (Main.rand.NextBool(2))
-                            Projectile.SetChat(3, 20);
+                            Projectile.SetChat(ChatDictionary[3], 20);
                     }
                 }
             }

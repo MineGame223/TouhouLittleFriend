@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.Enums;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -51,7 +52,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Luna_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
@@ -101,9 +102,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;
             whenShouldStop = CurrentState >= States.Yawn1;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (IsIdleState)
                 {
@@ -235,16 +236,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         if (Main.rand.NextBool(4))
                         {
                             CurrentState = States.Yawn1;
-                            int chance = Main.rand.Next(2);
-                            switch (chance)
-                            {
-                                case 1:
-                                    Projectile.SetChat(4);
-                                    break;
-                                default:
-                                    Projectile.SetChat(5);
-                                    break;
-                            }
+                            Projectile.SetChat(ChatDictionary[Main.rand.Next(4, 6)]);
                         }
                     }
                 }

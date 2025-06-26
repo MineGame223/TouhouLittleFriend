@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -24,7 +25,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Daiyousei_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 7;
             Main.projPet[Type] = true;
@@ -57,9 +58,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;//9
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (Owner.ZoneGraveyard)
                     chat.Add(ChatDictionary[5]);
@@ -89,29 +90,29 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2()
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID daiyousei = TouhouPetID.Daiyousei;
             TouhouPetID cirno = TouhouPetID.Cirno;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(daiyousei, 4, -1), //大妖精：琪露诺酱，今天去哪里玩？
-                new ChatRoomInfo(cirno, 10, 0),//琪露诺：大酱去哪儿我就去哪儿！
+                new ChatRoomInfo(daiyousei, ChatDictionary[4], -1), //大妖精：琪露诺酱，今天去哪里玩？
+                new ChatRoomInfo(cirno, GetChatText("Cirno",10), 0),//琪露诺：大酱去哪儿我就去哪儿！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID daiyousei = TouhouPetID.Daiyousei;
             TouhouPetID cirno = TouhouPetID.Cirno;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(daiyousei, 5, -1), //大妖精：好...好可怕的地方！
-                new ChatRoomInfo(cirno, 9, 0),//琪露诺：大酱别怕，有我在！
-                new ChatRoomInfo(daiyousei, 6, 1), //大妖精：嗯...我，我不怕！
+                new ChatRoomInfo(daiyousei, ChatDictionary[5], -1), //大妖精：好...好可怕的地方！
+                new ChatRoomInfo(cirno, GetChatText("Cirno",9), 0),//琪露诺：大酱别怕，有我在！
+                new ChatRoomInfo(daiyousei, ChatDictionary[6], 1), //大妖精：嗯...我，我不怕！
             ];
 
             return list;

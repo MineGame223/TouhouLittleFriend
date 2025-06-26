@@ -26,7 +26,7 @@ namespace TouhouPets.Content.Projectiles
         {
             return false;
         }
-        private void DrawFlame(DrawData data, Texture2D tex, int height)
+        private static void DrawFlame(DrawData data, Texture2D tex, int height)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -46,9 +46,9 @@ namespace TouhouPets.Content.Projectiles
             Vector2 orig = rect.Size() / 2;
 
             Player player = Main.player[Projectile.owner];
-            DrawData data = new DrawData(tex, pos, rect, clr, 0f, orig, Projectile.scale, SpriteEffects.None, 0);
+            DrawData data = new (tex, pos, rect, clr, 0f, orig, Projectile.scale, SpriteEffects.None, 0);
 
-            if (GetInstance<MiscConfig>().CompatibilityMode)
+            if (CompatibilityMode)
             {
                 DrawFlame(data, tex, height);
                 return false;

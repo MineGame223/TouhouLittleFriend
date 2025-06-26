@@ -16,6 +16,17 @@ namespace TouhouPets
         private static int sprayMode;
         private static Projectile yuka;
         private static Item solution;
+        private static readonly Dictionary<int, SprayInfo> sprayInfo = new()
+        {
+            { ItemID.GreenSolution, new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble) },
+            { ItemID.PurpleSolution, new SprayInfo(ProjectileID.CorruptSpray, MyDustId.PinkBubble) },
+            { ItemID.RedSolution, new SprayInfo(ProjectileID.CrimsonSpray, MyDustId.PinkYellowBubble) },
+            { ItemID.BlueSolution, new SprayInfo(ProjectileID.HallowSpray, MyDustId.CyanBubble) },
+            { ItemID.DarkBlueSolution, new SprayInfo(ProjectileID.MushroomSpray, MyDustId.BlueIce) },
+            { ItemID.DirtSolution, new SprayInfo(ProjectileID.DirtSpray, MyDustId.BrownBubble) },
+            { ItemID.SandSolution, new SprayInfo(ProjectileID.SandSpray, MyDustId.YellowBubble) },
+            { ItemID.SnowSolution, new SprayInfo(ProjectileID.SnowSpray, MyDustId.WhiteBubble) },
+        };
 
         public const int Phase_Spray_Mode1 = 3;
         public const int Phase_Spray_Mode2 = 4;
@@ -40,9 +51,10 @@ namespace TouhouPets
                 yuka.ai[1] = (int)value;
             }
         }
+
         public override void PostUpdateProjectiles()
         {
-            if (Main.netMode == NetmodeID.Server || !GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka)
+            if (Main.netMode == NetmodeID.Server || !SpecialAbility_Yuka)
                 return;
 
             if (sprayMode > 1 || sprayMode < 0)
@@ -74,35 +86,13 @@ namespace TouhouPets
                 );
             }
         }
-        public static int SolutionSprayType(int type)
+        public static SprayInfo GetSprayInfo(int key)
         {
-            return type switch
-            {
-                ItemID.GreenSolution => ProjectileID.PureSpray,
-                ItemID.BlueSolution => ProjectileID.HallowSpray,
-                ItemID.DarkBlueSolution => ProjectileID.MushroomSpray,
-                ItemID.DirtSolution => ProjectileID.DirtSpray,
-                ItemID.PurpleSolution => ProjectileID.CorruptSpray,
-                ItemID.RedSolution => ProjectileID.CrimsonSpray,
-                ItemID.SandSolution => ProjectileID.SandSpray,
-                ItemID.SnowSolution => ProjectileID.SnowSpray,
-                _ => Sprayer.shoot,
-            };
-        }
-        public static int SolutionSprayDust(int type)
-        {
-            return type switch
-            {
-                ProjectileID.PureSpray => MyDustId.GreenBubble,
-                ProjectileID.HallowSpray => MyDustId.CyanBubble,
-                ProjectileID.MushroomSpray => MyDustId.BlueIce,
-                ProjectileID.DirtSpray => MyDustId.BrownBubble,
-                ProjectileID.CorruptSpray => MyDustId.PinkBubble,
-                ProjectileID.CrimsonSpray => MyDustId.PinkYellowBubble,
-                ProjectileID.SandSpray => MyDustId.YellowBubble,
-                ProjectileID.SnowSpray => MyDustId.WhiteBubble,
-                _ => MyDustId.RedBubble,
-            };
+            if (!sprayInfo.TryGetValue(key, out SprayInfo value)
+                && !TouhouPets.CrossModSprayInfo.TryGetValue(key, out value))
+                return new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble);
+
+            return value;
         }
         private static void SetSpray()
         {

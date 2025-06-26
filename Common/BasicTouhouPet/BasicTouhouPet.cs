@@ -1,19 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
+using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
 {
     /// <summary>
-    /// 东方可交互宠物基类，基本示范见 <see cref="Cirno"/>
+    /// 可交互宠物基类，基本示范见 <see cref="Cirno"/>
     /// </summary>
     public abstract partial class BasicTouhouPet : ModProjectile
     {
         #region 字段与属性
+
+        internal bool useDye = false;
+
         /// <summary>
         /// 是否发现Boss
         /// <br/>该变量会自动更新，无需手动更改
@@ -69,6 +72,15 @@ namespace TouhouPets
             string chatTurn = "#";
             if (currentChatRoom != null)
                 chatTurn = currentChatRoom.chatTurn.ToString();
+
+            int chatIndex = -1;
+            foreach (var t in ChatDictionary)
+            {
+                if (chatText != null && chatText.Equals(t.Value))
+                {
+                    chatIndex = t.Key;
+                }
+            }
 
             string testMsg1 = $"{chatCD}, {chatIndex}, {chatLag}, {chatTimeLeft}, {chatTurn}";
             string testMsg2 = $"{timeToType}, {totalTimeToType}, {Math.Round(chatOpacity, 1)}, {mainTimer}";
@@ -213,17 +225,6 @@ namespace TouhouPets
                 Projectile.Center = pos;
 
             Vector2 vel = pos - Projectile.Center;
-
-            /*float distanceLimit = MathHelper.Clamp(dist / 200f, 0f, 1f);
-            float scaledSpeed = MathHelper.SmoothStep(0f, speed, distanceLimit);
-
-            vel.Normalize();
-            if (float.IsNaN(vel.X) || float.IsNaN(vel.Y))
-            {
-                vel = Vector2.One;
-            }
-            Projectile.velocity = vel * scaledSpeed;*/
-
             float closeValue = 1f;
 
             if (dist < closeValue)
@@ -244,16 +245,17 @@ namespace TouhouPets
         /// <param name="speed">移动速度</param>
         internal void MoveToPoint2(Vector2 point, float speed)
         {
-            float velMultiplier = 1f;
-            Vector2 dist = Owner.Center + point - Projectile.Center;
-            float length = (dist == Vector2.Zero) ? 0f : dist.Length();
-            if (length < speed)
-            {
-                velMultiplier = MathHelper.Lerp(0f, 1f, length / 16f);
-            }
-            Projectile.velocity = (length == 0f) ? Vector2.Zero : Vector2.Normalize(dist);
-            Projectile.velocity *= speed;
-            Projectile.velocity *= velMultiplier;
+            Vector2 targetPos = Owner.Center + point;
+            Vector2 targetVel = targetPos - Projectile.Center;
+
+            float length = (targetPos == Vector2.Zero) ? 0f : Projectile.Distance(targetPos);
+            float distanceLimit = MathHelper.Lerp(0f, speed, length / 200f);
+            float scaledSpeed = MathHelper.SmoothStep(0f, speed, distanceLimit);
+
+            if (scaledSpeed <= 0.1f)
+                scaledSpeed = 0f;
+
+            Projectile.velocity = targetVel.SafeNormalize(Vector2.One) * scaledSpeed;
         }
         /// <summary>
         /// 设置转向
@@ -307,7 +309,7 @@ namespace TouhouPets
         }
         private void UpdatePetLight()
         {
-            Vector2 position = GetInstance<MiscConfig_ClientSide>().PetLightOnPlayer ? Owner.Center : Projectile.Center;
+            Vector2 position = PetLightOnPlayer ? Owner.Center : Projectile.Center;
             Vector3 rgb = new(0, 0, 0);
             bool inactive = false;
             SetPetLight(ref position, ref rgb, ref inactive);
@@ -337,7 +339,7 @@ namespace TouhouPets
                             OnMouseClick(true, false);
                         }
                     }
-                    if (!dontInvis && GetInstance<MiscConfig_ClientSide>().PetInvisWhenMouseHover)
+                    if (!dontInvis && PetInvisWhenMouseHover)
                     {
                         mouseOpacity = MathHelper.Clamp(mouseOpacity - 0.1f, 0.05f, 1);
                     }
@@ -406,9 +408,24 @@ namespace TouhouPets
         /// <param name="lightColor"></param>
         /// <returns></returns>
         public virtual bool DrawPetSelf(ref Color lightColor) => true;
+
+        /// <summary>
+        /// 设置种类属性，替代SetStaticDefaults
+        /// </summary>
+        public virtual void PetStaticDefaults() { }
+
+        /// <summary>
+        /// 设置实例属性，替代SetDefaults
+        /// </summary>
+        public virtual void PetDefaults() { }
         #endregion
 
         #region 原有重写函数
+        public override void SetStaticDefaults()
+        {
+            PetStaticDefaults();
+            RegisterChat_Full();
+        }
         public override void SetDefaults()
         {
             Projectile.netImportant = true;
@@ -418,10 +435,9 @@ namespace TouhouPets
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.timeLeft *= 5;
-        }
-        public override void OnSpawn(IEntitySource source)
-        {
-            RegisterChat_Full();
+
+            PetDefaults();
+            DynamicRegisterForDebug();
         }
         public override bool PreAI()
         {
@@ -452,15 +468,14 @@ namespace TouhouPets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Projectile.ResetDrawStateForPet();//用于让染料正常工作
+            //Projectile.ResetDrawStateForPet();//用于让染料正常工作
             return DrawPetSelf(ref lightColor);
         }
         public override void PostDraw(Color lightColor)
         {
-            if (!GetInstance<MiscConfig>().CompatibilityMode)
-                Main.spriteBatch.QuickEndAndBegin(false, Projectile.isAPreviewDummy);
+            Projectile.ResetDrawStateForPet();
 
-            if (chatOpacity > 0 && OwnerIsMyPlayer && GetInstance<PetDialogConfig>().CanPetChat)
+            if (chatOpacity > 0 && PetChatFrequency > 0f)
             {
                 Vector2 drawPos = Projectile.position - Main.screenPosition + new Vector2(Projectile.width / 2, -20) + new Vector2(0, 7f * Main.essScale);
                 float alpha = MathHelper.Clamp(chatOpacity * Projectile.Opacity * mouseOpacity, 0, 1);

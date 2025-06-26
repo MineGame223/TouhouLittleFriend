@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -53,7 +54,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Cirno_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
@@ -102,9 +103,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 9;//9
             whenShouldStop = CurrentState == States.Laughing || CurrentState == States.AfterLaughing;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (IsHotState)
                 {
@@ -143,43 +144,43 @@ namespace TouhouPets.Content.Projectiles.Pets
         /// 一份对话信息列表
         /// <br>对话系统原理如下：</br>
         /// <br>将包含对话信息的列表作为元素加入二维列表 <see cref="RegisterChatRoom"/> 中，每份列表中的对话信
-        /// 息包括宠物独特ID、本回合对话文本的索引值与对话应当出现的回合数。</br>
-        /// <br>宠物的AI中会持续遍历二维列表，若发现宠物当前的对话索引值等于对话信息列表中首条
-        /// 对话信息（即聊天发起者的信息）的对话索引，则会创建一个聊天室并进行编辑。</br>
+        /// 息包括宠物独特ID、本回合对话文本与对话应当出现的回合数。</br>
+        /// <br>宠物的AI中会持续遍历二维列表，若发现宠物当前对话的键等于对话信息列表中首条
+        /// 对话信息（即聊天发起者的信息）的键，则会创建一个聊天室并进行编辑。</br>
         /// <br>开始编辑时，会根据输入的信息列表自动生成成员独特ID列表并统计该对话的总回合数。
         /// 宠物会根据ID列表遍历玩家持有的所有东方宠物，若发现其独特ID被包含在列表中，则该宠物的实例将被加入聊天室。</br>
         /// <br>期间，如果在列表中的宠物被发现不存在，聊天室会立刻关闭。</br>
-        /// <br>将实例加入聊天室后，会再生成一份包括[成员实例、对话索引、所属回合数]的元组列表并进行遍历，
+        /// <br>将实例加入聊天室后，会再生成一份包括[成员实例、对话文本、所属回合数]的元组列表并进行遍历，
         /// 若实例对应的所属回合数与当前回合数相匹配，则进行对话。聊天的发起者在第一回合时将不会说话。</br>
         /// <br>当前回合内的宠物若已说完话，当前回合数将会自动 +1 以进入下一回合。
         /// 当本回合内存在多个说话者时，以排在第一位的说话者为准。</br>
         /// <br>若当前回合数已超过对话最终回合，则聊天室将被关闭。</br>
-        /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的chatIndex将归零、其 currentChatRoom 也将设为空。</br>
+        /// <br>无论如何，聊天室关闭的同时，参与聊天的所有宠物的 currentChatRoom 将设为空。</br>
         /// </summary>
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID cirno = TouhouPetID.Cirno;
             TouhouPetID daiyousei = TouhouPetID.Daiyousei;
 
-            //设置对话相关信息的结构体列表，结构参数依次为：参与聊天的宠物独特ID，对话索引值，对话所在的回合数
+            //设置对话相关信息的结构体列表，结构参数依次为：参与聊天的宠物独特ID，对话文本，对话所在的回合数
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(cirno, 4, -1),//琪露诺：最喜欢大酱了！
-                new ChatRoomInfo(daiyousei, 7, 0),//大妖精：我也最喜欢琪露诺酱！
+                new ChatRoomInfo(cirno, ChatDictionary[4], -1),//琪露诺：最喜欢大酱了！
+                new ChatRoomInfo(daiyousei, GetChatText("Daiyousei",7), 0),//大妖精：我也最喜欢琪露诺酱！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID cirno = TouhouPetID.Cirno;
             TouhouPetID daiyousei = TouhouPetID.Daiyousei;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(cirno, 7, -1),//琪露诺：热死了...要化了...
-                new ChatRoomInfo(daiyousei, 8, 0),//大妖精：琪露诺酱你没事吧...
-                new ChatRoomInfo(cirno, 8, 1),//琪露诺：我没事...大概...
+                new ChatRoomInfo(cirno, ChatDictionary[7], -1),//琪露诺：热死了...要化了...
+                new ChatRoomInfo(daiyousei, GetChatText("Daiyousei",8), 0),//大妖精：琪露诺酱你没事吧...
+                new ChatRoomInfo(cirno, ChatDictionary[8], 1),//琪露诺：我没事...大概...
             ];
 
             return list;

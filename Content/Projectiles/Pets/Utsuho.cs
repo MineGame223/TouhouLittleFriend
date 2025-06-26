@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -48,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow");
         private readonly Texture2D eyeTex = AltVanillaFunction.GetGlowTexture("Utsuho_Glow_Eye");
         private readonly Texture2D sunTex = AltVanillaFunction.GetExtraTexture("UtsuhoSun");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
@@ -127,9 +128,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -152,15 +153,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID utsuho = TouhouPetID.Utsuho;
             TouhouPetID satori = TouhouPetID.Satori;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(utsuho, 5, -1), //阿空：觉大人最好了！
-                new ChatRoomInfo(satori, 6, 0),//觉：阿空也是我最喜欢的乌鸦哦。
+                new ChatRoomInfo(utsuho, ChatDictionary[5], -1), //阿空：觉大人最好了！
+                new ChatRoomInfo(satori, GetChatText("Satori",6), 0),//觉：阿空也是我最喜欢的乌鸦哦。
             ];
 
             return list;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -45,7 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
         private bool UnderSunShine => Main.cloudAlpha <= 0 && Main.dayTime &&
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
             Main.projPet[Type] = true;
@@ -152,9 +153,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 6;//6
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 if (IsRainWet)
                 {
@@ -176,7 +177,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             chat.Add(ChatDictionary[9]);
                     }
                     if (!Owner.HasBuff<ReimuBuff>())
-                        chat.Add(ChatDictionary[12], 3);
+                    chat.Add(ChatDictionary[12]);
                 }
             }
             return chat;
@@ -189,20 +190,20 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2()
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID sunny = TouhouPetID.Sunny;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sunny,9, -1),//桑尼：日光妖精~ 洁白身体~
-                new ChatRoomInfo(sunny,10, 0),//桑尼：日光妖精~ 碧蓝双眸~
-                new ChatRoomInfo(sunny,11, 1),//桑尼：日光妖精—— 桑尼！米尔克！
+                new ChatRoomInfo(sunny,ChatDictionary[9], -1),//桑尼：日光妖精~ 洁白身体~
+                new ChatRoomInfo(sunny,ChatDictionary[10], 0),//桑尼：日光妖精~ 碧蓝双眸~
+                new ChatRoomInfo(sunny,ChatDictionary[11], 1),//桑尼：日光妖精—— 桑尼！米尔克！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID sunny = TouhouPetID.Sunny;
             TouhouPetID luna = TouhouPetID.Luna;
@@ -210,15 +211,15 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(sunny, 12, -1),//桑尼：下一次该去哪里恶作剧呢？
-                new ChatRoomInfo(star, 6, 0),//斯塔：要不去偷那个黑白魔法使的蘑菇吧？
-                new ChatRoomInfo(luna, 9, 1),//露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
-                new ChatRoomInfo(sunny,13,2),//桑尼：没事的啦！露娜你只管殿后就好啦。
-                new ChatRoomInfo(luna, 10, 3),//露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
-                new ChatRoomInfo(sunny, 14, 4),//桑尼：呜哇！偷东西的时候你的能力超重要的好吗？
-                new ChatRoomInfo(star, 7, 5),//斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
-                new ChatRoomInfo(sunny,15, 6),//桑尼 & 露娜：不可以！！！
-                new ChatRoomInfo(luna,11, 6),
+                new ChatRoomInfo(sunny, ChatDictionary[12], -1),//桑尼：下一次该去哪里恶作剧呢？
+                new ChatRoomInfo(star, GetChatText("Star",6), 0),//斯塔：要不去偷那个黑白魔法使的蘑菇吧？
+                new ChatRoomInfo(luna, GetChatText("Luna",9), 1),//露娜：且不说被发现了会怎么样...咱们去小偷家里偷东西？
+                new ChatRoomInfo(sunny,ChatDictionary[13],2),//桑尼：没事的啦！露娜你只管殿后就好啦。
+                new ChatRoomInfo(luna, GetChatText("Luna",10), 3),//露娜：每次都是我收拾残局欸？！这次要去你们俩去吧，人家才不去呢！
+                new ChatRoomInfo(sunny, ChatDictionary[14], 4),//桑尼：呜哇！偷东西的时候你的能力超重要的好吗？
+                new ChatRoomInfo(star, GetChatText("Star",7), 5),//斯塔：好啦好啦，那要不咱们去偷那个红白巫女的赛钱箱吧？
+                new ChatRoomInfo(sunny,ChatDictionary[15], 6),//桑尼 & 露娜：不可以！！！
+                new ChatRoomInfo(luna,GetChatText("Luna",11), 6),
             ];
 
             return list;

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -53,7 +54,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Lunasa_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 14;
             Main.projPet[Type] = true;
@@ -117,13 +118,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
-            timePerDialog = 640;
-            chance = 9;
+            timePerDialog = 640;//640
+            chance = 9;//9
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -221,7 +222,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (OwnerIsMyPlayer)
             {
                 bool useTicket = Owner.HasBuff<ConcertBuff>();
-                if ((Owner.afkCounter >= 600 && GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver) || useTicket)
+                if ((Owner.afkCounter >= 600 && SpecialAbility_Prismriver) || useTicket)
                 {
                     bool readyForBand = ((mainTimer % 60 == 0 && Main.rand.NextBool(2) && ActionCD <= 0) || useTicket)
                         && Owner.HasBuff<PoltergeistBuff>() && !IsBandState;

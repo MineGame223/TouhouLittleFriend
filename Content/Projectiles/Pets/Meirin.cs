@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using static TouhouPets.Content.Projectiles.Pets.Remilia;
@@ -55,7 +56,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Meirin_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 24;
             Main.projPet[Type] = true;
@@ -125,9 +126,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 5;//5
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -150,48 +151,48 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting3(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID meirin = TouhouPetID.Meirin;
             TouhouPetID sakuya = TouhouPetID.Sakuya;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(meirin, 10, -1), //美铃：咲夜小姐每天那么忙，有过休假的时候吗？
-                new ChatRoomInfo(sakuya, 6, 0),//咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
-                new ChatRoomInfo(meirin, 11, 1), //美铃：这个工作和休假没啥区别啊...
-                new ChatRoomInfo(sakuya, 7, 2),//咲夜：什么？
-                new ChatRoomInfo(meirin, 12, 3), //美铃：没！没什么...
+                new ChatRoomInfo(meirin, ChatDictionary[10], -1), //美铃：咲夜小姐每天那么忙，有过休假的时候吗？
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",6), 0),//咲夜：和大小姐在一起的每一天都是休假，你不也没有什么“假期”么？
+                new ChatRoomInfo(meirin, ChatDictionary[11], 1), //美铃：这个工作和休假没啥区别啊...
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",7), 2),//咲夜：什么？
+                new ChatRoomInfo(meirin, ChatDictionary[12], 3), //美铃：没！没什么...
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID meirin = TouhouPetID.Meirin;
             TouhouPetID sakuya = TouhouPetID.Sakuya;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(meirin, 13, -1), //美铃：咲夜小姐，我最近发现了一本讲保安和女仆谈恋爱的漫画欸！
-                new ChatRoomInfo(sakuya, 8, 0),//咲夜：站岗期间你看漫画？
-                new ChatRoomInfo(meirin, 14, 1), //美铃：啊，糟了！偷懒的事暴露了...
-                new ChatRoomInfo(sakuya, 9, 2),//咲夜：什么？
-                new ChatRoomInfo(meirin, 15, 3), //美铃：呜呜呜...欸？
+                new ChatRoomInfo(meirin, ChatDictionary[13], -1), //美铃：咲夜小姐，我最近发现了一本讲保安和女仆谈恋爱的漫画欸！
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",8), 0),//咲夜：站岗期间你看漫画？
+                new ChatRoomInfo(meirin, ChatDictionary[14], 1), //美铃：啊，糟了！偷懒的事暴露了...
+                new ChatRoomInfo(sakuya, GetChatText("Sakuya",9), 2),//咲夜：什么？
+                new ChatRoomInfo(meirin, ChatDictionary[15], 3), //美铃：呜呜呜...欸？
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting3()
+        private List<ChatRoomInfo> Chatting3()
         {
             TouhouPetID meirin = TouhouPetID.Meirin;
             TouhouPetID flandre = TouhouPetID.Flandre;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(meirin, 5, -1), //美铃：易有太极，是生两仪...
-                new ChatRoomInfo(flandre, 9, 0),//芙兰：美铃在说什么？
-                new ChatRoomInfo(meirin, 6, 1), //美铃：是我的家乡话哦，二小姐。
+                new ChatRoomInfo(meirin, ChatDictionary[5], -1), //美铃：易有太极，是生两仪...
+                new ChatRoomInfo(flandre, GetChatText("Flandre",9), 0),//芙兰：美铃在说什么？
+                new ChatRoomInfo(meirin, ChatDictionary[6], 1), //美铃：是我的家乡话哦，二小姐。
             ];
 
             return list;
@@ -407,7 +408,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     if (Main.rand.NextBool(25) && Timer == 0)
                     {
-                        Projectile.SetChat(5);
+                        Projectile.SetChat(ChatDictionary[5]);
                         Timer++;
                     }
                 }

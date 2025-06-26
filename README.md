@@ -45,53 +45,59 @@
 
 所有方法的返回值均为 `bool` 类型，以指示该操作是否成功执行
 
-### PetsReactionToBoss
-
-设置宠物遭遇不同Boss时会说出的话，允许对宠物已有的Boss相关文本进行覆盖，每种Boss可对应多句随机文本。
-
-#### 参数
-
-- `BossType` ：被指定的Boss生物的种类，`int` 或 `short` 类型
-- `UniquePetID` ：宠物索引值，可参考[TouhouPetID.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/TouhouPetUniqueID.cs)，建议您复制一份到自己的模组中以供便利，`int` 类型
-- `ChatText` ：与之相关的话语文本合集，`WeightedRandom<LocalizedText>` 类型
-- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
-
-#### 注意事项
-
-- `BossType` 代指的NPC必须能够被判定为Boss，即 `npc.boss = true`。
-
-### YuyukosReactionToFood
-
-设置幽幽子是否接受或拒绝某样食物并给出评价，允许对宠物已有的食物相关态度进行覆盖，每种食物可对应多句随机文本。
-
-#### 参数
-
-- `FoodType` ：被指定的食物种类，`int` 或 `short` 类型
-- `ChatText` ：与之相关的话语文本合集，`WeightedRandom<LocalizedText>` 类型
-- `Accept` ：幽幽子是否接受该种食物，被拒绝的食物将不会被幽幽子选择吃掉，`bool` 类型
-- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
-- `Cover` ：添加对于原版食物的评价时，是否会覆盖本模组自带的评价，`bool?` 类型（选填，默认为不覆盖）
-
-#### 注意事项
-
-- `FoodType` 代指的物品必须能够被判定为食物，即 `ItemID.Sets.IsFood[item.type] = true`
-- 其他模组通过 Mod.Call 添加的对同一种食物的评价会相互兼容，不受 `Cover` 影响
-
 ### PetDialog
 
 为本模组宠物添加平常随机或在特定条件下可能会说出的话。
 
 #### 参数
 
-- `UniquePetID` ：被添加对话的宠物的索引值，`int` 类型
-- `ChatText` ：与之相关的话语文本，`LocalizedText` 类型
-- `Condition` ：允许说出相关话语的条件，`Func<bool>` 类型
-- `Weight` ：相关话语的出现权重，值越大则出现几率越高，`int` 类型
 - `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `UniquePetID` ：被添加对话的宠物的索引值，`int` 类型
+- `ChatText` ：语句文本，`LocalizedText` 类型
+- `Condition` ：允许说出该语句的条件，`Func<bool>` 类型，选填
+- `Weight` ：语句的出现权重，值越大则出现几率越高，`int` 类型，选填
 
 #### 注意事项
 
-- `Weight` 最小为1，任何小于0的填入数值都会被强制设置为1
+- `Condition` 默认为始终生效，后续的所有条件参数同理
+- `Weight` 默认且最小为1，任何小于0的填入数值都会被强制设置为1，后续所有的权重参数同理
+
+### PetsReactionToBoss
+
+设置宠物遭遇不同Boss时会说出的话。
+
+#### 参数
+
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `BossType` ：被指定的Boss生物的种类，`int` 或 `short` 类型
+- `UniquePetID` ：宠物索引值，可参考[TouhouPetID.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/TouhouPetUniqueID.cs)，建议您复制一份到自己的模组中以供便利，`int` 类型
+- `ChatText` ：语句文本，`LocalizedText` 类型
+- `Condition` ：允许说出该语句的条件，`Func<bool>` 类型，选填
+- `Weight` ：语句的出现权重，值越大则出现几率越高，`int` 类型，选填
+
+#### 注意事项
+
+- `BossType` 代指的NPC必须能够被判定为Boss，即 `npc.boss = true`
+- 若为同种类的Boss进行了多次添加，则最终的文本将从符合条件的所有语句中随机抽选
+
+### YuyukosReactionToFood
+
+设置幽幽子是否接受或拒绝某样食物并给出评价。
+
+#### 参数
+
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `FoodType` ：被指定的食物种类，`int` 或 `short` 类型
+- `ChatText` ：语句文本，`LocalizedText` 类型
+- `Accept` ：幽幽子是否接受该种食物，被拒绝的食物将不会被幽幽子选择吃掉，`bool` 类型，选填
+- `Condition` ：允许说出该语句的条件，`Func<bool>` 类型，选填
+- `Weight` ：语句的出现权重，值越大则出现几率越高，`int` 类型，选填
+
+#### 注意事项
+
+- `FoodType` 代指的物品必须能够被判定为食物，即 `ItemID.Sets.IsFood[item.type] = true`
+- 若为同种类的食物进行了多次添加，则最终的文本将从符合条件的所有语句中随机抽选
+- `Accept` 默认为接受
 
 ### PetChatRoom
 
@@ -99,18 +105,29 @@
 
 #### 参数
 
-- `ChatRoomInfoList` ：包含聊天室信息的列表，`List<(int, int, int)>` 类型
-- 列表中元组内的三个参数分别代表 `宠物索引` ，`文本索引` 和 `回合数`
 - `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `ChatRoomInfoList` ：包含聊天室信息的元组列表，`List<(int, LocalizedText, int)>` 类型
+- 列表中元组内的三个参数分别代表 `宠物索引` ，`对话文本` 和 `回合数`
 
 #### 注意事项
 
-- `文本索引` 由上文中 `PetDialog` 的填写顺序决定，索引值从0开始，详细参考可查看[ModCallShowcase.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/ModSupports/ModCallShowcase.cs)
+- `对话文本` 的第一句应当首先用 `PetDialog` 进行注册，详细参考可查看[ModCallShowcase.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/ModSupports/ModCallShowcase.cs)
 - `回合数` 从-1开始！
+
+### YukaSolutionInfo
+
+让幽香的溶液喷洒功能适配您的模组中添加的环境溶液
+
+#### 参数
+
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `ItemType` ：溶液的物品种类，`int` 类型
+- `ProjectileType` ：溶液的对应射弹种类，`int` 类型
+- `DustType` ：溶液的粒子种类，`int` 或 `Func<int>` 类型
 
 ## 其他内容
 
-- 有那么几个喜欢音乐的宠物可能会一时兴起、更改游戏的背景音乐。您可以通过查看游戏内的`闹鬼的应援棒`物品，了解如何让她们演奏由您甄选的音乐！
+- 有那么几个喜欢音乐的宠物可能会一时兴起、更改游戏的背景音乐。您可以通过查看游戏内的 `闹鬼的应援棒` 物品，了解如何让她们演奏由您甄选的音乐！
 
 - 如果您在宠物商人那里消费了足够多的钱币，她或许会赠予您什么东西...
 

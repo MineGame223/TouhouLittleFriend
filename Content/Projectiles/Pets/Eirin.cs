@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -88,7 +89,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Eirin_Cloth");
         //private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Eirin_Glow");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 12;
             Main.projPet[Type] = true;
@@ -99,10 +100,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                 .WhenSelected(4, 0);
         }
         public override TouhouPetID UniqueID => TouhouPetID.Eirin;
-        public override void OnSpawn(IEntitySource source)
-        {
-            base.OnSpawn(source);
-        }
         public override bool DrawPetSelf(ref Color lightColor)
         {
             DrawPetConfig config = drawConfig with
@@ -165,10 +162,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;//8
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
             float healthPercentage = (float)Owner.statLife / Owner.statLifeMax;
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -224,17 +221,17 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID eirin = TouhouPetID.Eirin;
             TouhouPetID kaguya = TouhouPetID.Kaguya;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(eirin, 18, -1), //永琳：公主大人，上次我又看到您偷偷跑去人里了。
-                new ChatRoomInfo(kaguya, 16, 0),//辉夜：有、有吗？一定是你看错了吧...
-                new ChatRoomInfo(eirin, 19, 1), //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
-                new ChatRoomInfo(kaguya, 17, 2),//辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
+                new ChatRoomInfo(eirin, ChatDictionary[18], -1), //永琳：公主大人，上次我又看到您偷偷跑去人里了。
+                new ChatRoomInfo(kaguya, GetChatText("Kaguya",16), 0),//辉夜：有、有吗？一定是你看错了吧...
+                new ChatRoomInfo(eirin, ChatDictionary[19], 1), //永琳：唉...虽然我确实说过您不应该总是宅在永远亭里，但村庄那边也不是我们该去的地方啊。
+                new ChatRoomInfo(kaguya, GetChatText("Kaguya",17), 2),//辉夜：这附近除了那边都好没意思的...欸不是，我是说、我没有！
             ];
 
             return list;
@@ -257,11 +254,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.CloseCurrentDialog();
                 if (player.difficulty == PlayerDifficultyID.Hardcore)
                 {
-                    Projectile.SetChat(ModUtils.GetChatTextValue("Eirin", "99", Owner.name));
+                    Projectile.SetChat(GetChatText("Eirin", "HardCoreDeath", Owner.name));
                 }
                 else
                 {
-                    Projectile.SetChat(14);
+                    Projectile.SetChat(ChatDictionary[14]);
                 }
                 CurrentState = States.OwnerIsDead;
             }

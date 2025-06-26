@@ -5,8 +5,6 @@ namespace TouhouPets
 {
     public class SpecialAbilityPlayer : ModPlayer
     {
-        public bool MurasasCurse => Player.HasBuff<MurasaBuff>() && Main.remixWorld;
-
         public bool treasureShine;
         private void CommonResetUpdate()
         {
@@ -22,29 +20,26 @@ namespace TouhouPets
         }
         public override void ModifyLuck(ref float luck)
         {
-            if (Player.HasBuff(BuffType<HinaBuff>())
-                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Hina)
+            if (Player.HasBuff(BuffType<HinaBuff>()) && SpecialAbility_Hina)
             {
                 if (luck < 0)
                 {
                     luck = 0;
                 }
             }
-            if (Player.HasBuff(BuffType<TenshiBuff>())
-                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Tenshin)
+            if (Player.HasBuff(BuffType<TenshiBuff>()) && SpecialAbility_Tenshin)
             {
                 luck += 0.5f;
             }
 
-            if (Player.HasBuff(BuffType<TewiBuff>())
-                && GetInstance<PetAbilitiesConfig>().SpecialAbility_Tewi)
+            if (Player.HasBuff(BuffType<TewiBuff>()) && SpecialAbility_Tewi)
             {
                 luck += 0.3f;
             }
         }
         public override void PostUpdateBuffs()
         {
-            if (treasureShine && GetInstance<PetAbilitiesConfig>().SpecialAbility_Star)
+            if (treasureShine && SpecialAbility_Star)
             {
                 Player.spelunkerTimer++;
                 if (Player.spelunkerTimer >= 10)
@@ -56,7 +51,7 @@ namespace TouhouPets
         }
         public override void UpdateEquips()
         {
-            if (MurasasCurse && GetInstance<PetAbilitiesConfig>().SpecialAbility_Murasa)
+            if (Player.HasBuff<MurasaBuff>() && Main.zenithWorld && SpecialAbility_Murasa)
             {
                 Player.waterWalk = false;
 

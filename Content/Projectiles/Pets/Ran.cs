@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -27,7 +28,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Ran_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 8;
             Main.projPet[Type] = true;
@@ -70,9 +71,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;//8
             whenShouldStop = false;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -92,29 +93,29 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting2(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID ran = TouhouPetID.Ran;
             TouhouPetID yukari = TouhouPetID.Yukari;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(ran, 3, -1), //蓝：饕餮那家伙，依旧坚持在畜牲界混吗...
-                new ChatRoomInfo(yukari, 4, 0), //紫：若是叨念的话，我允许你临时请假哦。
-                new ChatRoomInfo(ran, 4, 1), //蓝：才、才没有啊紫大人！
+                new ChatRoomInfo(ran, ChatDictionary[3], -1), //蓝：饕餮那家伙，依旧坚持在畜牲界混吗...
+                new ChatRoomInfo(yukari, GetChatText("Yukari",4), 0), //紫：若是叨念的话，我允许你临时请假哦。
+                new ChatRoomInfo(ran, ChatDictionary[4], 1), //蓝：才、才没有啊紫大人！
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID ran = TouhouPetID.Ran;
             TouhouPetID chen = TouhouPetID.Chen;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(ran, 7, -1), //蓝：橙，不要乱跑哦！
-                new ChatRoomInfo(chen, 3, 0), //橙：知道啦蓝大人，橙可没有乱跑！
+                new ChatRoomInfo(ran, ChatDictionary[7], -1), //蓝：橙，不要乱跑哦！
+                new ChatRoomInfo(chen, GetChatText("Chen",3), 0), //橙：知道啦蓝大人，橙可没有乱跑！
             ];
 
             return list;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 using static TouhouPets.SolutionSpraySystem;
@@ -48,7 +49,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             PositionOffset = new Vector2(0, -10),
         };
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuka_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
@@ -118,9 +119,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 12;
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -247,8 +248,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else
             {
-                solutionClone = new(Solution.type);
-                solutionClone.shoot = SolutionSprayType(Solution.type);
+                solutionClone = new(Solution.type)
+                {
+                    shoot = GetSprayInfo(Solution.type).SprayType
+                };
             }
             if (Projectile.frame >= 8)
             {
@@ -279,9 +282,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Vector2 pos = YukaHandOrigin + new Vector2(0, 7f * Main.essScale);
                     pos += new Vector2(0, -48).RotatedBy(MathHelper.ToRadians(Angle));
 
+                    SprayInfo info = GetSprayInfo(Solution.type);
+                    int dustType;
+                    if (info.SprayDustAdvanced == null)
+                        dustType = info.SprayDust;
+                    else
+                        dustType = info.SprayDustAdvanced();
+
                     for (int i = 0; i < 5; i++)
                     {
-                        Dust.NewDustPerfect(pos, SolutionSprayDust(solutionClone.shoot)
+                        Dust.NewDustPerfect(pos, dustType
                         , new Vector2(0, Main.rand.NextFloat(2.4f, 4.8f)).RotatedByRandom(MathHelper.TwoPi), 100
                         , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
                     }

@@ -87,9 +87,13 @@ Mods: {
 					Tooltip: Toggle whether or not pet's dialogs will show in a typer-style
 				}
 
-				CanPetChat: {
-					Label: Show pet's dialogs
-					Tooltip: Toggle whether or not pet's dialogs will show
+				ChatFrequency: {
+					Label: Speaking Frequency
+					Tooltip:
+						'''
+						Adjust the frequency of pet's speaking. The higher the value is, the more frequency the pet speaking
+						Set to 0 will stop pet from speaking
+						'''
 				}
 			}
 
@@ -145,7 +149,7 @@ Mods: {
 				}
 			}
 
-			MiscConfig: {
+			MiscConfig_ServerSide: {
 				DisplayName: Server Side Misc Function Config
 
 				CompatibilityMode: {

@@ -45,7 +45,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[2];
             set => Projectile.localAI[2] = value;
         }
-        private bool IsIdleState => PetState <= 1;
+        private bool IsIdleState => PetState <= (int)States.Blink;
         private bool IsEattingState => PetState >= (int)States.BeforeEatting && PetState <= (int)States.Eatting;
 
         private int hatFrame, hatFrameCounter;
@@ -58,7 +58,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Yuyuko_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 20;
             Main.projPet[Type] = true;
@@ -73,7 +73,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Item food = Owner.inventory[Owner.selectedItem];
             if (food.stack > 0 && ItemID.Sets.IsFood[food.type])
             {
-                if (!IsEattingState && GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuyuko)
+                if (!IsEattingState && SpecialAbility_Yuyuko)
                 {
                     Owner.cursorItemIconEnabled = true;
                     Owner.cursorItemIconText = Language.GetTextValue($"Mods.TouhouPets.FeedYuyuko");
@@ -166,20 +166,15 @@ namespace TouhouPets.Content.Projectiles.Pets
             name = "Yuyuko";
             indexRange = new Vector2(1, 15);
         }
-        public override void PostRegisterChat()
-        {
-            this.RegisterComment_Vanilla();
-            this.RegisterRejectComment_Vanilla();
-        }
         public override void SetRegularDialog(ref int timePerDialog, ref int chance, ref bool whenShouldStop)
         {
             timePerDialog = 970;//970
             chance = 9;//9
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -207,43 +202,44 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting3(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID yuyuko = TouhouPetID.Yuyuko;
             TouhouPetID youmu = TouhouPetID.Youmu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yuyuko, 12, -1), //幽幽子：妖梦酱有为未来做过打算嘛？
-                new ChatRoomInfo(youmu, 6, 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
-                new ChatRoomInfo(yuyuko, 13, 1), //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
-                new ChatRoomInfo(youmu, 10, 2),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
+                new ChatRoomInfo(yuyuko, ChatDictionary[12], -1), //幽幽子：妖梦酱有为未来做过打算嘛？
+                new ChatRoomInfo(youmu, GetChatText("Youmu",6), 0),//妖梦：欸？只要伺候幽幽子大人就行了吧...
+                new ChatRoomInfo(yuyuko, ChatDictionary[13], 1), //幽幽子：妖梦酱果然还是太单纯了呀...以后再聊吧。
+                new ChatRoomInfo(youmu, GetChatText("Youmu",7), 2),//妖梦：唔...不太能理解...
+                new ChatRoomInfo(youmu, GetChatText("Youmu",10), 3),//妖梦：只要能待在幽幽子大人身旁，我就很知足了。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting2()
+        private List<ChatRoomInfo> Chatting2()
         {
             TouhouPetID yuyuko = TouhouPetID.Yuyuko;
             TouhouPetID youmu = TouhouPetID.Youmu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yuyuko, 11, -1), //幽幽子：妖梦酱，今天晚上吃什么？
-                new ChatRoomInfo(youmu, 8, 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
+                new ChatRoomInfo(yuyuko, ChatDictionary[11], -1), //幽幽子：妖梦酱，今天晚上吃什么？
+                new ChatRoomInfo(youmu, GetChatText("Youmu",8), 0),//妖梦：幽幽子大人您五分钟之前刚吃过饭。
             ];
 
             return list;
         }
-        private static List<ChatRoomInfo> Chatting3()
+        private List<ChatRoomInfo> Chatting3()
         {
             TouhouPetID yuyuko = TouhouPetID.Yuyuko;
             TouhouPetID youmu = TouhouPetID.Youmu;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(yuyuko, 1, -1), //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
-                new ChatRoomInfo(youmu, 9, 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
+                new ChatRoomInfo(yuyuko, ChatDictionary[1], -1), //幽幽子：生亦好、死也罢，不过都是场轮回。可惜与我无关...
+                new ChatRoomInfo(youmu, GetChatText("Youmu",9), 0),//妖梦：可是幽幽子大人您已经死了啊？也不会复生。
             ];
 
             return list;
@@ -376,7 +372,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                         RandomCount = Main.rand.Next(10, 30);
                         CurrentState = States.SwingFan;
                     }
-                    else if (Main.rand.NextBool(3) && GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuyuko
+                    else if (Main.rand.NextBool(3) && SpecialAbility_Yuyuko
                         && hungerPoint <= 0)
                     {
                         FoodSelect(Owner);

@@ -2,15 +2,13 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using TouhouPets.Content.Projectiles.Pets;
+using Terraria.Utilities;
 using static TouhouPets.TouhouPets;
 
 namespace TouhouPets
 {
     partial class YuyukoComment
     {
-        private static int startIndex_Reject = 0;
-
         private readonly static List<int> rejectIDList_Vanilla = [
             ItemID.JojaCola,//请不要喂我垃圾...
             ];
@@ -18,29 +16,32 @@ namespace TouhouPets
         /// <summary>
         /// 更新拒绝评价
         /// </summary>
-        /// <param name="yuyuko"></param>
+        /// <param name="projectile"></param>
         /// <param name="foodType">食物种类</param>
         /// <param name="giveComment">是否给出评价</param>
-        public static bool IsFoodOnRejectList(this Projectile yuyuko, int foodType, bool giveComment = false)
+        public static bool IsFoodOnRejectList(this Projectile projectile, int foodType, bool giveComment = false)
         {
+            if (!projectile.IsATouhouPet())
+                return false;
+
             //若发现食物，则进行评价。
             if (foodType > 0)
             {
                 //若物品类别位于黑名单中，则直接拒绝并返回
-                foreach (var i in GetInstance<MiscConfig_ClientSide>().YuyukoBanList)
+                foreach (var i in YuyukoBanList)
                 {
                     if (foodType == i.Type)
                     {
                         if (giveComment)
-                            yuyuko.SetChat(14);
+                            projectile.SetChat(projectile.AsTouhouPet().ChatDictionary[14]);
 
                         return true;
                     }
                 }
                 //分列表读取以实现覆盖效果
                 //由于跨模组评价会被优先读取，因此可以对原版已有评价进行覆盖
-                if (yuyuko.Reject_CrossMod(foodType, giveComment)
-                    || yuyuko.Reject_Vanilla(foodType, giveComment))
+                if (projectile.Reject_CrossMod(foodType, giveComment)
+                    || projectile.Reject_Vanilla(foodType, giveComment))
                 {
                     return true;
                 }
@@ -49,29 +50,16 @@ namespace TouhouPets
         }
 
         /// <summary>
-        /// 注册原版食物拒绝评价
-        /// </summary>
-        /// <param name="yuyuko"></param>
-        public static void RegisterRejectComment_Vanilla(this Yuyuko yuyuko)
-        {
-            //记录起始索引值
-            int index = yuyuko.ChatDictionary.Count;
-            startIndex_Reject = index + 1;
-
-            //以ID列表的长度为索引，注册相应对话
-            for (int i = 0; i < rejectIDList_Vanilla.Count; i++)
-            {
-                yuyuko.ChatDictionary.TryAdd(startIndex_Reject + i, Language.GetTextValue($"{Path}.Food_Reject_{i + 1}"));
-            }
-        }
-
-        /// <summary>
         /// 关于原版食物的拒绝评价
         /// </summary>
-        /// <param name="yuyuko"></param>
+        /// <param name="projectile"></param>
         /// <param name="foodType">食物种类</param>
-        private static bool Reject_Vanilla(this Projectile yuyuko, int foodType, bool giveComment = false)
+        /// <param name="giveComment">是否给出评价</param>
+        private static bool Reject_Vanilla(this Projectile projectile, int foodType, bool giveComment = false)
         {
+            if (!projectile.IsATouhouPet())
+                return false;
+
             //以防万一（？）
             if (rejectIDList_Vanilla.Count <= 0)
                 return false;
@@ -80,13 +68,7 @@ namespace TouhouPets
             {
                 if (giveComment)
                 {
-                    int finalIndex = startIndex_Reject + rejectIDList_Vanilla.IndexOf(foodType);
-                    //不是很必要的双重保险
-                    if (yuyuko.AsTouhouPet().ChatDictionary.ContainsKey(finalIndex))
-                    {
-                        yuyuko.SetChat(finalIndex, 60);
-                        return true;
-                    }
+                    projectile.SetChat(Language.GetText($"{Path}.Food_Reject_{rejectIDList_Vanilla.IndexOf(foodType) + 1}"));
                 }
                 return true;
             }
@@ -96,30 +78,38 @@ namespace TouhouPets
         /// <summary>
         /// 跨模组食物的拒绝评价
         /// </summary>
-        /// <param name="yuyuko"></param>
+        /// <param name="projectile"></param>
         /// <param name="foodType">食物种类</param>
-        private static bool Reject_CrossMod(this Projectile yuyuko, int foodType, bool giveComment = false)
+        /// <param name="giveComment">是否给出评价</param>
+        private static bool Reject_CrossMod(this Projectile projectile, int foodType, bool giveComment = false)
         {
-            //以防万一
-            if (CrossModFoodComment.Count <= 0)
+            //若列表不存在内容，则不执行后续
+            if (CrossModFoodComment_Reject.Count <= 0)
                 return false;
 
+            bool reject = false;
+            WeightedRandom<LocalizedText> result = new();
             //遍历食物评价信息列表并选取评价
-            foreach (var (info, accept, cover) in CrossModFoodComment)
+            foreach (var info in CrossModFoodComment_Reject)
             {
-                if (!accept && foodType == info.ObjectType)
-                {
-                    if (giveComment)
-                    {
-                        if (!cover && rejectIDList_Vanilla.Contains(foodType) && Main.rand.NextBool(2))
-                            return false;
+                if (foodType != info.ObjectType)
+                    continue;
 
-                        yuyuko.SetChat(info.CommentText.Get().Value);
+                if (giveComment && info.CommentContent.Count > 0)
+                {                 
+                    foreach (var j in info.CommentContent)
+                    {
+                        if (j.Condition())
+                            result.Add(j.DialogText, j.Weight);
                     }
-                    return true;
                 }
+                reject = true;
             }
-            return false;
+            if (result.elements.Count > 0)
+            {
+                projectile.SetChat(result);
+            }
+            return reject;
         }
     }
 }

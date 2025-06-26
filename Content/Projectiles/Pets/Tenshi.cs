@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -46,7 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Tenshi_Cloth");
         private readonly Texture2D glowTex = AltVanillaFunction.GetGlowTexture("Tenshi_Glow");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 22;
             Main.projPet[Type] = true;
@@ -101,9 +101,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 7;//7
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -121,9 +121,12 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
-            if (ModUtils.HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
+            if (!noReaction)
+                return;
+
+            if (HasModAndFindNPC("Gensokyo", boss, "TenshiHinanawi"))
             {
-                Projectile.SetChat(ChatSettingConfig, 9);
+                Projectile.SetChat(ChatDictionary[9]);
             }
         }
         public override void VisualEffectForPreview()
@@ -138,15 +141,15 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Chatting1(),
             };
         }
-        private static List<ChatRoomInfo> Chatting1()
+        private List<ChatRoomInfo> Chatting1()
         {
             TouhouPetID tenshin = TouhouPetID.Tenshin;
             TouhouPetID iku = TouhouPetID.Iku;
 
             List<ChatRoomInfo> list =
             [
-                new ChatRoomInfo(tenshin, 2, -1), //天子：今天也要大干一场！
-                new ChatRoomInfo(iku, 16, 0),//衣玖：天女大人您还是安分点吧...
+                new ChatRoomInfo(tenshin, ChatDictionary[2], -1), //天子：今天也要大干一场！
+                new ChatRoomInfo(iku, GetChatText("Iku",16), 0),//衣玖：天女大人您还是安分点吧...
             ];
 
             return list;

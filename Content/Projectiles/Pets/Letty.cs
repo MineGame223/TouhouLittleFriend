@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
 
@@ -49,7 +50,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Letty_Cloth");
-        public override void SetStaticDefaults()
+        public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 8;
             Main.projPet[Type] = true;
@@ -100,9 +101,9 @@ namespace TouhouPets.Content.Projectiles.Pets
             chance = 8;
             whenShouldStop = !IsIdleState;
         }
-        public override WeightedRandom<string> RegularDialogText()
+        public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
+            WeightedRandom<LocalizedText> chat = new ();
             {
                 if (CurrentState == States.Hot)
                 {
@@ -145,7 +146,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 CurrentState = States.Hot;
             }
-            else if (!InHotZone && GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty)
+            else if (!InHotZone && SpecialAbility_Letty)
             {
                 Owner.GetModPlayer<TouhouPetPlayer>().lettyCold = true;
             }
