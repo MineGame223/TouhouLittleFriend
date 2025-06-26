@@ -13,21 +13,10 @@ namespace TouhouPets
 {
     public class SolutionSpraySystem : ModSystem
     {
-        private enum SolutionType : int
-        {
-            Pure,
-            Corrupet,
-            Crimson,
-            Hallow,
-            Mushroom,
-            Dirt,
-            Sand,
-            Snow,
-        }
         private static int sprayMode;
         private static Projectile yuka;
         private static Item solution;
-        private static Dictionary<int, SprayInfo> sprayInfo = new()
+        private static readonly Dictionary<int, SprayInfo> sprayInfo = new()
         {
             { ItemID.GreenSolution, new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble) },
             { ItemID.PurpleSolution, new SprayInfo(ProjectileID.CorruptSpray, MyDustId.PinkBubble) },
@@ -45,7 +34,6 @@ namespace TouhouPets
         public static Item Sprayer => new(ItemID.Clentaminator2);
         public static bool IsSpraying => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
         public static Item Solution { get => solution; set => solution = value; }
-        public static Dictionary<int, SprayInfo> SprayInfo { get => sprayInfo; set => sprayInfo = value; }
         private static float PetState
         {
             get
@@ -100,8 +88,9 @@ namespace TouhouPets
         }
         public static SprayInfo GetSprayInfo(int key)
         {
-            if (!SprayInfo.TryGetValue(key, out SprayInfo value))
-                return new SprayInfo(Sprayer.shoot, MyDustId.RedBubble);
+            if (!sprayInfo.TryGetValue(key, out SprayInfo value)
+                && !TouhouPets.CrossModSprayInfo.TryGetValue(key, out value))
+                return new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble);
 
             return value;
         }

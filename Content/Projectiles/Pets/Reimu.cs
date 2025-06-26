@@ -158,7 +158,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void OnFindBoss(NPC boss, bool noReaction)
         {
-            if (!noReaction)
+            if (!noReaction || Owner.HasBuff<MarisaBuff>())
                 return;
 
             Projectile.SetChat(ChatDictionary[3]);

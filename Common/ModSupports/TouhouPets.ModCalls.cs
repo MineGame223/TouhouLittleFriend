@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace TouhouPets
@@ -13,6 +14,7 @@ namespace TouhouPets
         private const string Arg_2 = "PetDialog";
         private const string Arg_3 = "PetChatRoom";
         private const string Arg_4 = "YuyukosReactionToFood";
+        private const string Arg_5 = "YukaSolutionInfo";
 
         #region 日志信息
         private const string Warning_NullException = "ModCall填入内容不可为空！";
@@ -52,6 +54,13 @@ namespace TouhouPets
         /// </summary>
         public static List<CommentInfo> CrossModFoodComment_Reject { get => crossModFoodComment_Reject; set => crossModFoodComment_Reject = value; }
         private static List<CommentInfo> crossModFoodComment_Reject = [];
+
+        /// <summary>
+        /// 跨模组添加的环境溶液的字典
+        /// </summary>
+        public static Dictionary<int, SprayInfo> CrossModSprayInfo { get => crossModSprayInfo; set => crossModSprayInfo = value; }
+        private static Dictionary<int, SprayInfo> crossModSprayInfo = [];
+
         private static void InitializeCrossModList()
         {
             //需要对列表进行初始化
@@ -63,6 +72,7 @@ namespace TouhouPets
             }
             CrossModFoodComment_Accept = [];
             CrossModFoodComment_Reject = [];
+            CrossModSprayInfo = [];
         }
         private static void NullifyCrossModList()
         {
@@ -71,6 +81,7 @@ namespace TouhouPets
             CrossModBossComment = null;
             CrossModFoodComment_Accept = null;
             CrossModFoodComment_Reject = null;
+            CrossModSprayInfo = null;
         }
         public override object Call(params object[] args)
         {
@@ -95,6 +106,9 @@ namespace TouhouPets
 
                     case Arg_4:
                         return AddYuyukoReaction(args);
+
+                    case Arg_5:
+                        return AddCrossModSolution(args);
                 }
             }
             return null;
@@ -418,6 +432,61 @@ namespace TouhouPets
             }
 
             Logger.Info(ConsoleMessage("宠物聊天室添加结果", logInfo.ToString()));
+
+            return true;
+        }
+        private object AddCrossModSolution(params object[] args)
+        {
+            if (args[1] is not Mod
+                || args[2] is not int
+                || args[3] is not int
+                || args[4] is not int and not Func<int>)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, Warning_WrongDataType));
+                return false;
+            }
+            object arg_Mod = args[1];
+            object arg_Item = args[2];
+            object arg_Spray = args[3];
+            object arg_Dust = args[4];
+
+            if (arg_Mod == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：添加对象"));
+                return false;
+            }
+            if (arg_Item == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：环境溶液物品"));
+                return false;
+            }
+            if (arg_Spray == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：环境溶液射弹"));
+                return false;
+            }
+            if (arg_Dust == null)
+            {
+                Logger.Warn(ConsoleMessage(Arg_5, $"{Warning_NullValue}，空值对象：环境溶液粒子"));
+                return false;
+            }
+
+            int itemType = (int)arg_Item;
+            int sprayType = (int)arg_Spray;
+
+            if (itemType > ItemID.None && !CrossModSprayInfo.ContainsKey(itemType))
+            {
+                if (arg_Dust is int)
+                    CrossModSprayInfo.Add(itemType, new SprayInfo(sprayType, (int)arg_Dust));
+                else
+                    CrossModSprayInfo.Add(itemType, new SprayInfo(sprayType, -1, (Func<int>)arg_Dust));
+            }
+
+            Mod mod = (Mod)arg_Mod;
+            string modName = mod.DisplayNameClean;
+            StringBuilder logInfo = new($"添加成功！添加者：{modName}");
+
+            Logger.Info(ConsoleMessage("环境溶液添加结果", logInfo.ToString()));
 
             return true;
         }

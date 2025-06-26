@@ -282,9 +282,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Vector2 pos = YukaHandOrigin + new Vector2(0, 7f * Main.essScale);
                     pos += new Vector2(0, -48).RotatedBy(MathHelper.ToRadians(Angle));
 
+                    SprayInfo info = GetSprayInfo(Solution.type);
+                    int dustType;
+                    if (info.SprayDustAdvanced == null)
+                        dustType = info.SprayDust;
+                    else
+                        dustType = info.SprayDustAdvanced();
+
                     for (int i = 0; i < 5; i++)
                     {
-                        Dust.NewDustPerfect(pos, GetSprayInfo(Solution.type).SprayDust
+                        Dust.NewDustPerfect(pos, dustType
                         , new Vector2(0, Main.rand.NextFloat(2.4f, 4.8f)).RotatedByRandom(MathHelper.TwoPi), 100
                         , default, Main.rand.NextFloat(0.5f, 2f)).noGravity = true;
                     }
