@@ -114,6 +114,17 @@
 - `对话文本` 的第一句应当首先用 `PetDialog` 进行注册，详细参考可查看[ModCallShowcase.cs](https://github.com/MineGame223/TouhouLittleFriend/blob/master/Common/ModSupports/ModCallShowcase.cs)
 - `回合数` 从-1开始！
 
+### YukaSolutionInfo
+
+让幽香的溶液喷洒功能适配您的模组中添加的环境溶液
+
+#### 参数
+
+- `Mod` ：您的模组类名，用于日志信息，`Mod` 类型
+- `ItemType` ：溶液的物品种类，`int` 类型
+- `ProjectileType` ：溶液的对应射弹种类，`int` 类型
+- `DustType` ：溶液的粒子种类，`int` 或 `Func<int>` 类型
+
 ## 其他内容
 
 - 有那么几个喜欢音乐的宠物可能会一时兴起、更改游戏的背景音乐。您可以通过查看游戏内的 `闹鬼的应援棒` 物品，了解如何让她们演奏由您甄选的音乐！
