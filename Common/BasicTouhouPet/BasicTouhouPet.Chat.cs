@@ -16,83 +16,83 @@ namespace TouhouPets
         /// <br/>该属性并不会影响宠物更新常规对话，仅作为是否应当参与聊天的判断条件
         /// <br/>!--该属性会反复重置
         /// </summary>
-        internal bool shouldNotTalking;
+        protected internal bool shouldNotTalking;
 
         /// <summary>
         /// 实际采用的文字颜色
         /// </summary>
-        internal Color textColor = Color.White;
+        protected internal Color textColor = Color.White;
 
         /// <summary>
         /// 实际采用的文字边框颜色
         /// </summary>
-        internal Color boardColor = Color.Black;
+        protected internal Color boardColor = Color.Black;
 
         /// <summary>
         /// 对话文本不透明度
         /// </summary>
-        internal float chatOpacity;
+        protected internal float chatOpacity;
 
         /// <summary>
         /// 对话字体大小
         /// </summary>
-        internal float chatScale;
+        protected internal float chatScale;
 
         /// <summary>
         /// 整段对话文本的底部坐标
         /// </summary>
-        internal float chatBaseY = 0;
+        protected internal float chatBaseY = 0;
 
         /// <summary>
         /// 对话的持续剩余时间
         /// <br>每当设置对话时，该值都会被赋予预设的时长并一直减少至 0</br>
         /// <br>若该值小于等于 1 时、chatOpacity 尚未归0，则该值会保持为 1，直到 chatOpacity 归 0</br>
         /// </summary>
-        internal int chatTimeLeft;
+        protected internal int chatTimeLeft;
 
         /// <summary>
         /// 完成一次对话后的间隔，在大于0时会一直减少至0
         /// <br/>该值大于0时，宠物不会发起向其他宠物的对话或接受来自其他宠物的对话
         /// </summary>
-        internal int chatCD;
+        protected internal int chatCD;
 
         /// <summary>
         /// 对话文本
         /// </summary>
-        internal LocalizedText chatText;
+        protected internal LocalizedText chatText;
 
         /// <summary>
         /// 说话前的延时
         /// </summary>
-        internal int chatLag;
+        protected internal int chatLag;
 
         /// <summary>
         /// 打字机式文本显示状态下，打印文本总共需要的时间
         /// </summary>
-        internal float totalTimeToType;
+        protected internal float totalTimeToType;
 
         /// <summary>
         /// 打字机式文本显示状态下，打印单个字符所需的时间
         /// </summary>
-        internal float timeToType;
+        protected internal float timeToType;
 
         /// <summary>
         /// 主要计时器，从0增加至4800再重置并循环
         /// <br/>由于该计时器并不接受同步，故最好只在本地客户端执行与其相关的操作
         /// </summary>
-        internal int mainTimer;
+        protected internal int mainTimer;
 
         /// <summary>
         /// 是否开启对话文字震动
         /// <br/>恋恋专用
         /// <br/>!--该属性会反复重置
         /// </summary>
-        internal bool textShaking;
+        protected internal bool textShaking;
 
         /// <summary>
         /// 对话字典
         /// </summary>
-        internal Dictionary<int, LocalizedText> ChatDictionary
+        protected internal Dictionary<int, LocalizedText> ChatDictionary
         {
             get => TouhouPets.ChatDictionry[(int)UniqueID];
             set => TouhouPets.ChatDictionry[(int)UniqueID] = value;
@@ -101,7 +101,7 @@ namespace TouhouPets
         /// <summary>
         /// 对应聊天室是否启动
         /// </summary>
-        internal Dictionary<LocalizedText, bool> IsChatRoomActive
+        protected internal Dictionary<LocalizedText, bool> IsChatRoomActive
         {
             get => TouhouPets.IsChatRoomActive[(int)UniqueID];
             set => TouhouPets.IsChatRoomActive[(int)UniqueID] = value;
@@ -110,7 +110,7 @@ namespace TouhouPets
         /// <summary>
         /// 当前聊天室
         /// </summary>
-        internal PetChatRoom currentChatRoom;
+        protected internal PetChatRoom currentChatRoom;
 
         #region 对话查找方法
         /// <summary>
@@ -255,16 +255,13 @@ namespace TouhouPets
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                ChatDictionary.Add(i, Language.GetText($"Mods.{nameof(TouhouPets)}.Chat_{name}.Chat{i}"));
+                ChatDictionary.Add(i, Language.GetOrRegister($"Mods.{Mod.Name}.Chat_{name}.Chat{i}")); // 换成GetOrRegister了，这样会自动注册键
             }
 
             //仅当聊天室列表存在内容时进行注册
-            if (RegisterChatRoom().Count > 0)
+            foreach (var infoList in RegisterChatRoom())
             {
-                foreach (var infoList in RegisterChatRoom())
-                {
-                    IsChatRoomActive.TryAdd(infoList[0].ChatText, false);
-                }
+                IsChatRoomActive.TryAdd(infoList[0].ChatText, false);
             }
 
             PostRegisterChat();
@@ -324,7 +321,8 @@ namespace TouhouPets
                 //将跨模组的常规对话加入随机选择器
                 GetCrossModChat(ref chatText);
                 //设置说话
-                Projectile.SetChat(chatText.Get());
+                if (chatText != null)
+                    Projectile.SetChat(chatText.Get());
             }
         }
 
@@ -457,7 +455,7 @@ namespace TouhouPets
         /// <br/>仅在本地端更新
         /// </summary>
         /// <returns></returns>
-        public virtual WeightedRandom<LocalizedText> RegularDialogText() => null;
+        public virtual WeightedRandom<LocalizedText> RegularDialogText() => new();
         /// <summary>
         /// 注册聊天室列表
         /// </summary>

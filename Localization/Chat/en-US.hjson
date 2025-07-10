@@ -22,6 +22,7 @@ Mods: {
 			Chat10: Wherever Dai-chan goes, that's where I go!
 			Chat11: So many frogs!
 			Chat12: ("Oh god! Keine-sensei will find me...")
+			Chat5: Mods.TouhouPets.Chat_Cirno.Chat5
 		}
 
 		Chat_Daiyousei: {
@@ -185,6 +186,39 @@ Mods: {
 			Chat15: What's up, Reimu?
 			Chat16: Ugh...Why do you suddenly say this? Sounds weird...
 			Chat17: Eh...Pretty good, I think? It means we are born with great duty, daze!
+			Chat18: Mods.TouhouPets.Chat_Marisa.Chat18
+			Chat19: Mods.TouhouPets.Chat_Marisa.Chat19
+			Chat20: Mods.TouhouPets.Chat_Marisa.Chat20
+			Chat21: Mods.TouhouPets.Chat_Marisa.Chat21
+			Chat22: Mods.TouhouPets.Chat_Marisa.Chat22
+			Chat23: Mods.TouhouPets.Chat_Marisa.Chat23
+			Chat24: Mods.TouhouPets.Chat_Marisa.Chat24
+			Chat25: Mods.TouhouPets.Chat_Marisa.Chat25
+			Chat26: Mods.TouhouPets.Chat_Marisa.Chat26
+			Chat27: Mods.TouhouPets.Chat_Marisa.Chat27
+			Chat28: Mods.TouhouPets.Chat_Marisa.Chat28
+			Chat29: Mods.TouhouPets.Chat_Marisa.Chat29
+			Chat30: Mods.TouhouPets.Chat_Marisa.Chat30
+			Chat31: Mods.TouhouPets.Chat_Marisa.Chat31
+			Chat32: Mods.TouhouPets.Chat_Marisa.Chat32
+			Chat33: Mods.TouhouPets.Chat_Marisa.Chat33
+			Chat34: Mods.TouhouPets.Chat_Marisa.Chat34
+			Chat35: Mods.TouhouPets.Chat_Marisa.Chat35
+			Chat36: Mods.TouhouPets.Chat_Marisa.Chat36
+			Chat37: Mods.TouhouPets.Chat_Marisa.Chat37
+			Chat38: Mods.TouhouPets.Chat_Marisa.Chat38
+			Chat39: Mods.TouhouPets.Chat_Marisa.Chat39
+			Chat40: Mods.TouhouPets.Chat_Marisa.Chat40
+			Chat41: Mods.TouhouPets.Chat_Marisa.Chat41
+			Chat42: Mods.TouhouPets.Chat_Marisa.Chat42
+			Chat43: Mods.TouhouPets.Chat_Marisa.Chat43
+			Chat44: Mods.TouhouPets.Chat_Marisa.Chat44
+			Chat45: Mods.TouhouPets.Chat_Marisa.Chat45
+			Chat46: Mods.TouhouPets.Chat_Marisa.Chat46
+			Chat47: Mods.TouhouPets.Chat_Marisa.Chat47
+			Chat48: Mods.TouhouPets.Chat_Marisa.Chat48
+			Chat49: Mods.TouhouPets.Chat_Marisa.Chat49
+			Chat50: Mods.TouhouPets.Chat_Marisa.Chat50
 		}
 
 		Chat_Reimu: {
@@ -204,6 +238,40 @@ Mods: {
 			Chat14: If we're actually crafted for a world's existence by somebody, how do you feel about it?
 			Chat15: Just tell me how do you feel!
 			Chat16: Perhaps so...
+			Chat17: Mods.TouhouPets.Chat_Reimu.Chat17
+			Chat18: Mods.TouhouPets.Chat_Reimu.Chat18
+			Chat19: Mods.TouhouPets.Chat_Reimu.Chat19
+			Chat20: Mods.TouhouPets.Chat_Reimu.Chat20
+			Chat21: Mods.TouhouPets.Chat_Reimu.Chat21
+			Chat22: Mods.TouhouPets.Chat_Reimu.Chat22
+			Chat23: Mods.TouhouPets.Chat_Reimu.Chat23
+			Chat24: Mods.TouhouPets.Chat_Reimu.Chat24
+			Chat25: Mods.TouhouPets.Chat_Reimu.Chat25
+			Chat26: Mods.TouhouPets.Chat_Reimu.Chat26
+			Chat27: Mods.TouhouPets.Chat_Reimu.Chat27
+			Chat28: Mods.TouhouPets.Chat_Reimu.Chat28
+			Chat29: Mods.TouhouPets.Chat_Reimu.Chat29
+			Chat30: Mods.TouhouPets.Chat_Reimu.Chat30
+			Chat31: Mods.TouhouPets.Chat_Reimu.Chat31
+			Chat32: Mods.TouhouPets.Chat_Reimu.Chat32
+			Chat33: Mods.TouhouPets.Chat_Reimu.Chat33
+			Chat34: Mods.TouhouPets.Chat_Reimu.Chat34
+			Chat35: Mods.TouhouPets.Chat_Reimu.Chat35
+			Chat36: Mods.TouhouPets.Chat_Reimu.Chat36
+			Chat37: Mods.TouhouPets.Chat_Reimu.Chat37
+			Chat38: Mods.TouhouPets.Chat_Reimu.Chat38
+			Chat39: Mods.TouhouPets.Chat_Reimu.Chat39
+			Chat40: Mods.TouhouPets.Chat_Reimu.Chat40
+			Chat41: Mods.TouhouPets.Chat_Reimu.Chat41
+			Chat42: Mods.TouhouPets.Chat_Reimu.Chat42
+			Chat43: Mods.TouhouPets.Chat_Reimu.Chat43
+			Chat44: Mods.TouhouPets.Chat_Reimu.Chat44
+			Chat45: Mods.TouhouPets.Chat_Reimu.Chat45
+			Chat46: Mods.TouhouPets.Chat_Reimu.Chat46
+			Chat47: Mods.TouhouPets.Chat_Reimu.Chat47
+			Chat48: Mods.TouhouPets.Chat_Reimu.Chat48
+			Chat49: Mods.TouhouPets.Chat_Reimu.Chat49
+			Chat50: Mods.TouhouPets.Chat_Reimu.Chat50
 		}
 
 		Chat_Nitori: {
@@ -404,6 +472,10 @@ Mods: {
 			Chat2: I'm a freshwater fish!
 			Chat3: I don't have a 'fish memory'!...
 			Chat4: *purr purr~
+			Chat5: Mods.TouhouPets.Chat_Wakasagihime.Chat5
+			Chat6: Mods.TouhouPets.Chat_Wakasagihime.Chat6
+			Chat7: Mods.TouhouPets.Chat_Wakasagihime.Chat7
+			Chat8: Mods.TouhouPets.Chat_Wakasagihime.Chat8
 		}
 
 		Chat_Yuka: {

@@ -5,6 +5,7 @@ using System.Text;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
+using TouhouPets.Common.ModSupports.ModPetRegisterSystem;
 
 namespace TouhouPets
 {
@@ -60,6 +61,22 @@ namespace TouhouPets
         /// </summary>
         public static Dictionary<int, SprayInfo> CrossModSprayInfo { get => crossModSprayInfo; set => crossModSprayInfo = value; }
         private static Dictionary<int, SprayInfo> crossModSprayInfo = [];
+
+        internal static void ResizeCrossModList(int newSize) 
+        {
+            // 因为要兼容新增宠物，这里要进行一次扩容
+            // +1 是因为Count本身也占了一个，在没有扩展模组的情况下不需要扩容
+            if (newSize < (int)TouhouPetID.Count + 1) return;
+            Array.Resize(ref crossModDialog, newSize);
+            Array.Resize(ref crossModChatRoomList, newSize);
+            Array.Resize(ref crossModBossComment, newSize);
+            for (int i = (int)TouhouPetID.Count; i < newSize; i++)
+            {
+                CrossModDialog[i] = [];
+                CrossModChatRoomList[i] = [];
+                CrossModBossComment[i] = [];
+            }
+        }
 
         private static void InitializeCrossModList()
         {
@@ -149,7 +166,7 @@ namespace TouhouPets
                 return false;
             }
             //防止索引值超限
-            if ((int)arg_Index >= (int)TouhouPetID.Count)
+            if ((int)arg_Index >= ModTouhouPetLoader.TotalCount || (int)arg_Index == (int)TouhouPetID.Count)
             {
                 Logger.Warn(ConsoleMessage(Arg_1, Warning_IndexOutOfRange));
                 return false;
@@ -336,7 +353,7 @@ namespace TouhouPets
                 Logger.Warn(ConsoleMessage(Arg_2, $"{Warning_NullValue}，空值对象：添加对象"));
                 return false;
             }
-            if ((int)arg_Index >= (int)TouhouPetID.Count)
+            if ((int)arg_Index >= ModTouhouPetLoader.TotalCount || (int)arg_Index == (int)TouhouPetID.Count)
             {
                 Logger.Warn(ConsoleMessage(Arg_2, Warning_IndexOutOfRange));
                 return false;

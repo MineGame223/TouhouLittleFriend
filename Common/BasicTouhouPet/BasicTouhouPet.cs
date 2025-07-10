@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
+using TouhouPets.Common.ModSupports.ModPetRegisterSystem;
 using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
@@ -15,7 +16,7 @@ namespace TouhouPets
     {
         #region 字段与属性
 
-        internal bool useDye = false;
+        protected internal bool useDye = false;
 
         /// <summary>
         /// 是否发现Boss
@@ -26,7 +27,7 @@ namespace TouhouPets
         /// <summary>
         /// 当鼠标悬停在宠物身上时应当变化的透明度，同时影响宠物本身和对话
         /// </summary>
-        internal float mouseOpacity = 1f;
+        protected internal float mouseOpacity = 1f;
 
         /// <summary>
         /// 是否应当启用额外视觉效果，当 <see cref="mouseOpacity"/> >= 1 时为 true
@@ -118,7 +119,7 @@ namespace TouhouPets
         #endregion
 
         #region 查找方法
-        private bool FindPet_Inner(out Projectile target, int minState, int maxState, bool checkTalkable, int type = -1, TouhouPetID id = TouhouPetID.None)
+        private bool FindPet_Inner(out Projectile target, int minState, int maxState, bool checkTalkable, int type = -1, int id = 0)
         {
             target = null;
             if (maxState <= minState && minState > 0
@@ -138,9 +139,9 @@ namespace TouhouPets
                     {
                         findType = p.type == type;
                     }
-                    else if (id > TouhouPetID.None && id < TouhouPetID.Count)
+                    else if (id > 0 && id < ModTouhouPetLoader.TotalCount)
                     {
-                        findType = p.AsTouhouPet().UniqueID == id;
+                        findType = p.AsTouhouPet().TouhouPetType == id;
                     }
                     if (findType
                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
@@ -177,6 +178,20 @@ namespace TouhouPets
         /// <returns></returns>
         internal bool FindPetByUniqueID(out Projectile target, TouhouPetID id, int minState = -1, int maxState = 0, bool checkTalkable = true)
         {
+            FindPet_Inner(out target, minState, maxState, checkTalkable, -1, (int)id);
+            return target != null;
+        }
+        /// <summary>
+        /// 通过拓展独特标识ID查找对应宠物
+        /// </summary>
+        /// <param name="target">被查找的对象</param>
+        /// <param name="id">宠物独特标识ID</param>
+        /// <param name="minState">最小状态值（ai[1]），为-1时则将无视状态检测</param>
+        /// <param name="maxState">最大状态值，默认等于最小状态值</param>
+        /// <param name="checkTalkable">是否检测对应宠物应当说话</param>
+        /// <returns></returns>
+        internal bool FindPetByPetType(out Projectile target, int id, int minState = -1, int maxState = 0, bool checkTalkable = true)
+        {
             FindPet_Inner(out target, minState, maxState, checkTalkable, -1, id);
             return target != null;
         }
@@ -202,7 +217,7 @@ namespace TouhouPets
         /// <returns></returns>
         internal bool FindPet(TouhouPetID id, bool checkTalkable = true, int minState = -1, int maxState = 0)
         {
-            return FindPet_Inner(out _, minState, maxState, checkTalkable, -1, id);
+            return FindPet_Inner(out _, minState, maxState, checkTalkable, -1, (int)id);
         }
         #endregion
 
@@ -212,7 +227,7 @@ namespace TouhouPets
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>
-        internal void MoveToPoint(Vector2 point, float speed, Vector2 center = default)
+        protected internal void MoveToPoint(Vector2 point, float speed, Vector2 center = default)
         {
             if (center == default)
             {
@@ -243,7 +258,7 @@ namespace TouhouPets
         /// </summary>
         /// <param name="point">移动到的位置</param>
         /// <param name="speed">移动速度</param>
-        internal void MoveToPoint2(Vector2 point, float speed)
+        protected internal void MoveToPoint2(Vector2 point, float speed)
         {
             Vector2 targetPos = Owner.Center + point;
             Vector2 targetVel = targetPos - Projectile.Center;
@@ -261,7 +276,7 @@ namespace TouhouPets
         /// 设置转向
         /// </summary>
         /// <param name="dist">设置与玩家同向的最小距离</param>
-        internal void ChangeDir(float dist = 100)
+        protected internal void ChangeDir(float dist = 100)
         {
             if (Projectile.Distance(Owner.Center) <= dist)
             {
@@ -421,6 +436,11 @@ namespace TouhouPets
         #endregion
 
         #region 原有重写函数
+        public override void Load()
+        {
+            RegisterToModPetLoader();
+        }
+
         public override void SetStaticDefaults()
         {
             PetStaticDefaults();
@@ -435,7 +455,7 @@ namespace TouhouPets
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.timeLeft *= 5;
-
+            SetTouhouPetType();
             PetDefaults();
             DynamicRegisterForDebug();
         }

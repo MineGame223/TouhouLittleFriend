@@ -1,4 +1,5 @@
 ﻿using Terraria.Localization;
+using TouhouPets.Common.ModSupports.ModPetRegisterSystem;
 
 namespace TouhouPets
 {
@@ -22,5 +23,12 @@ namespace TouhouPets
         /// 当前语句所属的回合值
         /// </summary>
         public int ChatTurn = chatTurn;
+
+        public ChatRoomInfo(int uniqueID, LocalizedText chatText, int chatTurn) : this((TouhouPetID)uniqueID, chatText, chatTurn) { }
+
+        public static ChatRoomInfo NewInfo<T>(LocalizedText chatText, int chatTurn) where T : BasicTouhouPet 
+        {
+            return new(ModTouhouPetLoader.TouhouPetType<T>(), chatText, chatTurn);
+        }
     }
 }
