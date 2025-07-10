@@ -468,7 +468,6 @@ namespace TouhouPets
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            //Projectile.ResetDrawStateForPet();//用于让染料正常工作
             return DrawPetSelf(ref lightColor);
         }
         public override void PostDraw(Color lightColor)

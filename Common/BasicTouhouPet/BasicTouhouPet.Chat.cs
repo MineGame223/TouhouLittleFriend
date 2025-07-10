@@ -259,12 +259,12 @@ namespace TouhouPets
             }
 
             //仅当聊天室列表存在内容时进行注册
-            if (RegisterChatRoom().Count > 0)
+            foreach (var infoList in RegisterChatRoom())
             {
-                foreach (var infoList in RegisterChatRoom())
-                {
-                    IsChatRoomActive.TryAdd(infoList[0].ChatText, false);
-                }
+                if (infoList.Count <= 0)
+                    continue;
+
+                IsChatRoomActive.TryAdd(infoList[0].ChatText, false);
             }
 
             PostRegisterChat();

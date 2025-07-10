@@ -311,7 +311,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     {
                         chance = 30;
                     }
-                    else if (Main.dayTime || Main.raining)
+                    else if (!Main.dayTime || Main.raining)
                     {
                         chance = 6;
                     }
