@@ -444,7 +444,8 @@ namespace TouhouPets
         public override void SetStaticDefaults()
         {
             PetStaticDefaults();
-            RegisterChat_Full();
+            // RegisterChat_Full();
+            /// 移至了<see cref="ModTouhouPetLoader.RegisterAllPetsChat">
         }
         public override void SetDefaults()
         {

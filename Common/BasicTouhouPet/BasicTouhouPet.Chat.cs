@@ -231,10 +231,12 @@ namespace TouhouPets
         #endregion
 
         #region 对话注册方法
+        protected virtual string ChatKeyToRegister(string name, int index) => $"Mods.{Mod.Name}.Chat_{name}.Chat{index}";
+
         /// <summary>
         /// 完整的注册对话方法
         /// </summary>
-        private void RegisterChat_Full()
+        internal void RegisterChat_Full()
         {
             //先清空字典
             ChatDictionary.Clear();
@@ -255,7 +257,9 @@ namespace TouhouPets
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                ChatDictionary.Add(i, Language.GetOrRegister($"Mods.{Mod.Name}.Chat_{name}.Chat{i}")); // 换成GetOrRegister了，这样会自动注册键
+                // GetText换成GetOrRegister了，这样会自动注册键
+                // 然后原本的键换成虚函数了，这样可以提高灵活度，交由基类继承者自己决定自动注册的对话的键
+                ChatDictionary.Add(i, Language.GetOrRegister(ChatKeyToRegister(name, i))); 
             }
 
             //仅当聊天室列表存在内容时进行注册

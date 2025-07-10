@@ -59,6 +59,18 @@ public class ModTouhouPetLoader : ILoadable
                 _fromProjID.Add(proj.type, pet);
     }
 
+    internal static void RegisterAllPetsChat() 
+    {
+        // 这里遍历所有记录在案的宠物，进行它们的对话注册
+        // 需要延后到这里来统一进行是因为那个数组的扩容发生在模组内容加载完
+        // 也就是所有的模组宠物都已经添加到FromProjID后
+        // 提前进行的话数组就越界啦
+        // 每注册一个新宠物就重新扩一次容也不好
+        // 所以延后到这里进行对话注册了
+        foreach (var pet in FromProjID.Values)
+            pet.RegisterChat_Full();
+    }
+
     public static int TouhouPetType<T>() where T : BasicTouhouPet => GetInstance<T>()?.TouhouPetType ?? 0;
 
     public static void SetReadyToUse() => ReadyToUse = true;
@@ -70,8 +82,9 @@ internal class ModPetRegisterSystem : ModSystem
     {
         ModTouhouPetLoader.CleanUpVanillaParts();
         ModTouhouPetLoader.RegisterFromIDDictionary();
-        ModTouhouPetLoader.SetReadyToUse();
-        TouhouPets.ResizeCrossModList(ModTouhouPetLoader.TotalCount);
         TouhouPets.ResizeChatSetting(ModTouhouPetLoader.TotalCount);
+        TouhouPets.ResizeCrossModList(ModTouhouPetLoader.TotalCount);
+        ModTouhouPetLoader.RegisterAllPetsChat();
+        ModTouhouPetLoader.SetReadyToUse();
     }
 }
