@@ -122,7 +122,7 @@ public class ModTouhouPetLoader : ILoadable
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static int TouhouPetType<T>() where T : BasicTouhouPet => GetInstance<T>()?.UniqueIDExtended ?? 0;
+    public static int UniqueID<T>() where T : BasicTouhouPet => GetInstance<T>()?.UniqueIDExtended ?? 0;
 
 
     /// <summary>
@@ -160,3 +160,4 @@ internal class ModPetRegisterSystem : ModSystem
         ModTouhouPetLoader.SetReadyToUse();
     }
 }
+

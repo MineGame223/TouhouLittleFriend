@@ -41,7 +41,7 @@ namespace TouhouPets
         /// <returns></returns>
         public static ChatRoomInfo NewInfo<T>(LocalizedText chatText, int chatTurn) where T : BasicTouhouPet 
         {
-            return new(ModTouhouPetLoader.TouhouPetType<T>(), chatText, chatTurn);
+            return new(ModTouhouPetLoader.UniqueID<T>(), chatText, chatTurn);
         }
     }
 }

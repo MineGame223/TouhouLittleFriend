@@ -40,7 +40,7 @@ partial class BasicTouhouPet
     /// <br></br>
     /// <br>对于东方小伙伴内部的宠物，添加注册对话时可以依旧采用<see cref="TouhouPetID"/></br>
     /// <br></br>
-    /// <br>对于附属模组添加的宠物，添加注册对话时可以用<see cref="ModTouhouPetLoader.TouhouPetType{T}"/>获取这个值</br>
+    /// <br>对于附属模组添加的宠物，添加注册对话时可以用<see cref="ModTouhouPetLoader.UniqueID{T}"/>获取这个值</br>
     /// </summary>
     public int UniqueIDExtended { get; private set; }
 }
