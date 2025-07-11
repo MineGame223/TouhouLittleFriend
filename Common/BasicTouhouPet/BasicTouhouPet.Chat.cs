@@ -257,9 +257,8 @@ namespace TouhouPets
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                // GetText换成GetOrRegister了，这样会自动注册键
                 // 然后原本的键换成虚函数了，这样可以提高灵活度，交由基类继承者自己决定自动注册的对话的键
-                ChatDictionary.Add(i, Language.GetOrRegister(ChatKeyToRegister(name, i))); 
+                ChatDictionary.Add(i, Language.GetText(ChatKeyToRegister(name, i))); 
             }
 
             //仅当聊天室列表存在内容时进行注册
