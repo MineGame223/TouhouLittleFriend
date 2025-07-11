@@ -24,8 +24,21 @@ namespace TouhouPets
         /// </summary>
         public int ChatTurn = chatTurn;
 
-        public ChatRoomInfo(int uniqueID, LocalizedText chatText, int chatTurn) : this((TouhouPetID)uniqueID, chatText, chatTurn) { }
+        /// <summary>
+        /// 新建一个聊天室信息
+        /// </summary>
+        /// <param name="uniqueIDExtended">当前语句所属宠物的拓展独特ID</param>
+        /// <param name="chatText">当前语句文本</param>
+        /// <param name="chatTurn">当前语句所属的回合值</param>
+        public ChatRoomInfo(int uniqueIDExtended, LocalizedText chatText, int chatTurn) : this((TouhouPetID)uniqueIDExtended, chatText, chatTurn) { }
 
+        /// <summary>
+        /// 新建一个聊天室信息
+        /// </summary>
+        /// <typeparam name="T">当前语句所属的宠物</typeparam>
+        /// <param name="chatText">当前语句文本</param>
+        /// <param name="chatTurn">当前语句所属的回合值</param>
+        /// <returns></returns>
         public static ChatRoomInfo NewInfo<T>(LocalizedText chatText, int chatTurn) where T : BasicTouhouPet 
         {
             return new(ModTouhouPetLoader.TouhouPetType<T>(), chatText, chatTurn);

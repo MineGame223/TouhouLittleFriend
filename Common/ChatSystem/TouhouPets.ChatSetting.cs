@@ -15,6 +15,12 @@ namespace TouhouPets
         private static Dictionary<LocalizedText, bool>[] isChatRoomActive = new Dictionary<LocalizedText, bool>[(int)TouhouPetID.Count];
         public static Dictionary<LocalizedText, bool>[] IsChatRoomActive { get => isChatRoomActive; set => isChatRoomActive = value; }
 
+        /// <summary>
+        /// 对对话数组进行扩容
+        /// <br></br>
+        /// <br>在<see cref="ModPetRegisterSystem.PostSetupContent"/>中调用</br>
+        /// </summary>
+        /// <param name="newSize">扩容后的大小</param>
         internal static void ResizeChatSetting(int newSize) 
         {
             // 因为要兼容新增宠物，这里要进行一次扩容

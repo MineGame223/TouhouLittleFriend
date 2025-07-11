@@ -94,8 +94,8 @@ namespace TouhouPets
         /// </summary>
         protected internal Dictionary<int, LocalizedText> ChatDictionary
         {
-            get => TouhouPets.ChatDictionry[(int)UniqueID];
-            set => TouhouPets.ChatDictionry[(int)UniqueID] = value;
+            get => TouhouPets.ChatDictionry[UniqueIDExtended];
+            set => TouhouPets.ChatDictionry[UniqueIDExtended] = value;
         }
 
         /// <summary>
@@ -103,8 +103,8 @@ namespace TouhouPets
         /// </summary>
         protected internal Dictionary<LocalizedText, bool> IsChatRoomActive
         {
-            get => TouhouPets.IsChatRoomActive[(int)UniqueID];
-            set => TouhouPets.IsChatRoomActive[(int)UniqueID] = value;
+            get => TouhouPets.IsChatRoomActive[UniqueIDExtended];
+            set => TouhouPets.IsChatRoomActive[UniqueIDExtended] = value;
         }
 
         /// <summary>

@@ -249,7 +249,7 @@ namespace TouhouPets
             BasicTouhouPet initiator = chatRoom.initiator.AsTouhouPet();
 
             //若成员发起者不是成员列表第一位，返回false
-            if (initiator.TouhouPetType != member[0])
+            if (initiator.UniqueIDExtended != member[0])
                 return false;
 
             Projectile[] memberArray = chatRoom.member;

@@ -141,7 +141,7 @@ namespace TouhouPets
                     }
                     else if (id > 0 && id < ModTouhouPetLoader.TotalCount)
                     {
-                        findType = p.AsTouhouPet().TouhouPetType == id;
+                        findType = p.AsTouhouPet().UniqueIDExtended == id;
                     }
                     if (findType
                        && (p.ai[1] >= minState && p.ai[1] <= maxState || minState < 0)
@@ -302,13 +302,13 @@ namespace TouhouPets
             bool ok = false;
             foreach (NPC b in Main.ActiveNPCs)
             {
-                if ((b.boss || b.type == NPCID.EaterofWorldsHead) && (b.target == Owner.whoAmI || Vector2.Distance(b.Center, Owner.Center) <= 1280))
+                if ((b.boss || NPCID.Sets.ShouldBeCountedAsBoss[b.type]) && (b.target == Owner.whoAmI || Vector2.Distance(b.Center, Owner.Center) <= 1280))
                 {
                     if (!findBoss)
                     {
                         if (PreFindBoss(b))
                         {
-                            OnFindBoss(b, !BossChat_CrossMod(b.type, UniqueID));
+                            OnFindBoss(b, !BossChat_CrossMod(b.type, UniqueIDExtended));
                         }
                         findBoss = true;
                     }
@@ -438,6 +438,7 @@ namespace TouhouPets
         #region 原有重写函数
         public override void Load()
         {
+            // 注册宠物实例
             RegisterToModPetLoader();
         }
 
@@ -445,7 +446,7 @@ namespace TouhouPets
         {
             PetStaticDefaults();
             // RegisterChat_Full();
-            /// 移至了<see cref="ModTouhouPetLoader.RegisterAllPetsChat">
+            /// 对话的注册移至<see cref="ModTouhouPetLoader.RegisterAllPetsChat">
         }
         public override void SetDefaults()
         {
@@ -456,7 +457,7 @@ namespace TouhouPets
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.timeLeft *= 5;
-            SetTouhouPetType();
+            SetExtendedUniqueID();
             PetDefaults();
             DynamicRegisterForDebug();
         }

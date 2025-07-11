@@ -22,7 +22,7 @@ partial class BasicTouhouPet
         //int id = (int)UniqueID;
         //if (id <= (int)TouhouPetID.None || id >= (int)TouhouPetID.Count)
         //    return;
-        int id = TouhouPetType;
+        int id = UniqueIDExtended;
         if (id <= 0 || id >= ModTouhouPetLoader.TotalCount)
             return;
         //若没有模组进行注册则不执行后续
@@ -46,7 +46,7 @@ partial class BasicTouhouPet
     private void UpdateCrossModChatRoom()
     {
         //遍历模组聊天室列表并根据条件执行聊天方法
-        foreach (var infoList in CrossModChatRoomList[(int)UniqueID])
+        foreach (var infoList in CrossModChatRoomList[UniqueIDExtended])
         {
             //若发现模组聊天室信息列表中的第一个ChatRoomInfo中的索引值不在允许名单内，则不设置并维持聊天室
             if (!AllowToUseChatRoom(infoList[0].ChatText))
@@ -61,9 +61,9 @@ partial class BasicTouhouPet
     /// <summary>
     /// 跨模组Boss评价
     /// </summary>
-    /// <param name="bossType"></param>
-    /// <param name="uniqueID"></param>
-    private bool BossChat_CrossMod(int bossType, TouhouPetID uniqueID)
+    /// <param name="bossType">Boss的NPCID</param>
+    /// <param name="uniqueID">宠物的拓展独特ID</param>
+    private bool BossChat_CrossMod(int bossType, int uniqueID)
     {
         int id = (int)uniqueID;
         List<CommentInfo> comments = CrossModBossComment[id];
