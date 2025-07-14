@@ -90,7 +90,7 @@ namespace TouhouPets
         {
             if (!sprayInfo.TryGetValue(key, out SprayInfo value)
                 && !TouhouPets.CrossModSprayInfo.TryGetValue(key, out value))
-                return new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble);
+                return new SprayInfo(Solution.shoot, MyDustId.GreenBubble);
 
             return value;
         }

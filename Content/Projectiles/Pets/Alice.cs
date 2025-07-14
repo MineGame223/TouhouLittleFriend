@@ -154,7 +154,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 new ChatRoomInfo(marisa, GetChatText("Marisa",13), 2),//魔理沙：放心，死了以后保证还给你！
                 new ChatRoomInfo(alice, ChatDictionary[6], 3),//爱丽丝：...你还是别还了...下次不许再偷了！
                 new ChatRoomInfo(marisa, GetChatText("Marisa",14), 4),//魔理沙：下次一定！
-                new ChatRoomInfo(alice, ChatDictionary[7], 5),//爱丽丝：别在这里耍嘴皮子了！给我个期限啊。
+                new ChatRoomInfo(alice, ChatDictionary[7], 5),//爱丽丝：你！......
             ];
 
             return list;

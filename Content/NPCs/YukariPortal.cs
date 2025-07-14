@@ -142,7 +142,7 @@ namespace TouhouPets.Content.NPCs
             else if (topic == 1)
             {
                 buttonText = Language.GetTextValue("Mods.TouhouPets.YukariWealthCount");
-                topic++;               
+                topic++;
             }
             else if (topic == 2)
             {
@@ -155,7 +155,7 @@ namespace TouhouPets.Content.NPCs
                 {
                     buttonText = Language.GetTextValue("Mods.TouhouPets.PetShop");
                     topic = 0;
-                }               
+                }
             }
             else if (topic == 3)
             {
@@ -172,9 +172,9 @@ namespace TouhouPets.Content.NPCs
         {
             TouhouPetPlayer mp = Main.LocalPlayer.GetModPlayer<TouhouPetPlayer>();
             if (mp.totalPurchaseValueCount <= 0)
-                Main.npcChatText = GetChatText("Portal", 7).Value;
+                Main.npcChatText = Language.GetTextValue("Mods.TouhouPets.Chat_Portal.Chat7");
             else
-                Main.npcChatText = GetChatText("Portal", 6).Format(CoinValue(mp.totalPurchaseValueCount));
+                Main.npcChatText = Language.GetTextValue("Mods.TouhouPets.Chat_Portal.Chat6", CoinValue(mp.totalPurchaseValueCount));
         }
         private static void Chat_QQGroup()
         {
@@ -201,7 +201,7 @@ namespace TouhouPets.Content.NPCs
             shop.Add(ItemType<RinSkull>());
             shop.Add(ItemType<RaikoDrum>());
             shop.Add(ItemType<AyaCamera>());
-            shop.Add(ItemType<KoishiTelephone>());            
+            shop.Add(ItemType<KoishiTelephone>());
             shop.Add(ItemType<YukaSunflower>());
             shop.Add(ItemType<YuyukoFan>());
             shop.Add(ItemType<SekibankiBow>());
