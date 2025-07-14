@@ -18,6 +18,6 @@ namespace TouhouPets
         [DefaultValue(true)]
         public bool PetInvisWhenMouseHover;
 
-        public List<ItemDefinition> YuyukoBanList;
+        public List<ItemDefinition> YuyukoBanList = [];
     }
 }

@@ -233,6 +233,7 @@ namespace TouhouPets
         #region 对话注册方法
         /// <summary>
         /// 注册对话所使用的键
+        /// <br/>由附属模组使用
         /// </summary>
         /// <param name="name">对话所属宠物的名字</param>
         /// <param name="index"></param>
@@ -263,7 +264,6 @@ namespace TouhouPets
             //将对话文本加入字典
             for (int i = (int)indexRange.X; i <= (int)indexRange.Y; i++)
             {
-                // 然后原本的键换成虚函数了，这样可以提高灵活度，交由基类继承者自己决定自动注册的对话的键
                 ChatDictionary.Add(i, Language.GetText(ChatKeyToRegister(name, i))); 
             }
 

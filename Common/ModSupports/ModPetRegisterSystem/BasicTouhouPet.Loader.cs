@@ -1,5 +1,4 @@
-﻿using Terraria;
-using TouhouPets.Common.ModSupports.ModPetRegisterSystem;
+﻿using TouhouPets.Common.ModSupports.ModPetRegisterSystem;
 
 namespace TouhouPets;
 
@@ -27,7 +26,7 @@ partial class BasicTouhouPet
         UniqueIDExtended = ModTouhouPetLoader.Add(this);
 
         // 对于TouhouPets自身的宠物，和枚举对齐
-        if (UniqueIDExtended < (int)TouhouPetID.Count)
+        if (UniqueIDExtended <= (int)TouhouPetID.Count)
             UniqueIDExtended = (int)UniqueID;
     }
 

@@ -124,7 +124,6 @@ public class ModTouhouPetLoader : ILoadable
     /// <returns></returns>
     public static int UniqueID<T>() where T : BasicTouhouPet => GetInstance<T>()?.UniqueIDExtended ?? 0;
 
-
     /// <summary>
     /// 标记准备工作完毕
     /// <br></br>

@@ -151,7 +151,7 @@ partial class TouhouPets
         // 如果我们只匹配一种类型，可以检测的同时进行声明，如果不是Mod就进入下面那个return，如果是我们就可以把声明的mod在外面拿出来用
         // 有模式匹配检测类型我们就不需要再检测null了，因为null不是任何一种类型
         if (args[1] is not Mod mod
-            || args[2] is not int or short
+            || args[2] is not int and not short
             || args[3] is not int id
             || args[4] is not LocalizedText text
             || argsLength > 5 && args[5] is not Func<bool> and not null
@@ -241,7 +241,7 @@ partial class TouhouPets
 
         // 类型与空值检测同时声明变量
         if (args[1] is not Mod mod
-            || args[2] is not int or short
+            || args[2] is not int and not short
             || args[3] is not LocalizedText text
             || (argsLength > 4 && args[4] is not bool and not null)
             || (argsLength > 5 && args[5] is not Func<bool> and not null)
@@ -272,7 +272,6 @@ partial class TouhouPets
     }
     private object AddCrossModSolution(params object[] args)
     {
-
         // 类型与空值检测同时声明变量
 
         if (args[1] is not Mod mod
@@ -424,15 +423,14 @@ partial class TouhouPets
                 return;
             }
 
-
-            List<ChatRoomInfo> resultList
-                = [.. from info in infoList select new ChatRoomInfo((TouhouPetID)info.petID, info.chatText, info.chatTurn)];
             // 这里使用了查询语句和集合表达式
             // from info是在声明范围变量info，相当于来自infoList的每一个元素
             // in infoList就是由infoList提供每一个info
             // select后面的部分就是由info计算出来的值，一个info对应一个
             // 还可以使用where语句来对info作出限制，只查询符合条件的info
             // 最后用集合表达式把查询结果转List
+            List<ChatRoomInfo> resultList
+                = [.. from info in infoList select new ChatRoomInfo((TouhouPetID)info.petID, info.chatText, info.chatTurn)];           
 
             int id = infoList[0].petID;
             CrossModChatRoomList[id].Add(resultList);
@@ -470,8 +468,6 @@ partial class TouhouPets
                 Instance.Logger.Info(ConsoleMessage(Arg_4, Warning_PreventedByConfig));
                 return;
             }
-
-
 
             if (weight < 1) weight = 1;
 
