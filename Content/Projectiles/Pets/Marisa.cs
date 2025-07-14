@@ -215,7 +215,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 {
                     CurrentState = States.Blink;
                 }
-                if (mainTimer > 0 && mainTimer % 120 == 0 && currentChatRoom == null && ActionCD <= 0)
+                if (mainTimer > 0 && mainTimer % 720 == 0 && currentChatRoom == null && ActionCD <= 0)
                 {
                     if (Main.rand.NextBool(9) && !FindBoss)
                     {
