@@ -139,7 +139,7 @@ namespace TouhouPets
         public static void ModifyChatRoom(this PetChatRoom chatRoom, List<ChatRoomInfo> infoList)
         {
             //成员ID列表
-            List<TouhouPetID> member = [];
+            List<int> member = [];
 
             //使用弹幕实例的成员信息元组列表
             List<(Projectile pet, LocalizedText text, int chatTurn)> info = [];
@@ -157,10 +157,10 @@ namespace TouhouPets
                 }
 
                 //若成员ID列表的元素已被包含其中，则跳过添加
-                if (member.Contains(i.UniqueID))
+                if (member.Contains((int)i.UniqueID))
                     continue;
 
-                member.Add(i.UniqueID);
+                member.Add((int)i.UniqueID);
             }
 
             //以防万一，如果计数列表长度为0，则不执行后续
@@ -179,11 +179,11 @@ namespace TouhouPets
             foreach (var i in infoList)
             {
                 //如果成员信息列表中的成员ID不在先前的成员ID列表中，则不添加到实例列表中
-                if (!member.Contains(i.UniqueID))
+                if (!member.Contains((int)i.UniqueID))
                 {
                     continue;
                 }
-                info.Add((chatRoom.member[member.IndexOf(i.UniqueID)], i.ChatText, i.ChatTurn));
+                info.Add((chatRoom.member[member.IndexOf((int)i.UniqueID)], i.ChatText, i.ChatTurn));
             }
 
             //根据长度遍历元组列表内容
@@ -228,7 +228,7 @@ namespace TouhouPets
         /// <param name="chatRoom">需要被设置和维持的聊天室实例</param>
         /// <param name="member">所需成员的独特标识符的列表</param>
         /// <returns>当聊天室不能被维持时，返回 false 并关闭聊天室</returns>
-        private static bool MaintainChatRoom(ref PetChatRoom chatRoom, List<TouhouPetID> member)
+        private static bool MaintainChatRoom(ref PetChatRoom chatRoom, List<int> member)
         {
             //若聊天室不存在，返回false
             if (chatRoom == null || !chatRoom.active)
@@ -249,7 +249,7 @@ namespace TouhouPets
             BasicTouhouPet initiator = chatRoom.initiator.AsTouhouPet();
 
             //若成员发起者不是成员列表第一位，返回false
-            if (initiator.UniqueID != member[0])
+            if (initiator.UniqueIDExtended != member[0])
                 return false;
 
             Projectile[] memberArray = chatRoom.member;
@@ -264,7 +264,7 @@ namespace TouhouPets
                 //若成员为空，则为其添加通过独特标识ID查找到的实例并设置聊天室（以便只执行一次下方的遍历）
                 if (memberArray[i] == null)
                 {
-                    if (chatRoom.initiator.AsTouhouPet().FindPetByUniqueID(out Projectile p, member[i]))
+                    if (chatRoom.initiator.AsTouhouPet().FindPetByPetType(out Projectile p, member[i]))
                     {
                         memberArray[i] = p;
                         //以防万一，若发现该成员不是东方宠物，则不设置成员聊天室

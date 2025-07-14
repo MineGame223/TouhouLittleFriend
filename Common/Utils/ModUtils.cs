@@ -52,6 +52,22 @@ namespace TouhouPets
         /// </summary>
         /// <param name="proj"></param>
         /// <returns></returns>
+        public static bool IsATouhouPet(this Projectile projectile,out BasicTouhouPet pet)
+        {
+            if (projectile.ModProjectile is BasicTouhouPet pet2) 
+            {
+                pet = pet2;
+                return true;
+            }
+            pet = null;
+            return false;
+        }
+
+        /// <summary>
+        /// 检查一个弹幕是否属于BasicTouhouPet类或派生
+        /// </summary>
+        /// <param name="proj"></param>
+        /// <returns></returns>
         public static bool IsATouhouPet(this Projectile projectile)
         {
             return projectile.ModProjectile is BasicTouhouPet;
