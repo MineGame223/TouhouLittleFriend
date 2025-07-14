@@ -22,7 +22,6 @@ Mods: {
 			Chat10: Куда Дэй-чан - туда и я!
 			Chat11: Так много лягушек!
 			Chat12: ("БОЖЕ! Кейне-сенсей меня найдёт...")
-			// Chat5: Mods.TouhouPets.Chat_Cirno.Chat5
 		}
 
 		Chat_Daiyousei: {
@@ -472,10 +471,6 @@ Mods: {
 			Chat2: Я речная рыба!
 			Chat3: У меня тебе не 'рыбья память'!...
 			Chat4: *бульк бульк~
-			// Chat5: Mods.TouhouPets.Chat_Wakasagihime.Chat5
-			// Chat6: Mods.TouhouPets.Chat_Wakasagihime.Chat6
-			// Chat7: Mods.TouhouPets.Chat_Wakasagihime.Chat7
-			// Chat8: Mods.TouhouPets.Chat_Wakasagihime.Chat8
 		}
 
 		Chat_Yuka: {

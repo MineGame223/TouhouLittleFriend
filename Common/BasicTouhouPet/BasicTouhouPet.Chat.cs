@@ -231,6 +231,12 @@ namespace TouhouPets
         #endregion
 
         #region 对话注册方法
+        /// <summary>
+        /// 注册对话所使用的键
+        /// </summary>
+        /// <param name="name">对话所属宠物的名字</param>
+        /// <param name="index"></param>
+        /// <returns></returns>
         protected virtual string ChatKeyToRegister(string name, int index) => $"Mods.{Mod.Name}.Chat_{name}.Chat{index}";
 
         /// <summary>

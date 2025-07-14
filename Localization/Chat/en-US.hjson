@@ -22,7 +22,6 @@ Mods: {
 			Chat10: Wherever Dai-chan goes, that's where I go!
 			Chat11: So many frogs!
 			Chat12: ("Oh god! Keine-sensei will find me...")
-			Chat5: Mods.TouhouPets.Chat_Cirno.Chat5
 		}
 
 		Chat_Daiyousei: {
@@ -472,10 +471,6 @@ Mods: {
 			Chat2: I'm a freshwater fish!
 			Chat3: I don't have a 'fish memory'!...
 			Chat4: *purr purr~
-			Chat5: Mods.TouhouPets.Chat_Wakasagihime.Chat5
-			Chat6: Mods.TouhouPets.Chat_Wakasagihime.Chat6
-			Chat7: Mods.TouhouPets.Chat_Wakasagihime.Chat7
-			Chat8: Mods.TouhouPets.Chat_Wakasagihime.Chat8
 		}
 
 		Chat_Yuka: {
