@@ -12,7 +12,8 @@ v1.1.5.7：
 ----------
 v1.1.5.6：
 新增：
-加入了允许制作本模组附属模组的相关接口（由LogSpiral  错数螺线提供）；详细信息可查阅 https://github.com/MineGame223/TouhouLittleFriend 中的README
+加入了允许制作本模组附属模组的相关接口（由LogSpiral  错数螺线提供）；详细信息可查阅：https://github.com/MineGame223/TouhouLittleFriend/tree/master/AdditionalPetManual
+此功能尚处于初步测试阶段，如有问题请及时反馈！
 
 修改：
 Optimized EN translation updated
