@@ -32,7 +32,7 @@ namespace TouhouPets
                 luck += 0.5f;
             }
 
-            if (Player.HasBuff(BuffType<TewiBuff>()) && SpecialAbility_Tewi)
+            if ((Player.HasBuff(BuffType<TewiBuff>()) || Player.HasBuff<EienteiBuff>()) && SpecialAbility_Tewi)
             {
                 luck += 0.3f;
             }

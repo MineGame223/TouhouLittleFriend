@@ -27,6 +27,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Annoying,
             AfterAnnoying,
             Fading,
+            Fading2,
         }
         private States CurrentState
         {
@@ -172,7 +173,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -212,7 +213,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             if (!SetKoishiActive(Owner))
             {
-                if(currentChatRoom != null)
+                if (currentChatRoom != null)
                 {
                     currentChatRoom.CloseChatRoom();
                 }
@@ -260,6 +261,11 @@ namespace TouhouPets.Content.Projectiles.Pets
                 case States.Fading:
                     shouldNotTalking = true;
                     Fading();
+                    break;
+
+                case States.Fading2:
+                    shouldNotTalking = true;
+                    Fading2();
                     break;
 
                 case States.Annoying:
@@ -429,22 +435,31 @@ namespace TouhouPets.Content.Projectiles.Pets
         private void Fading()
         {
             Projectile.frame = 0;
-            Timer++;
-            if (Timer > RandomCount - 255 / 2)
+
+            if (Projectile.Opacity > 0)
+                Projectile.Opacity -= 0.005f;
+
+            if (OwnerIsMyPlayer)
             {
-                if (Projectile.Opacity < 1)
-                    Projectile.Opacity += 0.01f;
+                Timer++;
+                if (Timer > RandomCount)
+                {
+                    Timer = 0;
+                    CurrentState = States.Idle;
+                }
             }
-            else
+        }
+        private void Fading2()
+        {
+            Projectile.Opacity += 0.01f;
+            if (Projectile.Opacity>=1)
             {
-                if (Projectile.Opacity > 0)
-                    Projectile.Opacity -= 0.005f;
-            }
-            if (OwnerIsMyPlayer && Timer > RandomCount)
-            {
-                Timer = 0;
-                ActionCD = 3600;
-                CurrentState = States.Idle;
+                Projectile.Opacity = 1;
+                if (OwnerIsMyPlayer)
+                {
+                    ActionCD = 3600;
+                    CurrentState = States.Idle;
+                }
             }
         }
         private void Annoying()

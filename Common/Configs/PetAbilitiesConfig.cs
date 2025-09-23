@@ -45,5 +45,11 @@ namespace TouhouPets
 
         [DefaultValue(true)]
         public bool SpecialAbility_Prismriver;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Shion;
+
+        [DefaultValue(true)]
+        public bool SpecialAbility_Jyoon;
     }
 }

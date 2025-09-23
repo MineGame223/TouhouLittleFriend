@@ -4,49 +4,14 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Config;
 
 namespace TouhouPets
 {
     /// <summary>
     /// 各种静态拓展方法
     /// </summary>
-    public static class ModUtils
+    public static partial class ModUtils
     {
-        #region 模组配置快捷引用
-        public static bool CompatibilityMode => GetInstance<MiscConfig_ServerSide>().CompatibilityMode;
-        public static bool AllowCall_MarisasReaction => GetInstance<MiscConfig_ServerSide>().AllowModCall_MarisasReaction;
-        public static bool AllowCall_YuyukosReaction => GetInstance<MiscConfig_ServerSide>().AllowModCall_YuyukosReaction;
-        public static bool AllowCall_PetDialog => GetInstance<MiscConfig_ServerSide>().AllowModCall_PetDialog;
-        public static bool AllowCall_PetChatRoom => GetInstance<MiscConfig_ServerSide>().AllowModCall_PetChatRoom;
-
-        public static bool EnableCustomMusicMode => GetInstance<MiscConfig_ClientSide>().EnableCustomMusicMode;
-        public static bool PetInvisWhenMouseHover => GetInstance<MiscConfig_ClientSide>().PetInvisWhenMouseHover;
-        public static bool PetLightOnPlayer => GetInstance<MiscConfig_ClientSide>().PetLightOnPlayer;
-        public static List<ItemDefinition> YuyukoBanList => GetInstance<MiscConfig_ClientSide>().YuyukoBanList;
-
-        public static bool SpecialAbility_Hina => GetInstance<PetAbilitiesConfig>().SpecialAbility_Hina;
-        public static bool SpecialAbility_Letty => GetInstance<PetAbilitiesConfig>().SpecialAbility_Letty;
-        public static bool SpecialAbility_Minoriko => GetInstance<PetAbilitiesConfig>().SpecialAbility_Minoriko;
-        public static bool SpecialAbility_MokuAndKaguya => GetInstance<PetAbilitiesConfig>().SpecialAbility_MokuAndKaguya;
-        public static bool SpecialAbility_Murasa => GetInstance<PetAbilitiesConfig>().SpecialAbility_Murasa;
-        public static bool SpecialAbility_Prismriver => GetInstance<PetAbilitiesConfig>().SpecialAbility_Prismriver;
-        public static bool SpecialAbility_Satori => GetInstance<PetAbilitiesConfig>().SpecialAbility_Satori;
-        public static bool SpecialAbility_Star => GetInstance<PetAbilitiesConfig>().SpecialAbility_Star;
-        public static bool SpecialAbility_Tenshin => GetInstance<PetAbilitiesConfig>().SpecialAbility_Tenshin;
-        public static bool SpecialAbility_Tewi => GetInstance<PetAbilitiesConfig>().SpecialAbility_Tewi;
-        public static bool SpecialAbility_Wriggle => GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle;
-        public static bool SpecialAbility_Yuka => GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka;
-        public static bool SpecialAbility_Yuyuko => GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuyuko;
-
-        public static float PetChatFrequency => GetInstance<PetDialogConfig>().ChatFrequency;
-        public static bool TyperStylePetDialog => GetInstance<PetDialogConfig>().TyperStyleChat;
-
-        public static bool PetCanDropFromBoss => GetInstance<PetObtainConfig>().PetCanDropFromBoss;
-        public static bool ObtainPetByFishing => GetInstance<PetObtainConfig>().ObtainPetByFishing;
-        public static bool AllowGapToSpawn => GetInstance<PetObtainConfig>().AllowGapToSpawn;
-        #endregion
-
         /// <summary>
         /// 检查一个弹幕是否属于BasicTouhouPet类或派生
         /// </summary>

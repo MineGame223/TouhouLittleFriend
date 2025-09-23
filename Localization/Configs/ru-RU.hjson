@@ -156,11 +156,12 @@ Mods: {
 				// DisplayName: Server Side Misc Function Config
 
 				CompatibilityMode: {
-					// Label: Compatibility Mode
+					// Label: Dyes didn't affect pets
 					/* Tooltip:
 						'''
-						Disable pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
+						Disable this mod's pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
 						Some pet's special dye effect won't be affected
+						This function will active forcely while certain mods are loaded in the same time
 						''' */
 				}
 

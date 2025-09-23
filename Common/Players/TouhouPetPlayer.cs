@@ -14,6 +14,11 @@ namespace TouhouPets
         public int totalPurchaseValueCount;
 
         public bool lettyCold;
+        public override void OnEnterWorld()
+        {
+            if (TouhouPets.ForceCompatibilityMode)
+                Main.NewText(Mod.GetLocalization("ForceCompatibilityNotice"));
+        }
         public override void ResetEffects()
         {
             if (!Player.HasBuff<LettyBuff>() || !SpecialAbility_Letty)
