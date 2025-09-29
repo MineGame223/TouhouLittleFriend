@@ -1,16 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
-using Terraria.Localization;
+using TouhouPets.Content.Dusts;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -330,13 +332,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void SpawnButterfly()
         {
-            if (!OwnerIsMyPlayer)
-                return;
-
-            if (mainTimer % 20 == 0 && mouseOpacity >= 1f)
+            if (mainTimer % 20 == 0)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
-                            , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);
+                Dust fly = Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
+                    , DustType<YuyukoButterfly>(), Vector2.Zero);
+                fly.velocity = new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f));
+                if (!CompatibilityMode)
+                    fly.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
         }
         private void UpdatePositionOffset()

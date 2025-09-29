@@ -29,6 +29,8 @@ namespace TouhouPets
         public static bool SpecialAbility_Wriggle => GetInstance<PetAbilitiesConfig>().SpecialAbility_Wriggle;
         public static bool SpecialAbility_Yuka => GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuka;
         public static bool SpecialAbility_Yuyuko => GetInstance<PetAbilitiesConfig>().SpecialAbility_Yuyuko;
+        public static bool SpecialAbility_Jyoon => GetInstance<PetAbilitiesConfig>().SpecialAbility_Jyoon;
+        public static bool SpecialAbility_Shion => GetInstance<PetAbilitiesConfig>().SpecialAbility_Shion;
 
         public static float PetChatFrequency => GetInstance<PetDialogConfig>().ChatFrequency;
         public static bool TyperStylePetDialog => GetInstance<PetDialogConfig>().TyperStyleChat;

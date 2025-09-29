@@ -77,6 +77,16 @@ Mods: {
 					Label: "[i:TouhouPets/PoltergeistAlbum] {$Mods.TouhouPets.Items.PoltergeistAlbum.DisplayName}特殊能力"
 					Tooltip: After the player is AFK for longer than 10s, they will performance together
 				}
+
+				SpecialAbility_Shion: {
+					Label: Special Ability_ Shion
+					Tooltip: ""
+				}
+
+				SpecialAbility_Jyoon: {
+					Label: Special Ability_ Jyoon
+					Tooltip: ""
+				}
 			}
 
 			PetDialogConfig: {

@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Dusts;
 using TouhouPets.Content.Projectiles.Danmaku;
 using static TouhouPets.DanmakuFightHelper;
 
@@ -612,17 +613,19 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (Projectile.frame > 3)
             {
                 Projectile.frame = 2;
+                if (ShouldExtraVFXActive)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Dust fire = Dust.NewDustPerfect(Projectile.Center
+                            + new Vector2(0, Main.rand.Next(20, 90)).RotatedByRandom(MathHelper.TwoPi)
+                            , DustType<MokuFlame>());
+                        if (!CompatibilityMode)
+                            fire.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
+                    }
+                }
                 if (OwnerIsMyPlayer)
                 {
-                    if (ShouldExtraVFXActive)
-                    {
-                        for (int i = 0; i < 4; i++)
-                        {
-                            Projectile.NewProjectile(Projectile.GetSource_FromThis()
-                                , Projectile.Center + new Vector2(0, Main.rand.Next(20, 90)).RotatedByRandom(MathHelper.TwoPi)
-                                    , Vector2.Zero, ProjectileType<MokuFlame>(), 0, 0);
-                        }
-                    }
                     Timer++;
                 }
             }

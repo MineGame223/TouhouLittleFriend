@@ -77,6 +77,16 @@ Mods: {
 					Label: "[i:TouhouPets/PoltergeistAlbum] {$Mods.TouhouPets.Items.PoltergeistAlbum.DisplayName}特殊能力"
 					Tooltip: 挂机超过10秒后，三者会开始共同演奏
 				}
+
+				SpecialAbility_Shion: {
+					// Label: Special Ability_ Shion
+					// Tooltip: ""
+				}
+
+				SpecialAbility_Jyoon: {
+					// Label: Special Ability_ Jyoon
+					// Tooltip: ""
+				}
 			}
 
 			PetDialogConfig: {
