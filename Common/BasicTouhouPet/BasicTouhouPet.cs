@@ -456,7 +456,7 @@ namespace TouhouPets
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft *= 5;
+            Projectile.timeLeft = 5;
             SetExtendedUniqueID();
             PetDefaults();
             DynamicRegisterForDebug();

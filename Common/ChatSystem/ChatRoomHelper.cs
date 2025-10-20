@@ -168,7 +168,9 @@ namespace TouhouPets
                 return;
 
             //设置成员并维持聊天室
-            if (!MaintainChatRoom(ref chatRoom, member) && chatRoom != null)
+            //若出现任何紧急情况也会退出聊天
+            if (!MaintainChatRoom(ref chatRoom, member) && chatRoom != null
+                || NPC.AnyDanger())
             {
                 //因为异常而退出的CD更短
                 chatRoom.CloseChatRoom(60);
