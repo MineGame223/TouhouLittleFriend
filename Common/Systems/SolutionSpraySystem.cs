@@ -86,13 +86,23 @@ namespace TouhouPets
                 );
             }
         }
-        public static SprayInfo GetSprayInfo(int key)
+        public static SprayInfo GetSprayInfo(Item ammo)
         {
-            if (!sprayInfo.TryGetValue(key, out SprayInfo value)
-                && !TouhouPets.CrossModSprayInfo.TryGetValue(key, out value))
-                return new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble);
+            int key = ammo.type;
+            int shoot = ammo.shoot;
 
-            return value;
+            if (sprayInfo.TryGetValue(key, out SprayInfo value) ||
+                TouhouPets.CrossModSprayInfo.TryGetValue(key, out value))
+            {
+                return value;
+            }
+
+            //为什么要+145？因为原版的Item.DefaultToSolution对shoot进行了-145的处理
+            //很明显，我们不需要这个额外步骤
+            if (shoot > 0)
+                return new SprayInfo(shoot + ProjectileID.PureSpray, MyDustId.RedBubble);
+
+            return new SprayInfo(ProjectileID.PureSpray, MyDustId.GreenBubble);
         }
         private static void SetSpray()
         {

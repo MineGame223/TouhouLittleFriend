@@ -4,12 +4,14 @@ ATTENTION:
 This mod no longer supports English change log from v1.0.6
 
 新增：
-加入了允许制作本模组附属模组的相关接口（由LogSpiral  错数螺线提供）；详细信息可查阅：https://github.com/MineGame223/TouhouLittleFriend/tree/master/AdditionalPetManual
-此功能尚处于初步测试阶段，如有问题请及时反馈！
+为魔理沙添加了对旅人归途模组新Boss的反应文本
 
 修改：
-Optimized EN translation updated
+当面临危险情况时（例如Boss存活或者入侵发生中），宠物会停止相互聊天
+现在幽香应当正确识别来自其他模组的环境溶液弹幕（一般而言）
 
 修复：
-修复了神秘隙间无法查询消费计数的问题
-修复了不设置幽幽子的忌口、给她投喂时可能会导致游戏出错的问题
+现在宠物在没有对应增益维持时应当迅速消失，而非在特定情况下持续存在
+神秘隙间现在免疫所有减益
+现在秋穰子的食物增益时长增加应当正常执行、而非每吃一次食物都会延长其增益时间
+在PostDraw的最末端添加了一次绘制状态重置、用于修复部分可能因为其他顶点绘制的不当操作引起的问题（老生常谈的吞弹幕）

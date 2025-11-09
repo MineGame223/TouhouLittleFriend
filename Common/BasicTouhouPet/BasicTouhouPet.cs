@@ -480,20 +480,15 @@ namespace TouhouPets
             UpdatePetLight();
             VisualEffectForPreview();
         }
-        public override bool? CanCutTiles()
-        {
-            return false;
-        }
-        public override bool? CanDamage()
-        {
-            return false;
-        }
+        public override bool? CanCutTiles() => false;
+        public override bool? CanDamage() => false;
         public override bool PreDraw(ref Color lightColor)
         {
             return DrawPetSelf(ref lightColor);
         }
         public override void PostDraw(Color lightColor)
         {
+            //重置绘制状态，防止染料影响文本
             Projectile.ResetDrawStateForPet();
 
             if (chatOpacity > 0 && PetChatFrequency > 0f)
@@ -516,6 +511,9 @@ namespace TouhouPets
             DrawTestInfo();
 
             UpdateMouseEntered();
+
+            //完全重置绘制状态，用于预防某些因为其他顶点绘制的不当操作产生的问题
+            Main.spriteBatch.QuickEndAndBegin(false);
         }
         #endregion
     }
