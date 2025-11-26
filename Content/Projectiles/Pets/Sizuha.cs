@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Dusts;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -83,7 +85,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 if (!IsIdleState)
                 {
@@ -167,13 +169,16 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void SpawnFallingLeaves()
         {
-            if (!OwnerIsMyPlayer || !IsIdleState)
+            if (!IsIdleState)
                 return;
 
-            if (Main.rand.NextBool(16) && Projectile.velocity.Length() > 3f)
+            if (Main.rand.NextBool(9) && Projectile.velocity.Length() > 3f)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-20, 20), Main.rand.Next(0, 50))
-                            , new Vector2(0, Main.rand.NextFloat(0.3f, 0.4f)), ProjectileType<SizuhaLeaf>(), 0, 0, Main.myPlayer, Main.rand.Next(0, 3));
+                Dust leaf = Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-20, 20), Main.rand.Next(0, 50))
+                        , DustType<SizuhaLeaf>(), Vector2.Zero);
+                leaf.velocity = new Vector2(0, Main.rand.NextFloat(0.3f, 0.4f));
+                if (!CompatibilityMode)
+                    leaf.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
         }
         private void ControlMovement()

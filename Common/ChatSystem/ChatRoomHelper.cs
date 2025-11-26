@@ -4,6 +4,7 @@ using static TouhouPets.TouhouPets;
 using static TouhouPets.ChatRoomSystem;
 using System.Collections.Generic;
 using Terraria.Localization;
+using System.Linq;
 
 namespace TouhouPets
 {
@@ -30,7 +31,8 @@ namespace TouhouPets
         /// </summary>
         /// <param name="chatRoom">当前聊天室</param>
         /// <param name="chatCD">聊天冷却时间，归零前宠物之间不会再次发起聊天</param>
-        public static void CloseChatRoom(this PetChatRoom chatRoom, int chatCD = 21600)
+        /// <param name="besider">被除外的宠物，她的聊天室不会被关闭</param>
+        public static void CloseChatRoom(this PetChatRoom chatRoom, int chatCD = 21600, Projectile besider = null)
         {
             if (chatRoom.initiator.IsATouhouPet())
             {
@@ -50,7 +52,7 @@ namespace TouhouPets
             {
                 if (m != null && m.active)
                 {
-                    if (!m.IsATouhouPet())
+                    if (!m.IsATouhouPet() || m == besider)
                         continue;
 
                     BasicTouhouPet pet = m.AsTouhouPet();
@@ -168,10 +170,16 @@ namespace TouhouPets
                 return;
 
             //设置成员并维持聊天室
-            if (!MaintainChatRoom(ref chatRoom, member) && chatRoom != null)
+            //若出现任何紧急情况也会退出聊天
+            if (!MaintainChatRoom(ref chatRoom, member, out bool prevClosed) && chatRoom != null
+                || NPC.AnyDanger())
             {
-                //因为异常而退出的CD更短
-                chatRoom.CloseChatRoom(60);
+                //仅当没有提前关闭时进行关闭
+                if (!prevClosed)
+                {
+                    //因为异常而退出的CD更短
+                    chatRoom.CloseChatRoom(60);
+                }
                 return;
             }
 
@@ -228,8 +236,9 @@ namespace TouhouPets
         /// <param name="chatRoom">需要被设置和维持的聊天室实例</param>
         /// <param name="member">所需成员的独特标识符的列表</param>
         /// <returns>当聊天室不能被维持时，返回 false 并关闭聊天室</returns>
-        private static bool MaintainChatRoom(ref PetChatRoom chatRoom, List<int> member)
+        private static bool MaintainChatRoom(ref PetChatRoom chatRoom, List<int> member, out bool prevClosed)
         {
+            prevClosed = false;
             //若聊天室不存在，返回false
             if (chatRoom == null || !chatRoom.active)
                 return false;
@@ -270,6 +279,16 @@ namespace TouhouPets
                         //以防万一，若发现该成员不是东方宠物，则不设置成员聊天室
                         if (i > 0 && memberArray[i].IsATouhouPet())
                         {
+                            //若拉人时发现有宠物已有聊天室，则关闭聊天室
+                            //保险起见，需要一并将该宠物除外
+                            if (memberArray[i].AsTouhouPet().currentChatRoom != null)
+                            {
+                                //因为异常而退出的CD更短
+                                chatRoom.CloseChatRoom(60, memberArray[i]);
+                                prevClosed = true;
+                                return false;
+                            }
+
                             memberArray[i].AsTouhouPet().currentChatRoom = chatRoom;
                         }
                     }

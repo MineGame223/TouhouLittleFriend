@@ -18,6 +18,7 @@ namespace TouhouPets.Content.NPCs
 
             NPCID.Sets.ActsLikeTownNPC[Type] = true;
             NPCID.Sets.SpawnsWithCustomName[Type] = false;
+            NPCID.Sets.ImmuneToAllBuffs[Type] = true;
 
             NPCID.Sets.TownNPCBestiaryPriority.Add(Type);
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new();
@@ -36,7 +37,7 @@ namespace TouhouPets.Content.NPCs
             NPC.friendly = true;
             NPC.width = 16;
             NPC.height = 40;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = NPCAIStyleID.Passive;
             NPC.damage = 0;
             NPC.defense = 0;
             NPC.lifeMax = 1;
@@ -76,14 +77,8 @@ namespace TouhouPets.Content.NPCs
         {
             NPC.position.Y -= 30;
         }
-        public override bool CanGoToStatue(bool toKingStatue)
-        {
-            return false;
-        }
-        public override bool CanChat()
-        {
-            return true;
-        }
+        public override bool CanGoToStatue(bool toKingStatue) => false;
+        public override bool CanChat() => true;
         public override string GetChat()
         {
             InitializeTopic();

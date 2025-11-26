@@ -35,7 +35,7 @@ namespace TouhouPets.Content.Projectiles
             get => (int)Projectile.ai[2];
             set => Projectile.ai[2] = value;
         }
-        private Color trailColor
+        private Color TrailColor
         {
             get
             {
@@ -59,7 +59,7 @@ namespace TouhouPets.Content.Projectiles
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = trailColor * Projectile.Opacity;
+            lightColor = TrailColor * Projectile.Opacity;
             int rate = 1;
             for (int i = 0; i < Projectile.localAI[1] / rate; i++)
             {
@@ -124,14 +124,8 @@ namespace TouhouPets.Content.Projectiles
             Projectile.Opacity = MathHelper.Clamp(Projectile.Opacity, 0, 1 - (Radius / 800));
             Projectile.Opacity *= master.AsTouhouPet().mouseOpacity;
         }
-        public override bool? CanDamage()
-        {
-            return false;
-        }
-        public override bool? CanCutTiles()
-        {
-            return false;
-        }
+        public override bool? CanDamage() => false;
+        public override bool? CanCutTiles() => false;
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             Projectile.localAI[0] = reader.ReadSingle();

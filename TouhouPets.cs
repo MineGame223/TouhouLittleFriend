@@ -11,10 +11,6 @@ namespace TouhouPets
     {
         private static TouhouPets instance;
         public static TouhouPets Instance { get => instance; set => instance = value; }
-
-        private static bool forceCompatibilityMode;
-        public static bool ForceCompatibilityMode { get => forceCompatibilityMode; set => forceCompatibilityMode = value; }
-
         public override void Load()
         {
             instance = this;
@@ -31,7 +27,7 @@ namespace TouhouPets
         }
         public override void PostSetupContent()
         {
-            AutoSetCompatibilityMode();
+            //AutoSetCompatibilityMode();
             if (ModLoader.TryGetMod("ShopLookup", out Mod result))
             {
                 ShopLookupSupport.Setup(result);
@@ -59,6 +55,9 @@ namespace TouhouPets
             Main.instance.LoadFlameRing();
             Main.instance.LoadProjectile(ProjectileID.CultistRitual);
         }
+        #region 强制兼容模式遗留
+        private static bool forceCompatibilityMode;
+        public static bool ForceCompatibilityMode { get => forceCompatibilityMode; set => forceCompatibilityMode = value; }
         private static List<string> banList = [
             "CalamityMod",
             "CatalystMod",
@@ -75,5 +74,6 @@ namespace TouhouPets
                 }
             }
         }
+        #endregion
     }
 }

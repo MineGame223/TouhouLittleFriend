@@ -68,7 +68,10 @@ namespace TouhouPets
             "TheMaterealizer",
             "ScarabBelief",
             "WorldsEndEverlastingFallingWhale",
-            "TheSon"
+            "TheSon",
+            "GoblinChariot",
+            "BigDipper",
+            "PuppetOpera",
             ];
         public static void GiveComment_Marisa(this Projectile marisa, NPC boss)
         {

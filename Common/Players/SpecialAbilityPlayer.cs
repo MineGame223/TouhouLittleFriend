@@ -20,16 +20,17 @@ namespace TouhouPets
         }
         public override void ModifyLuck(ref float luck)
         {
+            if (Player.HasBuff(BuffType<TenshiBuff>()) && SpecialAbility_Tenshin)
+            {
+                luck += 0.5f;
+            }
+
             if (Player.HasBuff(BuffType<HinaBuff>()) && SpecialAbility_Hina)
             {
                 if (luck < 0)
                 {
                     luck = 0;
                 }
-            }
-            if (Player.HasBuff(BuffType<TenshiBuff>()) && SpecialAbility_Tenshin)
-            {
-                luck += 0.5f;
             }
 
             if ((Player.HasBuff(BuffType<TewiBuff>()) || Player.HasBuff<EienteiBuff>()) && SpecialAbility_Tewi)

@@ -94,17 +94,20 @@ namespace TouhouPets
                     tooltips.InsertTooltipLine(Language.GetTextValue("Mods.TouhouPets.RaikoTips"));
             }
         }
-        public override bool CanUseItem(Item item, Player player)
+        public override bool ConsumeItem(Item item, Player player)
         {
             if (player.HasBuff<MinorikoBuff>() && SpecialAbility_Minoriko)
             {
-                if (ItemID.Sets.IsFood[item.type] && item.buffType > 0)
+                if (ItemID.Sets.IsFood[item.type] && item.buffTime > 0)
                 {
-                    int defaultTime = item.buffTime;
-                    item.buffTime += (int)(defaultTime * 0.03f);
+                    int index = player.FindBuffIndex(item.buffType);
+                    if (index != -1)
+                    {
+                        player.buffTime[index] = (int)(item.buffTime * 0.03f);
+                    }
                 }
             }
-            return base.CanUseItem(item, player);
+            return base.ConsumeItem(item, player);
         }
         public override void Update(Item item, ref float gravity, ref float maxFallSpeed)
         {

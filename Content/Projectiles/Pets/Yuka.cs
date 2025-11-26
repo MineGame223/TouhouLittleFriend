@@ -121,7 +121,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -250,7 +250,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 solutionClone = new(Solution.type)
                 {
-                    shoot = GetSprayInfo(Solution.type).SprayType
+                    shoot = GetSprayInfo(Solution).SprayType
                 };
             }
             if (Projectile.frame >= 8)
@@ -282,7 +282,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Vector2 pos = YukaHandOrigin + new Vector2(0, 7f * Main.essScale);
                     pos += new Vector2(0, -48).RotatedBy(MathHelper.ToRadians(Angle));
 
-                    SprayInfo info = GetSprayInfo(Solution.type);
+                    SprayInfo info = GetSprayInfo(Solution);
                     int dustType;
                     if (info.SprayDustAdvanced == null)
                         dustType = info.SprayDust;

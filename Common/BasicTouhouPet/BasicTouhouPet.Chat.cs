@@ -124,6 +124,7 @@ namespace TouhouPets
             {
                 return false;
             }
+            //如果当前对话文本等于检测文本，则设置为 true
             if (chatText == startKey)
             {
                 IsChatRoomActive[startKey] = true;
@@ -145,6 +146,7 @@ namespace TouhouPets
                 if (!IsChatRoomActive.ContainsKey(i))
                     continue;
 
+                //如果当前对话文本等于检测文本，则设置为 true
                 if (chatText == i)
                 {
                     IsChatRoomActive[i] = true;

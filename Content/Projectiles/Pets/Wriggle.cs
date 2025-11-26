@@ -2,10 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Dusts;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -117,7 +119,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 if (CurrentState == States.Cold)
                 {
@@ -177,7 +179,10 @@ namespace TouhouPets.Content.Projectiles.Pets
             }
             else if (ShouldExtraVFXActive)
             {
-                SpawnFirefly();
+                if (mainTimer % (CurrentState == States.Swarming ? 10 : 30) == 0 && CanGenFireFly)
+                {
+                    SpawnFirefly(Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-40, 40)));
+                }
             }
             shake = Vector2.Zero;
 
@@ -215,17 +220,13 @@ namespace TouhouPets.Content.Projectiles.Pets
             UpdateMiscData();
             AttractInsect();
         }
-        private void SpawnFirefly()
+        private void SpawnFirefly(Vector2 position)
         {
-            if (mainTimer % (CurrentState == States.Swarming ? 10 : 30) == 0 && CanGenFireFly)
-            {
-                if (OwnerIsMyPlayer)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-40, 40))
-                            , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
-                            , FireflyType(Owner), Main.rand.Next(0, 2));
-                }
-            }
+            Dust fly = Dust.NewDustPerfect(position, DustType<WriggleFirefly>(), Vector2.Zero);
+            fly.velocity = new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f));
+            fly.customData = FireflyType(Owner);
+            if (!CompatibilityMode)
+                fly.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
         }
         private void ControlMovement()
         {
@@ -346,23 +347,18 @@ namespace TouhouPets.Content.Projectiles.Pets
                 AltVanillaFunction.PlaySound(SoundID.Pixie, Projectile.Center);
             }
             Timer++;
-            if (OwnerIsMyPlayer)
+            if (Timer % 2 == 0)
             {
-                if (Timer % 2 == 0 && Owner.ownedProjectileCounts[ProjectileType<WriggleFirefly>()] < 100)
+                Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
+                if (CheckEmptyPlace(point) && SpecialAbility_Wriggle)
                 {
-                    Vector2 point = Projectile.Center + new Vector2(Main.rand.Next(-600, 600), Main.rand.Next(-600, 600));
-                    if (CheckEmptyPlace(point) && SpecialAbility_Wriggle)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), point
-                            , new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f)), ProjectileType<WriggleFirefly>(), 0, 0, Main.myPlayer
-                            , FireflyType(Owner), Main.rand.Next(0, 2));
-                    }
+                    SpawnFirefly(point);
                 }
-                if (Timer > RandomCount)
-                {
-                    Timer = 0;
-                    CurrentState = States.AfterSwarming;
-                }
+            }
+            if (Timer > RandomCount && OwnerIsMyPlayer)
+            {
+                Timer = 0;
+                CurrentState = States.AfterSwarming;
             }
         }
         private void AfterSwarming()

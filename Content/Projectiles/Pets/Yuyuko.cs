@@ -1,16 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
-using Terraria.Localization;
+using TouhouPets.Content.Dusts;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -330,13 +332,13 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void SpawnButterfly()
         {
-            if (!OwnerIsMyPlayer)
-                return;
-
-            if (mainTimer % 20 == 0 && mouseOpacity >= 1f)
+            if (mainTimer % 20 == 0)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
-                            , new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f)), ProjectileType<YuyukoButterfly>(), 0, 0, Main.myPlayer);
+                Dust fly = Dust.NewDustPerfect(Projectile.Center + new Vector2(Main.rand.Next(-40, 40), Main.rand.Next(-20, 50))
+                    , DustType<YuyukoButterfly>(), Vector2.Zero);
+                fly.velocity = new Vector2(0, Main.rand.NextFloat(-0.3f, -0.7f));
+                if (!CompatibilityMode)
+                    fly.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
             }
         }
         private void UpdatePositionOffset()
@@ -482,8 +484,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mouthPosition.HasValue)
                 {
                     Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
-                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection, 0);
-                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                    Vector2 spinningpoint = new (Projectile.spriteDirection, 0);
+                    Dust.NewDustPerfect(vector, DustID.FoodPiece, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
                 }
             }
 
@@ -495,8 +497,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mouthPosition.HasValue)
                 {
                     Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
-                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection * 0.1f, 0);
-                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                    Vector2 spinningpoint = new (Projectile.spriteDirection * 0.1f, 0);
+                    Dust.NewDustPerfect(vector, DustID.FoodPiece, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
                 }
             }
         }

@@ -77,6 +77,16 @@ Mods: {
 					// Label: "[i:TouhouPets/PoltergeistAlbum] {$Mods.TouhouPets.Items.PoltergeistAlbum.DisplayName}特殊能力"
 					// Tooltip: After the player is AFK for longer than 10s, they will performance together
 				}
+
+				SpecialAbility_Shion: {
+					// Label: Special Ability_ Shion
+					// Tooltip: ""
+				}
+
+				SpecialAbility_Jyoon: {
+					// Label: Special Ability_ Jyoon
+					// Tooltip: ""
+				}
 			}
 
 			PetDialogConfig: {
@@ -159,9 +169,8 @@ Mods: {
 					// Label: Dyes didn't affect pets
 					/* Tooltip:
 						'''
-						Disable this mod's pet's dye effect in order to avoid some cross-mod bugs (such as Calamity Mod)
+						Disable this mod's pet's dye effect in order to avoid some possible drawing bugs
 						Some pet's special dye effect won't be affected
-						This function will active forcely while certain mods are loaded in the same time
 						''' */
 				}
 
