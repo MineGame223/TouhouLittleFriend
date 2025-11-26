@@ -222,14 +222,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void SpawnFirefly(Vector2 position)
         {
-            if (mainTimer % (CurrentState == States.Swarming ? 10 : 30) == 0 && CanGenFireFly)
-            {
-                Dust fly = Dust.NewDustPerfect(position, DustType<WriggleFirefly>(), Vector2.Zero);
-                fly.velocity = new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f));
-                fly.frame = new Rectangle(FireflyType(Owner) * 10, Main.rand.Next(0, 2) * 10, 10, 10);
-                if (!CompatibilityMode)
-                    fly.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
-            }
+            Dust fly = Dust.NewDustPerfect(position, DustType<WriggleFirefly>(), Vector2.Zero);
+            fly.velocity = new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.5f, 0.5f));
+            fly.customData = FireflyType(Owner);
+            if (!CompatibilityMode)
+                fly.shader = GameShaders.Armor.GetSecondaryShader(Owner.cLight, Owner);
         }
         private void ControlMovement()
         {

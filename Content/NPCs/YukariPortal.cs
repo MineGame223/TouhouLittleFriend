@@ -37,7 +37,7 @@ namespace TouhouPets.Content.NPCs
             NPC.friendly = true;
             NPC.width = 16;
             NPC.height = 40;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = NPCAIStyleID.Passive;
             NPC.damage = 0;
             NPC.defense = 0;
             NPC.lifeMax = 1;

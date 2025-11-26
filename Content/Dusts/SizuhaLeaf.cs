@@ -8,7 +8,7 @@ namespace TouhouPets.Content.Dusts
         public override void OnSpawn(Dust dust)
         {
             dust.alpha = 255;
-            dust.frame = new Rectangle(0, 18 * Main.rand.Next(0, 3), 14, 18);
+            dust.frame = Texture2D.Frame(1, 3, 0, Main.rand.Next(0, 3));
         }
         public override bool Update(Dust dust)
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 
 namespace TouhouPets.Content.Dusts
@@ -8,7 +9,18 @@ namespace TouhouPets.Content.Dusts
         public override void OnSpawn(Dust dust)
         {
             dust.scale = 0.1f;
-            dust.frame = new Rectangle(0, 12 * Main.rand.Next(0, 3), 10, 12);
+            dust.frame = Texture2D.Frame(1, 3, 0, Main.rand.Next(0, 3));
+        }
+        public override bool PreDraw(Dust dust)
+        {
+            Texture2D tex = Texture2D.Value;
+            Vector2 orig = dust.frame.Size() / 2;
+            Vector2 pos = dust.position + orig - Main.screenPosition;
+
+            Color clr = dust.color * ((255 - dust.alpha) / 255f);
+
+            Main.EntitySpriteDraw(tex, pos, dust.frame, clr, dust.rotation, orig, dust.scale, SpriteEffects.None);
+            return false;
         }
         public override bool Update(Dust dust)
         {

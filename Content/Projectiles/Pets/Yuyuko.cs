@@ -484,8 +484,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mouthPosition.HasValue)
                 {
                     Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
-                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection, 0);
-                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                    Vector2 spinningpoint = new (Projectile.spriteDirection, 0);
+                    Dust.NewDustPerfect(vector, DustID.FoodPiece, 1.3f * spinningpoint.RotatedBy((float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array[Main.rand.Next(array.Length)], 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
                 }
             }
 
@@ -497,8 +497,8 @@ namespace TouhouPets.Content.Projectiles.Pets
                 if (mouthPosition.HasValue)
                 {
                     Vector2 vector = mouthPosition.Value + Main.rand.NextVector2Square(-4f, 4f);
-                    Vector2 spinningpoint = new Vector2(Projectile.spriteDirection * 0.1f, 0);
-                    Dust.NewDustPerfect(vector, 284, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
+                    Vector2 spinningpoint = new (Projectile.spriteDirection * 0.1f, 0);
+                    Dust.NewDustPerfect(vector, DustID.FoodPiece, 1.3f * spinningpoint.RotatedBy(-(float)Math.PI / 5f * Main.rand.NextFloatDirection()), 0, array2[Main.rand.Next(array2.Length)] * 0.7f, 0.8f + 0.2f * Main.rand.NextFloat()).fadeIn = 0f;
                 }
             }
         }

@@ -1,22 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 
 namespace TouhouPets.Content.Dusts
 {
     public class MokuFlame : ModDust
     {
-        private readonly Asset<Texture2D> dustTex = Request<Texture2D>("TouhouPets/Content/Dusts/MokuFlame");
         public override bool PreDraw(Dust dust)
         {
-            Texture2D tex = dustTex.Value;
+            Texture2D tex = Texture2D.Value;
             Rectangle rect = dust.frame;
             Vector2 orig = rect.Size() / 2;
             Vector2 pos = dust.position + orig - Main.screenPosition;
 
-            int alpha = 255 - dust.alpha;
-            Color clr = new(alpha, alpha, alpha, 0);
+            Color clr = dust.color * ((255 - dust.alpha) / 255f);
+            clr.A *= 0;
 
             for (int i = 0; i < 3; i++)
             {
@@ -24,14 +22,13 @@ namespace TouhouPets.Content.Dusts
                     pos + new Vector2(Main.rand.NextFloat(-1.2f, 1.2f), Main.rand.NextFloat(-1.2f, 1.2f))
                     , rect, clr * 0.5f, 0f, orig, dust.scale, SpriteEffects.None);
             }
-            //Main.EntitySpriteDraw(tex, pos, rect, clr, 0f, orig, dust.scale * 0.8f, SpriteEffects.None);
             return false;
         }
         public override void OnSpawn(Dust dust)
         {
             dust.color = Color.White;
             dust.alpha = 255;
-            dust.frame = new Rectangle(0, Main.rand.Next(0, 3) * 18, 14, 18);
+            dust.frame = Texture2D.Frame(1, 3, 0, Main.rand.Next(0, 3));
         }
         public override bool Update(Dust dust)
         {
