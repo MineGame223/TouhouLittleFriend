@@ -1,0 +1,80 @@
+Mods: {
+	TouhouPets: {
+		Projectiles: {
+			WriggleFirefly.DisplayName: Luciérnaga
+			YuyukoButterfly.DisplayName: Mariposa
+			AliceDoll_Proj.DisplayName: Muñeca Shanghai
+			WakasagihimeBubble.DisplayName: Burbuja
+			KaguyaBullet.DisplayName: Proyectil
+			MokuBullet.DisplayName: Proyectil
+			MokuFireball.DisplayName: Bola de Fuego
+			KaguyaWave.DisplayName: Ola de Luna Llena
+			SakuyaKnife.DisplayName: Cuchillo
+			StarTrail.DisplayName: Estela de Estrella
+			SizuhaLeaf.DisplayName: Hoja de Otoño
+			MokuFlame.DisplayName: Llama
+			BandSpotlight.DisplayName: Foco
+			Cirno.DisplayName: Cirno
+			Daiyousei.DisplayName: Daiyousei
+			Flandre.DisplayName: Flandre Scarlet
+			Hecatia.DisplayName: Hecatia Lapislazuli
+			Hina.DisplayName: Hina Kagiyama
+			Iku.DisplayName: Iku Nagae
+			Junko.DisplayName: Junko
+			Marisa.DisplayName: Marisa Kirisame
+			Patchouli.DisplayName: Patchouli Knowledge
+			Piece.DisplayName: Fragmento de Corona
+			Reimu.DisplayName: Reimu Hakurei
+			Remilia.DisplayName: Remilia Scarlet
+			Sekibanki.DisplayName: Sekibanki
+			Tenshi.DisplayName: Tenshi Hinanawi
+			Utsuho.DisplayName: Utsuho Reiuji
+			Koishi.DisplayName: Koishi Komeiji
+			Satori.DisplayName: Satori Komeiji
+			Sanae.DisplayName: Sanae Kochiya
+			Kogasa.DisplayName: Kogasa Tatara
+			Nitori.DisplayName: Nitori Kawashiro
+			Rin.DisplayName: Rin Kaenbyou
+			Lily.DisplayName: Lily White
+			Mystia.DisplayName: Mystia Lorelei
+			Wriggle.DisplayName: Wriggle Nightbug
+			Aya.DisplayName: Aya Shameimaru
+			Yuyuko.DisplayName: Yuyuko Saigyougi
+			Youmu.DisplayName: Youmu Konpaku
+			Alice.DisplayName: Alice Margatroid
+			Rumia.DisplayName: Rumia
+			Koakuma.DisplayName: Koakuma No.{0}
+			Wakasagihime.DisplayName: Wakasagihime
+			Yuka.DisplayName: Yuka Kazami
+			Chen.DisplayName: Chen
+			Ran.DisplayName: Ran Yakumo
+			Yukari.DisplayName: Yukari Yakumo
+			Kaguya.DisplayName: Kaguya Houraisan
+			Moku.DisplayName: Fujiwara no Mokou
+			Meirin.DisplayName: Hong Meirin
+			Sakuya.DisplayName: Sakuya Izayoi
+			Raiko.DisplayName: Raiko Horikawa
+			Keine.DisplayName: Keine Kamishirasawa
+			Luna.DisplayName: Luna Child
+			StarPet.DisplayName: Star Sapphire
+			Sunny.DisplayName: Sunny Milk
+			Reisen.DisplayName: Reisen Udongein Inaba
+			Sizuha.DisplayName: Shizuha Aki
+			Minoriko.DisplayName: Minoriko Aki
+			Murasa.DisplayName: Minamistu Murasa
+			Suika.DisplayName: Suika Ibuki
+			Eirin.DisplayName: Eirin Yagokoro
+			Shinki.DisplayName: Shinki
+			Rukoto.DisplayName: Rukoto
+			Kokoro.DisplayName: Hata no Kokoro
+			Doremy.DisplayName: Doremy Sweet
+			Tewi.DisplayName: Tei Inaba
+			Momoyo.DisplayName: Momoyo Himemushi
+			AliceOld.DisplayName: Alice
+			Letty.DisplayName: Letty Whiterock
+			Lunasa.DisplayName: Lunasa Prismriver
+			Merlin.DisplayName: Merlin Prismriver
+			Lyrica.DisplayName: Lyrica Prismriver
+		}
+	}
+}

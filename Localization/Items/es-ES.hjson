@@ -1,0 +1,597 @@
+Mods: {
+	TouhouPets: {
+		Items: {
+			CirnoIceShard: {
+				DisplayName: Fragmento de hielo lleno de sabiduría
+				Tooltip:
+					'''
+					Invoca a la Hada Más Fuerte
+					"¡Parece estar lleno de sabiduría!"
+					'''
+			}
+
+			UtsuhoEye: {
+				DisplayName: Ojo Carmesí
+				Tooltip:
+					'''
+					Invoca al Cuervo Infernal
+					"Está caliente al tacto."
+					'''
+			}
+
+			HinaDoll: {
+				DisplayName: Muñeca de Hina
+				Tooltip:
+					'''
+					Invoca a la Diosa de la Desgracia
+					"Dicen que puede quitar la perdición ... ¿o traerla en su lugar?"
+					'''
+			}
+
+			DaiyouseiBomb: {
+				DisplayName: BOMBA
+				Tooltip:
+					'''
+					Invoca a la Gran Hada
+					"Es una BOMBA."
+					'''
+			}
+
+			PatchouliMoon: {
+				DisplayName: Grimorio de la Luna Dorada
+				Tooltip:
+					'''
+					Invoca a la Gran Biblioteca Inmóvil
+					"Emitiendo el brillo del conocimiento"
+					'''
+			}
+
+			SekibankiBow: {
+				DisplayName: Lazo Azul
+				Tooltip:
+					'''
+					Invoca a una Rokurokubi para que te siga
+					"Este es el noveno lazo."
+					'''
+			}
+
+			MarisaHakkero: {
+				DisplayName: Mini-Hakkero
+				Tooltip:
+					'''
+					Invoca a la Maga Corriente
+					"Arde suavemente..."
+					'''
+			}
+
+			ReimuYinyangOrb: {
+				DisplayName: Orbe Yin-Yang
+				Tooltip:
+					'''
+					Invoca a la Doncella del Santuario del Paraíso
+					"Lleno de aura... y bastante pesado."
+					'''
+			}
+
+			RemiliaRedTea: {
+				DisplayName: Una Taza de Té Rojo
+				Tooltip:
+					'''
+					Invoca a la Hermana Vampiro Mayor
+					"Una buena bebida para disfrutar por la tarde."
+					'''
+			}
+
+			FlandrePudding: {
+				DisplayName: Pudín de Cereza
+				Tooltip:
+					'''
+					Invoca a la Hermana Vampiro Menor
+					"¡Se ve delicioso!"
+					'''
+			}
+
+			CakeOfScarlet: {
+				DisplayName: Pastel Escarlata
+				Tooltip:
+					'''
+					Reúne a los residentes de la Mansión del Diablo Escarlata
+					"La hora del té de la tarde que solo pertenece a la Familia Scarlet."
+					'''
+			}
+
+			JunkoMooncake: {
+				DisplayName: Pastel de Luna Pura
+				Tooltip:
+					'''
+					Invoca a un Espíritu Purificado
+					"Nuez de oliva pura."
+					'''
+			}
+
+			HecatiaPlanet: {
+				DisplayName: Planeta rojo extraño
+				Tooltip:
+					'''
+					Invoca a la Diosa del Infierno
+					"Algo... de otro mundo."
+					'''
+			}
+
+			IkuOarfish: {
+				DisplayName: El Pez Legendario
+				Tooltip:
+					'''
+					Invoca a la Mensajera del Palacio del Dragón
+					"Raro y hermoso."
+					'''
+			}
+
+			TenshiKeyStone: {
+				DisplayName: Piedra Angular
+				Tooltip:
+					'''
+					Invoca a la Celestial
+					"¡Ni un giroscopio ni una piedra de encurtidos!"
+					'''
+			}
+
+			SatoriSlippers: {
+				DisplayName: Un Par de Pantuflas Rosas
+				Tooltip:
+					'''
+					Invoca a una lectora de mentes
+					"Deben ser muy cálidas."
+					'''
+			}
+
+			KoishiTelephone: {
+				DisplayName: Teléfono púrpura
+				Tooltip:
+					'''
+					Invoca a una chica perdida en su subconsciente
+					'¿Moshi moshi?'
+					[c/ff0000:¡PUEDE CAUSAR DAÑOS FATALES AL JUGADOR QUE LO USE!]
+					'''
+			}
+
+			TheThirdEye: {
+				DisplayName: El Tercer Ojo
+				Tooltip:
+					'''
+					Reúne a los residentes del Infierno Antiguo
+					"Espiando tu interior..."
+					'''
+			}
+
+			SanaeCoin: {
+				DisplayName: Moneda de Rana Plateada
+				Tooltip:
+					'''
+					Invoca a la Doncella del Santuario de los Milagros
+					"¿Tal vez cause algo interesante cuando se ahorre una cantidad suficiente?"
+					'''
+			}
+
+			KogasaUmbrella: {
+				DisplayName: Paraguas Extraño
+				Tooltip:
+					'''
+					Invoca a un Tsukumogami Paraguas
+					"¡¿Tiene un OJO en él?!"
+					
+					'''
+			}
+
+			NitoriCucumber: {
+				DisplayName: Pepino
+				Tooltip:
+					'''
+					Invoca a una Ingeniera Kappa
+					"Muy fresco."
+					'''
+			}
+
+			UselessBook: {
+				DisplayName: Un Libro Mágico Sin Funciones
+				Tooltip:
+					'''
+					Un libro muy desgastado que ha sido tratado a prueba de agua
+					Está lleno de oscuridades que ni siquiera pueden ser un arma
+					¿Tal vez tirarlo a una piscina cristalina lo refrescará?
+					'''
+			}
+
+			RinSkull: {
+				DisplayName: Calavera Poseída
+				Tooltip:
+					'''
+					Invoca a una Kasha Carreta de Cadáveres
+					"Quizás esto... ¿No puede ser un juguete adecuado para un gato...?"
+					'''
+			}
+
+			LilyOneUp: {
+				DisplayName: 1 UP
+				Tooltip:
+					'''
+					Invoca a un Hada de la Primavera
+					"¡Vida extra!"
+					'''
+			}
+
+			MystiaFeather: {
+				DisplayName: Pluma de Pájaro Nocturno
+				Tooltip:
+					'''
+					Invoca a un Gorrión Nocturno
+					"¿Huele a nuggets de pollo...?"
+					'''
+			}
+
+			WriggleInAJar: {
+				DisplayName: Luciérnaga En Un Frasco
+				Tooltip:
+					'''
+					Invoca a un Youkai Luciérnaga
+					"Una luz de un recuerdo de hace mucho tiempo."
+					'''
+			}
+
+			AyaCamera: {
+				DisplayName: Cámara de Estilo Antiguo
+				Tooltip:
+					'''
+					Invoca a un Cuervo Tengu Reportero
+					"Tiene una hoja de arce en la parte trasera."
+					'''
+			}
+
+			YuyukoFan: {
+				DisplayName: Abanico de Cerezo
+				Tooltip:
+					'''
+					Invoca al Fantasma de las Flores de Cerezo
+					"Aún conserva el aroma de la primavera."
+					'''
+			}
+
+			YoumuKatana: {
+				DisplayName: Katana de Juguete
+				Tooltip:
+					'''
+					Invoca a la Jardinera Mitad Fantasma
+					"Hay un espíritu en ella."
+					'''
+			}
+
+			AliceDoll: {
+				DisplayName: Títere exquisito
+				Tooltip:
+					'''
+					Invoca a la Titiritera de los Siete Colores
+					"Vivida y animada."
+					'''
+			}
+
+			RumiaRibbon: {
+				DisplayName: Lazo Rojo
+				Tooltip:
+					'''
+					Invoca al Youkai del Ocaso
+					"No puedes desatarlo."
+					'''
+			}
+
+			KoakumaPower: {
+				DisplayName: PODER
+				Tooltip:
+					'''
+					Invoca a una de los muchos Diablillos
+					"En realidad es, ¿una BOMBA teñida...?"
+					'''
+			}
+
+			WakasagihimeFishingRod: {
+				DisplayName: Caña de Pescar de Juguete
+				Tooltip:
+					'''
+					Atrae a una Princesa Sirena
+					"Puede atrapar... a alguien."
+					'''
+			}
+
+			YukaSunflower: {
+				DisplayName: Girasol En Una Maceta
+				Tooltip:
+					'''
+					Invoca a la Maestra de las Flores de las Cuatro Estaciones
+					"¿¿Qué??"
+					'''
+			}
+
+			YukarisItem: {
+				DisplayName: Pergamino del Sabio
+				Tooltip:
+					'''
+					Invoca a la Sabia de las Fronteras y su Shikigami
+					"Esta es mi señal de aprobación, simplemente tómala."
+					[c/ffff33:Una recompensa después de contribuir lo suficiente a Gensokyo]
+					'''
+			}
+
+			KaguyaBranch: {
+				DisplayName: Rama Enjoyada de Hourai
+				Tooltip:
+					'''
+					Invoca a la Princesa Lunar
+					"Una rama aparentemente ordinaria con joyas coloridas."
+					'''
+			}
+
+			MokuMatch: {
+				DisplayName: Fósforo eterno
+				Tooltip:
+					'''
+					Invoca a una Llama de Vida Eterna
+					"Llueva o sople el viento, la llama nunca se apaga."
+					'''
+			}
+
+			MeirinPanda: {
+				DisplayName: Colgante de Panda
+				Tooltip:
+					'''
+					Invoca a una pequeña guardiana
+					"Desde la misteriosa tierra Oriental."
+					'''
+			}
+
+			SakuyaWatch: {
+				DisplayName: Dial de Luna
+				Tooltip:
+					'''
+					Invoca a una pequeña sirvienta
+					"Las manecillas siempre se quedan en las 4:16."
+					'''
+			}
+
+			RaikoDrum: {
+				DisplayName: Tambor de Juguete
+				Tooltip:
+					'''
+					Invoca a un Tsukumogami Tambor
+					"Badum, psh~"
+					'''
+			}
+
+			KeineLeaf: {
+				DisplayName: Hoja de Ginkgo
+				Tooltip:
+					'''
+					Invoca a una Hakutaku Licántropa
+					"Portando cultura por más de mil años."
+					'''
+			}
+
+			LunaMoon: {
+				DisplayName: Luna Durmiente
+				Tooltip:
+					'''
+					Invoca al Hada de la Luz Lunar
+					"Si duermes con ella, no escucharás ningún ruido."
+					'''
+			}
+
+			StarSapphire: {
+				DisplayName: Zafiro Estrellado
+				Tooltip:
+					'''
+					Invoca al Hada de la Luz Estelar
+					"Sientes como si pudieras percibirlo todo al sostenerlo."
+					'''
+			}
+
+			SunnyMilk: {
+				DisplayName: Leche Soleada
+				Tooltip:
+					'''
+					Invoca al Hada de la Luz Solar
+					"El mundo entero se vuelve más soleado después de beberla."
+					'''
+			}
+
+			LightsJewels: {
+				DisplayName: Joyas de Luz
+				Tooltip:
+					'''
+					Invoca a las tres Hadas de la Luz
+					"Un collar cargado de zafiros, rutilo y un poco de queso."
+					'''
+			}
+
+			ReisenGun: {
+				DisplayName: Pistola Lunática
+				Tooltip:
+					'''
+					Invoca a una Coneja Lunar
+					"¿Es una pistola o un megáfono?"
+					'''
+			}
+
+			SizuhaBrush: {
+				DisplayName: Pincel de Otoño
+				Tooltip:
+					'''
+					Invoca a la Diosa de las Hojas de Otoño
+					"¿Quién tiñó las hojas con el color del otoño?"
+					'''
+			}
+
+			MinorikoSweetPotato: {
+				DisplayName: Boniato Asado
+				Tooltip:
+					'''
+					Invoca a la Diosa de la Cosecha Otoñal
+					"Dulce y sabroso, ¡está lleno del sabor del otoño!"
+					'''
+			}
+
+			MurasaBailer: {
+				DisplayName: Cazo Sin Fondo
+				Tooltip:
+					'''
+					Invoca al Fantasma del Barco
+					"Nunca puede llenarse..."
+					'''
+			}
+
+			SuikaGourd: {
+				DisplayName: Calabaza Ibuki
+				Tooltip:
+					'''
+					Invoca a una pequeña beoda
+					"Parece infinita por dentro."
+					'''
+			}
+
+			EirinBow: {
+				DisplayName: Arco de Juguete
+				Tooltip:
+					'''
+					Invoca a la Farmacéutica de la Luna
+					"Advertencia: Por favor, no dispares a otros ni a ti mismo."
+					'''
+			}
+
+			ShinkiHeart: {
+				DisplayName: Corazón del Mundo de los Demonios
+				Tooltip:
+					'''
+					Invoca a la Diosa de Makai
+					"Amor del pasado."
+					'''
+			}
+
+			RukotoRemote: {
+				DisplayName: Control Remoto del Robot
+				Tooltip:
+					'''
+					Enciende a una pequeña sirvienta robot
+					"Las instrucciones dicen que su batería no es extraíble."
+					'''
+			}
+
+			BigPlateMochi: {
+				DisplayName: Un Plato Grande de Mochi
+				Tooltip:
+					'''
+					Invoca a todos los residentes de la Casa de la Eternidad
+					"Apropiado para compartir en familia."
+					'''
+			}
+
+			DoremyPillow: {
+				DisplayName: Almohada de Buen Sueño
+				Tooltip:
+					'''
+					Invoca a un tapir de los sueños
+					"Que tengas un buen sueño."
+					'''
+			}
+
+			KokoroMask: {
+				DisplayName: Máscara de la Esperanza
+				Tooltip:
+					'''
+					Invoca a una Tsukumogami de Máscaras
+					"Parece que... es alguien."
+					'''
+			}
+
+			TewiCarrot: {
+				DisplayName: Colgante de Zanahoria de la Suerte
+				Tooltip:
+					'''
+					Invoca a una coneja de la suerte
+					"En realidad, es comestible."
+					'''
+			}
+
+			MomoyoPickaxe: {
+				DisplayName: Mini Pico Dorado
+				Tooltip:
+					'''
+					Invoca a la princesa de los insectos
+					"Es demasiado pequeño como herramienta, pero es adecuado para alguien."
+					'''
+			}
+
+			AliceOldDoll: {
+				DisplayName: Marioneta Antigua
+				Tooltip:
+					'''
+					Invoca a una chica de una tierra mágica.
+					"Parece el viejo juguete de alguien."
+					'''
+			}
+
+			LettyGlobe: {
+				DisplayName: Globo de Nieve
+				Tooltip:
+					'''
+					Invoca a una youkai olvidada del invierno
+					"El paisaje del país del norte,"
+					"Cien leguas encerradas en hielo,"
+					"Mil leguas de nieve arremolinada."
+					'''
+			}
+
+			LunasaViolin: {
+				DisplayName: Violín Embrujado
+				Tooltip:
+					'''
+					Invoca a una violinista poltergeist
+					"No sonará cuando aparezcan los monstruos."
+					'''
+			}
+
+			MerlinTrumpet: {
+				DisplayName: Trompeta Embrujada
+				Tooltip:
+					'''
+					Invoca a una trompetista poltergeist
+					"Dududa du da du~"
+					'''
+			}
+
+			LyricaKeyboard: {
+				DisplayName: Teclado Embrujado
+				Tooltip:
+					'''
+					Invoca a una teclista poltergeist
+					"No debe confundirse con un piano."
+					'''
+			}
+
+			PoltergeistAlbum: {
+				DisplayName: Disco Poltergeist
+				Tooltip:
+					'''
+					Invoca a la banda poltergeist
+					"Álbum del Conjunto Prismriver"
+					'''
+			}
+
+			SupportStick: {
+				DisplayName: Vara de Apoyo Embrujada
+				Tooltip:
+					'''
+					"Prueba de ser un miembro principal del Club de Fans del Conjunto Prismriver"
+					Permite disfrutar del concierto de la banda poltergeist sin estar AFK
+					Clic izquierdo para iniciar o cancelar el concierto, clic derecho para cambiar de pista
+					'''
+			}
+		}
+	}
+}

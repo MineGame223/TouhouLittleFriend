@@ -1,0 +1,21 @@
+Mods: {
+	TouhouPets: {
+		Chat_Yuyuko: {
+			Food_1: ¡Recién horneado es lo mejor!
+			Food_2: ¡Un manjar peculiar de la jungla con alto contenido proteico!
+			Food_3: Sabe a mi tierra natal... Pero no hay mar en el Inframundo, ¿verdad?
+			Food_4: ¡Un saludo a la legendaria comida comercial!
+			Food_5: Las patatas fritas sin kétchup ni bacalao no tienen alma...
+			Food_6: ¡Oh! ¡Sabor a oro!
+			Food_7: No importa si son conchas o cualquier otra cosa, simplemente cómelas juntas.
+			Food_8: Una manzana al día mantiene al doctor... espera, ¿necesito un doctor?
+			Food_9: Estas cosas no explotarán, ¿verdad?
+			Food_10: He escondido todas las piñas...
+			Food_11: ¿Podría ser un pastel?
+			Food_12: ¡Está rico si no tiene espinas pequeñas!
+			Food_13: La vida no será maravillosa sin alcohol, ¡Salud!
+			Food_14: _
+			Food_Reject_1: Por favor, no me des comida basura...
+		}
+	}
+}
