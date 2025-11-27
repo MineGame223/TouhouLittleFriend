@@ -1,0 +1,808 @@
+Mods: {
+	TouhouPets: {
+		Chat_Kogasa: {
+			Chat1: ¡Relo relo~
+			Chat2: ¡BUU!
+			Chat3: No soy linda, ¡soy ATERRADORA!
+			Chat4: ¡Sí! ¡Ahora está lloviendo!
+			Chat5: ¡Saltar en los charcos en los días de lluvia es lo más divertido!
+			Chat6: ¿Tienes un paraguas? Si no, ¡puedes llevarme a mí!
+			Chat7: Lalala~ Lalala~
+		}
+
+		Chat_Cirno: {
+			Chat1: Qué debería congelar hoy...
+			Chat2: ¡Cirno es invencible!
+			Chat3: ¡Soy la más fuerte!
+			Chat4: ¡Dai-chan es la que más me gusta!
+			Chat6: 1+1=... ¿Qué, ⑨?
+			Chat7: Hace tanto calor... Voy a empezar a derretirme...
+			Chat8: Estoy bien... tal vez...
+			Chat9: No tengas miedo, Dai-chan. ¡Estoy aquí!
+			Chat10: Dondequiera que vaya Dai-chan, ¡ahí voy yo!
+			Chat11: ¡Tantas ranas!
+			Chat12: ("¡Oh Dios! Keine-sensei me encontrará...")
+		}
+
+		Chat_Daiyousei: {
+			Chat1: Ho... ¡Hola!
+			Chat2: ¿Dónde deberíamos jugar hoy?
+			Chat3: ...¡Me gusta Cirno!
+			Chat4: ¿A dónde iremos hoy, Cirno-chan?
+			Chat5: Qué... qué lugar tan horrible...
+			Chat6: Eh... yo, ¡no tengo miedo de eso!
+			Chat7: ¡Yo también!
+			Chat8: ¿Estás bien, Cirno-chan?...
+		}
+
+		Chat_Flandre: {
+			Chat1: ¿Quieres jugar conmigo?
+			Chat2: ¡Quiero jugar contigo!
+			Chat3: No odio a mi hermana, pero ella nunca me presta atención...
+			Chat4: ¡Delicioso!
+			Chat5: Lo que me gusta...
+			Chat6: ¿Hermana? ¿Qué pasa?
+			Chat7: ...¿Cuándo podrá mi hermana jugar conmigo...?
+			Chat8: Siempre dices eso...
+			Chat9: ¿Qué estás diciendo, Meirin?
+			Chat10: ¿Está Meirin haciendo algún tipo de baile raro?
+			Chat11: Parece genial... ¿Puedes enseñarme?
+		}
+
+		Chat_Remilia: {
+			Chat1: ¡Humano, sométete a mí!
+			Chat2: ¡Este mundo finalmente será el hogar de la Diablesa Escarlata, algún día!
+			Chat3: Eh… La temperatura está casi demasiado alta…
+			Chat4: El sabor debería ser un poco más fuerte...
+			Chat5: ¡Qué noche tan increíble!
+			Chat6: Mi querida Flandre...
+			Chat7: Nada... ¡Solo quería hacerte una llamada!
+			Chat8: Me ocuparé de eso cuando tenga tiempo libre~
+			Chat9: No siempre puedes depender de tu hermana, ¿sabes?~
+			Chat10: ¿Qué pasa, Patchi?
+			Chat11: Jaja, todo eso son mentiras. El mito de que los vampiros temen a la cruz es solo imaginación humana.
+			Chat12: Por supuesto, Patchi. Realmente deberías salir más.
+			Chat13: A veces deberías cuidarte mejor, Sakuya.
+			Chat14: ¿Sakuya todavía recuerda el pasado?
+		}
+
+		Chat_Patchouli: {
+			Chat1: No quiero moverme...
+			Chat2: ¿Son estos libros que no he leído...?
+			Chat3: Este lugar parece... diferente a lo que conozco.
+			Chat4: Interesante...
+			Chat5: ...¿Es eso real?
+			Chat6: *Cof...*Cof...
+			Chat7: ¿Qué página leí la última vez...?
+			Chat8: Oye... ¿Remi?
+			Chat9: Si eres una vampiro, ¿por qué no temes a la cruz, como dicen mis libros?
+			Chat10: Bueno... Parece que lo que dicen mis libros no siempre es correcto.
+			Chat11: No...
+			Chat12: ¿Se ha portado bien Marisa últimamente?
+			Chat13: Tampoco se molesta en devolver los libros que me robó...
+			Chat14: ...¡Tenemos que darle una lección!
+			Chat15: ¡No, no, no! Déjame ir, solo déjame ir...
+			Chat16: ¡NO! ¡Moriré de agotamiento!...
+			Chat17: Eso es realmente innecesario, estoy perfectamente bien ahora... *¡Achís!
+			Chat18: ...¡ESTOY REALMENTE BIEN!
+			Chat19: Es un libro sobre cómo cocinar comida china...
+			Chat20: Es un libro sobre la historia humana de la Edad Media...
+			Chat21: Es un libro sobre misterios no resueltos del mundo...
+			Chat22: Es un libro sobre ingeniería de redes...
+			Chat23: Es un libro sobre mecánica cuántica...
+			Chat24: Es un libro sobre química orgánica...
+			Chat25: Es un libro sobre gestión económica...
+			Chat26: Es un libro sobre ciencia de los alimentos...
+			Chat27: Es un libro sobre medicina animal...
+			Chat28: Es un libro sobre arquitectura del paisaje...
+			Chat29: Es un libro sobre... ¿Qué? ¿Team Shanghai Alice?...
+			Chat30: Es un libro sobre ingeniería civil...
+			Chat31: Es un libro sobre medicina interna...
+			Chat32: Es un libro sobre protección de plantas...
+			Chat33: Es un libro sobre matemáticas avanzadas...
+			Chat34: Es un libro sobre gestión automatizada...
+			Chat35: Es un libro sobre psicología...
+		}
+
+		Chat_Hecatia: {
+			Chat1: Administrar el Infierno de tres mundos diferentes, a veces es un trabajo problemático...
+			Chat2: Mi estilo de ropa es impecable... ¿Hay realmente alguna forma de que a alguien no le guste?
+		}
+
+		Chat_Piece: {
+			Chat1: Lalala~ la~ Dónde hacer travesuras hoy...
+			Chat2: Parece que ese es un buen lugar para prender fuego...
+			Chat3: ¡La ropa de la Maestra es la mejor, por supuesto!
+		}
+
+		Chat_Hina: {
+			Chat1: ¿Cómo te va hoy?
+			Chat2: Que la desgracia nunca aparezca...
+			Chat3: Gira y gira...
+			Chat4: ¿Sabes qué, Nitori? Tengo un deseo.
+			Chat5: Deseo poder purificar toda la mala suerte de este mundo.
+			Chat6: Ja ja, como dije, es solo un deseo.
+			Chat7: Somos...
+			Chat8: ¡Ja jajaja!...
+		}
+
+		Chat_Iku: {
+			Chat1: La luna está ensangrentada y la tierra está maldita...
+			Chat2: El sol ha sido eclipsado por la luna, ahora los monstruos están por todas partes...
+			Chat3: La tormenta de arena está haciendo estragos...
+			Chat4: ¡Criaturas viscosas están cayendo del cielo!
+			Chat5: Ojalá que hoy sea pacífico.
+			Chat6: Parece que el mundo entero está feliz.
+			Chat7: Luces de paz están surgiendo por doquier...
+			Chat8: El clima está... estable.
+			Chat9: Una cálida brisa cruza las tierras.
+			Chat10: El viento de hoy es muy limpio.
+			Chat11: El viento se está precipitando.
+			Chat12: La lluvia fresca está limpiando la suciedad.
+			Chat13: La tormenta se acerca...
+			Chat14: Una tormenta violenta se está estrellando contra la tierra.
+			Chat15: El Dios Dragón debe estar enfurecido...
+			Chat16: Por favor, cálmate, Tenshi-sama...
+			Chat17: Una extraña niebla cubre la luna y los espíritus de la Cosecha están preparando una pelea.
+			Chat18: La magia de escarcha cubrió por completo la luna, el tiempo de jolgorio se acerca.
+			Chat19: Los Invasores de una tierra extranjera han llegado...
+		}
+
+		Chat_Tenshin: {
+			Chat1: ¡Voy a demostrarles a todos que soy la más poderosa!
+			Chat2: ¡Hagamos un gran Big Bang hoy!
+			Chat3: El Cielo es demasiado aburrido... Así que yo, la más grandiosa de las Celestiales, bajé aquí para darles un poco de atención.
+			Chat4: ¿Consejos celestiales? ¡No soy tan aburrida como ellos!
+			Chat5: ¿Te atreves a luchar conmigo?
+			Chat6: No es divertido comer melocotones todos los días... Oye, ¿sabes algo que sepa bien aquí en la tierra?
+			Chat7: Estás luchando contra una existencia poderosa, ¿verdad?
+			Chat8: ¡La cosa que monto es una "Piedra Clave", no una piedra de encurtido!
+			Chat9: ¿Otra yo? ¡También parece fuerte!
+		}
+
+		Chat_Junko: {
+			Chat1: ¿Estás mirando, Chang'e?...
+			Chat2: ......
+			Chat3: Udon-chan~ ¿Cómo te va?
+			Chat4: La asquerosa luna finalmente llega a la tierra.
+		}
+
+		Chat_Marisa: {
+			Chat1: ¿Qué tipo de magia debería probar hoy...?
+			Chat2: Esa cosa parece digna de ser prestada...
+			Chat3: ¿Te gustan las estrellas?
+			Chat4: ¡Qué bonito día, Da⭐ze!
+			Chat5: ¡Tantas estrellas en el cielo!
+			Chat6: Hoy no es normal...
+			Chat7: ¿Oye, oye. Reimu?
+			Chat8: ¡Acabo de encontrar algo interesante!
+			Chat9: No, no... ¡Es una estrella fugaz! ¡Una estrella REAL!
+			Chat10: Pero brilla más, ¿no es así?
+			Chat11: Oye, oye...
+			Chat12: Ah, ¿de verdad puedes llamarlo 'robar'? ¡Yo solo estoy 'tomando prestado'!
+			Chat13: Tómalo con calma, ¡la fecha de devolución es el día en que muera!
+			Chat14: ¡La próxima vez, entonces!
+			Chat15: ¿Qué pasa, Reimu?
+			Chat16: Uf... ¿Por qué dices esto de repente? Suena raro...
+			Chat17: Eh... ¿Bastante bueno, creo? ¡Significa que nacimos con un gran deber, *daze*!
+		}
+
+		Chat_Reimu: {
+			Chat1: Hoy también es aburrido...
+			Chat2: Que alguien me dé algo de dinero, por favor...
+			Chat3: Los problemas siempre llegan cuando hablas de ellos...
+			Chat4: Tut, parece que se acerca una 'mutación'...
+			Chat5: ¿Qué?
+			Chat6: ¿Qué es? No me digas que es el libro que le robaste a Patchouli...
+			Chat7: ...Esa cosa tiene mucha durante la noche...
+			Chat8: No lo creo, debes estar aburrida de nuevo...
+			Chat9: ¡YA BASTA!
+			Chat10: Es una 'mutación'...
+			Chat11: Qué sueño...
+			Chat12: *Hakurei jurando
+			Chat13: Oye, ¿Marisa?
+			Chat14: Si en realidad fuimos creadas por alguien para existir en este mundo... ¿cómo te hace sentir eso?
+			Chat15: ¡Solo dime cómo te sientes!
+			Chat16: Tal vez sea así...
+		}
+
+		Chat_Nitori: {
+			Chat1: ¡Tecnología Kappa N.º 1!
+			Chat2: ¿Debería comerme un pepino ahora?...
+			Chat3: ¿Quieres unirte al mercado kappa?
+			Chat4: ¿Eh? ¿Qué deseo?
+			Chat5: Esa es tu habilidad, ¿no? Pero el mundo entero sigue siendo demasiado grande...
+			Chat6: ¡Tal vez se haga realidad en el futuro!
+			Chat7: '''¡Compañía "Kappa Giratoria"!'''
+			Chat8: ¡Ja jajaja!...
+		}
+
+		Chat_Sanae: {
+			Chat1: Seguiré a las dos queridas diosas para siempre...
+			Chat2: ¡No deberías apegarte solo al sentido común aquí!
+			Chat3: A veces extraño los viejos tiempos... ¡Ah, pero lo importante es el presente!
+			Chat4: ¡Únete al Santuario Moriya y cree en Kanako-sama y Suwako-sama!
+			Chat5: ¡Siente el viento!
+		}
+
+		Chat_Sekibanki: {
+			Chat1: Estar sola...
+			Chat2: Por favor, no me hables constantemente...
+			Chat3: Llevo esta capa todo el tiempo,
+			Chat4: Porque no quiero parecerme a una youkai.
+			Chat5: A los humanos no les gustan las youkai, y yo tampoco quiero acercarme a ellos...
+			Chat6: ...Bueno, excepto a ti.
+			Chat7: ...¡Los superaré a todos!
+			Chat8: ¡TRANS——FOR——MA——CIÓN——! ! !
+			Chat9: ......
+			Chat10: ...Eh, ¡no has oído nada!
+			Chat11: ¡Seamos "el uno"!
+			Chat12: No creas ciegamente en ninguna "lógica", confía firmemente en tus instintos.
+			Chat13: La simpatía es una mentira, el romance es la clave.
+			Chat14: Cuando estás viva, puedes obtener tanto lo bueno como lo malo.
+		}
+
+		Chat_Koishi: {
+			Chat1: ¿Puedo jugar contigo?
+			Chat2: ¡Pondré tu cuerpo en...! ¿Espera, en dónde?
+			Chat3: ¿Quieres jugar Aventura Doki Doki?
+			Chat4: ¿Me has notado?
+			Chat5: ¡Ni siquiera mi hermana sabe lo que estoy pensando!
+			Chat6: ¿*Moshi moshi*?
+			Chat7: Soy yo, Koishi...
+			Chat8: ESTOY JUSTO DETRÁS DE TI...
+			Chat9: ¿Qué pasó, Kokoro-chan?
+			Chat10: No lo sé, solo hago lo que quiero y no tengo muchas emociones.
+			Chat11: ¡Sí! ¡Ahora sabes lo que es la "Confusión"!
+		}
+
+		Chat_Satori: {
+			Chat1: Déjame ver lo que estás pensando ahora...
+			Chat2: Tuve un pensamiento interesante...
+			Chat3: Tu mente es tan simple, aparte de luchar, solo hay robar...
+			Chat4: Te estoy observando ahora...
+			Chat5: Rin también es mi gata favorita.
+			Chat6: Utsuho también es mi cuervo favorito.
+			Chat7: No te preocupes por mí.
+		}
+
+		Chat_Rin: {
+			Chat1: Hoy también conseguí un cadáver nuevo...
+			Chat2: ¡Soy buena llevándome bien con los fantasmas!
+			Chat3: ¿Miau?
+			Chat4: ¡El inframundo, un paraíso para los espectros!
+			Chat5: ¡Satori-sama es la mejor!
+			Chat6: ¿Satori-sama está comiendo bien hoy?...
+			Chat7: ¡Solo sigue esforzándote hoy, Utsuho!
+		}
+
+		Chat_Utsuho: {
+			Chat1: ¡Yo soy el sol!
+			Chat2: ¡Brillando y ardiendo!
+			Chat3: ...¿Qué iba a decir justo ahora?
+			Chat4: ¡Aquí es como mi casa!
+			Chat5: ¡Satori-sama es la mejor!
+			Chat6: ¡Tómatelo con calma y déjamelo a mí!
+		}
+
+		Chat_Lily: {
+			Chat1: Si el invierno llega, ¿puede la primavera estar muy lejos?
+			Chat2: ¡Lily es la mensajera de la primavera!
+			Chat3: ¡La primavera es el mejor momento para jugar!
+			Chat4: ¿Dónde está la primavera, dónde está la primavera?~
+		}
+
+		Chat_Mystia: {
+			Chat1: Perdida en la canción del pájaro nocturno~
+			Chat2: ¿Cuándo podré abrir mi *izakaya* de nuevo...?
+			Chat3: Lalala, la~~
+			Chat4: ¡No soy sabrosa, y tampoco puedes comerme!
+			Chat5: (Está cantando una canción que no entiendes, pero parece sagrada)
+			Chat6: (Está cantando una canción que no entiendes, pero parece vivaz)
+			Chat7: (Está cantando una canción que no entiendes, pero parece tranquila)
+			Chat8: (Está cantando una canción que no entiendes, pero parece melancólica)
+			Chat9: Tan alto por encima del mundo~ Como un diamante en... ¡Espera, los bichos no se ven como diamantes!
+		}
+
+		Chat_Wriggle: {
+			Chat1: Brilla brilla, pequeño bicho~ Me pregunto qué eres~
+			Chat2: ¡Los bichos eran seres aterradores en el pasado!
+			Chat3: Los grandes bichos están cayendo ahora... ¡Eso es inaceptable!
+			Chat4: Solo aquí puedes ver las luciérnagas...
+			Chat5: Feliz día de los bichos para ti~ Feliz día de los bichos para ti~... Uf, olvídalo...
+			Chat6: ...¡DEMASIADO FRÍO!...
+			Chat7: ¿Quieres disfrutar del 'Servicio de Bichos'?
+			Chat8: Las arañas no son insectos, los escorpiones y los ciempiés tampoco lo son. ¿Recuerdas?
+			Chat9: ¿Sabes identificar abejas, avpas y avispones?
+			Chat10: ¿Sabías que las luciérnagas solo aparecen en lugares limpios?
+		}
+
+		Chat_Aya: {
+			Chat1: ¡El viento está muy ruidoso hoy!
+			Chat2: ¿Puedes seguir mi velocidad?
+			Chat3: Material... ¿Dónde está el material para la historia de hoy...?
+			Chat4: No soy una 'reportera de noticias falsas', ¡solo las 'exagero' un poco, para hacerlas más interesantes!
+			Chat5: ¡Esto dará lugar a una GRAN noticia!
+			Chat6: ¡Qué excelente material informativo!
+			Chat7: ¡Informe de hoy, lo tengo!
+			Chat8: ¡Perfecto!
+		}
+
+		Chat_Yuyuko: {
+			Chat1: Ya sea vida o muerte, es solo un ciclo, un ciclo que no está relacionado conmigo...
+			Chat2: Sería agradable existir de forma simple y feliz, a pesar de la vida y la muerte.
+			Chat3: Cuando el Sakura empiece a florecer, entonces sucederá... ¿Pero qué es "eso"?
+			Chat4: ¿Qué debería comer más tarde?
+			Chat5: ¡Gracias por la comida!
+			Chat6: ¡Delicioso!
+			Chat7: ¡Gracias!
+			Chat8: Hambre...
+			Chat9: Los fantasmas también necesitamos comida, ¡así que pásala rápido, por favor!
+			Chat10: ¿Cuándo es la hora de cenar?
+			Chat11: Youmu-chan, ¿qué vamos a cenar esta noche?
+			Chat12: ¿Youmu-chan ha hecho algún plan para el futuro?
+			Chat13: Youmu-chan es tan simple como pensé, hablaremos de esto más tarde.
+			Chat14: No como esto...
+			Chat15: Gracias por tu generosidad, ¡ahora déjame comer esto!
+		}
+
+		Chat_Youmu: {
+			Chat1: Administrar el patio y ahuyentar a los invasores, ese es solo mi trabajo diario...
+			Chat2: Espero que Yuyuko-sama esté comiendo suficiente en cada comida.
+			Chat3: ¡ENEMIGO ENCONTRADO!
+			Chat4: Aquí... da mucho miedo...
+			Chat5: ...¡¿HAY UN FANTASMA?!
+			Chat6: ¿Eh? Solo cuidar bien de Yuyuko-sama es suficiente...
+			Chat7: Ah... no puedo entender...
+			Chat8: Su última comida fue hace menos de 5 minutos, Yuyuko-sama.
+			Chat9: ¡Pero ya está muerta, Yuyuko-sama! ¡No puede simplemente reencarnar!
+			Chat10: Me conformo con quedarme al lado de Yuyuko-sama.
+			Chat11: ¡Déjame proteger a Yuyuko-sama!
+		}
+
+		Chat_Alice: {
+			Chat1: Mis muñecas se han estado desgastando fácilmente...
+			Chat2: ¿Debería hacer algunas muñecas más?
+			Chat3: Simplemente no puedo dejar los viejos hábitos, incluso si ya no soy humana.
+			Chat4: Marisa, ¿cuándo puedes devolverme el hongo que me robaste?
+			Chat5: ¡Deja de bromear y dame una fecha límite clara!
+			Chat6: ...Será mejor que no lo intentes... ¡No habrá próxima vez!
+			Chat7: ¡TÚ!......
+			Chat8: Dios, ella me robó una de mis pociones la última vez.
+			Chat9: ...¡Tenemos que darle una lección!
+			Chat10: ...? Déjame ir a buscarla, no tienes que molestarte...
+			Chat11: ¡Por favor, no seas tan empalagosa!... ¿Te-tenemos alguna relación?
+			Chat12: Realmente no te conozco...
+			Chat13: ...Está bien, está bien, por favor detente. Te llamaré Se... Sra. Shinki.
+			Chat14: ("Qué relación tan compleja...")
+			Chat15: ¡De ninguna manera!
+			Chat16: ¿Quién eres? Te ves tan familiar...
+			Chat17: ¿Yo, del... pasado? El pasado... Uf, me duele la cabeza...
+		}
+
+		Chat_Rumia: {
+			Chat1: ¿Es así~ no es así?
+			Chat2: ¡Amo la oscuridad! ¡Odio la luz!
+			Chat3: ¿Puedo morderte? ¡Solo esta vez!
+			Chat4: ¿Parece que soy una santa en la cruz?
+			Chat5: ¿Dónde estás? Está tan oscuro...
+			Chat6: Demasiado soleado...
+		}
+
+		Chat_Koakuma: {
+			Chat1: ¡Koakuma N.º {0}, a su servicio!
+			Chat2: ¿Están bien mis amigas?...
+			Chat3: ¿Hay algo que pueda hacer por usted?
+			Chat4: ¡Es hora de hacer algo de ejercicio, Patchouli-sama!
+			Chat5: ¡Es necesario para su salud!
+			Chat6: ¿Qué está leyendo, Patchouli-sama?
+			Chat7: ¡Suena interesante!
+		}
+
+		Chat_Wakasagihime: {
+			Chat1: Aunque soy un pez, puedo salir del agua si quiero.
+			Chat2: ¡Soy un pez de agua dulce!
+			Chat3: ¡No tengo 'memoria de pez'!
+			Chat4: *ronroneo ronroneo~
+		}
+
+		Chat_Yuka: {
+			Chat1: El momento más hermoso es siempre cuando las flores están en plena floración.
+			Chat2: Otro día pacífico y aburrido...
+			Chat3: Cada flor tiene una vida corta y colorida, es mejor que no las molestes.
+			Chat4: Esta niña me resulta familiar... ¿Viene del Makai?
+			Chat5: No soy una lunática que solo busca el poder, soy solo una youkai a la que le gustan las flores.
+			Chat6: Los girasoles no giran buscando la luz solar. Pero todavía se les considera un símbolo del sol.
+		}
+
+		Chat_Yukari: {
+			Chat1: Como Sabia, es mi deber eterno proteger la barrera...
+			Chat2: ¿Quieres saber mi edad? Por supuesto, tengo 17 años~... No deberías insistir en el tema.
+			Chat3: Esa Reimu, de verdad debería ser más diligente.
+			Chat4: Si la extrañas, te permitiré tomar una licencia temporal.
+			Chat5: ¿Está bien esa vieja amiga mía?...
+			Chat6: Nada, tal vez no necesite preocuparme por su apetito.
+		}
+
+		Chat_Ran: {
+			Chat1: Hay algo raro en la posición del sol y en la hora...
+			Chat2: ¿Cómo puede el oro ser más resistente que el hierro?
+			Chat3: ¿Yuuma sigue viviendo en el Reino Animal...?
+			Chat4: ¡N-No lo estoy! ¡Yukari-sama!
+			Chat5: ¿A qué te refieres?
+			Chat6: Creo que podría saber quién es...
+			Chat7: ¡Chen, no te alejes demasiado tú sola!
+		}
+
+		Chat_Chen: {
+			Chat1: ¡Miau!
+			Chat2: Quiero algo de pescado...
+			Chat3: ¡Lo sé, Ran-sama!
+		}
+
+		Chat_Kaguya: {
+			Chat1: No está muy "sucio" en la tierra...
+			Chat2: No puedo evitar recordar los viejos tiempos desde que bajé a la Tierra, hace tanto tiempo...
+			Chat3: ...¡Tengo que ganar esta vez!
+			Chat4: Aguantar, aguantar...
+			Chat5: La práctica hace al maestro.
+			Chat6: ¡No es asunto tuyo!
+			Chat7: Oye, ¿cuánto tiempo llevamos luchando la una contra la otra?
+			Chat8: ¿Quieres hacer algo nuevo hoy?
+			Chat9: ¿Qué tal algo... EMOCIONANTE?
+			Chat10: ¡Esta ronda, gano yo!
+			Chat11: La práctica hace al maestro, ¿entiendes?
+			Chat12: ¡Ah, jajaja!
+			Chat13: ¡¡¡MALDICIÓN!!!
+			Chat14: ¡Debes haber hecho trampa!
+			Chat15: Te concederé tu deseo en la siguiente ronda... ¡MUERE!
+			Chat16: ¿De... de verdad? Debes haber entendido algo mal...
+			Chat17: El entorno es aburrido excepto allí... Espera, quiero decir, ¡yo no hice eso!
+			Chat18: Oye, no eres buena guardando secretos, ¿verdad?
+			Chat19: Eirin se enteró de que fui a la aldea de los humanos, y me regañó...
+			Chat20: ¿Qué dices? ¿Quieres pelear?
+			Chat21: ¡Espera, espera, espera!...
+		}
+
+		Chat_Moku: {
+			Chat1: Vivir para siempre es absolutamente más una maldición que una bendición...
+			Chat2: ...¿Cuántos años han pasado desde ese momento?
+			Chat3: ¿Cómo podría saberlo? ¿Alrededor de mil años?
+			Chat4: ...¿Qué quieres hacer?
+			Chat5: No, ¡nunca!... Bueno, conozco un lugar al que podemos ir...
+			Chat6: ¿Puedes quedarte en SILENCIO por una vez?
+			Chat7: Estoy bien, creo. Es lo habitual.
+			Chat8: No, estoy intentando olvidarlos...
+			Chat9: Te convertirás en esta forma en cada luna llena, ¡eso da bastante miedo!
+			Chat10: ¡Simplemente acepta que soy más fuerte!
+			Chat11: ¿De verdad quieres derrotarme A MÍ?
+			Chat12: ¿Eso es todo lo que tienes?
+			Chat13: ¡No perderé la próxima ronda!
+			Chat14: Fui demasiado descuidada...
+			Chat15: Esta será la última vez que seas tan complaciente...
+			Chat16: ¿Qué? ¿De qué estás hablando?...
+			Chat17: ¡Jajajaja! Te lo mereces.
+			Chat18: Entonces no te llevaré la próxima vez.
+		}
+
+		Chat_Meirin: {
+			Chat1: Hoy es otro día aburrido... ¡no, no, no, de trabajo duro!
+			Chat2: ¡Mi nombre es "Hong Meiling", no "China"!
+			Chat3: Es realmente aburrido ser la portera aquí...
+			Chat4: ¡Mi tierra natal está en el Este, justo encima del río Yangtsé!
+			//Don't translate this
+			Chat5: 易有太极，是生两仪...
+			Chat6: Es mi idioma natal, Flandre-sama.
+			Chat7: Se llama "Tai ji", Flandre-sama.
+			Chat8: Mmm... ¿Quizás se necesita el acuerdo de Remilia-sama?
+			Chat9: ¡NO lo estoy!
+			Chat10: La Srta. Sakuya está tan ocupada, ¿alguna vez tiene vacaciones?
+			Chat11: Este trabajo es lo mismo que unas vacaciones...
+			Chat12: ¡NADA!...
+			Chat13: Srta. Sakuya, ¡recientemente encontré un cómic sobre un guardia y una sirvienta enamorándose!
+			Chat14: ¡Ah! No debí haber dicho nada...
+			Chat15: Qué mal... ¿Espera, qué?
+		}
+
+		Chat_Sakuya: {
+			Chat1: El pasado es pasado, ahora solo necesito servir a Remilia-sama.
+			Chat2: Mi vida ya se reinició desde que te conocí, no hay pasado.
+			Chat3: Estaré bien si Remilia-sama está bien.
+			Chat4: ¿Está Meiling escaqueándose ahora?...
+			Chat5: Disfrute el té, Remilia-sama.
+			Chat6: El día con Remilia-sama es mi vacación, y tú tampoco tienes "vacaciones", ¿verdad?
+			Chat7: ¿Qué?
+			Chat8: ¿Lees cómics durante tu horario de trabajo?
+			Chat9: ¡Te daré un castigo severo esta noche!... Además, déjame ver el cómic...
+			Chat10: La cantidad de alcohol en la mansión no es suficiente...
+		}
+
+		Chat_Raiko: {
+			Chat1: Badum, psh~
+			Chat2: He oído que los oni también pueden tocar la batería, pero ¿pueden derrotar a monstruos así?
+			Chat3: ¡La vida es un set de batería, cuanto más fuerte, mejor!
+		}
+
+		Chat_Keine: {
+			Chat1: Últimamente, a la gente de la aldea no le gusta saludar... ¿Cómo pueden ser tan groseros?
+			Chat2: Este papel está lleno de 9... Debe ser Cirno.
+			Chat3: Solo aquello que se registra constantemente es historia.
+			Chat4: Esta noche será una noche ocupada...
+			Chat5: Crear la historia, mantener la historia.
+			Chat6: Déjame ver quién no ha terminado su tarea...
+			Chat7: ¿Cómo te ha ido últimamente?
+			Chat8: ¿Aún enredado con cosas del pasado?
+			Chat9: Esta es mi naturaleza y mi deber.
+		}
+
+		Chat_Luna: {
+			Chat1: ¿Ha caído algo de la luna últimamente?...
+			Chat2: ¡Ojalá toda la comida del mundo se volviera sabrosa!
+			Chat3: ¿Conoces "La Luna y Seis Peniques"?
+			Chat4: Qué sueño...
+			Chat5: Jaa——Mmmm...
+			Chat6: Lo que está sucediendo actualmente es bastante interesante...
+			Chat7: Los periódicos humanos no están tan mal...
+			Chat8: La gente siempre está soñando bajo la luna llena.
+			Chat9: Dejando de lado lo que pasaría si nos atraparan... ¿Vamos a robar a un ladrón?
+			Chat10: ¿Por qué siempre soy YO la que tiene que recoger los pedazos cada vez? ¡Solo ustedes dos esta vez, yo no voy!
+			Chat11: ¡¡¡NUNCA!!!
+		}
+
+		Chat_Star: {
+			Chat1: ¡Ve y siente cada maravilla en este mundo!
+			Chat2: ¡Las estrellas son la cosa más hermosa que existe!
+			Chat3: El clima no tiene ningún efecto en mí.
+			Chat4: No hay estrellas durante el día...
+			Chat5: ¡Levanta la cabeza y mira las estrellas de esta noche!
+			Chat6: ¿Qué tal si robamos el hongo de esa bruja blanco y negro?
+			Chat7: ¡Vale, para ya! ¿Qué tal si robamos la caja de dinero de esa sacerdotisa rojo y blanco?
+			Chat8: Si ya no puedes aguantar más, ¿por qué no le das una bofetada?
+		}
+
+		Chat_Sunny: {
+			Chat1: ¿Te gusta tomar el sol?
+			Chat2: ¡La luz del sol es lo más importante!
+			Chat3: ¡Ten cuidado, porque la gran Sunny podría engañarte en cualquier momento!
+			Chat4: Tomando el sol~ Creciendo~ Luz del sol~ ¡Es lo mejor!
+			Chat5: ¡El Sol es la fuente de mi fuerza!
+			Chat6: Lloviendo... No hay sol... No me siento bien...
+			Chat7: ¡Qué clima tan húmedo, incluso redujo mi habilidad!
+			Chat8: ¿Puedo simplemente saltarme este día de lluvia?
+			Chat9: Hada Sunny~ Cuerpo blanco~
+			Chat10: Hada Sunny~ Ojos azul celeste~
+			Chat11: Hada Sunny—— ¡SUNNY! ¡LECHE!
+			Chat12: ¿A quién deberíamos gastarle una broma la próxima vez?
+			Chat13: ¡Ese no es un problema! ¡Solo tienes que cubrir la retaguardia, Luna-chan!
+			Chat14: ¡Oh no! ¡Tu habilidad es esencial para nuestro plan!
+			Chat15: ¡¡¡NUNCA!!!
+		}
+
+		Chat_Reisen: {
+			Chat1: Quizás no sea posible volver... Será mejor que viva aquí...
+			Chat2: ¿Le habrá dado la maestra una lección a esa coneja?
+			Chat3: No he podido dormir bien últimamente...
+			Chat4: Me pregunto cómo estarán mis compañeros de la luna.
+			Chat5: Ciertamente, soy una traidora... igual que la princesa.
+			Chat6: ¡DE VERDAD no quiero involucrarme con humanos!
+			Chat7: Te aconsejaría que no me desafíes a un concurso de miradas.
+			Chat8: Solo espero que la maestra no me use como sujeto de pruebas otra vez, por favor...
+			Chat9: ¡NO tengo ninguna conexión con los fideos udon! ...Además, por favor, no comas eso delante de mí.
+			Chat10: Será mejor que no mires fijamente a la luna en una noche como esta, o podrías volverte loco... Yo no, claro, solo tú.
+			Chat11: Eh eh... E-estoy bien...
+		}
+
+		Chat_Sizuha: {
+			Chat1: *Suspiro...* Se acerca el fin de año, y el invierno viene con él...
+			Chat2: Las hojas que caen anuncian la llegada del otoño, pero también significa que el año está terminando.
+			Chat3: El otoño siempre simboliza la soledad, incluso desde la antigüedad...
+			Chat4: ¿Debería usar más amarillo o más rojo este año?
+			Chat5: Nadie puede bloquear la llegada del otoño, ¡porque es la voluntad de la naturaleza!
+			Chat6: Soy la hermana mayor, ¿por qué no soy tan famosa como mi hermana pequeña...?
+			Chat7: ...¡Por supuesto! ¡Las hojas que caen también son una parte importante del otoño!
+			Chat8: ¡De acuerdo!... Quiero decir, está bien.
+			Chat9: Este lugar es tan frío... Como el invierno...
+		}
+
+		Chat_Minoriko: {
+			Chat1: ¿Le gustaría un poco de batata asada?
+			Chat2: ¿Dice que huelo a batata? ¡Ese es un olor dulce! Lo es, ¿verdad?
+			Chat3: Si quiere una buena cosecha, debería tratarme mejor.
+			Chat4: Cultivar significa obtener de la naturaleza, así que hay que respetar las reglas de la agricultura natural.
+			Chat5: ¡NO desperdicie comida!
+			Chat6: Comer es lo más importante para los humanos, después de todo... ¡Pero todavía hay mucha gente a la que le gustan las hojas de otoño!
+			Chat7: Entonces, ¿le gustaría una batata asada?
+			Chat8: Demasiado frío... Me está volviendo letárgica...
+		}
+
+		Chat_Murasa: {
+			Chat1: ¿Están listos, chicos?
+			Chat2: ¡Soy la chica que encontrará el One Piece!
+			Chat3: ¿Te sientes débil? ¡Prueba a comer espinacas!
+			Chat4: ¡Izad las velas y vamos!
+			Chat5: ¿Te gustan los barcos? ¡Yo prefiero los naufragios!
+			Chat6: ¡Llámame Capitana!
+			Chat7: Es mejor no saber la fecha de tu muerte. ¡Estoy explorando la alegría de la vida a cada momento! ...Oh, espera, ya estoy muerta...
+			Chat8: Con una voz tan suave, ¿te atreves a pilotar un barco de guerra?
+		}
+
+		Chat_Suika: {
+			Chat1: ¿Dijiste melón? ¡Puedo aplastar una roca tan fácilmente como aplastaría un melón!
+			Chat2: Tengo que llevar un buen vino a la próxima fiesta.
+			Chat3: ¿Cuándo podré tomar algo con las otras tres de nuevo?
+			Chat4: ¿Comida de bar? Podría ser cualquier cosa, pero no frijoles.
+			Chat5: Por favor, no me traigas una cabeza de sardina en una rama... Huele mal...
+			Chat6: ¿Quieres verme hacerme GRANDE o pequeña?
+			Chat7: ¿Conoces a "El Dios de la Cerveza"?
+			Chat8: El vino de hoy lo bebo hoy, ¡salud!
+			Chat9: ¡Beber es lo que más feliz nos hace a las oni!
+			Chat10: ¡Vamos! ¡Mira el Puño Borracho! ¡Por favor, baila con Dioniso!
+		}
+
+		Chat_Eirin: {
+			ChatHardCoreDeath: Lloraremos por {0} para siempre...
+			Chat1: ¿Habré pasado demasiado tiempo en la Tierra? Bueno, todo está bien mientras esté con la princesa.
+			Chat2: Necesito una manera de hacer que la princesa haga algo de ejercicio...
+			Chat3: ¿Quizás debería dejar que Tei sea mi conejillo de indias la próxima vez? Udongein no se ha visto muy bien últimamente.
+			Chat4: Aquí no hay muchas hierbas, pero cada una tiene efectos interesantes.
+			Chat5: ¿Qué tal si hablo con esa Junko? Si no, Udongein no puede participar adecuadamente en los experimentos.
+			Chat6: ¿Sabes cuántas pociones necesitan 'Maleza de la Muerte' como ingrediente?
+			Chat7: Han pasado miles de años desde que dejé la Capital Lunar... Tsukuyomi, ¿volveremos a encontrarnos? Tal vez no...
+			Chat8: ¿Estarán bien Yorihime y Toyohime ahora...?
+			Chat9: Parece que tienes una herida leve.
+			Chat10: Tu herida es un poco grande, pero todo está bajo control ahora.
+			Chat11: Tu estado de salud no es muy bueno...
+			Chat12: Te aconsejo que busques tratamiento ahora.
+			Chat13: ¿Estás bromeando? ¡Vas a morir!
+			Chat14: Lloraremos por... Espera, volverás pronto.
+			Chat15: Estás en un estado bastante malo... ¿Estás bien?
+			Chat16: En cierto sentido, el malestar por pociones también tiene su lado bueno: al menos no tienes que preocuparte de que el efecto disminuya por beber demasiado.
+			Chat17: ¡Dios mío! ¿Cuántas pociones has bebido? ¿Puedes soportarlo?
+			Chat18: Princesa, te vi ir a la aldea humana la última vez.
+			Chat19: *Suspiro...* En realidad, te he dicho que quedarse siempre en casa no es bueno, pero la aldea no es un lugar al que podamos ir.
+		}
+
+		Chat_Shinki: {
+			Chat1: La supuesta "Sacerdotisa del Santuario" no es más que un perro de ese dios~
+			Chat2: Sara, Yumeko, Luize y todos los demás en Makai... ¿Cómo les va todo?
+			Chat3: ¡Soy la diosa del Makai!... Por supuesto, diosa significa la que lo creó.
+			Chat4: ¿Escuché que hay alrededor de ocho millones de dioses en el mundo humano? ¡Los dioses allí son tan inferiores~
+			Chat5: Disculpe, ¿ha visto a mi querida Alice?
+			Chat6: Alice-chan~~~
+			Chat7: ¡Vamos! ¿No recuerdas a tu madre?
+			Chat8: Qué triste... Mi hija me abandonó...
+			Chat9: ¿Acabas de decir "Mamá"? ¡Ohh, Mamá está tan contenta!
+			Chat10: ¡Una vez más, por favor!
+		}
+
+		Chat_Rukoto: {
+			Chat1: ¡Rukoto, la robot sirvienta de energía nuclear, encantada de servir!
+			Chat2: ¿Puedo preguntar qué ayuda necesita?
+			Chat3: ¡Déjame encargarme de la limpieza por ti!
+			Chat4: ¡Energía nuclear significa que estaré activa para siempre!
+			Chat5: ¿Esta cosa parecida a un disco es un "Robot Aspirador"? ¡Yo soy la verdadera robot!
+		}
+
+		Chat_Kokoro: {
+			Chat1: ¿Puedes decirme qué significa "Feliz"?
+			Chat2: Soy Hata no Kokoro, la encargada de las emociones.
+			Chat3: Ja~ja~ja~... ¿Qué tal mi sonrisa?
+			Chat4: Las emociones de las personas... son tan ricas.
+			Chat5: ¿Qué clase de emoción es "Quedarse sin palabras"?
+			Chat6: *Intentando levantar la mejilla para mostrar una sonrisa.
+			Chat7: ¡Mi antigua enemiga!
+			Chat8: ...¿Tienes alguna otra emoción de la que puedas hablarme?
+			Chat9: No entiendo... Ah, ¿es esto "Confusión"?
+		}
+
+		Chat_Doremy: {
+			Chat1: ¿Estás siempre soñando?
+			Chat2: Tener un buen sueño es el deseo de todos, ¿verdad?
+			Chat3: ¿Alguna vez me viste en tus sueños? Supongo que sí.
+			Chat4: Simplemente vete a la cama cuando quieras dormir, es más importante que cualquier otra cosa.
+			Chat5: ¿Contarías ovejas mientras tienes insomnio?
+			Chat6: Simplemente no duermas demasiado durante el día, así podrás dormir bien por la noche.
+			Chat7: Ugh... Interesante...
+			Chat8: Una oveja, dos ovejas, *baa baa baa*...
+			Chat9: ¿Alguien... sabe que... estoy trabajando ahora mismo?
+			Chat10: Cómo podría dormirme en una noche como esta...
+			Chat11: Qué cansancio...
+			Chat12: ¿Pueden esos monstruos estar en silencio un rato?
+			Chat13: Aunque ahora el lugar sea bueno para dormir, no significa que estés completamente a salvo mientras duermes.
+		}
+
+		Chat_Tewi: {
+			Chat1: La suerte es bastante sencilla, pero la felicidad... esa no es tan fácil, Usa~
+			Chat2: ¡Reisen no cayó en el agujero que cavé ayer! Qué aburrido... Tendré que hacerlo más grande.
+			Chat3: La gente siempre dice que tener suerte es encontrarse conmigo... Pero, ¿sabían que encontrarme también es suerte?
+			Chat4: Si te pierdes en el bosque de bambú, no prometo sacarte con vida, ¡jaja~
+			Chat5: Los conejos de aquí son más débiles que los del Bosque de Bambú Perdido.
+		}
+
+		Chat_Momoyo: {
+			Chat1: ¿Diamante? ¿Podría saber mejor que una gema de dragón?
+			Chat2: ¿Me preguntas por qué uso un pico de oro? ¡Porque queda bonito!
+			Chat3: No sabes lo cara que es la tierra en tierras extranjeras.
+			Chat4: Los dragones saben bien, las gemas de dragón saben bien, los humanos saben... Ah, bueno, tú no.
+			Chat5: Pico y pala son el alma de un buen minero.
+			Chat6: Cuidado con tu espalda cuando estés concentrado en la minería.
+			Chat7: A veces, quedarse callado puede salvarte la vida en las cuevas.
+			Chat8: ¡¿No hay herramientas de diamante?!
+			Chat9: Ah, la cueva... un lugar familiar.
+		}
+
+		Chat_AliceOld: {
+			Chat1: ¡Nadie puede cruzar Alice!... ¿Qué? ¿Ya no es la edición de prueba?
+			Chat2: ¡Este libro contiene el poder definitivo!
+			Chat3: ¿Muñeca? ¿Qué estás diciendo? No sé cómo hacer eso.
+			Chat4: Un gran poder conlleva un gran costo... ¡Y a Alice no le gustan esos tipos!
+			Chat5: Siento... que me están mirando unos ojos molestos...
+			Chat6: No lo sé, tal vez soy tú del pasado.
+			Chat7: Esta sacerdotisa me trae malos recuerdos...
+		}
+
+		Chat_Letty: {
+			Chat1: Solo cuando se acerca el día plateado, me acercaré.
+			Chat2: ¿Te gusta la nieve?
+			Chat3: El invierno es la estación en la que todo se toma un descanso.
+			Chat4: La gente siempre dice que el invierno significa marchitarse, pero sin la nieve, ¿de dónde vendrá la cosecha del próximo año?
+			Chat5: No intentes encontrarme en las otras estaciones, me quedo con el invierno.
+			Chat6: Ambos lados de la Gran Muralla, una sola inmensidad blanca. La rápida corriente del Río Amarillo, sigue igual de un extremo a otro.
+			Chat7: Los copos de nieve están flotando~ El viento del norte está soplando~
+			Chat8: ...Qué calor...
+			Chat9: ¿Por qué ese cuervo tiene el poder del sol?
+		}
+
+		Chat_Lunasa: {
+			Chat1: En una actuación no se permiten ruidos; deben eliminarse.
+			Chat2: Si no te calmas un poco más, incluso lo que ya está decidido no se asentará.
+			Chat3: Céntrate, siempre pareces bastante maniática.
+			Chat4: Si no practicamos mucho, hasta nuestra melodía familiar sonará desafinada.
+			Chat5: Un día lluvioso es perfecto para tocar canciones melancólicas...
+		}
+
+		Chat_Merlin: {
+			Chat1: Después de escuchar mi actuación, ¿aún puedes quedarte aquí tranquila?
+			Chat2: ¡Oye! Si escuchas mi actuación, te sentirás feliz.
+			Chat3: No importa la situación, ¡nunca olvides tu alma alegre!
+			Chat4: Lo que sale de una trompeta no es un láser, sino un sonido lleno de felicidad.
+			Chat5: Hay un montón de monstruos en la oscuridad... ¿quieres que los haga más emocionantes?
+		}
+
+		Chat_Lyrica: {
+			Chat1: ¡Escuchemos las notas de las ilusiones!
+			Chat2: El alma de este teclado ya está llena de sonidos que han quedado atrás.
+			Chat3: Me pregunto... ¿cómo sonaría el sonido de un fantasma?
+			Chat4: ¿Sabías que si agudizas los oídos en los bosques mágicos, puedes escuchar el crecimiento de los hongos?
+			Chat5: Aunque este es un lugar de muerte, el único sonido que aquí resuena es la ira infinita.
+		}
+
+		Chat_Portal: {
+			Chat1: Oye, ya que encontraste esto, ¿por qué no compras algo? Al fin y al cabo, es todo por Gensokyo.
+			Chat2: Deja unas monedas aquí y elige tu favorito. Haz algo por la existencia de Gensokyo.
+			Chat3: ¿Quieres un compañero adorable? ¡Mira por aquí!
+			Chat4: Puede que tu vida futura no tenga relación con Gensokyo, pero lo que hagas ahora influirá en su destino... digo, ¿quieres comprar algo?
+			Chat5: ¡Gracias por apoyar a Gensokyo todo este tiempo! Esto es lo que te has ganado.
+			Chat6:
+				'''
+				Has proporcionado {0}, que Gensokyo te acompañe.
+				Por cierto, vender objetos aquí reducirá tu contador de riqueza.
+				'''
+			Chat7:
+				'''
+				No has comprado nada aquí, pero nunca es tarde para hacerlo.
+				Por cierto, vender objetos aquí reducirá tu contador de riqueza.
+				'''
+			Chat8: Espera, ¿puedes ver ESTO? ¡Has encontrado un error!
+			Chat9: Espera, ¿puedes ver ESTO? ¡Has encontrado un error!
+		}
+
+		Chat_Template: {
+			Chat1: _
+			Chat2: _
+			Chat3: _
+			Chat4: _
+			Chat5: _
+		}
+	}
+}

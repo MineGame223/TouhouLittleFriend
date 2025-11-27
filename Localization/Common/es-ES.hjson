@@ -1,0 +1,58 @@
+Mods: {
+	TouhouPets: {
+		DeathReason.KilledByKoishi: "{0} murió por un asesinato inconsciente."
+		Bestiary.YukariPortal: Una brecha espacial que conduce a una dimensión desconocida, puedes vislumbrar paisajes más allá del sentido común desde su interior.
+		YukaRequest: Petición
+		YukaStop: Detener
+		YukaTips:
+			'''
+			---
+			Encuentras un papel bajo esta maceta
+			“Proyecto Clantaminator - Código Yuka”
+			“¡Hola! ¡Bienvenido al tutorial de 'Yuka'!”
+			“Si hay soluciones de color en tu inventario, hacer clic derecho en 'Yuka' hará que las rocíe automáticamente.”
+			“Si haces clic izquierdo en 'Yuka' cuando no está rociando, puedes cambiar entre dos modos de pulverización.”
+			“¡Deseándote una experiencia agradable!”
+			'''
+		YukariWealthCount: Preguntar sobre la Riqueza
+		SwitchTopic: Cambiar Tema
+		PetShop: Tienda de Mascotas Ordinaria
+		LightPetShop: Tienda de Mascotas de Luz
+		QQGroup: _
+		GoodsShop: _
+		CraftCondition_StarSapphire: Deja caer los ingredientes en el suelo
+		FeedYuyuko: Alimentar
+		KoishiTelephone1: "[c/9dffce:Contestaste la llamada de Koishi y, por suerte, no pasó nada...]"
+		KoishiTelephone2: "[c/ff0000:Es demasiado tarde para actuar ahora.]"
+		PressShift: "[c/9b9b9b:Presiona Shift para leer más]"
+		CustomModeDescrip:
+			'''
+			La descripción del modo de música personalizada es la siguiente:
+			Esta función puede habilitarse o deshabilitarse mediante la Configuración del Mod, y solo puede activarse en el Modo Un Jugador
+			Si la función está disponible, puedes abrir los botones de control al sostener este ítem
+			Al cargar el mod, se creará una carpeta llamada "TouhouPetCustomMusic", donde debes colocar tus archivos de música
+			Los formatos de archivo disponibles incluyen [c/ffff33:.ogg .mp3 .wav], debes recargar el mod después de colocar los archivos
+			Demasiados archivos o archivos muy grandes pueden ralentizar la carga del mod, por favor, ten cuidado
+			No elimines ningún archivo de música mientras se reproduce, para evitar errores
+			[c/ffff33:Asegúrate de que Terraria pueda leer los archivos de música personalizada; si no funcionan, intenta cambiar el formato]
+			'''
+		ForceCompatibilityNotice: "[Touhou Little Friend]: Se detecta el mod Calamity, Catalyst o Fargowiltas Souls. El Modo Compatibilidad se activará forzosamente."
+		MurasaTips: "[c/ff0000:¡NO ENTRES AL AGUA CON ELLA!]"
+		HinaTips: "[c/009966:Te mantiene lejos de la mala suerte]"
+		VampireTips: "[c/ff3366:¡Por favor, NO la dejes bajo el sol!]"
+		TenshinTips: "[c/33ccff:Te trae la súper suerte de la Celestial]"
+		SatoriTips: "[c/cc33cc:Detecta vida cercana]"
+		WriggleTips: "[c/ccff99:Ilumina los rincones oscuros con luciérnagas]"
+		YuyukoTips: "[c/ff66ff:¡Por favor, cuida cualquier Comida en tu inventario!]"
+		KaguyaTips: "[c/ff6600:Está ansiosa por derrotar la llama eterna]"
+		MokuTips: "[c/ff6699:Intentará con todas sus fuerzas noquear a la princesa lunar]"
+		StarTips: "[c/0033ff:Muestra tesoros cercanos]"
+		MinorikoTips: "[c/ff9900:Te hace comer más a fondo]"
+		TewiTips: "[c/ff9999:Encontrarla puede traerte suerte]"
+		YukaTips2: "[c/33ff33:Tiene el poder de cambiar el entorno]"
+		LettyTips: "[c/ccccff:Traerá el frío del invierno a otras compañeras]"
+		KokoroTips: "[c/cc33cc:Restringe las acciones inconscientes de alguien]"
+		PoltergeistTips: "[c/65efc6:Puede celebrar un concierto]"
+		RaikoTips: "[c/ff6080:Hace el concierto más colorido]"
+	}
+}

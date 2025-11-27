@@ -1,0 +1,200 @@
+Mods: {
+	TouhouPets: {
+		Configs: {
+			PetAbilitiesConfig: {
+				DisplayName: Configuración de Habilidades de Mascota
+
+				SpecialAbility_Hina: {
+					Label: "[i:TouhouPets/HinaDoll] Habilidad Especial de {$Mods.TouhouPets.Items.HinaDoll.DisplayName}"
+					Tooltip: Evita que tu suerte caiga por debajo de 0
+				}
+
+				SpecialAbility_Minoriko: {
+					Label: "[i:TouhouPets/MinorikoSweetPotato] Habilidad Especial de {$Mods.TouhouPets.Items.MinorikoSweetPotato.DisplayName}"
+					Tooltip: La duración de la Mejora de Comida aumenta en un 3%
+				}
+
+				SpecialAbility_Murasa: {
+					Label: "[i:TouhouPets/MurasaBailer] Habilidad Especial de {$Mods.TouhouPets.Items.MurasaBailer.DisplayName}"
+					Tooltip: Cuando se está en un Mundo GFB, el jugador ya no puede caminar sobre el agua e inmediatamente se ahogará bajo ella
+				}
+
+				SpecialAbility_Satori: {
+					Label: "[i:TouhouPets/SatoriSlippers] Habilidad Especial de {$Mods.TouhouPets.Items.SatoriSlippers.DisplayName}"
+					Tooltip: Detecta enemigos cercanos regularmente
+				}
+
+				SpecialAbility_Star: {
+					Label: "[i:TouhouPets/StarSapphire] Habilidad Especial de {$Mods.TouhouPets.Items.StarSapphire.DisplayName}"
+					Tooltip: Hace que los tesoros cercanos brillen
+				}
+
+				SpecialAbility_Tenshin: {
+					Label: "[i:TouhouPets/TenshiKeyStone] Habilidad Especial de {$Mods.TouhouPets.Items.TenshiKeyStone.DisplayName}"
+					Tooltip: Aumenta la suerte en 0.5
+				}
+
+				SpecialAbility_Wriggle: {
+					Label: "[i:TouhouPets/WriggleInAJar] Habilidad Especial de {$Mods.TouhouPets.Items.WriggleInAJar.DisplayName}"
+					Tooltip: Ilumina regularmente un área grande y también puede atraer insectos
+				}
+
+				SpecialAbility_Yuka: {
+					Label: "[i:TouhouPets/YukaSunflower] Habilidad Especial de {$Mods.TouhouPets.Items.YukaSunflower.DisplayName}"
+					Tooltip: Puede usarse como un Clentaminator si hay soluciones de color en tu inventario
+				}
+
+				SpecialAbility_Yuyuko: {
+					Label: "[i:TouhouPets/YuyukoFan] Habilidad Especial de {$Mods.TouhouPets.Items.YuyukoFan.DisplayName}"
+					Tooltip:
+						'''
+						Si hay comida en tu inventario o en la Bolsa del Vacío abierta, se consumirá un ítem regularmente
+						Mientras sostienes comida, haz clic derecho en la mascota para alimentarla
+						'''
+				}
+
+				SpecialAbility_MokuAndKaguya: {
+					Label: "[i:TouhouPets/MokuMatch] & [i:TouhouPets/KaguyaBranch] Habilidades Especiales de {$Mods.TouhouPets.Items.MokuMatch.DisplayName} y {$Mods.TouhouPets.Items.KaguyaBranch.DisplayName}"
+					Tooltip: Si el jugador está AFK por más de 10 segundos, comienzan a luchar entre ellas
+				}
+
+				SpecialAbility_Tewi: {
+					Label: "[i:TouhouPets/TewiCarrot] Habilidad Especial de {$Mods.TouhouPets.Items.TewiCarrot.DisplayName}"
+					Tooltip: Aumenta la suerte en 0.3
+				}
+
+				SpecialAbility_Letty: {
+					Label: "[i:TouhouPets/LettyGlobe] Habilidad Especial de {$Mods.TouhouPets.Items.LettyGlobe.DisplayName}"
+					Tooltip:
+						'''
+						Hace que algunas mascotas sientan frío
+						Incluyen a: 
+						[i:TouhouPets/SizuhaBrush] [i:TouhouPets/WriggleInAJar]
+						'''
+				}
+
+				SpecialAbility_Prismriver: {
+					Label: "[i:TouhouPets/PoltergeistAlbum] Habilidad Especial de {$Mods.TouhouPets.Items.PoltergeistAlbum.DisplayName}"
+					Tooltip: Si el jugador está AFK por más de 10 segundos, comienzan a actuar juntas
+				}
+
+				SpecialAbility_Shion: {
+					Label: Habilidad Especial de Shion
+					Tooltip: ""
+				}
+
+				SpecialAbility_Jyoon: {
+					Label: Habilidad Especial de Jyoon
+					Tooltip: ""
+				}
+			}
+
+			PetDialogConfig: {
+				DisplayName: Configuración de Diálogos de la Mascota
+
+				TyperStyleChat: {
+					Label: Diálogos de Estilo Mecanografía
+					Tooltip: Alterna si los diálogos de la mascota se mostrarán o no al estilo mecanografía
+				}
+
+				ChatFrequency: {
+					Label: Frecuencia de Habla
+					Tooltip:
+						'''
+						Ajusta la frecuencia con la que habla la mascota. Cuanto mayor sea el valor, más a menudo hablará la mascota
+						Establecer a 0 detendrá el habla de la mascota
+						'''
+				}
+			}
+
+			PetObtainConfig: {
+				DisplayName: Configuración de Obtención de Mascotas
+
+				PetCanDropFromBoss: {
+					Label: Las mascotas pueden caer de monstruos
+					Tooltip: Alterna si las mascotas pueden o no caer de monstruos o Jefes
+				}
+
+				ObtainPetByFishing: {
+					Label: Las mascotas se pueden obtener pescando
+					Tooltip:
+						'''
+						Alterna si algunas mascotas se pueden obtener pescando o no
+						Incluyen a: 
+						[i:TouhouPets/HinaDoll] [i:TouhouPets/WakasagihimeFishingRod] [i:TouhouPets/IkuOarfish] [i:TouhouPets/UselessBook]
+						'''
+				}
+
+				AllowGapToSpawn: {
+					Label: Permitir que la Brecha Misteriosa aparezca por la noche
+					Tooltip: Alterna si la Brecha Misteriosa puede o no aparecer por la noche
+				}
+			}
+
+			MiscConfig_ClientSide: {
+				DisplayName: Configuración de Funciones Varias del Lado del Cliente
+
+				EnableCustomMusicMode: {
+					Label: Modo de Música Personalizada para Concierto
+					Tooltip:
+						'''
+						Alterna si la Banda Poltergeist puede o no reproducir música personalizada
+						Esta opción decidirá si se cargarán o no los archivos de música que hayas colocado
+						'''
+				}
+
+				PetLightOnPlayer: {
+					Label: La posición de iluminación de la mascota está en el centro del jugador
+					Tooltip: Alterna si la posición de iluminación de la mascota debe estar en el centro del jugador
+				}
+
+				PetInvisWhenMouseHover: {
+					Label: La mascota será invisible al pasar el cursor sobre ella
+					Tooltip: Alterna si la mascota debe ser invisible si el cursor está sobre ella (se exceptúan algunos casos especiales)
+				}
+
+				YuyukoBanList: {
+					Label: Lista Negra de Dieta de Yuyuko
+					Tooltip: Los ítems que contiene esta lista no serán comidos por Yuyuko, ni se le podrán dar para alimentarla.
+				}
+			}
+
+			MiscConfig_ServerSide: {
+				DisplayName: Configuración de Funciones Varias del Lado del Servidor
+
+				CompatibilityMode: {
+					Label: Los tintes no afectan a las mascotas
+					Tooltip:
+						'''
+						Deshabilita el efecto de tinte de las mascotas de este mod para evitar posibles errores de dibujo
+						Algunos efectos de tinte especiales de las mascotas no se verán afectados
+						'''
+				}
+
+				AllowModCall_MarisasReaction: {
+					Label: Habilitar Mod.Call: [ PetsReactionToBoss ]
+					Tooltip: Permite que otros mods que utilicen Mod.Call añadan nuevas o editen las reacciones de las mascotas ante los Jefes
+				}
+
+				AllowModCall_YuyukosReaction: {
+					Label: Habilitar Mod.Call: [ YuyukosReactionToFood ]
+					Tooltip: Permite que otros mods que utilicen Mod.Call añadan nuevas o editen las reacciones de Yuyuko al comer o rechazar comida
+				}
+
+				AllowModCall_PetDialog: {
+					Label: Habilitar Mod.Call: [ PetDialog ]
+					Tooltip:
+						'''
+						Permite que otros mods que utilicen Mod.Call añadan nuevos diálogos regulares a las mascotas
+						Al deshabilitar esto, la opción [ PetChatRoom ] no surtirá efecto
+						'''
+				}
+
+				AllowModCall_PetChatRoom: {
+					Label: Habilitar Mod.Call: [ PetChatRoom ]
+					Tooltip: Permite que otros mods que utilicen Mod.Call añadan nuevas salas de chat a las mascotas
+				}
+			}
+		}
+	}
+}

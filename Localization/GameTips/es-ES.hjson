@@ -1,0 +1,14 @@
+Mods: {
+	TouhouPets: {
+		GameTips: {
+			Tip1: Touhou Little Friends: ¡Puedes comprar mascotas a través de la Brecha Misteriosa que aparece por la noche!
+			Tip2: Touhou Little Friends: ¡Algunos ítems de invocación de mascotas pueden combinarse en uno solo! Intenta coleccionarlos.
+			Tip3: Touhou Little Friends: ¿Crees que tus mascotas hablan demasiado? Puedes desactivar sus mensajes en la configuración del mod.
+			Tip4: Touhou Little Friends: ¡Intenta aprender más sobre las relaciones entre las mascotas y encuentra sus interacciones especiales!
+			Tip5: Touhou Little Friends: Las mascotas también tienen estados de ánimo, a veces harán cosas que les gustan.
+			Tip6: Touhou Little Friends: Los ítems de invocación de mascotas no solo se obtienen comprando; también pueden esconderse en enemigos, o incluso en el agua...
+			Tip7: Touhou Little Friends: ¡Bienvenido a conocer la serie "Touhou Project"!
+			Tip8: Touhou Little Friends: Si gastas suficiente dinero en la Brecha Misteriosa, Ella podría darte algo como regalo...
+		}
+	}
+}

@@ -1,0 +1,340 @@
+Mods: {
+	TouhouPets: {
+		Buffs: {
+			CirnoBuff: {
+				DisplayName: Baka
+				Description: ⑨
+			}
+
+			UtsuhoBuff: {
+				DisplayName: Cuervo Infernal
+				Description: "'¡Soy el Sol Subterráneo!'"
+			}
+
+			HinaBuff: {
+				DisplayName: Diosa de la Mala Fortuna
+				Description: Girar y girar...
+			}
+
+			DaiyouseiBuff: {
+				DisplayName: Daiyousei
+				Description: ¿Quién es Daiyousei?
+			}
+
+			PatchouliBuff: {
+				DisplayName: La Pequeña Biblioteca Inmóvil
+				Description: Hacer ejercicio es bueno para tu cuerpo
+			}
+
+			SekibankiBuff: {
+				DisplayName: Rokurokubi
+				Description: "'Por favor, no juegues con mi cabeza'"
+			}
+
+			MarisaBuff: {
+				DisplayName: Bruja Común
+				Description: Ya no puede robar cosas
+			}
+
+			ReimuBuff: {
+				DisplayName: Sacerdotisa del Paraíso
+				Description: "'...'"
+			}
+
+			RemiliaBuff: {
+				DisplayName: Hermana Vampira Mayor
+				Description: "'¡Presenta tu sangre, humano!'"
+			}
+
+			FlandreBuff: {
+				DisplayName: Hermana Vampira Menor
+				Description: "'¡Por favor, juega conmigo!'"
+			}
+
+			ScarletBuff: {
+				DisplayName: La Familia Scarlet
+				Description: "¿Quieres unirte a nuestra hora del té por la tarde?"
+			}
+
+			JunkoBuff: {
+				DisplayName: El Espíritu Puro
+				Description: El paradero del corazón
+			}
+
+			HecatiaBuff: {
+				DisplayName: Diosa del Infierno
+				Description: Bienvenido ♥ al Infierno
+			}
+
+			IkuBuff: {
+				DisplayName: Mensajera del Palacio del Dragón
+				Description: ¡¡¡ TALADRO AROWANA !!!
+			}
+
+			TenshiBuff: {
+				DisplayName: La Celestial
+				Description: Una delincuente del cielo
+			}
+
+			SatoriBuff: {
+				DisplayName: Youkai de la Conciencia
+				Description: "'Sé lo que estás pensando...'"
+			}
+
+			KoishiBuff: {
+				DisplayName: Chica Perdida en su Subconsciente
+				Description: "¿Dónde está ella?"
+			}
+
+			KomeijiBuff: {
+				DisplayName: La Familia Komeiji
+				Description: O v U
+			}
+
+			SanaeBuff: {
+				DisplayName: Sacerdotisa de los Milagros
+				Description: "¡Esperando los milagros!"
+			}
+
+			KogasaBuff: {
+				DisplayName: Tsukumogami de la Sombrilla
+				Description: "¡BUU!"
+			}
+
+			NitoriBuff: {
+				DisplayName: Ingeniera Kappa
+				Description: "¡Tecnología Kappa N.º 1!"
+			}
+
+			RinBuff: {
+				DisplayName: Kasha
+				Description: "¡Deja el cuerpo y yo lo llevaré!"
+			}
+
+			LilyBuff: {
+				DisplayName: Hada de la Primavera
+				Description: "¡La primavera está llegando!"
+			}
+
+			MystiaBuff: {
+				DisplayName: Pájaro Nocturno
+				Description: "¡Perdida en la canción del pájaro nocturno!"
+			}
+
+			WriggleBuff: {
+				DisplayName: Luciérnaga Youkai
+				Description: Brilla, brilla, pequeño bicho
+			}
+
+			YuyukoBuff: {
+				DisplayName: Fantasma de los Cerezos en Flor
+				Description: Límite de la Vida
+			}
+
+			AyaBuff: {
+				DisplayName: Reportera Cuervo Tengu
+				Description: "¡Intenta alcanzar mi velocidad!"
+			}
+
+			YoumuBuff: {
+				DisplayName: La Jardinera
+				Description: "'¿¡QUIÉN ESTÁ AHÍ!?'"
+			}
+
+			AliceBuff: {
+				DisplayName: Titiritera
+				Description: Maestra de las marionetas
+			}
+
+			RumiaBuff: {
+				DisplayName: Youkai del Crepúsculo
+				Description: "'Entonces, ¿no es así?~'"
+			}
+
+			KoakumaBuff: {
+				DisplayName: Pequeña Demonia
+				Description: "'¡Koakuma N.º {0}, a su servicio!'"
+			}
+
+			WakasagihimeBuff: {
+				DisplayName: Sirena-Hime
+				Description: *ronroneo ronroneo* .oO
+			}
+
+			YukaBuff: {
+				DisplayName: Maestra de las Flores
+				Description: "'Por favor, no recojas esa flor.'"
+			}
+
+			YukariBuff: {
+				DisplayName: Sabia de los Límites
+				Description: "'¡Gracias por apoyar a Gensokyo!'"
+			}
+
+			KaguyaBuff: {
+				DisplayName: Princesa Lunar
+				Description: Princesa exiliada del Reino Lunático
+			}
+
+			MokuBuff: {
+				DisplayName: Fénix Inmortal
+				Description: ¡Ardiendo para siempre!
+			}
+
+			MeirinBuff: {
+				DisplayName: La Guardiana
+				Description: "'¡Oye, estoy vigilando aquí!'"
+			}
+
+			SakuyaBuff: {
+				DisplayName: La Sirvienta
+				Description: "'¿Qué puedo hacer por usted?'"
+			}
+
+			RaikoBuff: {
+				DisplayName: Tsukumogami de Tambor
+				Description: "'¡Vamos a JUGAR!'"
+			}
+
+			KeineBuff: {
+				DisplayName: Mujer-Hakutaku
+				Description: Creadora de la Historia
+				Description_2: Devoradora de la Historia
+			}
+
+			LunaBuff: {
+				DisplayName: Luna Child
+				Description: La tranquila luz de la luna
+			}
+
+			StarBuff: {
+				DisplayName: Star Sapphire
+				Description: El torrente de luz de las estrellas
+			}
+
+			SunnyBuff: {
+				DisplayName: Sunny Milk
+				Description: La brillante luz del sol
+			}
+
+			TheThreeFairiesBuff: {
+				DisplayName: Las Tres Hadas de la Luz
+				Description: "'¡Jugándose la vida en una broma!... Espera, las hadas no pueden morir.'"
+			}
+
+			ReisenBuff: {
+				DisplayName: Conejo Lunar
+				Description: Es un poco fácil que se ponga nerviosa...
+			}
+
+			SizuhaBuff: {
+				DisplayName: Diosa de las Hojas de Otoño
+				Description: Las hojas que caen anuncian la llegada del otoño
+			}
+
+			MinorikoBuff: {
+				DisplayName: Diosa de la Cosecha
+				Description: El otoño simboliza la alegría de la cosecha
+			}
+
+			MurasaBuff: {
+				DisplayName: Fantasma de Barco
+				Description: Si quieres que tu barco esté seguro, ¿quizás deberías darle espinacas...?
+			}
+
+			SuikaBuff: {
+				DisplayName: La Borracha
+				Description: Pequeño Desfile Nocturno
+			}
+
+			EirinBuff: {
+				DisplayName: La Farmacéutica
+				Description: El Cerebro de la Luna
+			}
+
+			ShinkiBuff: {
+				DisplayName: Diosa del Mundo del Diablo
+				Description: '''"Querida Alice."'''
+			}
+
+			RukotoBuff: {
+				DisplayName: Robot Sirvienta
+				Description: ¡Propulsada por energía nuclear!
+			}
+
+			EienteiBuff: {
+				DisplayName: La Familia de Eientei
+				Description: La luna, la inmortalidad y los conejos
+			}
+
+			DoremyBuff: {
+				DisplayName: Tapir de los Sueños
+				Description: Una cara tonta
+			}
+
+			KokoroBuff: {
+				DisplayName: Tsukumogami de la Máscara
+				Description: Está haciendo todo lo posible por sonreír.
+			}
+
+			TewiBuff: {
+				DisplayName: Coneja de la Suerte
+				Description: '''"La suerte es algo tan simple, pero la felicidad no lo es tanto."'''
+			}
+
+			MomoyoBuff: {
+				DisplayName: Bug Hime
+				Description: ¿Dijiste "Mine & Craft"?
+			}
+
+			AliceOldBuff: {
+				DisplayName: Chica de la Tierra Mágica
+				Description: Un olor a muerte y magia
+			}
+
+			LettyBuff: {
+				DisplayName: Youkai del Invierno
+				Description: ¡El invierno está llegando!
+			}
+
+			KoishiCalling: {
+				DisplayName: Llamada de la Srta. Koishi
+				Description: ¡Date prisa en contestar el teléfono! (Usando el Teléfono Púrpura)
+			}
+
+			KoishiKILL: {
+				DisplayName: Llamada de la Srta. Koishi
+				Description: DEMASIADO TARDE
+			}
+
+			LunasaBuff: {
+				DisplayName: Violinista Poltergeist
+				Description: Escuchando las notas de la melancolía
+			}
+
+			MerlinBuff: {
+				DisplayName: Trompetista Poltergeist
+				Description: Escuchando las notas de la manía
+			}
+
+			LyricaBuff: {
+				DisplayName: Teclista Poltergeist
+				Description: Escuchando las notas de la ilusión
+			}
+
+			PoltergeistBuff: {
+				DisplayName: La Banda Poltergeist
+				Description: ¡Ensamble del Inframundo!
+			}
+
+			ConcertBuff: {
+				DisplayName: Concierto Poltergeist
+				Description:
+					'''
+					La Banda Poltergeist ha comenzado un concierto por tu invitación
+					Haz clic derecho para cancelar el concierto
+					'''
+			}
+		}
+	}
+}

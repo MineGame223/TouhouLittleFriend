@@ -1,0 +1,19 @@
+Mods: {
+	TouhouPets: {
+		NoAnyFile: ¡No hay archivos de audio utilizables! Se ha salido del modo personalizado.
+		FileNotExist: Error: el archivo {0} no existe o se ha movido, ¡por favor, recarga el mod!
+		FailedToPlay: No se pudo reproducir {0}: {1}
+		NoCustomMusicNotice: No hay música personalizada ahora mismo, por favor, coloca los archivos en la carpeta designada y recarga el mod.
+		CustomNotAllowedNotic: ¡La opción de música personalizada solo puede activarse en Modo Un Jugador!
+		CustomMusicDisabledNotice: La opción de música personalizada ha sido desactivada, puedes activarla en la Configuración del Mod.
+		RandomLoop: Bucle Aleatorio
+		ListLoop: Bucle de Lista
+		SingleLoop: Bucle Único
+		LoopDisplay: Modo de Reproducción: {0}
+		CustomDisplay: Modo Personalizado: {0}
+		OpenFolder: Clic derecho para abrir la carpeta de música personalizada
+		BackAudioDisplay: Audio de Fondo: {0}
+		TurnOn: Activado
+		TurnOff: Desactivado
+	}
+}
