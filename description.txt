@@ -19,6 +19,7 @@
 
 俄语翻译由@Typical Guy提供
 英语翻译由@Kyuumulonimbus进行优化
+西班牙语翻译由@Ningunomas提供
 
 
 Touhou Little Friend ~ Adventure with cute partners
@@ -33,3 +34,4 @@ You can also buy these items from the Mysterious Gap which spawns in nighttime
 
 The Russian translation is made by @Typical Guy
 The English optimization is made by @Kyuumulonimbus
+The Spanish translation is made by @Ningunomas

@@ -53,7 +53,7 @@ Mods: {
 
 			ScarletBuff: {
 				DisplayName: La Familia Scarlet
-				Description: "¿Quieres unirte a nuestra hora del té por la tarde?"
+				Description: "'¿Quieres unirte a nuestra hora del té por la tarde?'"
 			}
 
 			JunkoBuff: {
@@ -83,7 +83,7 @@ Mods: {
 
 			KoishiBuff: {
 				DisplayName: Chica Perdida en su Subconsciente
-				Description: "¿Dónde está ella?"
+				Description: ¿Dónde está ella?
 			}
 
 			KomeijiBuff: {
@@ -93,32 +93,32 @@ Mods: {
 
 			SanaeBuff: {
 				DisplayName: Sacerdotisa de los Milagros
-				Description: "¡Esperando los milagros!"
+				Description: ¡Esperando los milagros!
 			}
 
 			KogasaBuff: {
 				DisplayName: Tsukumogami de la Sombrilla
-				Description: "¡BUU!"
+				Description: ¡BUU!
 			}
 
 			NitoriBuff: {
 				DisplayName: Ingeniera Kappa
-				Description: "¡Tecnología Kappa N.º 1!"
+				Description: ¡Tecnología Kappa N.º 1!
 			}
 
 			RinBuff: {
 				DisplayName: Kasha
-				Description: "¡Deja el cuerpo y yo lo llevaré!"
+				Description: ¡Deja el cuerpo y yo lo llevaré!
 			}
 
 			LilyBuff: {
 				DisplayName: Hada de la Primavera
-				Description: "¡La primavera está llegando!"
+				Description: ¡La primavera está llegando!
 			}
 
 			MystiaBuff: {
 				DisplayName: Pájaro Nocturno
-				Description: "¡Perdida en la canción del pájaro nocturno!"
+				Description: ¡Perdida en la canción del pájaro nocturno!
 			}
 
 			WriggleBuff: {
@@ -133,7 +133,7 @@ Mods: {
 
 			AyaBuff: {
 				DisplayName: Reportera Cuervo Tengu
-				Description: "¡Intenta alcanzar mi velocidad!"
+				Description: ¡Intenta alcanzar mi velocidad!
 			}
 
 			YoumuBuff: {

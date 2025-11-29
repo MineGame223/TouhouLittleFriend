@@ -103,7 +103,7 @@ namespace TouhouPets
                     int index = player.FindBuffIndex(item.buffType);
                     if (index != -1)
                     {
-                        player.buffTime[index] = (int)(item.buffTime * 0.03f);
+                        player.buffTime[index] = (int)(item.buffTime * 1.03f);
                     }
                 }
             }
