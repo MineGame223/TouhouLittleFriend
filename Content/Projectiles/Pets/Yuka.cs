@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -16,8 +17,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Idle,
             Blink,
-            Spraying = Phase_Spray_Mode1,
-            Spraying2 = Phase_Spray_Mode2,
+            Spraying = Phase_Spray_ManualMode,
+            Spraying2 = Phase_Spray_AutoMode,
             StopSpraying = Phase_StopSpray,
         }
         private States CurrentState
@@ -34,6 +35,11 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             get => (int)Projectile.localAI[1];
             set => Projectile.localAI[1] = value;
+        }
+        private float CameraLerpValue
+        {
+            get => Projectile.localAI[2];
+            set => Projectile.localAI[2] = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
         private Vector2 YukaHandOrigin => Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 2);
@@ -62,6 +68,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
+            if (PetState == Phase_Spray_ManualMode)
+                lightColor = Color.White;
+
             DrawPetConfig config = drawConfig with
             {
                 ShouldUseEntitySpriteDraw = true,
@@ -141,13 +150,6 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override void AI()
         {
-            if (OwnerIsMyPlayer)
-            {
-                mousePos = Main.MouseWorld;
-                if (mainTimer % 5 == 0)
-                    Projectile.netUpdate = true;
-            }
-
             Projectile.SetPetActive(Owner, BuffType<YukaBuff>());
 
             ControlMovement();
@@ -195,13 +197,11 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            ChangeDir();
+            if (PetState == Phase_Spray_AutoMode || PetState == Phase_Spray_ManualMode)
+                return;
 
+            ChangeDir();
             Vector2 point = new(-50 * Owner.direction, -45 + Owner.gfxOffY);
-            if (PetState == Phase_Spray_Mode2)
-            {
-                point = mousePos - Owner.Center;
-            }
             MoveToPoint(point, 12f);
         }
         private void Idle()
@@ -228,8 +228,51 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
 
         #region 溶液喷洒相关
+        private void ManualControl()
+        {
+            Owner.biomeSight = true;
+            Owner.position -= Owner.velocity;
+
+            int speed = 1;
+            int maxSpeed = 14;
+
+            if (Math.Abs(Projectile.velocity.Length()) < maxSpeed)
+            {
+                if (Owner.controlLeft)
+                {
+                    Projectile.velocity.X -= speed;
+                    Projectile.spriteDirection = -1;
+                }
+                if (Owner.controlRight)
+                {
+                    Projectile.velocity.X += speed;
+                    Projectile.spriteDirection = 1;
+                }
+                if (Owner.controlUp)
+                {
+                    Projectile.velocity.Y -= speed;
+                }
+                if (Owner.controlDown)
+                {
+                    Projectile.velocity.Y += speed;
+                }
+            }
+            Projectile.velocity *= 0.9f;
+            Main.instance.CameraModifiers.Add(new YukaCameraModifier(Projectile, FullName));
+        }
         private void Spraying(int mode)
         {
+            bool autoMode = mode == 1;
+            bool dontShoot = !autoMode && !Owner.controlUseItem;
+
+            if (OwnerIsMyPlayer)
+            {
+                mousePos = Main.MouseWorld;
+
+                if (Main.MouseWorld != mousePos && Main.netMode != NetmodeID.SinglePlayer)
+                    Projectile.netUpdate = true;
+            }
+
             if (Projectile.frame < 5)
             {
                 Projectile.frame = 5;
@@ -261,22 +304,31 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Timer = 0;
                     if (OwnerIsMyPlayer)
                     {
-                        if (Main.rand.NextBool(2, 3) && Solution.consumable && Solution.ammo > AmmoID.None)
+                        if (Main.rand.NextBool(2, 3) &&
+                            Solution.consumable &&
+                            Solution.ammo > AmmoID.None &&
+                            !dontShoot)
                             Solution.stack--;
                     }
                 }
 
-                if (mode == 1)
+                if (autoMode)
                 {
                     Angle += 2;
                     if (Angle > 359)
                         Angle = 0;
+
+                    MoveToPoint(mousePos - Owner.Center, 12f);
                 }
                 else
                 {
                     Angle = (int)MathHelper.ToDegrees((mousePos - YukaHandOrigin).ToRotation() + MathHelper.PiOver2);
+                    ManualControl();
                 }
 
+                if (dontShoot)
+                    return;
+                
                 if (Projectile.frameCounter % 2 == 0)
                 {
                     Vector2 pos = YukaHandOrigin + new Vector2(0, 7f * Main.essScale);

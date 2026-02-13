@@ -28,11 +28,11 @@ namespace TouhouPets
             { ItemID.SnowSolution, new SprayInfo(ProjectileID.SnowSpray, MyDustId.WhiteBubble) },
         };
 
-        public const int Phase_Spray_Mode1 = 3;
-        public const int Phase_Spray_Mode2 = 4;
+        public const int Phase_Spray_ManualMode = 3;
+        public const int Phase_Spray_AutoMode = 4;
         public const int Phase_StopSpray = 5;
         public static Item Sprayer => new(ItemID.Clentaminator2);
-        public static bool IsSpraying => PetState >= Phase_Spray_Mode1 && PetState <= Phase_Spray_Mode2;
+        public static bool IsSpraying => PetState >= Phase_Spray_ManualMode && PetState <= Phase_Spray_AutoMode;
         public static Item Solution { get => solution; set => solution = value; }
         private static float PetState
         {
@@ -51,7 +51,6 @@ namespace TouhouPets
                 yuka.ai[1] = (int)value;
             }
         }
-
         public override void PostUpdateProjectiles()
         {
             if (Main.netMode == NetmodeID.Server || !SpecialAbility_Yuka)
@@ -130,7 +129,7 @@ namespace TouhouPets
                     {
                         if (Main.mouseRight && Main.mouseRightRelease)
                         {
-                            int targetMode = sprayMode == 0 ? Phase_Spray_Mode1 : Phase_Spray_Mode2;
+                            int targetMode = sprayMode == 0 ? Phase_Spray_ManualMode : Phase_Spray_AutoMode;
                             if (PetState != targetMode)
                             {
                                 PetState = targetMode;
@@ -183,7 +182,7 @@ namespace TouhouPets
             if (drawRequestText)
             {
                 if (!IsSpraying && PetState != Phase_StopSpray)
-                    DrawSprayModeSign(sprayMode == 0 ? 9 : 8);
+                    DrawSprayModeSign(sprayMode);
 
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value
                                 , Language.GetTextValue($"Mods.TouhouPets.Yuka{modeText}"), Main.MouseScreen.X + TextureAssets.Cursors[2].Width()
@@ -194,12 +193,12 @@ namespace TouhouPets
         }
         private static void DrawSprayModeSign(int frame)
         {
-            Texture2D t = AltVanillaFunction.ProjectileTexture(yuka.type);
-            int width = t.Width / 2;
-            int height = t.Height / Main.projFrames[yuka.type];
+            Texture2D t = AltVanillaFunction.GetExtraTexture("YukaControlUI");
+            int width = t.Width;
+            int height = t.Height / 2;
             Vector2 pos = yuka.Center + new Vector2(-50, -50)
                 - Main.screenPosition + new Vector2(0, 7f * Main.essScale);
-            Rectangle rect = new(width, frame * height, 32, 32);
+            Rectangle rect = new(0, frame * height, width, height);
             Vector2 orig = rect.Size() / 2;
             SpriteEffects effect = SpriteEffects.None;
             Main.spriteBatch.MyDraw(t, pos, rect, yuka.GetAlpha(Color.White), 0, orig, yuka.scale, effect, 0f);
