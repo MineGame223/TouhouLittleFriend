@@ -4,16 +4,16 @@ Mods: {
 		Bestiary.YukariPortal: Разрыв в пространстве, ведущий в неизвестное место. Сквозь него видно вещи, не поддающиеся здравому смыслу.
 		YukaRequest: Запрос
 		YukaStop: Стоп
-		YukaTips:
+		/* YukaTips:
 			'''
 			---
-			Вы нашли записку под горшком
-			“Проект очиститель - код Юка”
-			“Привет! Будьте добры использовать - 'Юка'!”
-			“Если у вас есть цветные растворы в инвентаре, правый клик по 'Юке' автоматически распылит их.”
-			“Левый клик по 'Юке' пока она не распыляет раствор, позволяет переключаться между двумя режимами распыления.”
-			“Желаем приятного пользования!”
-			'''
+			You find a paper under this pot
+			"Project Clentaminator - Code 'Yuka'"
+			"Hi! Welcome to the tutorial for 'Yuka'!"
+			"If there are any colored solutions in your inventory, then right clicking 'Yuka' will let her automatically spray them."
+			"'Yuka' will following your cursor and spraying a large area of surrounding."
+			"Wishing you a pleasant experience!"
+			''' */
 		YukariWealthCount: Спросить о выручке
 		SwitchTopic: Сменить тип
 		PetShop: Магазин обычных питомцев

@@ -1,18 +1,18 @@
 Mods: {
 	TouhouPets: {
 		DeathReason.KilledByKoishi: "{0} died from an unconscious murder."
-		Bestiary.YukariPortal: A spatial gap that leads to an unknown dimension, you can glimpse scape beyond common sense from its inside.
-		YukaRequest: Request
-		YukaStop: Stop
+		Bestiary.YukariPortal: A spatial gap that leads to an unknown dimension, scape which beyond common sense can be glimpsed from its inside.
+		YukaRequest: Right click to start
+		YukaStop: Right click to stop
 		YukaTips:
 			'''
 			---
 			You find a paper under this pot
-			“Project Clentaminator - Code Yuka”
-			“Hi! Welcome to the tutorial for 'Yuka'!”
-			“If there are any colored solutions in your inventory, then right clicking 'Yuka' will let her automatically spray them.”
-			“If you left click 'Yuka' when not spraying, you can switch between two spray modes.”
-			“Wishing you a pleasant experience!”
+			"Project Clentaminator - Code 'Yuka'"
+			"Hi! Welcome to the tutorial for 'Yuka'!"
+			"If there are any colored solutions in your inventory, then right clicking 'Yuka' will let her automatically spray them."
+			"'Yuka' will following your cursor and spraying a large area of surrounding."
+			"Wishing you a pleasant experience!"
 			'''
 		YukariWealthCount: Inquire About Wealth
 		SwitchTopic: Switch Topic

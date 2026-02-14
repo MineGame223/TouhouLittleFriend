@@ -592,6 +592,20 @@ Mods: {
 					Clic izquierdo para iniciar o cancelar el concierto, clic derecho para cambiar de pista
 					'''
 			}
+
+			ChlorophyteScryingOrb: {
+				// DisplayName: Chlorophyte Scrying Orb
+				/* Tooltip1:
+					'''
+					When held, you can enable 'Yuka''s manual mode
+					In this mode, you can directly control 'Yuka'
+					Press moving key to control her motion, and left click to spraying
+					Stop held this item or right click 'Yuka' can exit controlling
+					"You feel in tune with this partner when holding it..."
+					''' */
+				// Tooltip2: It's useless currently...
+				// Tooltip: ""
+			}
 		}
 	}
 }

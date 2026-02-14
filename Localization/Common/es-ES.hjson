@@ -4,16 +4,16 @@ Mods: {
 		Bestiary.YukariPortal: Una brecha espacial que conduce a una dimensión desconocida, puedes vislumbrar paisajes más allá del sentido común desde su interior.
 		YukaRequest: Petición
 		YukaStop: Detener
-		YukaTips:
+		/* YukaTips:
 			'''
 			---
-			Encuentras un papel bajo esta maceta
-			“Proyecto Clantaminator - Código Yuka”
-			“¡Hola! ¡Bienvenido al tutorial de 'Yuka'!”
-			“Si hay soluciones de color en tu inventario, hacer clic derecho en 'Yuka' hará que las rocíe automáticamente.”
-			“Si haces clic izquierdo en 'Yuka' cuando no está rociando, puedes cambiar entre dos modos de pulverización.”
-			“¡Deseándote una experiencia agradable!”
-			'''
+			You find a paper under this pot
+			"Project Clentaminator - Code 'Yuka'"
+			"Hi! Welcome to the tutorial for 'Yuka'!"
+			"If there are any colored solutions in your inventory, then right clicking 'Yuka' will let her automatically spray them."
+			"'Yuka' will following your cursor and spraying a large area of surrounding."
+			"Wishing you a pleasant experience!"
+			''' */
 		YukariWealthCount: Preguntar sobre la Riqueza
 		SwitchTopic: Cambiar Tema
 		PetShop: Tienda de Mascotas Ordinaria

@@ -7,6 +7,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
+using TouhouPets.Content.Items;
 using TouhouPets.Content.Projectiles.Pets;
 
 namespace TouhouPets
@@ -32,7 +33,6 @@ namespace TouhouPets
         public const int Phase_Spray_AutoMode = 4;
         public const int Phase_StopSpray = 5;
         public static Item Sprayer => new(ItemID.Clentaminator2);
-        public static bool IsSpraying => PetState >= Phase_Spray_ManualMode && PetState <= Phase_Spray_AutoMode;
         public static Item Solution { get => solution; set => solution = value; }
         private static float PetState
         {
@@ -51,6 +51,7 @@ namespace TouhouPets
                 yuka.ai[1] = (int)value;
             }
         }
+        private static bool IsSpraying => PetState >= Phase_Spray_ManualMode && PetState <= Phase_Spray_AutoMode;
         public override void PostUpdateProjectiles()
         {
             if (Main.netMode == NetmodeID.Server || !SpecialAbility_Yuka)
@@ -105,6 +106,9 @@ namespace TouhouPets
         }
         private static void SetSpray()
         {
+            if (!SpecialAbility_Yuka)
+                return;
+
             if (yuka == null)
                 return;
 
@@ -116,6 +120,16 @@ namespace TouhouPets
 
             bool request = false;
             Player player = Main.player[yuka.owner];
+
+            bool heldOrb = player.HeldItem.type == ItemType<ChlorophyteScryingOrb>();
+            /*if (!heldOrb)
+                sprayMode = 1;*/
+            sprayMode = heldOrb ? 0 : 1;
+
+            bool exit = false;
+            if (PetState == Phase_Spray_ManualMode && !heldOrb)
+                exit = true;
+
             if (!PlayerInput.IgnoreMouseInterface)
             {
                 Vector2 yukaPos = yuka.position - Main.screenPosition;
@@ -138,21 +152,26 @@ namespace TouhouPets
                             }
                             else
                             {
-                                PetState = Phase_StopSpray;
-                                yuka.netUpdate = true;
-                                AltVanillaFunction.PlaySound(SoundID.MenuClose, yuka.position);
+                                exit = true;
                             }
                         }
-                        if (Main.mouseLeft && Main.mouseLeftRelease)
+                        /*if (Main.mouseLeft && Main.mouseLeftRelease && heldOrb)
                         {
                             if (!IsSpraying)
                             {
                                 AltVanillaFunction.PlaySound(SoundID.MenuTick, yuka.position);
                                 sprayMode++;
                             }
-                        }
+                        }*/
                     }
                 }
+            }
+            if (exit)
+            {
+                Main.DroneCameraTracker.Clear();
+                PetState = Phase_StopSpray;
+                yuka.netUpdate = true;
+                AltVanillaFunction.PlaySound(SoundID.MenuClose, yuka.position);
             }
             DrawLeftSolution(request);
         }

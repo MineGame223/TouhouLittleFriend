@@ -237,7 +237,21 @@ namespace TouhouPets
             Vector2 pos = center + point;
             float dist = Vector2.Distance(Projectile.Center, pos);
             if (dist > 1200f)
+            {
+                for (int i = 0; i < 32; i++)
+                {
+                    Dust d = Dust.NewDustDirect(Projectile.position - new Vector2(0, -14), Projectile.width, Projectile.height
+                        , MyDustId.BlueMagic, 0, 0, 100, Color.White, Main.rand.NextFloat(1f, 3f));
+                    d.noGravity = true;
+                }
                 Projectile.Center = pos;
+                for (int i = 0; i < 32; i++)
+                {
+                    Dust d = Dust.NewDustDirect(Projectile.position - new Vector2(0, -14), Projectile.width, Projectile.height
+                        , MyDustId.BlueMagic, 0, 0, 100, Color.White, Main.rand.NextFloat(1f, 3f));
+                    d.noGravity = true;
+                }
+            }
 
             Vector2 vel = pos - Projectile.Center;
             float closeValue = 1f;

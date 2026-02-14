@@ -11,6 +11,9 @@ namespace TouhouPets
     {
         private static TouhouPets instance;
         public static TouhouPets Instance { get => instance; set => instance = value; }
+
+        private static float cameraLerpValue;
+        public static float CameraLerpValue { get => cameraLerpValue; set => cameraLerpValue = value; }
         public override void Load()
         {
             instance = this;
@@ -58,6 +61,7 @@ namespace TouhouPets
         #region 强制兼容模式遗留
         private static bool forceCompatibilityMode;
         public static bool ForceCompatibilityMode { get => forceCompatibilityMode; set => forceCompatibilityMode = value; }
+
         private static List<string> banList = [
             "CalamityMod",
             "CatalystMod",

@@ -1,18 +1,17 @@
 Mods: {
 	TouhouPets: {
 		DeathReason.KilledByKoishi: "{0}死于无意识的谋杀。"
-		Bestiary.YukariPortal: 一个不知通往何方的空间裂隙，你能从里面窥见超越常识的景象。
-		YukaRequest: 请求
-		YukaStop: 停止
+		Bestiary.YukariPortal: 一个不知通往何方的空间裂隙，可以从里面窥见超越常识的景象。
+		YukaRequest: 右键点击以开始
+		YukaStop: 右键点击以停止
 		YukaTips:
 			'''
 			---
 			你看到花盆底部附着一张纸条
 			“环境改造计划 - 代号 '幽香'”
-			“在背包里有环境溶液的情况下，'幽香'可以为您喷洒溶液，对'幽香'按下右键即可取消。”
-			“非喷洒状态下，左键点击 '幽香' 可以在手动和自动模式间来回切换。”
-			“手动模式下，'幽香'将完全按照您的操作进行活动，按住左键进行喷洒。”
-			“自动模式下，'幽香'会追随光标位置自行喷洒。”
+			“欢迎体验'幽香'的特别能力！”
+			“在背包里有环境溶液的情况下，右键点击'幽香'可以喷洒溶液。”
+			“'幽香'会追随光标位置、并向周身大范围自行喷洒。”
 			“祝您使用愉快！”
 			'''
 		YukariWealthCount: 消费查询
@@ -25,7 +24,7 @@ Mods: {
 		FeedYuyuko: 投喂
 		KoishiTelephone1: "[c/9dffce:你接听了恋恋的电话，还好无事发生...]"
 		KoishiTelephone2: "[c/ff0000:现在再行动似乎已经太晚了。]"
-		PressShift: "[c/9b9b9b:摁住Shift查看更多信息]"
+		PressShift: "[c/9b9b9b:摁住 Shift 查看更多信息]"
 		CustomModeDescrip:
 			'''
 			自选模式说明如下：

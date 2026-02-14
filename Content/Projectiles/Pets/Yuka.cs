@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
@@ -17,8 +18,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Idle,
             Blink,
-            Spraying = Phase_Spray_ManualMode,
-            Spraying2 = Phase_Spray_AutoMode,
+            Spraying_Manual = Phase_Spray_ManualMode,
+            Spraying_Auto = Phase_Spray_AutoMode,
             StopSpraying = Phase_StopSpray,
         }
         private States CurrentState
@@ -36,17 +37,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             get => (int)Projectile.localAI[1];
             set => Projectile.localAI[1] = value;
         }
-        private float CameraLerpValue
-        {
-            get => Projectile.localAI[2];
-            set => Projectile.localAI[2] = value;
-        }
         private bool IsIdleState => CurrentState <= States.Blink;
+        private bool IsSpraying => CurrentState >= States.Spraying_Manual && CurrentState <= States.Spraying_Auto;
         private Vector2 YukaHandOrigin => Projectile.Center + new Vector2(-2 * Projectile.spriteDirection, 2);
 
         private int clothFrame, clothFrameCounter;
         private int blinkFrame, blinkFrameCounter;
         private Vector2 mousePos = Vector2.Zero;
+        private Vector2 controlDirection = Vector2.Zero;
 
         private Item solutionClone;
 
@@ -59,6 +57,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Main.projFrames[Type] = 11;
             Main.projPet[Type] = true;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 960;
         }
         public override TouhouPetID UniqueID => TouhouPetID.Yuka;
         public override bool OnMouseHover(ref bool dontInvis)
@@ -68,7 +67,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override bool DrawPetSelf(ref Color lightColor)
         {
-            if (PetState == Phase_Spray_ManualMode)
+            if (CurrentState == States.Spraying_Manual)
                 lightColor = Color.White;
 
             DrawPetConfig config = drawConfig with
@@ -160,12 +159,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Blink();
                     break;
 
-                case States.Spraying:
+                case States.Spraying_Manual:
                     shouldNotTalking = true;
                     Spraying(0);
                     break;
 
-                case States.Spraying2:
+                case States.Spraying_Auto:
                     shouldNotTalking = true;
                     Spraying(1);
                     break;
@@ -184,12 +183,14 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             base.SendExtraAI(writer);
             writer.WriteVector2(mousePos);
+            writer.WriteVector2(controlDirection);
             writer.Write(Angle);
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             base.ReceiveExtraAI(reader);
             mousePos = reader.ReadVector2();
+            controlDirection = reader.ReadVector2();
             Angle = reader.ReadInt32();
         }
         private void ControlMovement()
@@ -197,7 +198,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.tileCollide = false;
             Projectile.rotation = Projectile.velocity.X * 0.005f;
 
-            if (PetState == Phase_Spray_AutoMode || PetState == Phase_Spray_ManualMode)
+            if (IsSpraying)
                 return;
 
             ChangeDir();
@@ -226,17 +227,70 @@ namespace TouhouPets.Content.Projectiles.Pets
                 CurrentState = States.Idle;
             }
         }
-
+        private void UpdateClothFrame()
+        {
+            int count = IsSpraying ? 3 : 5;
+            if (clothFrame < 3)
+            {
+                clothFrame = 3;
+            }
+            if (++clothFrameCounter > count)
+            {
+                clothFrameCounter = 0;
+                clothFrame++;
+            }
+            if (clothFrame > 6)
+            {
+                clothFrame = 3;
+            }
+        }
         #region 溶液喷洒相关
         private void ManualControl()
         {
-            Owner.biomeSight = true;
-            Owner.position -= Owner.velocity;
-
-            int speed = 1;
+            float speed = 1.2f;
             int maxSpeed = 14;
+            if (OwnerIsMyPlayer)
+            {
+                bool gravityFlipped = Owner.gravDir == -1f;
+                Vector2 direction = Vector2.Zero;
+                if (PlayerInput.UsingGamepad)
+                {
+                    direction = PlayerInput.GamepadThumbstickLeft;
+                }
+                else
+                {
+                    Player.DirectionalInputSyncCache localInputCache = Owner.LocalInputCache;
+                    direction.X -= (float)Utils.ToInt(localInputCache.controlLeft ^ gravityFlipped);
+                    direction.X += (float)Utils.ToInt(localInputCache.controlRight ^ gravityFlipped);
+                    direction.Y -= (float)Utils.ToInt(localInputCache.controlUp);
+                    direction.Y += (float)Utils.ToInt(localInputCache.controlDown);
+                    direction = Utils.SafeNormalize(direction, Vector2.Zero);
+                }
+                if (controlDirection != direction)
+                {
+                    controlDirection = direction;
+                    Projectile.netUpdate = true;
+                }
+            }
+            Projectile.velocity += controlDirection * speed;
+            if (Projectile.velocity.Length() > maxSpeed)
+            {
+                Projectile.velocity *= maxSpeed / Projectile.velocity.Length();
+            }
+            Projectile.velocity *= 0.9f;
+            if (Main.netMode == NetmodeID.Server &&
+                Utils.IndexInRange(Main.player, Projectile.owner) &&
+                Owner.active)
+            {
+                RemoteClient.CheckSection(Projectile.owner, Projectile.position, 1);
+            }
 
-            if (Math.Abs(Projectile.velocity.Length()) < maxSpeed)
+            if (controlDirection.X < 0)
+                Projectile.spriteDirection = -1;
+            if (controlDirection.X > 0)
+                Projectile.spriteDirection = 1;
+
+            /*if (Math.Abs(Projectile.velocity.Length()) < maxSpeed)
             {
                 if (Owner.controlLeft)
                 {
@@ -257,11 +311,16 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Projectile.velocity.Y += speed;
                 }
             }
-            Projectile.velocity *= 0.9f;
-            Main.instance.CameraModifiers.Add(new YukaCameraModifier(Projectile, FullName));
+            Main.instance.CameraModifiers.Add(new MovingCameraModifier(Projectile.Center, PetState == Phase_Spray_ManualMode, FullName));
+            */
+
+            Main.DroneCameraTracker.Track(Projectile);
+            Owner.isOperatingAnotherEntity = true;
         }
         private void Spraying(int mode)
         {
+            Owner.biomeSight = true;
+
             bool autoMode = mode == 1;
             bool dontShoot = !autoMode && !Owner.controlUseItem;
 
@@ -317,7 +376,6 @@ namespace TouhouPets.Content.Projectiles.Pets
                     Angle += 2;
                     if (Angle > 359)
                         Angle = 0;
-
                     MoveToPoint(mousePos - Owner.Center, 12f);
                 }
                 else
@@ -328,7 +386,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
                 if (dontShoot)
                     return;
-                
+
                 if (Projectile.frameCounter % 2 == 0)
                 {
                     Vector2 pos = YukaHandOrigin + new Vector2(0, 7f * Main.essScale);
@@ -395,24 +453,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 }
             }
         }
-        #endregion
-        private void UpdateClothFrame()
-        {
-            int count = IsSpraying ? 3 : 5;
-            if (clothFrame < 3)
-            {
-                clothFrame = 3;
-            }
-            if (++clothFrameCounter > count)
-            {
-                clothFrameCounter = 0;
-                clothFrame++;
-            }
-            if (clothFrame > 6)
-            {
-                clothFrame = 3;
-            }
-        }
+        #endregion      
     }
 }
 

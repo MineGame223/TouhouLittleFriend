@@ -30,7 +30,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
-        private bool useDye, blackDye;
+        private bool blackDye;
 
         private DrawPetConfig drawConfig = new(1);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Lily_Cloth");
