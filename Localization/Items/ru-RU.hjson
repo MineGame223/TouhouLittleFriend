@@ -423,6 +423,15 @@ Mods: {
 				// Tooltip2: It's useless currently...
 				// Tooltip: ""
 			}
+
+			SanaeCoinRare: {
+				// DisplayName: Golden Frog Coin
+				/* Tooltip:
+					'''
+					Summons the Shrine Maiden of Miracles
+					"I've told you that miracles are REAL!"
+					''' */
+			}
 		}
 	}
 }

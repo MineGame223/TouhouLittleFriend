@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.ID;
 using TouhouPets.Content.Buffs;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Projectiles;
 
 namespace TouhouPets.Content.Items
 {

@@ -96,6 +96,11 @@ Mods: {
 				Description: "'Watching for miracles!'"
 			}
 
+			SanaeBuffRare: {
+				DisplayName: Shrine Maiden of Miracles
+				Description: "'Watching for miracles!'"
+			}
+
 			KogasaBuff: {
 				DisplayName: Umbrella Tsukumogami
 				Description: "'BOO!'"

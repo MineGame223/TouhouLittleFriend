@@ -30,6 +30,7 @@ namespace TouhouPets.Content.Items.PetItems
             .AddIngredient(ItemID.Sapphire, 1)
             .AddIngredient(ItemID.FallenStar, 1)
             .AddCondition(Language.GetOrRegister("Mods.TouhouPets.CraftCondition_StarSapphire"), () => false)
+            .DisableDecraft()
             .Register();
         }
     }

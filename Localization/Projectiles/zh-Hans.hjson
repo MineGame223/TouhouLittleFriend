@@ -1,19 +1,16 @@
 Mods: {
 	TouhouPets: {
 		Projectiles: {
-			WriggleFirefly.DisplayName: 萤火虫
-			YuyukoButterfly.DisplayName: 蝴蝶
 			AliceDoll_Proj.DisplayName: 上海人偶
-			WakasagihimeBubble.DisplayName: 泡泡
 			KaguyaBullet.DisplayName: 子弹
 			MokuBullet.DisplayName: 子弹
 			MokuFireball.DisplayName: 火球
 			KaguyaWave.DisplayName: 满月光波
 			SakuyaKnife.DisplayName: 飞刀
 			StarTrail.DisplayName: 星轨
-			SizuhaLeaf.DisplayName: 落叶
-			MokuFlame.DisplayName: 火焰
 			BandSpotlight.DisplayName: 灯光
+			SanaeCoinSpawnAnimation.DisplayName: 奇迹
+			//--
 			Cirno.DisplayName: 琪露诺
 			Daiyousei.DisplayName: 大妖精
 			Flandre.DisplayName: 芙兰朵露·斯卡雷特

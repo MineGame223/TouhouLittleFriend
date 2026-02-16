@@ -96,6 +96,11 @@ Mods: {
 				Description: "'В ожидании чуда!'"
 			}
 
+			SanaeBuffRare: {
+				// DisplayName: Shrine Maiden of Miracles
+				// Description: "'Watching for miracles!'"
+			}
+
 			KogasaBuff: {
 				DisplayName: Ёкай-Зонтик
 				Description: "'БУ!'"

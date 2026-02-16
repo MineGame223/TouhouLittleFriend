@@ -21,6 +21,7 @@ Mods: {
 		QQGroup: _
 		GoodsShop: _
 		CraftCondition_StarSapphire: Deja caer los ingredientes en el suelo
+		// CraftCondition_SanaeCoin: Put ingredients with just right amount in inventory
 		FeedYuyuko: Alimentar
 		KoishiTelephone1: "[c/9dffce:Contestaste la llamada de Koishi y, por suerte, no pasó nada...]"
 		KoishiTelephone2: "[c/ff0000:Es demasiado tarde para actuar ahora.]"

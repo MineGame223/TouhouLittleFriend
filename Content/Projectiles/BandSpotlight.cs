@@ -40,15 +40,16 @@ namespace TouhouPets.Content.Projectiles
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.QuickEndAndBegin(true, false, BlendState.Additive);
+            //Main.spriteBatch.QuickEndAndBegin(true, false, BlendState.Additive);
 
             Texture2D tex = AltVanillaFunction.ProjectileTexture(Type);
             Vector2 pos = Projectile.Center - Main.screenPosition;
             Color clr = Projectile.GetAlpha(GetRayColor());
-            Vector2 orig = new Vector2(tex.Width / 2, 0);
+            clr.A *= 0;
+            Vector2 orig = new (tex.Width / 2, 0);
             Main.spriteBatch.MyDraw(tex, pos, null, clr, Projectile.rotation, orig, Projectile.scale, SpriteEffects.None, 0);
 
-            Main.spriteBatch.QuickEndAndBegin(false);
+            //Main.spriteBatch.QuickEndAndBegin(false);
             return false;
         }
         public override void OnSpawn(IEntitySource source)

@@ -603,6 +603,15 @@ Mods: {
 				Tooltip2: 它目前没有任何作用...
 				// Tooltip: ""
 			}
+
+			SanaeCoinRare: {
+				DisplayName: 金色的青蛙硬币
+				Tooltip:
+					'''
+					召唤奇迹的巫女
+					“我跟你说过，奇迹是真的！”
+					'''
+			}
 		}
 	}
 }

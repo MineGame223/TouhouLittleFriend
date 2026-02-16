@@ -96,6 +96,11 @@ Mods: {
 				Description: “见证奇迹吧！”
 			}
 
+			SanaeBuffRare: {
+				DisplayName: 奇迹的巫女
+				Description: “见证奇迹吧！”
+			}
+
 			KogasaBuff: {
 				DisplayName: 伞的附丧神
 				Description: “吓你一跳！”

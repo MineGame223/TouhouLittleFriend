@@ -7,4 +7,5 @@ namespace TouhouPets.Content.Buffs.PetBuffs
         public override int PetType => ProjectileType<Sanae>();
         public override bool LightPet => true;
     }
+    public class SanaeBuffRare : SanaeBuff { }
 }

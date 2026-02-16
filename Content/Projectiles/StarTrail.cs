@@ -10,7 +10,7 @@ namespace TouhouPets.Content.Projectiles
 {
     public class StarTrail : ModProjectile
     {
-        public override string Texture => $"Terraria/Images/Item_{ProjectileID.WoodenArrowFriendly}";
+        public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.None}";
         public override void SetDefaults()
         {
             Projectile.width = 50;
@@ -66,11 +66,11 @@ namespace TouhouPets.Content.Projectiles
                 Texture2D line = AltVanillaFunction.ExtraTexture(ExtrasID.StardustTowerMark);
                 Vector2 pos = Projectile.Center + new Vector2(0, -Radius).RotatedBy(MathHelper.ToRadians(rate * i) + Main.GlobalTimeWrappedHourly / 2 + MathHelper.ToRadians(RotatingDrift));
                 int singleLineLength = (int)(Radius * 2 * MathHelper.Pi * 1.1f) / (360 / rate);
-                Rectangle rect = new Rectangle(0, 0, line.Width, singleLineLength);
-                Vector2 orig = new Vector2(line.Width / 2, 0);
+                Rectangle rect = new (0, 0, line.Width, singleLineLength);
+                Vector2 orig = new (line.Width / 2, 0);
                 float rot = pos.DirectionTo(Projectile.Center).ToRotation();
 
-                DrawData data = new DrawData(line, pos - Main.screenPosition, rect, lightColor, rot, orig, 1f, SpriteEffects.None, 0);
+                DrawData data = new (line, pos - Main.screenPosition, rect, lightColor, rot, orig, 1f, SpriteEffects.None, 0);
 
                 if (CompatibilityMode)
                 {

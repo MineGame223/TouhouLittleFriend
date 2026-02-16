@@ -96,6 +96,11 @@ Mods: {
 				Description: ¡Esperando los milagros!
 			}
 
+			SanaeBuffRare: {
+				// DisplayName: Shrine Maiden of Miracles
+				// Description: "'Watching for miracles!'"
+			}
+
 			KogasaBuff: {
 				DisplayName: Tsukumogami de la Sombrilla
 				Description: ¡BUU!

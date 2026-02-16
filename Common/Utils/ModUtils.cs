@@ -13,6 +13,15 @@ namespace TouhouPets
     public static partial class ModUtils
     {
         /// <summary>
+        /// 获取一个类的完整命名空间+其名称
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static string GetNamespace<T>() where T : class
+        {
+            return $"{typeof(T).Namespace}.{typeof(T).Name}".Replace(".", "/");
+        }
+        /// <summary>
         /// 检查一个弹幕是否属于BasicTouhouPet类或派生
         /// </summary>
         /// <param name="proj"></param>

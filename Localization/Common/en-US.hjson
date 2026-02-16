@@ -21,6 +21,7 @@ Mods: {
 		QQGroup: _
 		GoodsShop: _
 		CraftCondition_StarSapphire: Drop the ingredients on the ground
+		CraftCondition_SanaeCoin: Put ingredients with just right amount in inventory
 		FeedYuyuko: Feed
 		KoishiTelephone1: "[c/9dffce:You answered Koishi's call and luckily, nothing happened...]"
 		KoishiTelephone2: "[c/ff0000:It's too late to make action now.]"

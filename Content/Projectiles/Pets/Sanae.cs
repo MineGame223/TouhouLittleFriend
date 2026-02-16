@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
+using TouhouPets.Content.Items.PetItems;
 
 namespace TouhouPets.Content.Projectiles.Pets
 {
@@ -55,6 +56,8 @@ namespace TouhouPets.Content.Projectiles.Pets
 
         private DrawPetConfig drawConfig = new(2);
         private readonly Texture2D clothTex = AltVanillaFunction.GetExtraTexture("Sanae_Cloth");
+        private readonly Texture2D rareTex = AltVanillaFunction.GetExtraTexture("Sanae_New");
+        private readonly Texture2D rareClothTex = AltVanillaFunction.GetExtraTexture("Sanae_New_Cloth");
         public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 15;
@@ -88,35 +91,47 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void DrawSanae(Color lightColor)
         {
+            Texture2D tex = null;
+            Texture2D cloth = clothTex;
+            if (Owner.HasBuff<SanaeBuffRare>())
+            {
+                tex = rareTex;
+                cloth = rareClothTex;
+            }
+
             DrawPetConfig config = drawConfig with
+            {
+                AltTexture = tex,
+            };
+            DrawPetConfig config2 = config with
             {
                 ShouldUseEntitySpriteDraw = true,
             };
 
             if (CurrentState < States.Flying)
                 Projectile.DrawPet(hairFrame, lightColor,
-                    drawConfig with
+                    config with
                     {
                         PositionOffset = new Vector2(0, extraAdjY),
                     }, 1);
 
-            Projectile.DrawPet(Projectile.frame, lightColor, drawConfig);
+            Projectile.DrawPet(Projectile.frame, lightColor, config);
 
             if (CurrentState == States.Blink || CurrentState == States.FlyingBlink)
-                Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
+                Projectile.DrawPet(blinkFrame, lightColor, config);
 
             Projectile.DrawPet(Projectile.frame, lightColor,
-                config with
+                config2 with
                 {
-                    AltTexture = clothTex,
+                    AltTexture = cloth,
                 });
             Projectile.ResetDrawStateForPet();
 
             if (Projectile.frame < 5)
             {
-                Projectile.DrawPet(itemFrame, lightColor, drawConfig, 1);
+                Projectile.DrawPet(itemFrame, lightColor, config, 1);
                 Projectile.DrawPet(clothFrame, lightColor,
-                    config with
+                    config2 with
                     {
                         PositionOffset = new Vector2(0, extraAdjY),
                     });
@@ -158,7 +173,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -205,6 +220,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         public override void AI()
         {
             Projectile.SetPetActive(Owner, BuffType<SanaeBuff>());
+            Projectile.SetPetActive(Owner, BuffType<SanaeBuffRare>());
 
             ControlMovement();
 
