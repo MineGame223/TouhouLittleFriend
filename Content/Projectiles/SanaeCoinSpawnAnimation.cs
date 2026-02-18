@@ -46,7 +46,7 @@ namespace TouhouPets.Content.Projectiles
                 {
                     Vector2 shadowPos = new Vector2(0, 4 * Main.essScale).RotatedBy(MathHelper.ToRadians(90 * j));
                     Main.spriteBatch.MyDraw(silverCoinTex, glowPos + shadowPos + coinOffset
-                    , null, glowClr2 * coinAlpha, 0f, coinOrig, 1f, SpriteEffects.None, 0);
+                    , null, glowClr2 * coinAlpha * 0.8f, 0f, coinOrig, 1f, SpriteEffects.None, 0);
                 }
                 Main.spriteBatch.MyDraw(silverCoinTex, glowPos + coinOffset
                     , null, coinColor * (1f - glowScale), 0f, coinOrig, 1f, SpriteEffects.None, 0);

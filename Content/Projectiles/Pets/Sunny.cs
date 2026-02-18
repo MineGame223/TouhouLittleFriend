@@ -46,6 +46,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
         private bool UnderSunShine => Main.cloudAlpha <= 0 && Main.dayTime &&
             (Owner.ZoneOverworldHeight || Owner.ZoneSkyHeight);
+        private bool HasUmbrella => Owner.HeldItem.type == ItemID.Umbrella || Owner.HeldItem.type == ItemID.TragicUmbrella;
         public override void PetStaticDefaults()
         {
             Main.projFrames[Type] = 13;
@@ -177,7 +178,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                             chat.Add(ChatDictionary[9]);
                     }
                     if (!Owner.HasBuff<ReimuBuff>())
-                    chat.Add(ChatDictionary[12]);
+                        chat.Add(ChatDictionary[12]);
                 }
             }
             return chat;
@@ -282,7 +283,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void GenDust()
         {
-            if (IsRainWet)
+            if (IsRainWet && !HasUmbrella)
             {
                 if (Main.rand.NextBool(6) && !Owner.behindBackWall)
                 {
@@ -318,6 +319,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             Projectile.rotation = Projectile.velocity.X * 0.02f;
 
             ChangeDir(200);
+            float speed = 8.5f;
 
             Vector2 point = new Vector2(60 * player.direction, -40 + player.gfxOffY);
             if (player.HasBuff<TheThreeFairiesBuff>())
@@ -325,20 +327,24 @@ namespace TouhouPets.Content.Projectiles.Pets
                 point = new Vector2(60 * player.direction, -70 + player.gfxOffY);
                 point += new Vector2(0, -40).RotatedBy(MathHelper.ToRadians(360 / 3 * 0) + Main.GlobalTimeWrappedHourly);
             }
-            MoveToPoint(point, 8.5f);
+            if (IsWetState && HasUmbrella)
+            {
+                point = new Vector2(15 * player.direction, -20 + player.gfxOffY);
+                speed = 30f;
+            }
+            MoveToPoint(point, speed);
         }
         private void UpdateExtraPos()
         {
             extraX = 0;
-            extraY = 0;
-            if (Projectile.frame >= 1 && Projectile.frame <= 3)
+            extraY = Projectile.frame switch
             {
-                extraY = -2;
-            }
-            if (Projectile.frame == 4)
-            {
-                extraY = 2;
-            }
+                1 => -2,
+                2 => -2,
+                3 => -2,
+                4 => 2,
+                _ => 0,
+            };
             if (CurrentState == States.Reflecting)
             {
                 phantomTime += 0.1f;
@@ -437,7 +443,8 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void RainWet()
         {
-            Projectile.frame = 4;
+            Projectile.frame = HasUmbrella ? 0 : 4;
+
             if (OwnerIsMyPlayer)
             {
                 if (!IsRainWet)
@@ -453,8 +460,9 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private void RainWetBlink()
         {
-            Projectile.frame = 4;
-            int startFrame = 11;
+            Projectile.frame = HasUmbrella ? 0 : 4;
+            int startFrame = HasUmbrella ? 10 : 11;
+
             if (blinkFrame < startFrame)
             {
                 blinkFrame = startFrame;
@@ -486,7 +494,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 wingsFrame = 9;
             }
 
-            if (IsWetState)
+            if (IsWetState && !HasUmbrella)
             {
                 hairFrame = 8;
                 clothFrame = 0;

@@ -42,6 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
             set => Projectile.localAI[2] = value;
         }
         private bool IsIdleState => CurrentState <= States.Blink;
+        private bool HasUmbrella => Owner.HeldItem.type == ItemID.Umbrella || Owner.HeldItem.type == ItemID.TragicUmbrella;
 
         private int wingFrame, wingFrameCounter;
         private int blinkFrame, blinkFrameCounter;
@@ -119,7 +120,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -178,7 +179,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            if (ShouldDefense(Projectile) && CurrentState != States.Defense)
+            if (ShouldDefense(Projectile) && CurrentState != States.Defense && !HasUmbrella)
             {
                 if (OwnerIsMyPlayer)
                 {
@@ -235,6 +236,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
             Vector2 point = new Vector2(50 * player.direction, -40 + player.gfxOffY);
+            float speed = 19f;
             if (FindPet(ProjectileType<Remilia>(), false))
             {
                 point = new Vector2(-50 * player.direction, -40 + player.gfxOffY);
@@ -243,9 +245,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 point = new Vector2(-60 * player.direction, -20 + player.gfxOffY);
             }
+            else if (ShouldDefense(Projectile) && HasUmbrella)
+            {
+                point = new Vector2(15 * player.direction, -20 + player.gfxOffY);
+                speed = 30f;
+            }
 
             ChangeDir();
-            MoveToPoint(point, 19);
+            MoveToPoint(point, speed);
         }
         private void UpdateMiscData()
         {
@@ -367,7 +374,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.rotation = 0f;
             Projectile.frame = 10;
-            if (!ShouldDefense(Projectile) && OwnerIsMyPlayer)
+            if ((!ShouldDefense(Projectile) || HasUmbrella) && OwnerIsMyPlayer)
             {
                 CurrentState = States.Idle;
             }

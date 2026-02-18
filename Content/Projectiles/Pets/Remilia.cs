@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Utilities;
 using TouhouPets.Content.Buffs.PetBuffs;
@@ -41,6 +42,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         private bool IsIdleState => CurrentState <= States.Blink;
         private bool IsDrinkingState => CurrentState >= States.Drinking && CurrentState <= States.DrinkingBreak;
+        private bool HasUmbrella => Owner.HeldItem.type == ItemID.Umbrella || Owner.HeldItem.type == ItemID.TragicUmbrella;
 
         private int drinkTimer, drinkRandomCount;
         private int wingFrame, wingFrameCounter;
@@ -76,11 +78,12 @@ namespace TouhouPets.Content.Projectiles.Pets
             if (CurrentState == States.Blink)
                 Projectile.DrawPet(blinkFrame, lightColor, drawConfig);
 
+            bool shouldShake = ShouldDefense(Projectile) && !HasUmbrella;
             Projectile.DrawPet(Projectile.frame, lightColor,
                 config with
                 {
                     AltTexture = clothTex,
-                    PositionOffset = ShouldDefense(Projectile) ? shake : Vector2.Zero,
+                    PositionOffset = shouldShake ? shake : Vector2.Zero,
                 });
 
             if (CurrentState != States.Defense)
@@ -126,7 +129,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         }
         public override WeightedRandom<LocalizedText> RegularDialogText()
         {
-            WeightedRandom<LocalizedText> chat = new ();
+            WeightedRandom<LocalizedText> chat = new();
             {
                 chat.Add(ChatDictionary[1]);
                 chat.Add(ChatDictionary[2]);
@@ -177,7 +180,7 @@ namespace TouhouPets.Content.Projectiles.Pets
 
             ControlMovement(Owner);
 
-            if (ShouldDefense(Projectile) && CurrentState != States.Defense)
+            if (ShouldDefense(Projectile) && CurrentState != States.Defense && !HasUmbrella)
             {
                 if (OwnerIsMyPlayer)
                 {
@@ -185,6 +188,12 @@ namespace TouhouPets.Content.Projectiles.Pets
                     CurrentState = States.Defense;
                     return;
                 }
+            }
+            if (Projectile.velocity.Length() > 12f && IsDrinkingState)
+            {
+                drinkTimer = 0;
+                CurrentState = States.AfterDrinking;
+                return;
             }
 
             switch (CurrentState)
@@ -247,6 +256,7 @@ namespace TouhouPets.Content.Projectiles.Pets
                 Projectile.rotation = Projectile.velocity.X * 0.005f;
 
             Vector2 point = new Vector2(-50 * player.direction, -50 + player.gfxOffY);
+            float speed = 19f;
             if (FindPet(ProjectileType<Flandre>(), false))
             {
                 point = new Vector2(50 * player.direction, -50 + player.gfxOffY);
@@ -255,9 +265,14 @@ namespace TouhouPets.Content.Projectiles.Pets
             {
                 point = new Vector2(60 * player.direction, -20 + player.gfxOffY);
             }
+            else if (ShouldDefense(Projectile) && HasUmbrella)
+            {
+                point = new Vector2(-15 * player.direction, -20 + player.gfxOffY);
+                speed = 30f;
+            }
 
             ChangeDir();
-            MoveToPoint(point, 19f);
+            MoveToPoint(point, speed);
         }
         private void Idle()
         {
@@ -368,7 +383,7 @@ namespace TouhouPets.Content.Projectiles.Pets
         {
             Projectile.rotation = 0f;
             Projectile.frame = 11;
-            if (!ShouldDefense(Projectile) && OwnerIsMyPlayer)
+            if ((!ShouldDefense(Projectile) || HasUmbrella) && OwnerIsMyPlayer)
             {
                 CurrentState = States.Idle;
             }
