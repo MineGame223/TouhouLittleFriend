@@ -4,7 +4,6 @@ using static TouhouPets.TouhouPets;
 using static TouhouPets.ChatRoomSystem;
 using System.Collections.Generic;
 using Terraria.Localization;
-using System.Linq;
 
 namespace TouhouPets
 {
@@ -113,13 +112,13 @@ namespace TouhouPets
         /// 宠物当前是否没有在说话
         /// </summary>
         /// <param name="projectile"></param>
-        /// <returns>当 chatTimeLeft 小于等于 0 时返回 true</returns>
+        /// <returns>当 chatTimeLeft 小于等于 1 且 chatOpacity 小于等于 0.05 时返回 true</returns>
         public static bool CurrentlyNoDialog(this Projectile projectile)
         {
             if (!projectile.IsATouhouPet())
                 return false;
-
-            return projectile.AsTouhouPet().chatTimeLeft <= 0;
+            //为什么是 0.05？因为这是 chatOpacity 每帧减少的步长
+            return projectile.AsTouhouPet().chatTimeLeft <= 1 && projectile.AsTouhouPet().chatOpacity <= 0.05f;
         }
 
         /// <summary>

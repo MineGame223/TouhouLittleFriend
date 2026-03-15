@@ -81,7 +81,7 @@ namespace TouhouPets
         /// </summary>
         public static void ResetDrawStateForPet(this Projectile projectile)
         {
-            if (CompatibilityMode)
+            if (CompatibilityMode || Main.GetProjectileDesiredShader(projectile) == 0)
                 return;
 
             Main.spriteBatch.QuickEndAndBegin(true, projectile.isAPreviewDummy);

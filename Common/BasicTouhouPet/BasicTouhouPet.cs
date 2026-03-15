@@ -527,7 +527,7 @@ namespace TouhouPets
             UpdateMouseEntered();
 
             //完全重置绘制状态，用于预防某些因为其他顶点绘制的不当操作产生的问题
-            Main.spriteBatch.QuickEndAndBegin(false);
+            //Main.spriteBatch.QuickEndAndBegin(Main.GetProjectileDesiredShader(Projectile) != 0);
         }
         #endregion
     }
